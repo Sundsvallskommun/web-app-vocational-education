@@ -1,0 +1,38 @@
+{
+  "name": "admin",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hookform/error-message": "^2.0.1",
+    "@kolben/ra-language-swedish": "^3.14.4",
+    "@tiptap/extension-image": "^2.3.1",
+    "@tiptap/extension-youtube": "^2.3.1",
+    "bcryptjs": "^2.4.3",
+    "classnames": "^2.5.1",
+    "ra-data-simple-prisma": "^5.0.0",
+    "ra-data-simple-rest": "^4.16.17",
+    "ra-i18n-polyglot": "^4.16.17",
+    "ra-input-rich-text": "^4.16.17",
+    "react": "^18.3.1",
+    "react-admin": "^4.16.17",
+    "react-dom": "^18.3.1",
+    "uniforms": "^4.0.0-alpha.5"
+  },
+  "devDependencies": {
+    "@mui/types": "^7.2.14",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20.12.10",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "postcss-nesting": "^12.1.2",
+    "sass": "^1.77.0",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11"
+  }
+}

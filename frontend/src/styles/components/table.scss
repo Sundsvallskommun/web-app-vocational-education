@@ -1,0 +1,20 @@
+@layer components {
+  .sk-table {
+    &-thead {
+      @apply h-[7.6rem] border-0 text-label text-sm leading-[1.8rem];
+    }
+
+    &-th {
+      @apply font-normal text-sm;
+    }
+
+    &-tbody {
+      &-tr {
+        @apply odd:bg-green-light border-0;
+        &:hover {
+          @apply even:bg-transparent;
+        }
+      }
+    }
+  }
+}

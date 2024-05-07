@@ -1,0 +1,25 @@
+@layer components {
+  .sk-footer {
+    @apply p-0 bg-blue-light px-lg;
+
+    .sk-footer-logo-wrapper {
+      @apply hidden;
+    }
+
+    &-innerwrapper {
+      @apply text-body py-2xl lg:py-3xl;
+    }
+
+    &-content {
+      @apply w-full;
+    }
+
+    .sk-link {
+      @apply text-body no-underline;
+
+      span {
+        @apply underline hover:no-underline;
+      }
+    }
+  }
+}

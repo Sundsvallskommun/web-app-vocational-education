@@ -1,0 +1,137 @@
+@layer components {
+  .sk-menu-vertical-nav {
+    ul li {
+      @apply leading-[2.6rem];
+    }
+    .sk-menu-vertical {
+      @apply gap-0;
+
+      ul {
+        @apply p-0 m-0;
+
+        li {
+          [role='menuitem'] > * {
+            @apply pl-md;
+          }
+
+          &:last-child {
+            @apply border-b-0;
+          }
+        }
+      }
+
+      &-item {
+        @apply border-b border-green;
+
+        & > a,
+        > button {
+          @apply rounded-none flex items-center min-h-[4.4rem];
+
+          &:focus-visible {
+            @apply outline-none;
+            &:not([aria-disabled='true']) > * {
+              @apply bg-green text-white border-green border-l-[7px] pl-md;
+            }
+          }
+
+          > * {
+            @apply flex w-full;
+            @apply pl-0 text-green md:text-2xl py-[18px];
+            @apply rounded-none cursor-pointer;
+          }
+
+          &:not([aria-disabled='true']) > * {
+            @apply bg-transparent text-green;
+          }
+
+          &:hover:not([aria-disabled='true']) > * {
+            @apply bg-green text-white border-green border-l-[7px] pl-md;
+          }
+
+          &[aria-current='page'] {
+            &:not(:hover) > * {
+              @apply bg-transparent border-l-[7px] border-green pl-md;
+              @apply focus-visible:ring;
+            }
+            &:focus-visible {
+              @apply bg-green;
+            }
+          }
+        }
+
+        .sk-menu-vertical-item-submenu {
+          @apply rounded-none;
+
+          &:hover {
+            > a:not([aria-disabled='true']),
+            > button:not([aria-disabled='true']),
+            > a[aria-expanded='true']:not([aria-disabled='true']),
+            > button[aria-expanded='true']:not([aria-disabled='true']) {
+              @apply text-white bg-green;
+            }
+
+            .sk-menu-vertical-item-submenu-button-expand::before {
+              @apply bg-white;
+            }
+          }
+
+          &:focus-within {
+            @apply outline outline-2 outline-ring;
+
+            .sk-menu-vertical-item-submenu-button,
+            .sk-menu-vertical-item-submenu-button-expand {
+              &:focus-visible {
+                @apply ring-0 ring-offset-0 outline-0;
+              }
+            }
+          }
+
+          &-large {
+            button,
+            a {
+              @apply md:text-2xl py-[18px];
+            }
+            a[role='menuitem'] {
+              @apply font-normal text-green pl-0;
+            }
+            &:hover a[role='menuitem'] {
+              @apply pl-md border-green border-l-[7px];
+            }
+          }
+
+          &-button-expand {
+            @apply relative text-green rounded-r-none rounded-l-0;
+
+            &::before {
+              @apply content-[""] left-0 my-auto inline-block absolute w-[0.1rem] h-[3rem] bg-green;
+            }
+          }
+
+          &-button {
+            @apply text-left grow rounded-l-none rounded-r-0;
+
+            &[aria-current='page']:not(:hover) {
+              @apply pl-md border-green border-l-[7px];
+            }
+            &[aria-current='page']:not(:hover),
+            &[aria-current='page']:not(:hover) ~ button:not(:hover) {
+              @apply bg-transparent text-green;
+            }
+
+            &[aria-expanded='true'] {
+              &,
+              & + .sk-menu-vertical-item-submenu-button-expand {
+                @apply border-b border-green;
+              }
+
+              &:not(:hover, [aria-current='page'], [aria-disabled='true']),
+              &:not(:hover, [aria-current='page'], [aria-disabled='true']) ~ button:not(:hover) {
+                @apply bg-transparent;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

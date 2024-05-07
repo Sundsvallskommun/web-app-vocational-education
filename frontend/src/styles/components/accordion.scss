@@ -1,0 +1,48 @@
+@layer components {
+  .sk-accordion.override {
+    ul {
+      @apply m-0;
+    }
+
+    .sk-disclosure {
+      &-header {
+        @apply my-0;
+
+        &:hover {
+          @apply bg-blue-light;
+        }
+
+        &-icon {
+          @apply bg-transparent;
+
+          .sk-icon {
+            @apply text-black-light;
+
+            svg {
+              @apply min-w-[1.3rem] min-h-[1.3rem];
+              @apply md:min-w-[3rem] md:min-h-[3rem];
+
+              path {
+                @apply stroke-[1.75];
+              }
+            }
+          }
+        }
+      }
+      &-toggle {
+        @apply mx-[.5rem] h-auto my-0 py-0 md:mx-[2rem];
+
+        .sk-disclosure-title {
+          @apply font-normal mr-md mb-0 py-md md:py-[3rem] md:text-[2rem] leading-[3rem];
+        }
+      }
+      &-title {
+        @apply mb-0 py-md md:py-[3rem] md:text-[2.1rem] leading-[3rem];
+      }
+
+      &-body {
+        @apply ml-lg;
+      }
+    }
+  }
+}

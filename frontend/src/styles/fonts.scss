@@ -1,0 +1,155 @@
+@supports not (font-variation-settings: 'wght') {
+  @font-face {
+    font-family: 'Montserrat';
+    src: url($basePath + '/fonts/Montserrat-Regular.ttf');
+    font-display: swap;
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: 'Montserrat';
+    src: url($basePath + '/fonts/Montserrat-Medium.ttf');
+    font-display: swap;
+    font-weight: 500;
+  }
+
+  @font-face {
+    font-family: 'Montserrat';
+    src: url($basePath + '/fonts/Montserrat-SemiBold.ttf');
+    font-display: swap;
+    font-weight: 600;
+  }
+
+  @font-face {
+    font-family: 'Montserrat';
+    src: url($basePath + '/fonts/Montserrat-Bold.ttf');
+    font-display: swap;
+    font-weight: 700;
+  }
+}
+
+@supports (font-variation-settings: 'wght') {
+  @font-face {
+    font-family: 'Montserrat';
+    src:
+      url($basePath + '/fonts/Montserrat-VariableFont_wght.ttf') format('truetype supports variations')
+        tech('variations'),
+      url($basePath + '/fonts/Montserrat-VariableFont_wght.ttf') format('truetype-variations');
+    font-weight: 100 1000;
+    font-stretch: 25% 151%;
+  }
+}
+@layer components {
+  body {
+    /* font-family: Arial, Helvetica, sans-serif; */
+    font-family: 'Montserrat', sans-serif;
+    @apply text-black-light;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h4,
+  h6,
+  .header-font {
+    /* font-family: 'Montserrat', sans-serif; */
+    font-feature-settings:
+      'clig' off,
+      'liga' off;
+    @apply font-normal mb-0;
+
+    & + .btn {
+      @apply mt-md;
+    }
+  }
+
+  h1 {
+    @apply text-[2.8rem] leading-[3.8rem];
+    @apply lg:text-[5.2rem] lg:leading-[5.9rem] lg:-tracking-[0.0578rem];
+
+    & + .ingress {
+      @apply text-[1.8rem] leading-[2.7rem] mb-xl text-ellipsis;
+      @apply md:text-[2rem] md:leading-[3rem];
+    }
+  }
+
+  h2 {
+    @apply text-[1.9rem] leading-[2.4rem];
+    @apply md:text-[2.6rem] md:leading-[3.6rem] md:-tracking-[.01rem];
+  }
+
+  h3 {
+    @apply text-[1.7rem] leading-[2.5rem];
+    @apply md:text-[2.1rem] md:leading-[3rem];
+  }
+
+  h4 {
+    @apply text-[1.5rem] leading-[2.5rem];
+    @apply md:text-[1.8rem];
+  }
+
+  p {
+    @apply my-[.625em] max-w-[90rem] text-ellipsis;
+    @apply leading-[2.6rem];
+    @apply md:leading-[150%];
+    // hyphens: auto;
+
+    p + & {
+      @apply mt-[.625em];
+    }
+  }
+
+  .text {
+    @apply text-sm text-body leading-[2.6rem] text-ellipsis;
+    @apply md:text-[1.6rem] md:leading-[150%];
+  }
+
+  p,
+  ol,
+  ul,
+  .btn,
+  a {
+    & + h2,
+    & + h3,
+    & + h4,
+    & + h4,
+    & + h6 {
+      @apply mt-2xl;
+    }
+  }
+
+  ol,
+  ul {
+    @apply my-[.625em];
+
+    + p {
+      @apply mt-xl;
+    }
+
+    p + &,
+    h2 + &,
+    h3 + &,
+    h4 + &,
+    h5 + & {
+      @apply mt-[1.1em];
+    }
+
+    &.text,
+    li {
+      @apply text-[1.4rem] leading-[2.6rem] md:text-[1.6rem] md:leading-[2.9rem];
+    }
+
+    &.ingress {
+      @apply text-[1.8rem] leading-[2.7rem] md:text-[2rem] md:leading-[3rem];
+    }
+  }
+
+  .label,
+  label,
+  legend,
+  .legend {
+    @apply text-label text-[1.4rem] font-normal flex leading-[1.31];
+  }
+}

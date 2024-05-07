@@ -1,0 +1,41 @@
+@layer components {
+  .sk-pagination {
+    .sk-pagination {
+      &-pageLabel {
+        @apply leading-none w-[25px] h-[25px] text-[13px] md:w-[40px] md:h-[40px] md:text-base border border-blue text-blue rounded-half;
+
+        &[aria-current='true'] {
+          @apply bg-blue text-white;
+        }
+
+        &:hover {
+          @apply bg-blue text-white underline;
+        }
+      }
+
+      &-list {
+        @apply flex gap-[2rem];
+
+        li:first-child .sk-pagination-prevNextButton,
+        li:last-child .sk-pagination-prevNextButton {
+          @apply bg-transparent;
+
+          .sk-icon {
+            svg {
+              @apply hidden;
+            }
+
+            &:before {
+              @apply text-blue block relative font-mono text-xl font-bold;
+              content: '<';
+            }
+          }
+        }
+
+        li:last-child .sk-pagination-prevNextButton .sk-icon:before {
+          content: '>';
+        }
+      }
+    }
+  }
+}

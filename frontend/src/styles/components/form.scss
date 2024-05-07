@@ -1,0 +1,77 @@
+@layer components {
+  .sk-form {
+    &-field,
+    &-input {
+      @apply rounded-[.8rem] border-[#16262D] px-[2.2rem] min-h-[5rem];
+
+      &.sk-form-input-md {
+        @apply rounded-[.8rem];
+      }
+    }
+    &-label {
+      @apply leading-[1.8rem] mb-[1.1rem] font-normal;
+    }
+
+    &-error-message {
+      @apply text-error;
+    }
+
+    &-control {
+      @apply gap-0;
+    }
+
+    &-radio {
+      @apply w-[1.6rem] h-[1.6rem] border-2 border-border-color;
+
+      &:checked,
+      &:checked:focus {
+        @apply border-blue;
+      }
+      &:checked::after,
+      &[checked='true']::after {
+        @apply bg-blue m-[.2rem];
+      }
+
+      &:hover {
+        &:checked {
+          @apply border-blue;
+        }
+
+        &::after {
+          @apply m-[.2rem] bg-blue;
+        }
+      }
+    }
+
+    &-checkbox {
+      &,
+      + .sk-icon.sk-icon-padded {
+        @apply rounded-[.3rem] w-[2rem] h-[2rem] p-0 border-2 border-border-color;
+      }
+
+      &:focus {
+        @apply ring-border-color;
+      }
+
+      &:checked,
+      &:checked:hover,
+      &:checked:focus {
+        + .sk-icon.sk-icon-padded {
+          @apply text-white bg-blue border-blue fill-blue;
+        }
+      }
+      &-label {
+        &-right {
+          .sk-form-checkbox-label {
+            @apply ml-sm;
+          }
+        }
+        &-left {
+          .sk-form-checkbox-label {
+            @apply mr-sm;
+          }
+        }
+      }
+    }
+  }
+}

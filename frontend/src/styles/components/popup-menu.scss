@@ -1,0 +1,10 @@
+@layer components {
+  .sk-popup-menu {
+    .sk-form-checkbox-label-left,
+    .sk-form-checkbox-label-right {
+      .sk-icon {
+        @apply left-auto right-auto;
+      }
+    }
+  }
+}

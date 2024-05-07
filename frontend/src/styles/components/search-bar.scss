@@ -1,0 +1,76 @@
+@layer components {
+  .searchbar {
+    @apply flex w-full;
+    [aria-expanded='true'] {
+      .sk-form-input-group {
+        @apply rounded-bl-none;
+      }
+
+      .sk-form-combobox {
+        &-list {
+          @apply mt-0 p-0 rounded-t-none bg-white;
+
+          &-option {
+            @apply px-[2rem] rounded-none min-h-[4.4rem] max-h-[4.4rem];
+
+            &:hover,
+            &.active {
+              @apply bg-green text-white;
+            }
+          }
+
+          .sk-icon {
+            @apply hidden;
+          }
+        }
+      }
+    }
+
+    .sk-form-input {
+      @apply w-full;
+    }
+
+    .sk-combobox-base {
+      @apply grow focus-within:ring-0 focus-within:ring-transparent;
+    }
+
+    .sk-search-field {
+      .sk-search-field-base-icon {
+        @apply hidden;
+      }
+
+      .sk-form-input-group {
+        @apply min-h-[5rem] max-h-[5rem] items-stretch border-1 border-border-color rounded-r-none border-r-0;
+        @apply focus-within:ring-offset-0 focus-within:ring-1 focus-within:ring-border-color focus-within:hover:border-border-color;
+
+        .sk-form-input {
+          @apply px-[2.2rem];
+          &-addin {
+            &-right {
+              @apply pr-[1.6rem];
+            }
+          }
+        }
+
+        .sk-search-field-button-reset[data-icon='true'] {
+          @apply w-[2.2rem] h-[2.2rem] min-w-0 bg-background-gray text-white hover:bg-green focus-visible:bg-green;
+
+          svg {
+            @apply w-[1em] h-[1em] text-sm #{!important};
+          }
+        }
+      }
+    }
+
+    .searchbar {
+      &-button {
+        &-search {
+          @apply pl-[1.8rem] pr-[2.4rem] text-lg font-medium  min-h-[5rem] max-h-[5rem] rounded-l-none;
+          &[data-color='primary'] {
+            @apply text-white bg-black-light hover:underline hover:shadow-none hover:bg-black-light;
+          }
+        }
+      }
+    }
+  }
+}

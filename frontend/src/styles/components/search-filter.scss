@@ -1,0 +1,127 @@
+@layer components {
+  .educations-filter-popupbutton {
+    @apply text-sm leading-[2.7rem];
+  }
+
+  .search-filter {
+    &-list {
+      li {
+        @apply flex justify-start;
+        svg {
+          @apply mt-[.3rem];
+        }
+      }
+    }
+
+    .sk-form-control {
+      @apply mobile:w-full;
+    }
+
+    .educations-filter-popupbutton {
+      @apply justify-start rounded text-label w-full lg:w-max;
+
+      &[data-color='primary'] {
+        @apply border-border-color lg:border-transparent bg-green-light hover:bg-green-light;
+      }
+      &-icon {
+        @apply rotate-90;
+      }
+
+      .btn-has-icon-right {
+        @apply mobile:absolute mobile:right-8;
+      }
+
+      &[aria-expanded='true'] {
+        .btn-has-icon-right {
+          @apply -rotate-180;
+        }
+      }
+    }
+
+    .sk-popup-menu {
+      @apply w-full lg:w-fit px-[2.65rem] pb-[2.65rem] pt-[1.5rem] bg-green-light mt-0 shadow-none rounded-t-none rounded-b-[1.5rem] border-x border-b border-border-color;
+      &[data-position='under'][data-align='start'] {
+        @apply lg:-left-[2px];
+      }
+    }
+
+    legend.sk-form-label {
+      @apply lg:text-lg;
+    }
+
+    label,
+    legend {
+      @apply mobile:mb-0;
+      & + * {
+        @apply mobile:mt-sm;
+      }
+    }
+
+    .filter-items-desktop {
+      @apply flex gap-sm;
+
+      // search-menuitems
+      .educations-filter-popupbutton,
+      .sk-form-select,
+      .more-button {
+        @apply min-h-[5rem] max-h-[5rem] text-label text-sm font-medium lg:font-normal border-0 bg-green-light lg:border-transparent;
+
+        &:focus,
+        &:hover {
+          @apply font-bold cursor-pointer;
+          @apply ring-0 ring-offset-0 ring-transparent;
+          //   @apply focus:ring-border-color focus:ring-offset-0;
+          @apply outline-0;
+        }
+      }
+      .more-button {
+        @apply bg-transparent;
+      }
+
+      > div:first-child {
+        .sk-popup-menu {
+          @apply -left-[1px];
+        }
+        .sk-popup-menu::before {
+          @apply content-[""] absolute -top-[2rem] -left-[1px] w-[2rem] h-[3rem] bg-green-light border-l-1 border-border-color;
+        }
+      }
+
+      .sk-btn.more-button {
+        @apply px-lg text-sm ml-auto rounded ring-offset-0 ring-0 border-0;
+
+        .btn-has-icon-right svg {
+          @apply text-black-light ml-sm;
+        }
+      }
+    }
+
+    .sk-chip {
+      @apply h-auto py-[.4rem] border-transparent rounded-full pl-[2rem] pr-[.4rem];
+
+      .sk-icon {
+        @apply ml-md min-w-[2.5rem] min-h-[2.5rem] rounded-full bg-white text-primary;
+
+        svg {
+          @apply p-[.5rem];
+        }
+      }
+
+      &.bg-red {
+        svg {
+          @apply text-red;
+        }
+      }
+
+      &.bg-blue {
+        svg {
+          @apply text-blue;
+        }
+      }
+
+      &:hover .sk-icon {
+        @apply outline-1 outline-offset-1 outline-white outline;
+      }
+    }
+  }
+}

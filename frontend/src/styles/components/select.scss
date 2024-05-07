@@ -1,0 +1,42 @@
+@layer components {
+  .sk-form-select {
+    @apply text-sm leading-[2.7rem] font-normal w-full max-w-full min-h-[5rem] max-h-[5rem] border border-border-color py-sm px-md whitespace-nowrap text-label bg-transparent rounded shadow-none;
+
+    &-wrapper {
+      button {
+        @apply justify-start;
+
+        &[aria-expanded='true'] {
+          @apply bg-green-light rounded-b-none border-b-0;
+        }
+      }
+    }
+
+    svg {
+      @apply text-black-light;
+    }
+
+    &-option {
+      @apply text-sm px-md mb-0;
+
+      &:hover,
+      &:focus-visible,
+      &.active,
+      &:focus {
+        @apply bg-green text-white outline-none;
+      }
+    }
+
+    &-list {
+      @apply bg-green-light border-border-color;
+
+      &:focus {
+        @apply outline-none;
+      }
+
+      &:last-child {
+        @apply rounded-b;
+      }
+    }
+  }
+}

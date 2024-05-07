@@ -1,0 +1,9 @@
+@layer components {
+  .sk-link {
+    @apply text-green hover:no-underline hover:text-green;
+
+    span {
+      @apply font-normal;
+    }
+  }
+}

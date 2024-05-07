@@ -1,0 +1,258 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("DATABASE_SHADOW_URL")
+}
+
+enum UserRole {
+  USER
+  EDUCATIONCOORDINATOR
+  EDITOR
+  ADMIN
+}
+
+model User {
+  id              Int                @id @default(autoincrement())
+  username        String             @unique
+  password        String
+  email           String
+  role            UserRole           @default(USER)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt @default(now())
+  savedSearches   User_SavedSearch[]
+  savedInterests  User_SavedInterest[]
+}
+
+model User_SavedSearch {
+  id            Int                 @id @default(autoincrement())
+  searchTerm    String
+  parameters    String              @db.Text
+  User          User?               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        Int?
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt @default(now())
+}
+
+model User_SavedInterest {
+  id                Int    @id @default(autoincrement())
+  category          String
+  type              String
+  location          String
+  timeInterval      String  
+  timeIntervalFrom  String  
+  timeIntervalTo    String  
+  User              User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            Int?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt @default(now())
+  @@unique([category, type, location])
+}
+
+model Page {
+  id          Int    @id @default(autoincrement())
+  url         String @unique
+  pageName    String @unique
+  title       String
+  description String @db.Text
+
+  // PromotionsBlock
+  promotionsBlock PromotionsBlock[]           @relation("PromotionsBlock")
+  promotedBy      PromotionsBlockPromotions[] @relation("PromotedBy")
+
+  // MapBlock
+  mapBlock MapBlock[] @relation("MapBlock")
+
+  // EmployerPromotionsBlock
+  employerPromotionsBlock EmployerPromotionsBlock[] 
+
+  // ImportantDatesBlock
+  importantDatesBlock ImportantDatesBlock[] @relation("ImportantDatesBlock")
+
+  // FAQBlock
+  faqBlock FaqBlock[] @relation("FaqBlock")
+
+  // LogosBlock
+  logosBlock LogosBlock[] @relation("LogosBlock")
+
+  // TableBlock
+  tableBlock TableBlock[] @relation("TableBlock")
+
+  @@unique([id, pageName])
+}
+
+model TableBlock {
+  id         Int                         @id @default(autoincrement())
+  page       Page                        @relation("TableBlock", fields: [pageName, pageId], references: [pageName, id], onDelete: Cascade)
+  pageName   String
+  pageId     Int
+  showBlock  Boolean                     @default(false)
+  headers    TableBlockHeader[]          @relation("TableBlockHeader")
+  rows       TableBlockRow[]             @relation("TableBlockRow")
+  cells      TableBlockCell[]            @relation("TableBlockCells")
+  @@unique([id, pageId])
+}
+
+model TableBlockHeader {
+  id               Int                   @id @default(autoincrement())
+  tableBlock       TableBlock            @relation("TableBlockHeader", fields: [tableId, pageId], references: [id, pageId], onDelete: Cascade)
+  tableId          Int                  
+  pageId           Int                  
+  name             String
+  cells            TableBlockCell[]      @relation("TableBlockHeader")
+  sortable         Boolean               @default(false)
+  hidden           Boolean               @default(false)
+}
+
+model TableBlockRow {
+  id               Int                  @id @default(autoincrement())
+  tableBlock       TableBlock           @relation("TableBlockRow", fields: [tableId, pageId], references: [id, pageId], onDelete: Cascade)
+  tableId          Int                  
+  pageId           Int                  
+  cells            TableBlockCell[]     @relation("TableBlockRow")
+}
+
+model TableBlockCell {
+  id                  Int               @id @default(autoincrement())
+  tableBlockHeader    TableBlockHeader  @relation("TableBlockHeader", fields: [headerId], references: [id], onDelete: Cascade)
+  headerId            Int
+  tableBlockRow       TableBlockRow     @relation("TableBlockRow", fields: [rowId], references: [id], onDelete: Cascade)
+  rowId               Int
+  tableBlock          TableBlock        @relation("TableBlockCells", fields: [tableId, pageId], references: [id, pageId], onDelete: Cascade)
+  pageId              Int
+  tableId             Int
+  wysiwyg_content     String?           @db.Text
+}
+
+model PromotionsBlock {
+  id         Int                         @id @default(autoincrement())
+  page       Page                        @relation("PromotionsBlock", fields: [pageName], references: [pageName], onDelete: Cascade)
+  pageName   String
+  showBlock  Boolean                     @default(false)
+  promotions PromotionsBlockPromotions[] @relation("PromotionsBlockPromotions")
+  @@unique([id, pageName])
+}
+
+model PromotionsBlockPromotions {
+  id               Int             @id @default(autoincrement())
+  promotionsBlock  PromotionsBlock @relation("PromotionsBlockPromotions", fields: [blockId, pageName], references: [id, pageName], onDelete: Cascade)
+  blockId          Int
+  pageName         String
+  promotedPage     Page            @relation("PromotedBy", fields: [promotedPageName], references: [pageName], onDelete: Cascade)
+  promotedPageName String
+}
+
+model EmployerPromotionsBlock {
+  id                 Int                                 @id @default(autoincrement())
+  page               Page[]
+  pageName           String
+  showBlock          Boolean                             @default(false)
+  title              String
+  employerPromotions EmployerPromotionsBlockPromotions[] @relation("EmployerPromotionsBlockPromotions")
+
+  @@unique([id, pageName])
+}
+
+model EmployerPromotionsBlockPromotions {
+  id                      Int                     @id @default(autoincrement())
+  employerPromotionsBlock EmployerPromotionsBlock @relation("EmployerPromotionsBlockPromotions", fields: [blockId, pageName], references: [id, pageName], onDelete: Cascade)
+  blockId                 Int
+  pageName                String
+  title                   String?
+  ingress                 String?                 @default("") @db.Text
+  wysiwyg_content         String?                 @default("") @db.Text
+  searchPhrase            String?
+}
+
+model MapBlock {
+  id         Int     @id @default(autoincrement())
+  page       Page    @relation("MapBlock", fields: [pageName], references: [pageName], onDelete: Cascade)
+  pageName   String
+  showBlock  Boolean @default(false)
+  title      String
+  text       String  @db.Text
+  buttonText String
+}
+
+model ImportantDatesBlock {
+  id        Int                            @id @default(autoincrement())
+  page      Page                           @relation("ImportantDatesBlock", fields: [pageName], references: [pageName], onDelete: Cascade)
+  pageName  String
+  showBlock Boolean                        @default(false)
+  title     String
+  dateCards ImportantDatesBlockDateCards[] @relation("ImportantDatesBlockDateCards")
+
+  @@unique([id, pageName])
+}
+
+model ImportantDatesBlockDateCards {
+  id                  Int                 @id @default(autoincrement())
+  importantDatesBlock ImportantDatesBlock @relation("ImportantDatesBlockDateCards", fields: [blockId, pageName], references: [id, pageName], onDelete: Cascade)
+  pageName            String
+  blockId             Int
+  date                String
+  title               String
+  text                String              @db.Text
+  url                 String
+}
+
+model FaqBlock {
+  id          Int                 @id @default(autoincrement())
+  page        Page                @relation("FaqBlock", fields: [pageName], references: [pageName], onDelete: Cascade)
+  pageName    String
+  showBlock   Boolean             @default(false)
+  title       String
+  description String              @db.Text
+  questions   FaqBlockQuestions[] @relation("FaqBlockQuestions")
+
+  @@unique([id, pageName])
+}
+
+model FaqBlockQuestions {
+  id       Int      @id @default(autoincrement())
+  faqBlock FaqBlock @relation("FaqBlockQuestions", fields: [blockId, pageName], references: [id, pageName], onDelete: Cascade)
+  pageName String
+  blockId  Int
+  question String   @db.Text
+  answer   String   @db.Text
+}
+
+model LogosBlock {
+  id          Int               @id @default(autoincrement())
+  page        Page              @relation("LogosBlock", fields: [pageName], references: [pageName], onDelete: Cascade)
+  pageName    String
+  title       String
+  description String            @db.Text
+  showBlock   Boolean           @default(false)
+  logos       LogosBlockLogos[] @relation("LogosBlockLogos")
+
+  @@unique([id, pageName])
+}
+
+model LogosBlockLogos {
+  id         Int        @id @default(autoincrement())
+  logosBlock LogosBlock @relation("LogosBlockLogos", fields: [blockId, pageName], references: [id, pageName], onDelete: Cascade)
+  blockId    Int
+  pageName   String
+  alt        String
+  filename   String     @default("")
+}
+
+model Footer {
+  id           Int    @id @default(autoincrement())
+  contactTitle String
+  contactText  String @db.Text
+}
+
+model Media {
+  id        Int      @id @default(autoincrement())
+  title     String
+  filename  String
+  alt       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  src       String
+}

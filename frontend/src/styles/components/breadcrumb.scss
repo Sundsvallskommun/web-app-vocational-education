@@ -1,0 +1,17 @@
+@layer components {
+  .sk-breadcrumb {
+    @apply mb-lg text-[13px] mobile:hidden;
+
+    &-item {
+      @apply text-[13px];
+
+      span[aria-current='page'] {
+        @apply font-normal;
+      }
+    }
+
+    &-separator {
+      @apply text-green;
+    }
+  }
+}

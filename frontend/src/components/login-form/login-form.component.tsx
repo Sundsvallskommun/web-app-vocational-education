@@ -1,11 +1,13 @@
 import ErrorMessage from '@components/error-message/error-message.component';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Button, FormControl, FormLabel, Input } from '@sk-web-gui/react';
+import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import PasswordReset from './password-reset.component';
 
 export default function LoginForm() {
   const { register, formState } = useFormContext();
-
+  const [showPasswordReset, setShowPasswordReset] = useState(false);
   return (
     <div>
       <div>
@@ -28,10 +30,11 @@ export default function LoginForm() {
         <Button rounded color="primary" type="submit" data-cy="loginButton" rightIcon={<ArrowForwardIcon />}>
           Logga in
         </Button>
-        <Button type="button" variant="link">
+        <Button type="button" variant="link" onClick={() => setShowPasswordReset(true)}>
           Glömt lösenord?
         </Button>
       </div>
+      {showPasswordReset && <PasswordReset show={showPasswordReset} setShow={setShowPasswordReset} />}
     </div>
   );
 }

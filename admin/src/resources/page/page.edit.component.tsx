@@ -19,7 +19,7 @@ export const PageEdit = (props: any) => {
       <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete={!isSuperAdmin} />} sx={{ maxWidth: '600px' }}>
         <h1>
           {`${translate('ra.action.edit')} `}
-          <WithRecord label="pageName" render={(record) => <span>{record.pageName}</span>} />
+          <WithRecord label="pageName" render={(record) => <span>{record.url}</span>} />
         </h1>
         <TextInput source="url" validate={[required()]} disabled />
         <TextInput source="pageName" validate={[required()]} disabled />

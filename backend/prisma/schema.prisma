@@ -89,6 +89,8 @@ model TableBlock {
   page       Page                        @relation("TableBlock", fields: [pageName, pageId], references: [pageName, id], onDelete: Cascade)
   pageName   String
   pageId     Int
+  title      String?                     @default("")
+  summary    String?                     @default("") @db.Text
   showBlock  Boolean                     @default(false)
   headers    TableBlockHeader[]          @relation("TableBlockHeader")
   rows       TableBlockRow[]             @relation("TableBlockRow")

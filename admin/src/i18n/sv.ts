@@ -199,6 +199,8 @@ const sv: TranslationMessages = {
     tableBlock: {
       name: 'Tabell',
       fields: {
+        title: 'Titel',
+        summary: 'Tabellsummering',
         save: 'Spara',
         remove: 'Ta bort',
         header_label: 'Kolumnnamn',

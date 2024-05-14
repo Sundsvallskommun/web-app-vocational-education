@@ -5,11 +5,13 @@ import {
   ReferenceInput,
   SelectInput,
   SimpleForm,
+  TextInput,
   TransformData,
   useStore,
   useTranslate,
 } from 'react-admin';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
+import Box from '@mui/material/Box';
 
 const transform: TransformData = (data) => {
   return {
@@ -48,6 +50,24 @@ export const TableBlockCreate = (props: any) => {
             defaultValue={parseInt(activePageIdEdit)}
           />
         </ReferenceInput>
+        <Box display={'inline-flex'} flexDirection={'column'}>
+          <TextInput sx={{ display: 'inline' }} source="pageName" disabled />
+          <TextInput
+            source="title"
+            multiline
+            inputProps={{
+              sx: { width: '222px' },
+            }}
+          />
+          <TextInput
+            source="summary"
+            multiline
+            sx={{ hyphens: 'auto' }}
+            inputProps={{
+              sx: { width: '576px' },
+            }}
+          />
+        </Box>
         <BooleanInput source="showBlock" />
       </SimpleForm>
     </Create>

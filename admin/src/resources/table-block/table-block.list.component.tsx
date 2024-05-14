@@ -7,7 +7,7 @@ export const TableBlockList = (props: any) => {
   return (
     <List {...props} exporter={false} hasCreate={canCreate} actions={<ListCreateButton />}>
       <Datagrid rowClick="edit" bulkActionButtons={false}>
-        <TextField source="id" label="Tabell-id" />
+        <TextField source="title" />
       </Datagrid>
     </List>
   );

@@ -76,7 +76,7 @@ export const EditTableBlockRows = ({ table, refetch }: TableBlockRowsProps) => {
   return (
     <Container maxWidth={false}>
       <h2>{`${translate('resources.tableBlock.rowsHeading')}`}</h2>
-      {table?.rows.length ? (
+      {table?.rows?.length ? (
         <Form warnWhenUnsavedChanges onSubmit={(data) => onUpdate(data, table)} resource="tableBlockRow" record={table}>
           <table>
             <thead>
@@ -92,7 +92,7 @@ export const EditTableBlockRows = ({ table, refetch }: TableBlockRowsProps) => {
               </tr>
             </thead>
             <tbody>
-              {table?.rows.map((row, rowIndex) => {
+              {table?.rows?.map((row, rowIndex) => {
                 if (!row) return <></>;
                 return (
                   <tr key={`${row.id}`}>
@@ -141,7 +141,7 @@ export const EditTableBlockRows = ({ table, refetch }: TableBlockRowsProps) => {
           <table>
             <thead>
               <tr>
-                {table?.headers.map((header) => {
+                {table?.headers?.map((header) => {
                   return (
                     <th style={{ textAlign: 'left' }} key={`${header.id}`}>
                       {header.name}
@@ -153,7 +153,7 @@ export const EditTableBlockRows = ({ table, refetch }: TableBlockRowsProps) => {
             </thead>
             <tbody>
               <tr>
-                {table?.headers.map((header, i) => {
+                {table?.headers?.map((header, i) => {
                   return (
                     <td style={{ textAlign: 'left', verticalAlign: 'bottom' }} key={`${header.id}`}>
                       <TextInput

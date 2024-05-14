@@ -24,6 +24,7 @@ import { AdminTableBlockController } from './controllers/admin/table-block.contr
 import { AdminTableBlockHeaderController } from './controllers/admin/table-block-header.controller';
 import { AdminTableBlockRowController } from './controllers/admin/table-block-row.controller';
 import { AdminTableBlockCellController } from './controllers/admin/table-block-cell.controller';
+import { ContactController } from './controllers/contact.controller';
 
 validateEnv();
 
@@ -57,6 +58,7 @@ const app = new App([
   LayoutController,
   AdminFooterController,
   MediaController,
+  ContactController,
 ]);
 
 app.listen();

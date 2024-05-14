@@ -6,6 +6,7 @@ export const SWAGGER_ENABLED = process.env.SWAGGER_ENABLED === 'true';
 export const SESSION_MEMORY = process.env.SESSION_MEMORY === 'true';
 
 export const {
+  APP_NAME,
   NODE_ENV,
   PORT,
   API_BASE_URL,
@@ -16,6 +17,7 @@ export const {
   CLIENT_KEY,
   CLIENT_SECRET,
   BASE_URL_PREFIX,
+  MAIL_US,
   // SAML_CALLBACK_URL,
   // SAML_LOGOUT_CALLBACK_URL,
   // SAML_SUCCESS_REDIRECT,

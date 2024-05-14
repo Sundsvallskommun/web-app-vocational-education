@@ -3,7 +3,7 @@ import { defaultTheme } from 'react-admin';
 export const theme = {
   ...defaultTheme,
   sidebar: {
-    width: 320,
+    width: 380,
   },
   palette: {
     background: {

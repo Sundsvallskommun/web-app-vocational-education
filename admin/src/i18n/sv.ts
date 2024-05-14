@@ -90,7 +90,7 @@ const sv: TranslationMessages = {
     page: {
       name: 'Sida |||| Sidor',
       fields: {
-        pageName: 'På sida',
+        pageName: 'Sidreferensnamn',
         title: 'Rubrik',
         description: 'Ingress',
       },
@@ -99,22 +99,22 @@ const sv: TranslationMessages = {
       name: 'Huvud-puff |||| Huvud-puffar',
       fields: {
         promotionsBlock: 'Huvud-puff',
-        pageName: 'På sida',
-        promotedPageName: 'På sida',
+        pageName: 'Sidreferensnamn',
+        promotedPageName: 'Sidreferensnamn',
         showBlock: 'Visa Huvud-puffar',
       },
     },
     promotionsBlockPromotions: {
       name: 'Huvud-puff |||| Huvud-puffar',
       fields: {
-        pageName: 'På sida',
+        pageName: 'Sidreferensnamn',
         promotedPageName: 'Puffad sida',
       },
     },
     mapBlock: {
       name: 'Kartblock |||| Kartblock',
       fields: {
-        pageName: 'På sida',
+        pageName: 'Sidreferensnamn',
         mapBlock: 'Kartblock',
         title: 'Rubrik',
         text: 'Text',
@@ -125,7 +125,7 @@ const sv: TranslationMessages = {
     employerPromotionsBlock: {
       name: 'Arbetsgivarvalda utbildningar-block |||| Arbetsgivarvalda utbildningar-block',
       fields: {
-        pageName: 'På sida',
+        pageName: 'Sidreferensnamn',
         title: 'Rubrik',
         description: 'Beskrivning',
         showBlock: 'Visa Arbetsgivarvalda utbildningar-block',
@@ -134,7 +134,7 @@ const sv: TranslationMessages = {
     employerPromotionsBlockPromotions: {
       name: 'Arbetsgivarvald utbildning',
       fields: {
-        pageName: 'På sida',
+        pageName: 'Sidreferensnamn',
         title: 'Rubrik',
         text: 'Ingress',
         searchPhrase: 'Sökfras',
@@ -144,7 +144,7 @@ const sv: TranslationMessages = {
     importantDatesBlock: {
       name: 'Viktiga datum-block |||| Viktiga datum-block',
       fields: {
-        pageName: 'På sida',
+        pageName: 'Sidreferensnamn',
         importantDatesBlock: 'Viktiga datum-block',
         title: 'Rubrik',
         showBlock: 'Visa Viktiga datum-block',
@@ -163,7 +163,7 @@ const sv: TranslationMessages = {
     faqBlock: {
       name: 'FAQ-block |||| FAQ-block',
       fields: {
-        pageName: 'På sida',
+        pageName: 'Sidreferensnamn',
         title: 'Rubrik',
         description: 'Beskrivning',
         showBlock: 'Visa FAQ-block',
@@ -180,7 +180,7 @@ const sv: TranslationMessages = {
     logosBlock: {
       name: 'Logos-block |||| Logos-block',
       fields: {
-        pageName: 'På sida',
+        pageName: 'Sidreferensnamn',
         title: 'Rubrik',
         description: 'Beskrivning',
         showBlock: 'Visa Logos-block',
@@ -189,7 +189,7 @@ const sv: TranslationMessages = {
     logosBlockLogos: {
       name: 'Logo',
       fields: {
-        pageName: 'På sida',
+        pageName: 'Sidreferensnamn',
         alt: 'Alt-text',
         src: 'Bild',
         logosBlock: 'Logos-block',

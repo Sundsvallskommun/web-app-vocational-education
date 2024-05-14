@@ -2,8 +2,10 @@ import { BooleanInput, Edit, SimpleForm, TextInput, useGetRecordId, useStore, us
 import { EditImportantDatesBlockDateCards } from '../components/important-dates-block-date-cards.edit.component';
 import { CustomToolbar } from '../components/custom-toolbar.component';
 import { useEffect } from 'react';
+import useRoutePermissions from '../../utils/use-route-permissions.hook';
 
 export const ImportantDatesBlockEdit = (props: any) => {
+  useRoutePermissions();
   const translate = useTranslate();
   const [, setValue] = useStore('activeBlockIdEdit', '');
   const recordId = useGetRecordId();

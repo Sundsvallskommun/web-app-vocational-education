@@ -1,8 +1,10 @@
 import { Edit, ReferenceInput, SelectInput, SimpleForm, TextInput, useStore, useTranslate } from 'react-admin';
 import { RichTextInput } from 'ra-input-rich-text';
 import { CustomToolbar } from '../components/custom-toolbar.component';
+import useRoutePermissions from '../../utils/use-route-permissions.hook';
 
 export const FAQBlockQuestionsEdit = (props: any) => {
+  useRoutePermissions();
   const translate = useTranslate();
   const [activeBlockIdEdit] = useStore('activeBlockIdEdit');
   return (

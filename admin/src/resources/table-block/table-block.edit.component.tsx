@@ -3,6 +3,7 @@ import Container from '@mui/material/Container';
 import {
   BooleanInput,
   Button,
+  DeleteButton,
   Form,
   SaveButton,
   TextInput,
@@ -30,16 +31,16 @@ const transform = (data: FieldValues) => {
   return data;
 };
 
-export const TableBlockEdit = (props: any) => {
-  useRoutePermissions();
+export const TableBlockEdit = () => {
+  const { isSuperAdmin } = useRoutePermissions();
   const translate = useTranslate();
   const { tableId: paramsTableId } = useParams();
   const tableId = paramsTableId ? parseInt(paramsTableId) : null;
+  const dataProvider = useDataProvider();
 
   if (!tableId) return <></>;
 
   const { data: table, refetch } = useGetOne<TableBlock>('tableBlock', { id: tableId });
-  const dataProvider = useDataProvider();
 
   if (!table) return <></>;
 
@@ -58,6 +59,15 @@ export const TableBlockEdit = (props: any) => {
           <TextInput source="pageName" disabled />
           <BooleanInput source="showBlock" />
           <SaveButton />
+          {isSuperAdmin && (
+            <DeleteButton
+              record={table}
+              mutationMode="optimistic"
+              resource="tableBlock"
+              redirect={`/page/${table.pageId}`}
+              sx={{ whiteSpace: 'nowrap' }}
+            />
+          )}
         </Form>
       </Container>
 

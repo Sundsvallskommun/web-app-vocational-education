@@ -16,8 +16,6 @@ export class AdminPromotionsBlockPromotionsController {
         return await getManyHandler<Prisma.PromotionsBlockPromotionsFindManyArgs>(req.body, prisma.promotionsBlockPromotions);
       case 'getList':
         return await getListHandler<Prisma.PromotionsBlockPromotionsFindManyArgs>(req.body, prisma.promotionsBlockPromotions);
-      case 'create':
-      case 'delete':
       case 'deleteMany':
         // Dont allow these
         break;

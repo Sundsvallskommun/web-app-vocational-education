@@ -9,6 +9,7 @@ export default function ContactForm() {
     <div>
       <div>
         <div className="flex flex-col gap-[3.2rem]">
+          <h3 className="text-[2.6rem] leading-[3.6rem] md:-tracking-[.01rem]">Kontaktformulär</h3>
           <FormControl id="contact-name" className="w-[51.5rem]">
             <FormLabel>Namn*</FormLabel>
             <Input {...register('name', { required: true })} aria-describedby="contact-name-error" />

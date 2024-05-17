@@ -1,7 +1,7 @@
 import { Edit, ReferenceInput, SelectInput, SimpleForm, TextInput, useStore, useTranslate } from 'react-admin';
-import { RichTextInput } from 'ra-input-rich-text';
-import { CustomToolbar } from '../components/custom-toolbar.component';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
+import { CustomToolbar } from '../components/custom-toolbar.component';
+import { Wysiwyg } from '../components/wysiwyig/wysiwyg.component';
 
 export const FAQBlockQuestionsEdit = (props: any) => {
   useRoutePermissions();
@@ -32,7 +32,7 @@ export const FAQBlockQuestionsEdit = (props: any) => {
           />
         </ReferenceInput>
         <TextInput source="question" />
-        <RichTextInput source="answer" />
+        <Wysiwyg source="answer" />
       </SimpleForm>
     </Edit>
   );

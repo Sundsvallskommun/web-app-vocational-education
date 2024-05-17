@@ -1,8 +1,7 @@
-import * as React from 'react';
 import { Edit, SimpleForm, TextInput, useTranslate } from 'react-admin';
-import { CustomToolbar } from '../components/custom-toolbar.component';
-import { RichTextInput } from 'ra-input-rich-text';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
+import { CustomToolbar } from '../components/custom-toolbar.component';
+import { Wysiwyg } from '../components/wysiwyig/wysiwyg.component';
 
 export const FooterEdit = (props: any) => {
   useRoutePermissions();
@@ -17,7 +16,7 @@ export const FooterEdit = (props: any) => {
           smart_count: 1,
         }).toLowerCase()}`}</h2>
         <TextInput source="contactTitle" />
-        <RichTextInput source="contactText" />
+        <Wysiwyg source="contactText" />
       </SimpleForm>
     </Edit>
   );

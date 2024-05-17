@@ -1,6 +1,6 @@
 import { Create, ReferenceInput, SelectInput, SimpleForm, TextInput, useStore, useTranslate } from 'react-admin';
-import { RichTextInput } from 'ra-input-rich-text';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
+import { Wysiwyg } from '../components/wysiwyig/wysiwyg.component';
 
 export const FAQBlockQuestionsCreate = (props: any) => {
   useRoutePermissions();
@@ -22,7 +22,7 @@ export const FAQBlockQuestionsCreate = (props: any) => {
           />
         </ReferenceInput>
         <TextInput source="question" />
-        <RichTextInput source="answer" />
+        <Wysiwyg source="answer" />
       </SimpleForm>
     </Create>
   );

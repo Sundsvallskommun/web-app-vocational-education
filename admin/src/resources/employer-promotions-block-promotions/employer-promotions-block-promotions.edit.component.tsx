@@ -1,8 +1,7 @@
-import { RichTextInput } from 'ra-input-rich-text';
 import { Edit, ReferenceInput, SelectInput, SimpleForm, TextInput, useStore, useTranslate } from 'react-admin';
+import useRoutePermissions from '../../utils/use-route-permissions.hook';
 import { CustomToolbar } from '../components/custom-toolbar.component';
 import { Wysiwyg } from '../components/wysiwyig/wysiwyg.component';
-import useRoutePermissions from '../../utils/use-route-permissions.hook';
 
 export const EmployerPromotionsBlockPromotionsEdit = (props: any) => {
   useRoutePermissions();

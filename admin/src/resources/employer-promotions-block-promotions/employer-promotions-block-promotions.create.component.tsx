@@ -1,7 +1,6 @@
 import { Create, ReferenceInput, SelectInput, SimpleForm, TextInput, useStore, useTranslate } from 'react-admin';
-import { RichTextInput } from 'ra-input-rich-text';
-import { Wysiwyg } from '../components/wysiwyig/wysiwyg.component';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
+import { Wysiwyg } from '../components/wysiwyig/wysiwyg.component';
 
 export const EmployerPromotionsBlockPromotionsCreate = (props: any) => {
   useRoutePermissions();
@@ -23,7 +22,14 @@ export const EmployerPromotionsBlockPromotionsCreate = (props: any) => {
           />
         </ReferenceInput>
         <TextInput source="title" />
-        <RichTextInput source="ingress" />
+        <TextInput
+          source="ingress"
+          multiline
+          sx={{ hyphens: 'auto' }}
+          inputProps={{
+            sx: { width: '576px', fontFamily: 'Montserrat', minHeight: '3em' },
+          }}
+        />
         <Wysiwyg />
         <TextInput source="searchPhrase" />
       </SimpleForm>

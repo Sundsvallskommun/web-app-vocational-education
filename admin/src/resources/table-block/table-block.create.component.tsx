@@ -28,7 +28,6 @@ export const TableBlockCreate = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
   const [activePageIdEdit] = useStore('activePageIdEdit');
-  console.log('activePageIdEdit', activePageIdEdit);
   return (
     <Create
       {...props}

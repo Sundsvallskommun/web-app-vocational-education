@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
 
 export const PageEdit = (props: any) => {
-  useRoutePermissions();
+  const { isSuperAdmin } = useRoutePermissions();
   const translate = useTranslate();
   const [, setValue] = useStore('activePageIdEdit', '');
   const recordId = useGetRecordId();
@@ -16,10 +16,10 @@ export const PageEdit = (props: any) => {
 
   return (
     <Edit {...props} redirect={false} mutationMode="pessimistic">
-      <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete />} sx={{ maxWidth: '600px' }}>
+      <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete={!isSuperAdmin} />} sx={{ maxWidth: '600px' }}>
         <h1>
           {`${translate('ra.action.edit')} `}
-          <WithRecord label="pageName" render={(record) => <span>{record.pageName}</span>} />
+          <WithRecord label="pageName" render={(record) => <span>{record.url}</span>} />
         </h1>
         <TextInput source="url" validate={[required()]} disabled />
         <TextInput source="pageName" validate={[required()]} disabled />

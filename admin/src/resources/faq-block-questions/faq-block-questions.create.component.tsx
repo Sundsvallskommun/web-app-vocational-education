@@ -1,7 +1,9 @@
 import { Create, ReferenceInput, SelectInput, SimpleForm, TextInput, useStore, useTranslate } from 'react-admin';
 import { RichTextInput } from 'ra-input-rich-text';
+import useRoutePermissions from '../../utils/use-route-permissions.hook';
 
 export const FAQBlockQuestionsCreate = (props: any) => {
+  useRoutePermissions();
   const translate = useTranslate();
   const [activeBlockIdEdit] = useStore('activeBlockIdEdit');
   return (

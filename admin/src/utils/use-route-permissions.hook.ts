@@ -14,8 +14,11 @@ export default function useRoutePermissions() {
   } catch (err) {}
 
   // exports
+  const isSuperAdmin = user?.username === 'admin';
   const isAdmin = user?.role === 'ADMIN';
   const editedUserIsUser = user?.id == parseInt(recordId as string);
+
+  const canCreate = isSuperAdmin;
 
   useEffect(() => {
     if (mounted) {
@@ -23,6 +26,12 @@ export default function useRoutePermissions() {
         switch (route) {
           case 'user':
             if (isAdmin || editedUserIsUser) {
+              return true;
+            } else {
+              return false;
+            }
+          case 'page/create':
+            if (canCreate) {
               return true;
             } else {
               return false;
@@ -39,5 +48,5 @@ export default function useRoutePermissions() {
     }
   }, [mounted, resourceContext, user]);
 
-  return { isAdmin, editedUserIsUser };
+  return { isSuperAdmin, isAdmin, editedUserIsUser, canCreate };
 }

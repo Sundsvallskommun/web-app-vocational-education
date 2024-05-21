@@ -1,13 +1,15 @@
 import prisma from '@/utils/prisma';
-import { Prisma } from '@prisma/client';
+import { Prisma, UserRole } from '@prisma/client';
 import { defaultHandler, getListHandler, getManyHandler, getOneHandler, updateHandler } from 'ra-data-simple-prisma';
-import { All, Controller, Req } from 'routing-controllers';
+import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
+import { hasRolesForMethods } from './utils';
 
 @Controller()
 export class AdminPageController {
   @All('/admin/page')
   @OpenAPI({ summary: 'Handle Page' })
+  @UseBefore(hasRolesForMethods([UserRole.ADMIN], ['delete', 'create']))
   async page(@Req() req): Promise<any> {
     const includes = {
       promotionsBlock: true,
@@ -35,8 +37,6 @@ export class AdminPageController {
         return await updateHandler<Prisma.PageUpdateArgs>(req.body, prisma.page, {
           skipFields: includes,
         });
-      case 'create':
-      case 'delete':
       case 'deleteMany':
         // Dont allow these
         return;

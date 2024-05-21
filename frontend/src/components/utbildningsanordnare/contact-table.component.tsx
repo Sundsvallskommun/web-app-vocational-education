@@ -1,6 +1,5 @@
-import LoadMoreBlock from '@components/block/load-more-block.component';
 import { TableBlock } from '@interfaces/admin-data';
-import { Link, Table, cx } from '@sk-web-gui/react';
+import { Link, Table, cx, SortMode } from '@sk-web-gui/react';
 import { useState } from 'react';
 
 interface EducationManagerContactTableProps {
@@ -8,12 +7,15 @@ interface EducationManagerContactTableProps {
 }
 
 export const EducationManagerContactTable: React.FC<EducationManagerContactTableProps> = ({ tableBlock }) => {
-  const [pageSize] = useState<number>(8);
-  const [page, setPage] = useState<number>(1);
-  const pagedList = tableBlock.rows.slice(0, (page - 1) * pageSize + pageSize);
+  const [sortColumn, setSortColumn] = useState<number>(0);
+  const [sortOrder, setSortOrder] = useState(SortMode.ASC);
 
-  const handleLoadMore = () => {
-    setPage((page) => page + 1);
+  const handleSorting = (column: number) => {
+    if (sortColumn !== column) {
+      setSortColumn(column);
+    } else {
+      setSortOrder(sortOrder === SortMode.ASC ? SortMode.DESC : SortMode.ASC);
+    }
   };
 
   if (!tableBlock || tableBlock.showBlock === false) return <></>;
@@ -24,49 +26,55 @@ export const EducationManagerContactTable: React.FC<EducationManagerContactTable
         <Table>
           <Table.Header>
             {tableBlock.headers?.map((header, i) => (
-              <Table.HeaderColumn key={`${header.name}-${i}`}>{header.name}</Table.HeaderColumn>
+              <Table.HeaderColumn key={`${header.name}-${i}`}>
+                <Table.SortButton isActive={sortColumn === i} sortOrder={sortOrder} onClick={() => handleSorting(i)}>
+                  {header.name}
+                </Table.SortButton>
+              </Table.HeaderColumn>
             ))}
           </Table.Header>
           <Table.Body>
-            {pagedList.map((row, rowIndex) => {
-              if (!row) return <></>;
-              return (
-                <Table.Row key={`${row.id}`} className="text-label">
-                  {row?.cells?.map((cell, cellIndex) => {
-                    // is email
-                    if (cell.wysiwyg_content.match(/^\S+@\S+$/)) {
-                      return (
-                        <Table.Column key={`${cell.id}`}>
-                          <span>
-                            <Link className="text-label hover:text-label" href={`mailto:${cell.wysiwyg_content}`}>
-                              {cell.wysiwyg_content}
-                            </Link>
-                          </span>
-                        </Table.Column>
-                      );
-                    } else {
-                      return (
-                        <Table.Column key={`${cell.id}`}>
-                          <span className={cx(cellIndex === 0 && 'font-bold')}>
-                            {pagedList[rowIndex].cells[cellIndex].wysiwyg_content}
-                          </span>
-                        </Table.Column>
-                      );
-                    }
-                  })}
-                </Table.Row>
-              );
-            })}
+            {tableBlock.rows
+              ?.sort((a, b) => {
+                const order = sortOrder === SortMode.ASC ? -1 : 1;
+                return (
+                  a.cells[sortColumn].wysiwyg_content < b.cells[sortColumn].wysiwyg_content ? order
+                  : a.cells[sortColumn].wysiwyg_content > b.cells[sortColumn].wysiwyg_content ? order * -1
+                  : 0
+                );
+              })
+              .map((row, rowIndex) => {
+                if (!row) return <></>;
+                return (
+                  <Table.Row key={`${row.id}`} className="text-label">
+                    {row?.cells?.map((cell, cellIndex) => {
+                      // is email
+                      if (cell.wysiwyg_content.match(/^\S+@\S+$/)) {
+                        return (
+                          <Table.Column key={`${cell.id}`}>
+                            <span>
+                              <Link className="text-label hover:text-label" href={`mailto:${cell.wysiwyg_content}`}>
+                                {cell.wysiwyg_content}
+                              </Link>
+                            </span>
+                          </Table.Column>
+                        );
+                      } else {
+                        return (
+                          <Table.Column key={`${cell.id}`}>
+                            <span className={cx(cellIndex === 0 && 'font-bold')}>
+                              {tableBlock.rows[rowIndex].cells[cellIndex].wysiwyg_content}
+                            </span>
+                          </Table.Column>
+                        );
+                      }
+                    })}
+                  </Table.Row>
+                );
+              })}
           </Table.Body>
         </Table>
       </div>
-      {tableBlock.rows?.length > pagedList.length && (
-        <LoadMoreBlock
-          loadMoreColorClass="text-white"
-          loadMoreCallback={handleLoadMore}
-          className="absolute top-[8.75rem]"
-        />
-      )}
     </div>
   );
 };

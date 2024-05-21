@@ -2,8 +2,10 @@ import * as React from 'react';
 import { Edit, SimpleForm, TextInput, useTranslate } from 'react-admin';
 import { CustomToolbar } from '../components/custom-toolbar.component';
 import { RichTextInput } from 'ra-input-rich-text';
+import useRoutePermissions from '../../utils/use-route-permissions.hook';
 
 export const FooterEdit = (props: any) => {
+  useRoutePermissions();
   const translate = useTranslate();
   return (
     <Edit {...props} redirect={false} mutationMode="pessimistic">

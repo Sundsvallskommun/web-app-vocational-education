@@ -305,11 +305,11 @@ async function main() {
   });
 
   await prisma.page.upsert({
-    where: { pageName: 'utbildningsanordnare_kontakta' },
+    where: { pageName: 'arbetsgivare_kontaktautbildningsanordnare' },
     update: {},
     create: {
-      url: '/utbildningsanordnare/kontakta',
-      pageName: 'utbildningsanordnare_kontakta',
+      url: '/arbetsgivare/kontaktautbildningsanordnare',
+      pageName: 'arbetsgivare_kontaktautbildningsanordnare',
       title: 'Utbildningsanordnare',
       description:
         'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Exercitation veniam consequat sunt nostrud amet.',

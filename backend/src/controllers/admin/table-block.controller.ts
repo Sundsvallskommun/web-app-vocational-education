@@ -1,14 +1,16 @@
 import { HttpException } from '@/exceptions/HttpException';
 import prisma from '@/utils/prisma';
+import { UserRole } from '@prisma/client';
 import { defaultHandler } from 'ra-data-simple-prisma';
-import { All, Controller, Req } from 'routing-controllers';
+import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
-import { addIncludes } from './utils';
+import { addIncludes, hasRolesForMethods } from './utils';
 
 @Controller()
 export class AdminTableBlockController {
   @All('/admin/tableBlock')
   @OpenAPI({ summary: 'Handle TableBlock' })
+  @UseBefore(hasRolesForMethods([UserRole.ADMIN], ['delete', 'create']))
   async tableBlock(@Req() req): Promise<any> {
     const includes = {
       headers: true,
@@ -20,8 +22,6 @@ export class AdminTableBlockController {
       cells: true,
     };
     switch (req.body.method) {
-      case 'create':
-      case 'delete':
       case 'deleteMany':
         // disable these
         throw new HttpException(405, 'Method Not Allowed');

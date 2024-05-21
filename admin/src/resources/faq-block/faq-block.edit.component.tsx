@@ -2,8 +2,10 @@ import { BooleanInput, Edit, SimpleForm, TextInput, useGetRecordId, useStore, us
 import { EditFAQBlockQuestions } from '../components/faq-block-questions.edit.component';
 import { useEffect } from 'react';
 import { CustomToolbar } from '../components/custom-toolbar.component';
+import useRoutePermissions from '../../utils/use-route-permissions.hook';
 
 export const FAQBlockEdit = (props: any) => {
+  useRoutePermissions();
   const translate = useTranslate();
   const [, setValue] = useStore('activeBlockIdEdit', '');
   const recordId = useGetRecordId();

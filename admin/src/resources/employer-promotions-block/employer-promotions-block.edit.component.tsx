@@ -2,8 +2,10 @@ import { BooleanInput, Edit, SimpleForm, TextInput, useGetRecordId, useStore, us
 import { useEffect } from 'react';
 import { CustomToolbar } from '../components/custom-toolbar.component';
 import { EditEmployerPromotionsBlockPromotions } from '../components/employer-promotions-block-promotions.edit.component';
+import useRoutePermissions from '../../utils/use-route-permissions.hook';
 
 export const EmployerPromotionsBlockEdit = (props: any) => {
+  useRoutePermissions();
   const translate = useTranslate();
   const [, setValue] = useStore('activeBlockIdEdit', '');
   const recordId = useGetRecordId();

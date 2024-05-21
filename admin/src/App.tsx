@@ -1,10 +1,10 @@
 import { Admin, CustomRoutes, Resource } from 'react-admin';
+import { Route } from 'react-router-dom';
 import Layout from './Layout';
 import theme from './Theme';
 import { authProvider } from './providers/authProvider';
 import { dataProvider } from './providers/dataProvider';
 import { i18nProvider } from './providers/i18nProvider';
-import { Route } from 'react-router-dom';
 
 // Resources
 import { EmployerPromotionsBlockPromotionsCreate } from './resources/employer-promotions-block-promotions/employer-promotions-block-promotions.create.component';
@@ -28,7 +28,8 @@ import { PromotionsBlockEdit } from './resources/promotions-block/promotions-blo
 import { UserCreate } from './resources/user/user.create.component';
 import { UserEdit } from './resources/user/user.edit.component';
 import { UserList } from './resources/user/user.list.component';
-// import TableBlock from './resources/components/table-block.component';
+import { PageCreate } from './resources/page/page.create.component';
+import { TableBlockCreate } from './resources/table-block/table-block.create.component';
 import { TableBlockEdit } from './resources/table-block/table-block.edit.component';
 import { TableBlockList } from './resources/table-block/table-block.list.component';
 
@@ -45,7 +46,7 @@ export const App = () => (
   >
     <Resource name="user" edit={UserEdit} create={UserCreate} list={UserList} />
 
-    <Resource name="page" list={PageList} edit={PageEdit} />
+    <Resource name="page" list={PageList} edit={PageEdit} create={PageCreate} />
 
     <Resource name="promotionsBlock" edit={PromotionsBlockEdit} />
     <Resource name="promotionsBlockPromotions" edit={PromotionsBlockPromotionsEdit} />
@@ -71,9 +72,8 @@ export const App = () => (
     <CustomRoutes>
       <Route path="/tableBlock" element={<TableBlockList />} />
       <Route path="/tableBlock/:tableId" element={<TableBlockEdit />} />
+      <Route path="/tableBlock/create" element={<TableBlockCreate />} />
     </CustomRoutes>
-
-    {/* <Resource name="tableBlock" list={TableBlockList} edit={TableBlockEdit} /> */}
 
     <Resource name="footer" edit={FooterEdit} />
   </Admin>

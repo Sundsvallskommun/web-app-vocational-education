@@ -1,8 +1,10 @@
 import { Create, ReferenceInput, SelectInput, SimpleForm, TextInput, useStore, useTranslate } from 'react-admin';
 import { RichTextInput } from 'ra-input-rich-text';
 import { Wysiwyg } from '../components/wysiwyig/wysiwyg.component';
+import useRoutePermissions from '../../utils/use-route-permissions.hook';
 
 export const EmployerPromotionsBlockPromotionsCreate = (props: any) => {
+  useRoutePermissions();
   const translate = useTranslate();
   const [activeBlockIdEdit] = useStore('activeBlockIdEdit');
   return (

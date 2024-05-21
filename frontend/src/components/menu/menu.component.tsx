@@ -24,6 +24,7 @@ export const Menu: React.FC = () => {
 
   useEffect(() => {
     setActiveUrl(router.pathname);
+    setIsOpen(false);
   }, [router.pathname]);
 
   return (
@@ -45,20 +46,19 @@ export const Menu: React.FC = () => {
                   <NextLink href="/utbildningar">För dig som söker utbildning</NextLink>
                 </MenuVertical.Item>
                 <MenuVertical.Item menuIndex="/arbetsgivare">
-                  <NextLink href="/arbetsgivare">För arbetsgivare</NextLink>
-                </MenuVertical.Item>
-                <MenuVertical.Item menuIndex="/utbildningsanordnare">
                   <MenuVertical>
                     <MenuVertical.SubmenuButton>
-                      <NextLink href="/utbildningsanordnare">För utbildningsanordnare</NextLink>
+                      <NextLink href="/arbetsgivare">För arbetsgivare</NextLink>
                     </MenuVertical.SubmenuButton>
-                    <MenuVertical.Item menuIndex="/utbildningsanordnare/ai">
-                      <NextLink href="/utbildningsanordnare/ai">AI-verktyget</NextLink>
-                    </MenuVertical.Item>
-                    <MenuVertical.Item menuIndex="/utbildningsanordnare/kontakta">
-                      <NextLink href="/utbildningsanordnare/kontakta">Listning utbildningsanordnare</NextLink>
+                    <MenuVertical.Item menuIndex="/arbetsgivare/kontaktautbildningsanordnare">
+                      <NextLink href="/arbetsgivare/kontaktautbildningsanordnare">
+                        Listning utbildningsanordnare
+                      </NextLink>
                     </MenuVertical.Item>
                   </MenuVertical>
+                </MenuVertical.Item>
+                <MenuVertical.Item menuIndex="/utbildningsanordnare">
+                  <NextLink href="/utbildningsanordnare">För utbildningsanordnare</NextLink>
                 </MenuVertical.Item>
                 <MenuVertical.Item menuIndex="/kontakta">
                   <NextLink href="/kontakta">Kontakta oss</NextLink>

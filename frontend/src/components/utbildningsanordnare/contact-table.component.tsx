@@ -24,6 +24,17 @@ export const EducationManagerContactTable: React.FC<EducationManagerContactTable
     <div className="mb-[20rem]">
       <div className="table-education-managers-contact">
         <Table>
+          {tableBlock.title && (
+            <caption className="sr-only">
+              {tableBlock.title}
+              {tableBlock.summary && (
+                <>
+                  <br />
+                  <small>{tableBlock.summary}</small>
+                </>
+              )}
+            </caption>
+          )}
           <Table.Header>
             {tableBlock.headers?.map((header, i) => (
               <Table.HeaderColumn key={`${header.name}-${i}`}>

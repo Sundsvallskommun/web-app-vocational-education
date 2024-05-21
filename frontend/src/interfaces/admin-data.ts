@@ -114,6 +114,8 @@ export interface TableBlock {
   page: number;
   pageName: string;
   pageId: number;
+  title?: string;
+  summary?: string;
   showBlock: boolean;
   headers: TableBlockHeader[];
   rows: TableBlockRow[];

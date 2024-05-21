@@ -64,3 +64,9 @@ export interface UserSavedInterestDto {
   timeIntervalTo?: string;
   timeIntervalFrom?: string;
 }
+
+export interface ContactForm {
+  name: string;
+  email: string;
+  message: string;
+}

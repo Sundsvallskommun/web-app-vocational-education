@@ -55,7 +55,7 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
 
   const updateParams = (query: string | ParsedUrlQueryInput) => {
     console.log('updateParams', query);
-    router.push(
+    router.replace(
       {
         pathname: router.pathname,
         query: query,
@@ -169,7 +169,10 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
   }, [searchParams]);
 
   return (
-    <DefaultLayout title={`Yrkesutbildning - Sok`} layoutData={layoutData}>
+    <DefaultLayout
+      title={`Yrkesutbildning - Sok${searchQuery ? ` - Sökord:${searchQuery}` : ''}`}
+      layoutData={layoutData}
+    >
       <ContentBlock>
         <BigDropHeader
           imageSrc="/drop-2-people.png"

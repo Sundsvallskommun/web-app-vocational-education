@@ -58,7 +58,9 @@ redigera `.env.development.local` för behov. URLer, nycklar och cert behöver f
 - `SAML_IDP_PUBLIC_CERT` ska stämma överens med IDPens cert
 - `SAML_PRIVATE_KEY` och `SAML_PUBLIC_KEY` behöver bara fyllas i korrekt om man kör mot en riktig IDP
 
-5. Initiera eventuell databas för backend
+5. Initiera databas för backend
+
+Sätt upp en mysql-server, förslagsvis MariaDB och justera för uppgifterna i backend/.env.development.local. Admin-användaren för inloggning specas i samma env-fil och skapas vid seedning av databasen, kom ihåg att lägga in din mejladress där.
 
 ```
 cd backend

@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-export default function TwoFactorModal({ show, setShow }) {
+export default function TwoFactorModal({ show, setShow, checkError }) {
   const router = useRouter();
   const { verify2FA, setUser } = useUserStore();
 
@@ -24,11 +24,13 @@ export default function TwoFactorModal({ show, setShow }) {
   });
 
   const onVerify = async (formValues: { code: string }) => {
-    const res = await verify2FA(formValues.code);
+    const res = await verify2FA(formValues.code.trim());
     if (!res.error) {
       setUser(res.data);
       const path = new URLSearchParams(window.location.search).get('path') || router.query.path;
       router.push(`${path || '/'}`);
+    } else {
+      checkError(res.error);
     }
     setShow(false);
   };

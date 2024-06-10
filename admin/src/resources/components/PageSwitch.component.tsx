@@ -52,13 +52,6 @@ export const PageSwitch = () => {
               <EditFAQBlock />
             </>
           )}
-          {(isSuperAdmin || record.logosBlock.length) && (
-            <>
-              <br />
-              <h2>{translate('resources.logosBlock.name', { smart_count: 2 })}</h2>
-              <EditLogosBlock />
-            </>
-          )}
         </>
       );
     case 'utbildningar':

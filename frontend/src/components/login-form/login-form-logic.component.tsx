@@ -38,6 +38,9 @@ export default function LoginFormLogic({ children }) {
       case 'MISSING_PERMISSIONS':
         setError('root', { type: 'string', message: 'Användaren saknar rättigheter' });
         break;
+      case 'INVALID_CODE_OR_EXPIRED':
+        setError('root', { type: 'string', message: 'Engångskoden är felaktig eller har gått ut' });
+        break;
       default:
     }
   };
@@ -61,7 +64,7 @@ export default function LoginFormLogic({ children }) {
       <FormProvider {...context}>
         <form onSubmit={handleSubmit(onLogin)}>{children}</form>
       </FormProvider>
-      <TwoFactorModal show={show2FAModal} setShow={setShow2FAModal} />
+      <TwoFactorModal show={show2FAModal} setShow={setShow2FAModal} checkError={checkError} />
     </>
   );
 }

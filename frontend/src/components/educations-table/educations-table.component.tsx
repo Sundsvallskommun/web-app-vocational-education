@@ -17,6 +17,11 @@ export const EducationsTable: React.FC<{
     <div>
       <div className="table-compare">
         <Table>
+          <caption className="sr-only">
+            Sökresultat av utbildingar, sida {_meta.page} av {_meta.totalPages}.
+            <br />
+            <small>Lista över de utbildningar som matchar ditt sökord och dina sökfilter.</small>
+          </caption>
           <Table.Header>
             <Table.HeaderColumn>Jämför</Table.HeaderColumn>
             <Table.HeaderColumn>Utbildning</Table.HeaderColumn>

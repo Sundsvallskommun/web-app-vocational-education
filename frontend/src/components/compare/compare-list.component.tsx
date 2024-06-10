@@ -12,11 +12,17 @@ export const CompareList: React.FC<{ compareList: Course[]; onRemove? }> = ({ co
   const [pageSize] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
   const pagedList = getPageListSlice(compareList, page, pageSize);
+  const pages = Math.ceil(compareList.length / pageSize);
 
   return (
     <div>
       <div className="table-compare">
         <Table>
+          <caption className="sr-only">
+            Jämför utbildningar, sida {page} av {pages}.
+            <br />
+            <small>Lista över de utbildningar du valt att jämföra.</small>
+          </caption>
           <Table.Header>
             <Table.HeaderColumn>Jämför</Table.HeaderColumn>
             <Table.HeaderColumn>Utbildning</Table.HeaderColumn>
@@ -74,13 +80,13 @@ export const CompareList: React.FC<{ compareList: Course[]; onRemove? }> = ({ co
           </Table.Body>
         </Table>
       </div>
-      {Math.ceil(compareList.length / pageSize) > 1 && (
+      {pages > 1 && (
         <div className="flex justify-center mt-2xl">
           <Pagination
             className="pagination override"
             changePage={(page) => setPage(page)}
             activePage={page}
-            pages={Math.ceil(compareList.length / pageSize)}
+            pages={pages}
           />
         </div>
       )}

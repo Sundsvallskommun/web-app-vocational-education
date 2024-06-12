@@ -26,13 +26,14 @@ import createFileStore from 'session-file-store';
 import swaggerUi from 'swagger-ui-express';
 import authMiddleware from './middlewares/auth.middleware';
 import { hasRoles } from './middlewares/permissions.middleware';
-import { generate2FACode, getPermissions, send2FACodeToEmail } from './services/authorization.service';
+import { generate2FACode, getPermissions, getRoles, send2FACodeToEmail } from './services/authorization.service';
 import { getClientUser } from './services/user.service';
 import { imageUploadSettings } from './utils/files/imageUploadSettings';
 import { omit } from './utils/object';
 import { dataDir } from './utils/util';
 import bcrypt from 'bcryptjs';
 import { additionalConverters } from './utils/custom-validation-classes';
+import { SessionUser } from './interfaces/users.interface';
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -126,6 +127,9 @@ const customStrategy = new CustomStrategy(async (req, done) => {
     where: {
       username: username,
     },
+    include: {
+      roles: true,
+    },
   });
 
   // verify user exists
@@ -138,9 +142,10 @@ const customStrategy = new CustomStrategy(async (req, done) => {
     return done(null, false);
   }
 
-  const sessionUser = {
+  const sessionUser: SessionUser = {
     ...omit(user, ['password']),
-    permissions: getPermissions([user.role], true),
+    permissions: getPermissions(getRoles(user.roles), true),
+    roles: getRoles(user.roles),
   };
 
   return done(null, sessionUser);
@@ -235,10 +240,10 @@ class App {
     );
 
     // Admin
-    this.app.use(`${BASE_URL_PREFIX}/admin/:resource`, authMiddleware, hasRoles(['EDITOR']));
+    this.app.use(`${BASE_URL_PREFIX}/admin/:resource`, authMiddleware, hasRoles(['EDUCATIONCOORDINATOR']));
 
     this.app.post(`${BASE_URL_PREFIX}/login`, (req, res, next) => {
-      return passport.authenticate('initial-auth', {}, async function (err, user: User) {
+      return passport.authenticate('initial-auth', {}, async function (err, user: SessionUser) {
         if (err) {
           return next(err);
         }

@@ -1,7 +1,7 @@
 // import { AUTHORIZED_GROUPS } from '@/config';
 import { Permissions } from '@interfaces/users.interface';
 import ApiService from './api.service';
-import { UserRole } from '@prisma/client';
+import { UserRole, UserRoleEnum, UserRolesOnUser } from '@prisma/client';
 import { getRandomValues } from 'node:crypto';
 
 // export function authorizeGroups(groups) {
@@ -18,7 +18,7 @@ export const defaultPermissions: () => Permissions = () => ({
   userSaveInterests: false,
 });
 
-const roles = new Map<UserRole, Partial<Permissions>>([
+const roles = new Map<UserRoleEnum, Partial<Permissions>>([
   [
     'ADMIN',
     {
@@ -56,17 +56,20 @@ const roleADMapping = {
   sg_appl_yrkesutbildningar_read: 'USER',
 };
 
+export const getRoles = (roles: UserRolesOnUser[]): UserRoleEnum[] => roles.map(role => role.role);
+
 /**
  *
  * @param groups Array of groups/roles
  * @param internalGroups Whether to use internal groups or external group-mappings
  * @returns collected permissions for all matching role groups
  */
-export const getPermissions = (groups: UserRole[], internalGroups = false): Permissions => {
+export const getPermissions = (groups: UserRoleEnum[], internalGroups = false): Permissions => {
   const permissions: Permissions = defaultPermissions();
+  if (groups?.length < 1) return permissions;
   groups.forEach(group => {
     const groupLower = group.toUpperCase();
-    const role = internalGroups ? (groupLower as UserRole) : (roleADMapping[groupLower] as UserRole);
+    const role = internalGroups ? (groupLower as UserRoleEnum) : (roleADMapping[groupLower] as UserRoleEnum);
     if (roles.has(role)) {
       const groupPermissions = roles.get(role);
       Object.keys(groupPermissions).forEach(permission => {

@@ -7,7 +7,7 @@ const handleSetUserResponse: (res: ApiResponse<User>) => User = (res) => ({
   id: res.data.id ?? 'null',
   fullName: res.data.username, // for react-admin Identity
   username: res.data.username,
-  role: res.data.role,
+  roles: res.data.roles,
   permissions: res.data.permissions,
 });
 
@@ -24,7 +24,7 @@ const getMe: () => Promise<ServiceResponse<User>> = () => {
 const userDefaults: User = {
   id: 'null',
   username: '',
-  role: 'USER',
+  roles: ['USER'],
   permissions: {
     adminEdit: false,
     adminRegistrate: false,
@@ -50,7 +50,7 @@ export const authProvider: AuthProvider = {
   getPermissions: async (): Promise<User['permissions']> => {
     const res = await getMe();
     if (res.data) {
-      if (res.data.role === 'USER') {
+      if (res.data.roles.includes('USER')) {
         window.location.href = `${loginURL()}&failMessage=MISSING_PERMISSIONS`;
       }
       return Promise.resolve(res.data.permissions);
@@ -61,7 +61,7 @@ export const authProvider: AuthProvider = {
   getIdentity: async (): Promise<User> => {
     const res = await getMe();
     if (res.data) {
-      if (res.data.role === 'USER') {
+      if (res.data.roles.includes('USER')) {
         window.location.href = `${loginURL()}&failMessage=MISSING_PERMISSIONS`;
       }
       return Promise.resolve(res.data);

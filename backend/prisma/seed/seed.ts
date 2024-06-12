@@ -11,14 +11,72 @@ try {
   throw Error('env INIT_ADMIN_USER not specified');
 }
 
-const hashedUser = Object.assign(adminUser, { password: bcrypt.hashSync(adminUser.password, 10) });
+const hashedUser = Object.assign(adminUser, {
+  password: bcrypt.hashSync(adminUser.password, 10),
+});
 
 const prisma = new PrismaClient();
 async function main() {
+  await prisma.userRole.upsert({
+    where: { name: 'ADMIN' },
+    update: {},
+    create: {
+      name: 'ADMIN',
+    },
+  });
+  await prisma.userRole.upsert({
+    where: { name: 'USER' },
+    update: {},
+    create: {
+      name: 'USER',
+    },
+  });
+  await prisma.userRole.upsert({
+    where: { name: 'EDUCATIONCOORDINATOR' },
+    update: {},
+    create: {
+      name: 'EDUCATIONCOORDINATOR',
+    },
+  });
+  await prisma.userRole.upsert({
+    where: { name: 'EDITOR' },
+    update: {},
+    create: {
+      name: 'EDITOR',
+    },
+  });
+
   await prisma.user.upsert({
     where: { username: hashedUser.username },
-    update: {},
-    create: hashedUser,
+    update: {
+      roles: {
+        upsert: hashedUser.roles.map(role => ({
+          where: {
+            username_role: {
+              username: hashedUser.username,
+              role: role,
+            },
+          },
+          create: {
+            role: role,
+          },
+          update: {
+            role: role,
+          },
+        })),
+      },
+    },
+    create: {
+      ...hashedUser,
+      roles: {
+        connect: hashedUser.roles.map(role => ({
+          username_role: {
+            role: role,
+            username: hashedUser.username,
+          },
+        })),
+      },
+    },
   });
 
   const jobb = await prisma.page.upsert({

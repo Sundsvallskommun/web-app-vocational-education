@@ -1,6 +1,6 @@
 import { HttpException } from '@/exceptions/HttpException';
 import prisma from '@/utils/prisma';
-import { UserRole } from '@prisma/client';
+import { UserRoleEnum } from '@prisma/client';
 import { defaultHandler } from 'ra-data-simple-prisma';
 import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
@@ -10,7 +10,7 @@ import { addIncludes, hasRolesForMethods } from './utils';
 export class AdminTableBlockController {
   @All('/admin/tableBlock')
   @OpenAPI({ summary: 'Handle TableBlock' })
-  @UseBefore(hasRolesForMethods([UserRole.ADMIN], ['delete', 'create']))
+  @UseBefore(hasRolesForMethods([UserRoleEnum.ADMIN], ['delete', 'create']))
   async tableBlock(@Req() req): Promise<any> {
     const includes = {
       headers: true,

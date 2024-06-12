@@ -15,7 +15,7 @@ export default function useRoutePermissions() {
 
   // exports
   const isSuperAdmin = user?.username === 'admin';
-  const isAdmin = user?.role === 'ADMIN';
+  const isAdmin = user?.roles.includes('ADMIN');
   const editedUserIsUser = user?.id == parseInt(recordId as string);
 
   const canCreate = isSuperAdmin;

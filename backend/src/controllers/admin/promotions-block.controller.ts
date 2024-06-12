@@ -1,5 +1,5 @@
 import prisma from '@/utils/prisma';
-import { Prisma, UserRole } from '@prisma/client';
+import { Prisma, UserRoleEnum } from '@prisma/client';
 import { defaultHandler, getListHandler, getManyHandler, getOneHandler } from 'ra-data-simple-prisma';
 import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
@@ -9,7 +9,7 @@ import { hasRolesForMethods } from './utils';
 export class AdminPromotionsBlockController {
   @All('/admin/promotionsBlock')
   @OpenAPI({ summary: 'Handle PromotionsBlock' })
-  @UseBefore(hasRolesForMethods([UserRole.ADMIN], ['delete', 'create']))
+  @UseBefore(hasRolesForMethods([UserRoleEnum.ADMIN], ['delete', 'create']))
   async promotionsBlock(@Req() req): Promise<any> {
     switch (req.body.method) {
       case 'getOne':

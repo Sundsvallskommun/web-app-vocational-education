@@ -1,4 +1,5 @@
-import { Edit, SelectInput, SimpleForm, TextInput, email, useTranslate } from 'react-admin';
+import { Edit, SelectArrayInput, SimpleForm, TextInput, WithRecord, email, required, useTranslate } from 'react-admin';
+import { UserRoleOnUser, UserRoles } from '../../interfaces/user';
 import { hashPasswordField } from '../../utils/password';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
 import { CustomToolbar } from '../components/custom-toolbar.component';
@@ -6,7 +7,7 @@ import { userRolesChoices } from './constants';
 import PasswordField from './password-field.component';
 
 export const UserEdit = (props: any) => {
-  const { isAdmin, editedUserIsUser } = useRoutePermissions();
+  const { isAdmin, editedUserIsUser, isSuperAdmin } = useRoutePermissions();
   const translate = useTranslate();
   const validateEmail = email();
 
@@ -20,11 +21,21 @@ export const UserEdit = (props: any) => {
         <h1>{`${translate('ra.action.edit')} ${translate('resources.user.name', { smart_count: 1 })}`}</h1>
         <TextInput source="username" required />
         <TextInput source="email" required validate={validateEmail} />
-        <SelectInput
-          source="role"
-          disabled={!isAdmin || (isAdmin && editedUserIsUser)}
-          choices={userRolesChoices}
-          optionValue="name"
+        <WithRecord
+          render={(data) => (
+            <SelectArrayInput
+              source="roles"
+              format={(data) => data?.map((x: UserRoleOnUser) => x.role)}
+              parse={(data: UserRoles[]) =>
+                userRolesChoices.filter((roleChoice) => data.some((role) => role === roleChoice.role))
+              }
+              validate={required()}
+              optionValue="role"
+              optionText="role"
+              disabled={!isAdmin || (data.username === 'admin' && !isSuperAdmin)}
+              choices={userRolesChoices}
+            />
+          )}
         />
         <PasswordField />
       </SimpleForm>

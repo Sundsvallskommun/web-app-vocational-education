@@ -1,6 +1,6 @@
 import { HttpException } from '@/exceptions/HttpException';
 import { RequestWithUser } from '@/interfaces/auth.interface';
-import { UserRole } from '@prisma/client';
+import { UserRoleEnum } from '@prisma/client';
 import { NextFunction } from 'express';
 
 export const addIncludes = (includes, options) =>
@@ -20,9 +20,9 @@ export const addIncludes = (includes, options) =>
   });
 
 // Middlewares
-export const hasRolesForMethods = (roles: UserRole[], methods: string[]) => async (req: RequestWithUser, res: Response, next: NextFunction) => {
+export const hasRolesForMethods = (roles: UserRoleEnum[], methods: string[]) => async (req: RequestWithUser, res: Response, next: NextFunction) => {
   if (methods.includes(req.body.method)) {
-    if (roles.includes(req.user.role)) {
+    if (roles.some(role => req.user.roles.some(userRole => userRole === role))) {
       next();
     } else {
       next(new HttpException(403, 'MISSING_PERMISSIONS'));

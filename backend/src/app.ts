@@ -252,10 +252,18 @@ class App {
           return res.status(400).send({ data: 'INVALID_CREDENTIALS', message: 'failure' });
         }
         const twoFactorCode = generate2FACode(); // Implement this function as per your logic
-        await send2FACodeToEmail(user.email, twoFactorCode); // Implement email sending logic
+        if (NODE_ENV == 'development') {
+          console.log('twoFactorCode', twoFactorCode);
+        }
+        try {
+          await send2FACodeToEmail(user.email, twoFactorCode); // Implement email sending logic
+        } catch (err) {
+          //
+        }
 
         await req.logIn(user, function (err) {
           if (err) {
+            NODE_ENV == 'development';
             return next(err);
           }
           req.session.twoFactorCode = twoFactorCode;

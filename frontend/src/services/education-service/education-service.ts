@@ -170,9 +170,11 @@ export const getLangString: (_langCodes: string[]) => string = (_langCodes) => {
 };
 
 export const getEducationLengthString: (start: string, end: string) => string = (start, end) => {
-  const days = dayjs(end).diff(start, 'day');
-  const weeks = days / 7;
-  const years = days / 365;
+  const days = Math.abs(dayjs(end).diff(start, 'day'));
+  const weeks = Math.abs(dayjs(end).diff(start, 'week'));
+  const years = Math.abs(dayjs(end).diff(start, 'year'));
+
+  if (!start || !end) return null;
 
   if (weeks > 52 && years % 0.5 == 0) {
     return years + ' år';

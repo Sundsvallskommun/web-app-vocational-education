@@ -17,7 +17,7 @@ export const UserCreate = (props: any) => {
         <TextInput source="username" required />
         <TextInput source="email" required validate={validateEmail} />
         <SelectArrayInput
-          defaultValue={[userRolesChoices.find((x) => x.role === 'EDITOR')]}
+          defaultValue={[]}
           source="roles"
           format={(data) => data?.map((x: UserRoleOnUser) => x.role)}
           parse={(data: UserRoles[]) =>

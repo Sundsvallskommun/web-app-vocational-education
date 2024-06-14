@@ -25,6 +25,7 @@ import { AdminTableBlockHeaderController } from './controllers/admin/table-block
 import { AdminTableBlockRowController } from './controllers/admin/table-block-row.controller';
 import { AdminTableBlockCellController } from './controllers/admin/table-block-cell.controller';
 import { ContactController } from './controllers/contact.controller';
+import { EditRolesOnPageController } from './controllers/admin/edit-roles-on-page.controller';
 
 validateEnv();
 
@@ -54,6 +55,9 @@ const app = new App([
   AdminTableBlockHeaderController,
   AdminTableBlockRowController,
   AdminTableBlockCellController,
+
+  // Permissions
+  EditRolesOnPageController,
 
   LayoutController,
   AdminFooterController,

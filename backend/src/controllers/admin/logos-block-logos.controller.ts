@@ -1,15 +1,17 @@
 import { deleteImage, imageUploadOptions } from '@/utils/files/imageUploadOptions';
 import prisma from '@/utils/prisma';
 import { setReqBodyIfMultiPartForm } from '@/utils/util';
-import { Prisma } from '@prisma/client';
+import { Prisma, UserRoleEnum } from '@prisma/client';
 import { createHandler, defaultHandler, getListHandler, getManyHandler, getOneHandler, updateHandler } from 'ra-data-simple-prisma';
-import { All, Controller, Req, UploadedFile } from 'routing-controllers';
+import { All, Controller, Req, UploadedFile, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
+import { checkPageRoles, hasRolesForMethods } from './utils';
 
 @Controller()
 export class AdminLogosBlockLogosController {
   @All('/admin/logosBlockLogos')
   @OpenAPI({ summary: 'Handle LogosBlockLogos' })
+  @UseBefore(checkPageRoles())
   async logosBlockLogos(
     @Req() req,
     @UploadedFile('image', { options: imageUploadOptions, required: false }) image?: Express.Multer.File,
@@ -26,12 +28,6 @@ export class AdminLogosBlockLogosController {
       setReqBodyIfMultiPartForm(req);
     }
     switch (req.body.method) {
-      case 'getOne':
-        return await getOneHandler<Prisma.LogosBlockLogosFindUniqueArgs>(req.body, prisma.logosBlockLogos);
-      case 'getMany':
-        return await getManyHandler<Prisma.LogosBlockLogosFindManyArgs>(req.body, prisma.logosBlockLogos);
-      case 'getList':
-        return await getListHandler<Prisma.LogosBlockLogosFindManyArgs>(req.body, prisma.logosBlockLogos);
       case 'create':
         return await createHandler<Prisma.LogosBlockLogosCreateArgs>(req.body, prisma.logosBlockLogos, {
           connect: { logosBlock: 'id' },

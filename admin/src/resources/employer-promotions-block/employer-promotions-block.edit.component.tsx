@@ -18,7 +18,7 @@ export const EmployerPromotionsBlockEdit = (props: any) => {
         <h1>{`${translate('ra.action.edit')} ${translate('resources.employerPromotionsBlock.name', {
           smart_count: 1,
         })}`}</h1>
-        <TextInput source="pageName" disabled />
+        <TextInput source="pageName" readOnly />
         <BooleanInput source="showBlock" />
         <TextInput source="title" />
         <EditEmployerPromotionsBlockPromotions />

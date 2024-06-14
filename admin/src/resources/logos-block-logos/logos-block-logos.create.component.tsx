@@ -15,7 +15,7 @@ export const LogosBlockLogosCreate = (props: any) => {
           <SelectInput
             source="logosBlock"
             optionText="pageName"
-            disabled
+            readOnly
             value={parseInt(activeBlockIdEdit)}
             defaultValue={parseInt(activeBlockIdEdit)}
           />

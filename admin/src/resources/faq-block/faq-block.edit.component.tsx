@@ -16,7 +16,7 @@ export const FAQBlockEdit = (props: any) => {
     <Edit {...props} redirect={() => history.back()} mutationMode="pessimistic">
       <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete />}>
         <h1>{`${translate('ra.action.edit')} ${translate('resources.faqBlock.name', { smart_count: 1 })}`}</h1>
-        <TextInput source="pageName" disabled />
+        <TextInput source="pageName" readOnly />
         <BooleanInput source="showBlock" />
         <TextInput source="title" />
         <TextInput

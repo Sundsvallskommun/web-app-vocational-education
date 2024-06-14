@@ -12,7 +12,7 @@ export const PromotionsBlockEdit = (props: any) => {
         <h1>{`${translate('ra.action.edit')} ${translate('resources.promotionsBlock.name', {
           smart_count: 2,
         }).toLowerCase()}`}</h1>
-        <TextInput source="pageName" disabled />
+        <TextInput source="pageName" readOnly />
         <BooleanInput source="showBlock" />
         <EditPromotionsBlockPromotions />
       </SimpleForm>

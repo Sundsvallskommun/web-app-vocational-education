@@ -16,7 +16,7 @@ export const EmployerPromotionsBlockPromotionsCreate = (props: any) => {
           <SelectInput
             source="employerPromotionsBlock"
             optionText="pageName"
-            disabled
+            readOnly
             value={parseInt(activeBlockIdEdit)}
             defaultValue={parseInt(activeBlockIdEdit)}
           />

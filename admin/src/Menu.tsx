@@ -56,24 +56,26 @@ export const CustomMenu = () => {
         </ul>
       </li>
 
-      <li>
-        <h2 style={{ fontSize: '1rem', paddingLeft: '16px', marginTop: '16px' }}>Layout</h2>
-        <Menu.Item
-          className={`${onFooterPage ? 'MenuItem-active' : ''}`}
-          sx={{
-            '&.MenuItem-active': {
-              backgroundColor: '#655afc',
-              color: 'white',
-            },
-            '&.MenuItem-active .RaMenuItemLink-icon': {
-              color: 'white',
-            },
-          }}
-          to="/footer/1"
-          primaryText={translate('resources.footer.name', { smart_count: 1 })}
-          leftIcon={<LabelIcon />}
-        />
-      </li>
+      {permissions?.adminEdit && (
+        <li>
+          <h2 style={{ fontSize: '1rem', paddingLeft: '16px', marginTop: '16px' }}>Layout</h2>
+          <Menu.Item
+            className={`${onFooterPage ? 'MenuItem-active' : ''}`}
+            sx={{
+              '&.MenuItem-active': {
+                backgroundColor: '#655afc',
+                color: 'white',
+              },
+              '&.MenuItem-active .RaMenuItemLink-icon': {
+                color: 'white',
+              },
+            }}
+            to="/footer/1"
+            primaryText={translate('resources.footer.name', { smart_count: 1 })}
+            leftIcon={<LabelIcon />}
+          />
+        </li>
+      )}
       {permissions?.adminEditAccounts && (
         <li>
           <h2 style={{ fontSize: '1rem', paddingLeft: '16px', marginTop: '16px' }}>Konton</h2>

@@ -38,7 +38,7 @@ export const Menu: React.FC = () => {
         Menu
       </Button>
       <MenuModal show={isOpen} onClose={handleClose} className="h-screen">
-        <div className="max-w-[410px]">
+        <div>
           <MenuVertical.Provider current={activeUrl} setCurrent={setActiveUrl}>
             <MenuVertical.Nav>
               <MenuVertical>

@@ -1,12 +1,4 @@
-import {
-  Edit,
-  ReferenceInput,
-  SelectInput,
-  SimpleForm,
-  TextInput,
-  WithRecord,
-  useTranslate
-} from 'react-admin';
+import { Edit, ReferenceInput, SelectInput, SimpleForm, TextInput, WithRecord, useTranslate } from 'react-admin';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
 import { CustomToolbar } from '../components/custom-toolbar.component';
 import { Wysiwyg } from '../components/wysiwyig/wysiwyg.component';
@@ -31,7 +23,11 @@ export const EmployerPromotionsBlockPromotionsEdit = (props: any) => {
             <h1>{`${translate('ra.action.edit')} ${translate('resources.employerPromotionsBlockPromotions.name', {
               smart_count: 1,
             })}`}</h1>
-            <ReferenceInput source="employerPromotionsBlock" reference="employerPromotionsBlock">
+            <ReferenceInput
+              source="employerPromotionsBlock"
+              reference="employerPromotionsBlock"
+              filter={{ pageName: 'utbildningar' }}
+            >
               <SelectInput
                 source="employerPromotionsBlock"
                 optionText="pageName"

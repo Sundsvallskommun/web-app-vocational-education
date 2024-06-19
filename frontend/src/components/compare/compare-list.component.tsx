@@ -3,6 +3,7 @@ import { Checkbox, Link, Pagination, Table } from '@sk-web-gui/react';
 import { getPageListSlice } from '@utils/pagination';
 import NextLink from 'next/link';
 import { useState } from 'react';
+import { tableCellTextClasses } from '../educations-table/educations-table.component';
 
 export const CompareList: React.FC<{ compareList: Course[]; onRemove? }> = ({ compareList, onRemove }) => {
   const handleOnRemove = (item: Course) => () => {
@@ -13,8 +14,6 @@ export const CompareList: React.FC<{ compareList: Course[]; onRemove? }> = ({ co
   const [page, setPage] = useState<number>(1);
   const pagedList = getPageListSlice(compareList, page, pageSize);
   const pages = Math.ceil(compareList.length / pageSize);
-
-  const tableCellTextClasses = 'text-base leading-[2.9rem] capitalize';
 
   return (
     <div>

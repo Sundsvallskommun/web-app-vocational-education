@@ -140,7 +140,7 @@ export default function SavedInterests() {
                   </Button>
                 </NextLink>
               </div>
-              <div className="saved-interest-header-toolbar flex gap-md justify-end absolute -top-[1.5rem] -right-[1.5rem] lg:-top-[1.5rem] lg:-right-[3rem]">
+              <div className="saved-interest-header-toolbar flex gap-md justify-end absolute -top-[1.5rem] -right-[1.5rem] desktop:-top-[1.5rem] desktop:-right-[3rem]">
                 <ButtonStackedIcon
                   onClick={handleRemoveInterest(interestIndex)}
                   className="text-[12px] text-blue"

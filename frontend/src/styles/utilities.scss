@@ -39,7 +39,7 @@
   .blocked {
     &-blue,
     &-green {
-      @apply py-md px-md md:py-[33px] md:px-[60px] rounded;
+      @apply py-md px-md medium-device:py-[33px] medium-device:px-[60px] rounded;
     }
 
     &-blue {

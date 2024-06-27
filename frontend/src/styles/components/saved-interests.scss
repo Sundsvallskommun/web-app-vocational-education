@@ -1,17 +1,17 @@
 @layer components {
   .saved-interests {
     &-form {
-      .educations-filter-popupbutton {
-        @apply min-h-[5rem] max-h-[5rem] w-full border border-border-color rounded justify-start;
+      // .educations-filter-popupbutton {
+      //   @apply min-h-[5rem] max-h-[5rem] w-full border border-border-color rounded justify-start;
 
-        .btn-has-icon-right {
-          @apply absolute right-sm rotate-90;
-        }
+      //   .btn-has-icon-right {
+      //     @apply absolute right-sm rotate-90;
+      //   }
 
-        & + .sk-popup-menu {
-          @apply w-full;
-        }
-      }
+      //   & + .sk-popup-menu {
+      //     @apply w-full;
+      //   }
+      // }
     }
   }
 }

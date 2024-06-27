@@ -26,7 +26,7 @@ export const Utbildningar: React.FC = ({ layoutData, pageData }: PageProps) => {
         <BigDropHeader
           imageSrc={`/drop-2-people.png`}
           imageAlt="Två studenter skrattar"
-          imageDivClassName="hidden lg:block"
+          imageDivClassName="hidden desktop:block"
           breadcrumbs={
             <Breadcrumb className="" separator={<span className="mx-1">|</span>}>
               <Breadcrumb.Item>

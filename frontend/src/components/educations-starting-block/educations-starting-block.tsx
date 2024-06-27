@@ -34,7 +34,7 @@ export default function EducationsStartingBlock({ educationsStartingBlock }: edu
       cardRender={(card, index) => (
         <DropCard
           key={`${index}`}
-          classNameCard="max-h-[232px] min-h-[232px] lg:max-h-[270px]"
+          classNameCard="max-h-[232px] min-h-[232px] desktop:max-h-[270px]"
           href={`/utbildningar/${encodeURIComponent(`${card.courseCode}-${card.title}`)}`}
           dropIcon={<SchoolIcon className="!text-2xl" />}
           footer={

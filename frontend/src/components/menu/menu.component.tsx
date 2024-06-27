@@ -73,7 +73,7 @@ export const Menu: React.FC = () => {
             </MenuVertical.Nav>
           </MenuVertical.Provider>
 
-          <div className="mt-2xl flex flex-col gap-sm md:gap-md text-[12px] md:text-base">
+          <div className="mt-2xl flex flex-col gap-sm medium-device:gap-md text-[12px] medium-device:text-base">
             <NextLink href="#">
               <Link as="span">
                 <span>Behandling av personuppgifter</span> <ArrowForwardIcon className="material-icon !text-xl" />

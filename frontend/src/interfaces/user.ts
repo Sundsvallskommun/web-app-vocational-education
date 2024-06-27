@@ -66,6 +66,7 @@ export interface UserSavedInterestDto {
 }
 
 export interface ContactForm {
+  municipality: string;
   name: string;
   email: string;
   message: string;

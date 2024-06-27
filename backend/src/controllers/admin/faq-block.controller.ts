@@ -1,15 +1,15 @@
 import prisma from '@/utils/prisma';
-import { Prisma, UserRole } from '@prisma/client';
+import { Prisma, UserRoleEnum } from '@prisma/client';
 import { defaultHandler, getListHandler, getManyHandler, getOneHandler } from 'ra-data-simple-prisma';
 import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
-import { hasRolesForMethods } from './utils';
+import { checkPageRoles, hasRolesForMethods } from './utils';
 
 @Controller()
 export class AdminFAQBlockController {
   @All('/admin/faqBlock')
   @OpenAPI({ summary: 'Handle FAQBlock' })
-  @UseBefore(hasRolesForMethods([UserRole.ADMIN], ['delete', 'create']))
+  @UseBefore(hasRolesForMethods([UserRoleEnum.ADMIN], ['delete', 'create']), checkPageRoles())
   async faqBlock(@Req() req): Promise<any> {
     switch (req.body.method) {
       case 'getOne':

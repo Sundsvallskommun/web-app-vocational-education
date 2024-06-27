@@ -3,6 +3,7 @@ import { Checkbox, Link, Pagination, Table } from '@sk-web-gui/react';
 import { getPageListSlice } from '@utils/pagination';
 import NextLink from 'next/link';
 import { useState } from 'react';
+import { tableCellTextClasses } from '../educations-table/educations-table.component';
 
 export const CompareList: React.FC<{ compareList: Course[]; onRemove? }> = ({ compareList, onRemove }) => {
   const handleOnRemove = (item: Course) => () => {
@@ -26,15 +27,16 @@ export const CompareList: React.FC<{ compareList: Course[]; onRemove? }> = ({ co
           <Table.Header>
             <Table.HeaderColumn>Jämför</Table.HeaderColumn>
             <Table.HeaderColumn>Utbildning</Table.HeaderColumn>
-            <Table.HeaderColumn>Platser</Table.HeaderColumn>
+            <Table.HeaderColumn>Platser / Antagna</Table.HeaderColumn>
             <Table.HeaderColumn>Distans / Ort</Table.HeaderColumn>
             <Table.HeaderColumn>Start / Slut</Table.HeaderColumn>
             <Table.HeaderColumn>Studietakt</Table.HeaderColumn>
+            <Table.HeaderColumn>Utbildningsform</Table.HeaderColumn>
             <Table.HeaderColumn>Språk</Table.HeaderColumn>
           </Table.Header>
           <Table.Body>
             {pagedList.map((edu, index) => (
-              <Table.Row key={`${index}-${edu.id}`}>
+              <Table.Row key={`${index}-${edu.id}`} className="[&>td]:h-full">
                 <Table.Column>
                   <span>
                     <Checkbox checked onChange={handleOnRemove(edu)}>
@@ -47,33 +49,36 @@ export const CompareList: React.FC<{ compareList: Course[]; onRemove? }> = ({ co
                     <NextLink
                       href={`/utbildningar/${edu.code}-${edu.id}`} /* This should be built and point to dynamic page */
                     >
-                      <Link as="span" className="line-clamp-2">
+                      <Link as="span" className="line-clamp-2 text-base mb-6 leading-[1.5]">
                         {edu.name ?? '-'}
                       </Link>
                     </NextLink>
                     <div className="text-sm capitalize">{edu.level ?? '-'}</div>
                   </span>
                 </Table.Column>
-                <Table.Column>
-                  <span>{edu.numberOfSeats ?? '-'}</span>
+                <Table.Column className="min-w-[11em]">
+                  <span className={tableCellTextClasses}>{edu.numberOfSeats ?? '-'}</span>
                 </Table.Column>
                 <Table.Column>
                   <span>
-                    <div>{'(?) Distans / På plats'}</div>
-                    <div>{edu.studyLocation ?? '-'}</div>
+                    <div className={tableCellTextClasses}>{'(?)'}</div>
+                    <div className={tableCellTextClasses}>{edu.studyLocation ?? '-'}</div>
                   </span>
                 </Table.Column>
                 <Table.Column>
                   <span>
-                    <div>{edu.start ?? '-'}</div>
-                    <div>{edu.end ?? '-'}</div>
+                    <div className={tableCellTextClasses}>{edu.start ?? '-'}</div>
+                    <div className={tableCellTextClasses}>{edu.end ?? '-'}</div>
                   </span>
                 </Table.Column>
                 <Table.Column>
-                  <span>{edu.scope ? edu.scope + '%' : '-'}</span>
+                  <span className={tableCellTextClasses}>{edu.scope ? edu.scope + '%' : '-'}</span>
                 </Table.Column>
                 <Table.Column>
-                  <span>(?)</span>
+                  <span className={tableCellTextClasses}>{edu.level ?? '-'}</span>
+                </Table.Column>
+                <Table.Column>
+                  <span className={tableCellTextClasses}>(?)</span>
                 </Table.Column>
               </Table.Row>
             ))}

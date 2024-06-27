@@ -1,16 +1,18 @@
 import prisma from '@/utils/prisma';
-import { Prisma, UserRole } from '@prisma/client';
-import { defaultHandler, getListHandler, getManyHandler, getOneHandler, updateHandler } from 'ra-data-simple-prisma';
+import { EditRolesOnPage, Prisma, UserRoleEnum } from '@prisma/client';
+import _ from 'lodash';
+import { defaultHandler, updateHandler } from 'ra-data-simple-prisma';
 import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
-import { hasRolesForMethods } from './utils';
+import { RequestWithUser } from '../../interfaces/auth.interface';
+import { filterByDataRoles, hasRolesForMethods } from './utils';
 
 @Controller()
 export class AdminPageController {
   @All('/admin/page')
   @OpenAPI({ summary: 'Handle Page' })
-  @UseBefore(hasRolesForMethods([UserRole.ADMIN], ['delete', 'create']))
-  async page(@Req() req): Promise<any> {
+  @UseBefore(hasRolesForMethods([UserRoleEnum.ADMIN], ['delete', 'create']))
+  async page(@Req() req: RequestWithUser): Promise<any> {
     const includes = {
       promotionsBlock: true,
       mapBlock: true,
@@ -19,29 +21,63 @@ export class AdminPageController {
       faqBlock: true,
       logosBlock: true,
       tableBlock: true,
+      editRoles: true,
     };
     switch (req.body.method) {
-      case 'getOne':
-        return await getOneHandler<Prisma.PageFindUniqueArgs>(req.body, prisma.page, {
-          include: includes,
-        });
-      case 'getMany':
-        return await getManyHandler<Prisma.PageFindManyArgs>(req.body, prisma.page, {
-          include: includes,
-        });
-      case 'getList':
-        return await getListHandler<Prisma.PageFindManyArgs>(req.body, prisma.page, {
-          include: includes,
-        });
       case 'update':
-        return await updateHandler<Prisma.PageUpdateArgs>(req.body, prisma.page, {
-          skipFields: includes,
-        });
+        if (!_.isEqual(req.body.params.previousData.editRoles, req.body.params.data.editRoles)) {
+          const rolesToDisconnect: EditRolesOnPage[] = req.body.params.previousData.editRoles.filter(
+            prevRole => !req.body.params.data.editRoles.some(newRole => prevRole.role === newRole.role),
+          );
+          if (rolesToDisconnect.length > 0) {
+            await prisma.editRolesOnPage.deleteMany({
+              where: {
+                OR: rolesToDisconnect.map(role => ({
+                  pageName: req.body.params.data.pageName,
+                  role: role.role,
+                })),
+              },
+            });
+          }
+
+          await prisma.editRolesOnPage.createMany({
+            data: req.body.params.data.editRoles
+              .filter(newRole => !req.body.params.previousData.editRoles.some(oldRole => oldRole.role === newRole.role))
+              .map(role => ({
+                pageName: req.body.params.data.pageName,
+                role: role.role,
+              })),
+          });
+        }
+
+        return filterByDataRoles(
+          await updateHandler<Prisma.PageUpdateArgs>(req.body, prisma.page, {
+            skipFields: includes,
+            include: includes,
+          }),
+          req,
+          'editRoles',
+        );
+
       case 'deleteMany':
         // Dont allow these
         return;
       default:
-        return await defaultHandler(req.body, prisma);
+        return filterByDataRoles(
+          await defaultHandler(req.body, prisma, {
+            getOne: {
+              include: includes,
+            },
+            getMany: {
+              include: includes,
+            },
+            getList: {
+              include: includes,
+            },
+          }),
+          req,
+          'editRoles',
+        );
     }
   }
 }

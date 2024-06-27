@@ -11,6 +11,7 @@ export const typeFilter = [
   { label: 'Konst- och kulturutbildningar', value: 'Konst- och kulturutbildningar' },
   { label: 'Utbildningar via arbetsförmedlingen', value: 'Utbildningar via arbetsförmedlingen' },
   { label: 'Yrkeshögskola', value: 'Yrkeshögskola' },
+  { label: 'Gymnasial utbildning', value: 'Gymnasial utbildning' },
 ];
 
 export default function TypeInput({ showLabel = false, label = typeFilterPlaceholder, size = 'sm' }) {

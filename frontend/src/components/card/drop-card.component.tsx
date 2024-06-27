@@ -64,7 +64,7 @@ export const DropCard: React.FC<DropCard> = ({
           <ContentComp href={href} className="flex">
             <div
               className={cx(
-                'drop-card-text px-[15px] pb-[15px] md:px-lg md:pb-lg [&_h2]:break-word [&_h3]:break-word [&_h2]:text-green [&_h3]:text-green group-hover:[&_h2]:underline group-hover:[&_h3]:underline [&>p]:leading-[1.8] [&>ul]:mt-[1rem] [&>ul>li]:text-sm',
+                'drop-card-text px-[15px] pb-[15px] md:px-lg md:pb-lg [&_h2]:break-word [&_h3]:break-word [&_h2]:text-green [&_h3]:text-green group-hover:[&_h2]:underline group-hover:[&_h3]:underline [&_p]:leading-[1.8] [&_ul]:mt-[1rem] [&_ul_li]:text-sm',
                 !toolbar && 'pt-md'
               )}
               style={!toolbar ? { marginTop: dropHeight / 2 + 'px' } : undefined}

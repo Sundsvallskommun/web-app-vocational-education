@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, UserRoleEnum } from '@prisma/client';
 import * as dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
 
@@ -11,14 +11,72 @@ try {
   throw Error('env INIT_ADMIN_USER not specified');
 }
 
-const hashedUser = Object.assign(adminUser, { password: bcrypt.hashSync(adminUser.password, 10) });
+const hashedUser = Object.assign(adminUser, {
+  password: bcrypt.hashSync(adminUser.password, 10),
+});
 
 const prisma = new PrismaClient();
 async function main() {
+  await prisma.userRole.upsert({
+    where: { name: 'ADMIN' },
+    update: {},
+    create: {
+      name: 'ADMIN',
+    },
+  });
+  await prisma.userRole.upsert({
+    where: { name: 'USER' },
+    update: {},
+    create: {
+      name: 'USER',
+    },
+  });
+  await prisma.userRole.upsert({
+    where: { name: 'EDUCATIONCOORDINATOR' },
+    update: {},
+    create: {
+      name: 'EDUCATIONCOORDINATOR',
+    },
+  });
+  await prisma.userRole.upsert({
+    where: { name: 'EDITOR' },
+    update: {},
+    create: {
+      name: 'EDITOR',
+    },
+  });
+
   await prisma.user.upsert({
     where: { username: hashedUser.username },
-    update: {},
-    create: hashedUser,
+    update: {
+      roles: {
+        upsert: hashedUser.roles.map(role => ({
+          where: {
+            username_role: {
+              username: hashedUser.username,
+              role: role,
+            },
+          },
+          create: {
+            role: role,
+          },
+          update: {
+            role: role,
+          },
+        })),
+      },
+    },
+    create: {
+      ...hashedUser,
+      roles: {
+        connect: hashedUser.roles.map(role => ({
+          username_role: {
+            role: role,
+            username: hashedUser.username,
+          },
+        })),
+      },
+    },
   });
 
   const jobb = await prisma.page.upsert({
@@ -30,6 +88,19 @@ async function main() {
       title: 'Här finns jobben',
       description:
         'Ta reda på vilka branscher som ger jobb nu och x år framåt. Regionen växer och behovet av arbetskraft är stort. Vi behöver dina kompetenser! Utbildning är och kommer att bli en allt viktigare faktor för att få ett jobb',
+      editRoles: {
+        connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
+          where: {
+            pageName_role: {
+              pageName: 'jobb',
+              role: role,
+            },
+          },
+          create: {
+            role: role,
+          },
+        })),
+      },
     },
   });
 
@@ -42,6 +113,19 @@ async function main() {
       title: 'Är du arbetsgivare?',
       description:
         'Här hittar du kandidater som är redo att börja jobba hos dig. Vi utbildar framtidens arbetskraft. Branscherna har en nyckelroll i regionens tillväxt och du som arbetsgivare kan göra skillnad!',
+      editRoles: {
+        connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
+          where: {
+            pageName_role: {
+              pageName: 'arbetsgivare',
+              role: role,
+            },
+          },
+          create: {
+            role: role,
+          },
+        })),
+      },
     },
   });
 
@@ -54,6 +138,19 @@ async function main() {
       title: 'Behörighet, betyg och meritvärden',
       description:
         'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet',
+      editRoles: {
+        connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
+          where: {
+            pageName_role: {
+              pageName: 'utbildningar_behorighet',
+              role: role,
+            },
+          },
+          create: {
+            role: role,
+          },
+        })),
+      },
     },
   });
 
@@ -66,6 +163,19 @@ async function main() {
       title: 'Jag vet inte vad jag vill. Hjälp!',
       description:
         'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet',
+      editRoles: {
+        connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
+          where: {
+            pageName_role: {
+              pageName: 'utbildningar_vagledning',
+              role: role,
+            },
+          },
+          create: {
+            role: role,
+          },
+        })),
+      },
     },
   });
 
@@ -78,6 +188,19 @@ async function main() {
       title: 'Branscherna berättar',
       description:
         'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet',
+      editRoles: {
+        connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
+          where: {
+            pageName_role: {
+              pageName: 'utbildningar_brancher',
+              role: role,
+            },
+          },
+          create: {
+            role: role,
+          },
+        })),
+      },
     },
   });
 
@@ -90,6 +213,19 @@ async function main() {
       title: 'Hitta en yrkesutbildning som leder till jobb',
       description:
         'Vill du öka dina chanser att snabbt få jobb? Här hittar du yrkesutbildningar med stora möjligheter till jobb i Västernorrland. Utbildningarna är korta och finns för dig som vill komma in på arbetsmarknaden eller karriärväxla',
+      editRoles: {
+        connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
+          where: {
+            pageName_role: {
+              pageName: 'utbildningar',
+              role: role,
+            },
+          },
+          create: {
+            role: role,
+          },
+        })),
+      },
       promotionsBlock: {
         create: {
           showBlock: true,
@@ -192,6 +328,19 @@ async function main() {
       title: 'Hitta rätt yrke och utbildning i Västernorrland',
       description:
         'Västernorrland växer och du behövs! Här har vi samlat alla yrkesutbildningar som matchar arbetsmarknadens behov. Yrkesutbildning Mitt underlättar för dig som vill studera eller hitta rätt kompetens till din verksamhet',
+      editRoles: {
+        connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
+          where: {
+            pageName_role: {
+              pageName: 'startsida',
+              role: role,
+            },
+          },
+          create: {
+            role: role,
+          },
+        })),
+      },
       promotionsBlock: {
         create: {
           showBlock: true,
@@ -301,6 +450,19 @@ async function main() {
       title: 'Överblicka utbildningsutbudet',
       description:
         'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Exercitation veniam consequat sunt nostrud amet.',
+      editRoles: {
+        connectOrCreate: [UserRoleEnum.EDITOR, UserRoleEnum.EDUCATIONCOORDINATOR].map(role => ({
+          where: {
+            pageName_role: {
+              pageName: 'utbildningsanordnare',
+              role: role,
+            },
+          },
+          create: {
+            role: role,
+          },
+        })),
+      },
     },
   });
 
@@ -313,6 +475,19 @@ async function main() {
       title: 'Utbildningsanordnare',
       description:
         'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Exercitation veniam consequat sunt nostrud amet.',
+      editRoles: {
+        connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
+          where: {
+            pageName_role: {
+              pageName: 'arbetsgivare_kontaktautbildningsanordnare',
+              role: role,
+            },
+          },
+          create: {
+            role: role,
+          },
+        })),
+      },
       tableBlock: {
         create: [
           {

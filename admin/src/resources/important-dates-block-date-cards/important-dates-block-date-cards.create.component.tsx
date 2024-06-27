@@ -24,7 +24,7 @@ export const ImportantDatesBlockDateCardsCreate = (props: any) => {
           <SelectInput
             source="importantDatesBlock"
             optionText="pageName"
-            disabled
+            readOnly
             value={parseInt(activeBlockIdEdit)}
             defaultValue={parseInt(activeBlockIdEdit)}
           />

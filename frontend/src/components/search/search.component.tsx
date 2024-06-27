@@ -9,21 +9,6 @@ interface SearchSuggestion {
   id: number;
 }
 
-const dropDownSearchData: SearchSuggestion[] = [
-  {
-    label: 'Behörig',
-    id: 0,
-  },
-  {
-    label: 'Behörighet',
-    id: 33,
-  },
-  {
-    label: 'Behörighet, betyd och meritvärden',
-    id: 1,
-  },
-];
-
 export const Search: React.FC<{
   className?: string;
   data?: SearchSuggestion[];
@@ -34,7 +19,7 @@ export const Search: React.FC<{
   const router = useRouter();
   const [query, setQuery] = useState(defaultValue ? defaultValue : '');
 
-  const _data: SearchSuggestion[] = data ? data : dropDownSearchData;
+  const _data: SearchSuggestion[] = data ? data : [];
 
   const pushQuery = (query?: string) => {
     const previousQuery = new URLSearchParams(window.location.search).get('q');

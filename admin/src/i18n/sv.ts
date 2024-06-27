@@ -123,12 +123,12 @@ const sv: TranslationMessages = {
       },
     },
     employerPromotionsBlock: {
-      name: 'Arbetsgivarvalda utbildningar-block |||| Arbetsgivarvalda utbildningar-block',
+      name: 'Arbetsgivarvalda utbildningar-block (samma över alla sidor) |||| Arbetsgivarvalda utbildningar-block (samma över alla sidor)',
       fields: {
         pageName: 'Sidreferensnamn',
         title: 'Rubrik',
         description: 'Beskrivning',
-        showBlock: 'Visa Arbetsgivarvalda utbildningar-block',
+        showBlock: 'Visa Arbetsgivarvalda utbildningar-block (samma över alla sidor)',
       },
     },
     employerPromotionsBlockPromotions: {

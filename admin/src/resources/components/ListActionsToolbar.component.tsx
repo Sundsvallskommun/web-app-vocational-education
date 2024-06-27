@@ -1,12 +1,18 @@
-import { CreateButton, ExportButton, FilterButton, SelectColumnsButton, TopToolbar, useListContext } from 'react-admin';
+import { CreateButton, TopToolbar } from 'react-admin';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
 
-export const CustomListActions = () => {
-  const { isSuperAdmin } = useRoutePermissions();
+export const CustomListActions: React.FC<{ adminOnly?: boolean; devOnly?: boolean; show?: boolean }> = ({
+  adminOnly = true,
+  devOnly = false,
+  show = false,
+}) => {
+  const { isSuperAdmin, isAdmin } = useRoutePermissions();
+
+  const showToolbar = devOnly ? isSuperAdmin : adminOnly ? isAdmin : show;
 
   return (
     <>
-      {isSuperAdmin && (
+      {showToolbar && (
         <TopToolbar>
           {/* <SelectColumnsButton /> */}
           {/* <FilterButton /> */}

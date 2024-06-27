@@ -12,11 +12,11 @@ export const FAQBlockQuestionsCreate = (props: any) => {
         <h1>{`${translate('ra.action.create')} ${translate('resources.faqBlockQuestions.name', {
           smart_count: 1,
         })}`}</h1>
-        <ReferenceInput source="faqBlock" reference="faqBlock">
+        <ReferenceInput source="faqBlock" reference="faqBlock" filter={{ id: parseInt(activeBlockIdEdit) }}>
           <SelectInput
             source="faqBlock"
             optionText="pageName"
-            disabled
+            readOnly
             value={parseInt(activeBlockIdEdit)}
             defaultValue={parseInt(activeBlockIdEdit)}
           />

@@ -18,7 +18,7 @@ export const ImportantDatesBlockEdit = (props: any) => {
         <h1>{`${translate('ra.action.edit')} ${translate('resources.importantDatesBlock.name', {
           smart_count: 1,
         }).toLowerCase()}`}</h1>
-        <TextInput source="pageName" disabled />
+        <TextInput source="pageName" readOnly />
         <BooleanInput source="showBlock" />
         <TextInput source="title" />
         <EditImportantDatesBlockDateCards />

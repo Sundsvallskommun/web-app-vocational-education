@@ -55,7 +55,7 @@ export const CompareCards: React.FC<{ compareList: Course[]; onRemove? }> = ({ c
                   <h3>{edu.name}</h3>
                   <div className="text-sm grid grid-cols-1 gap-sm mt-[12px]">
                     <div>
-                      <div className="label">Utbildningens längd</div>
+                      <div className="label">Längd</div>
                       <div>
                         <strong>{getEducationLengthString(edu.start, edu.end)}</strong>
                       </div>
@@ -76,6 +76,12 @@ export const CompareCards: React.FC<{ compareList: Course[]; onRemove? }> = ({ c
                       <div className="label">Studietakt</div>
                       <div>
                         <strong>{edu.scope ? edu?.scope + '%' : '-'}</strong>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="label">Utbildningsform</div>
+                      <div>
+                        <strong className="capitalize">{edu.level ?? '-'}</strong>
                       </div>
                     </div>
                     <div>

@@ -7,6 +7,7 @@ import {
   SimpleForm,
   TextInput,
   TransformData,
+  WithRecord,
   useStore,
   useTranslate,
 } from 'react-admin';
@@ -40,15 +41,19 @@ export const TableBlockCreate = (props: any) => {
         <h1>{`${translate('ra.action.create')} ${translate('resources.tableBlock.name', {
           smart_count: 1,
         })}`}</h1>
-        <ReferenceInput source="page" reference="page">
-          <SelectInput
-            source="page"
-            optionText="pageName"
-            disabled
-            value={parseInt(activePageIdEdit)}
-            defaultValue={parseInt(activePageIdEdit)}
-          />
-        </ReferenceInput>
+        <WithRecord
+          render={(data) => (
+            <ReferenceInput source="page" reference="page" filter={{ pageName: data.pageName }}>
+              <SelectInput
+                source="page"
+                optionText="pageName"
+                disabled
+                value={parseInt(activePageIdEdit)}
+                defaultValue={parseInt(activePageIdEdit)}
+              />
+            </ReferenceInput>
+          )}
+        />
         <Box display={'inline-flex'} flexDirection={'column'}>
           <TextInput sx={{ display: 'inline' }} source="pageName" disabled />
           <TextInput

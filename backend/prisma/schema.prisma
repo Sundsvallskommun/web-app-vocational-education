@@ -8,11 +8,34 @@ datasource db {
   shadowDatabaseUrl = env("DATABASE_SHADOW_URL")
 }
 
-enum UserRole {
+enum UserRoleEnum {
   USER
   EDUCATIONCOORDINATOR
   EDITOR
   ADMIN
+}
+
+model UserRole {
+  id                  Int                @id @default(autoincrement())
+  name                UserRoleEnum       @unique
+  rolesOnUsers        UserRolesOnUser[]               
+  editRolesOnPages    EditRolesOnPage[]               
+}
+
+model UserRolesOnUser {
+  user            User              @relation(fields: [username], references: [username], onDelete: Cascade)
+  username        String 
+  userRole        UserRole          @relation(fields: [role], references: [name], onDelete: Cascade)
+  role            UserRoleEnum 
+  @@id([username, role])
+}
+
+model EditRolesOnPage {
+  page            Page              @relation(fields: [pageName], references: [pageName], onDelete: Cascade)
+  pageName        String 
+  userRole        UserRole          @relation(fields: [role], references: [name], onDelete: Cascade)
+  role            UserRoleEnum 
+  @@id([pageName, role])
 }
 
 model User {
@@ -20,7 +43,7 @@ model User {
   username        String             @unique
   password        String
   email           String
-  role            UserRole           @default(USER)
+  roles           UserRolesOnUser[]         
   createdAt       DateTime           @default(now())
   updatedAt       DateTime           @updatedAt @default(now())
   savedSearches   User_SavedSearch[]
@@ -59,6 +82,8 @@ model Page {
   title       String
   description String @db.Text
 
+  // permissions by role
+  editRoles       EditRolesOnPage[]
   // PromotionsBlock
   promotionsBlock PromotionsBlock[]           @relation("PromotionsBlock")
   promotedBy      PromotionsBlockPromotions[] @relation("PromotedBy")

@@ -57,7 +57,7 @@ export const TableBlockEdit = () => {
             smart_count: 1,
           }).toLowerCase()}`}</h1>
           <Box display={'inline-flex'} flexDirection={'column'}>
-            <TextInput sx={{ display: 'inline' }} source="pageName" disabled />
+            <TextInput sx={{ display: 'inline' }} source="pageName" readOnly />
             <TextInput
               source="title"
               multiline

@@ -24,7 +24,7 @@ export function FilterToggle({ label, children }) {
       <Button
         type="button"
         onClick={() => setIsOpen((open) => !open)}
-        className="form-select leading-[24px] w-full lg:w-max"
+        className="form-select leading-[24px] w-full desktop:w-max"
         aria-expanded={isOpen}
       >
         <span>{label}</span>

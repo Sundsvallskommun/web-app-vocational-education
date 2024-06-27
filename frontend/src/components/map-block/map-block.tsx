@@ -10,10 +10,10 @@ interface MapBlockProps {
 export default function MapBlock({ mapBlock }: MapBlockProps) {
   if (!mapBlock?.showBlock) return <></>;
   return (
-    <div className="bg-green text-white mt-2xl lg:mt-3xl">
-      <div className="lg:container">
-        <div className="grid lg:grid-cols-3 bg-green-middle lg:bg-green">
-          <div className="mx-auto w-[290px] lg:w-[550px] lg:order-2 relative">
+    <div className="bg-green text-white mt-2xl desktop:mt-3xl">
+      <div className="desktop:container">
+        <div className="grid desktop:grid-cols-3 bg-green-middle desktop:bg-green">
+          <div className="mx-auto w-[290px] desktop:w-[550px] desktop:order-2 relative">
             <Image
               className="next-img"
               fill
@@ -24,10 +24,10 @@ export default function MapBlock({ mapBlock }: MapBlockProps) {
               quality={100}
             />
           </div>
-          <div className="container bg-green p-lg lg:p-0 lg:col-span-2">
+          <div className="container bg-green p-lg desktop:p-0 desktop:col-span-2">
             <h2>{mapBlock.title}</h2>
             <p className="text !text-inverted-body mt-[2rem]">{mapBlock.text}</p>
-            <Button className="override sk-btn-white mx-auto lg:mx-0 mt-lg mb-md" rightIcon={<ArrowForwardIcon />}>
+            <Button className="override sk-btn-white mx-auto desktop:mx-0 mt-lg mb-md" rightIcon={<ArrowForwardIcon />}>
               <span>{mapBlock.buttonText}</span>
             </Button>
           </div>

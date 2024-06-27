@@ -2,7 +2,7 @@
   .sk-pagination {
     .sk-pagination {
       &-pageLabel {
-        @apply leading-none w-[25px] h-[25px] text-[13px] md:w-[40px] md:h-[40px] md:text-base border border-blue text-blue rounded-half;
+        @apply leading-none w-[25px] h-[25px] text-[13px] medium-device:w-[40px] medium-device:h-[40px] medium-device:text-base border border-blue text-blue rounded-half;
 
         &[aria-current='true'] {
           @apply bg-blue text-white;

@@ -20,7 +20,7 @@
 
             svg {
               @apply min-w-[1.3rem] min-h-[1.3rem];
-              @apply md:min-w-[3rem] md:min-h-[3rem];
+              @apply medium-device:min-w-[3rem] medium-device:min-h-[3rem];
 
               path {
                 @apply stroke-[1.75];
@@ -30,14 +30,14 @@
         }
       }
       &-toggle {
-        @apply mx-[.5rem] h-auto my-0 py-0 md:mx-[2rem];
+        @apply mx-[.5rem] h-auto my-0 py-0 medium-device:mx-[2rem];
 
         .sk-disclosure-title {
-          @apply font-normal mr-md mb-0 py-md md:py-[3rem] md:text-[2rem] leading-[3rem];
+          @apply font-normal mr-md mb-0 py-md medium-device:py-[3rem] medium-device:text-[2rem] leading-[3rem];
         }
       }
       &-title {
-        @apply mb-0 py-md md:py-[3rem] md:text-[2.1rem] leading-[3rem];
+        @apply mb-0 py-md medium-device:py-[3rem] medium-device:text-[2.1rem] leading-[3rem];
       }
 
       &-body {

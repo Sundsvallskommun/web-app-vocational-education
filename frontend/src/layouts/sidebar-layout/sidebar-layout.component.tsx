@@ -85,7 +85,7 @@ export default function SidebarLayout({ title, children }: ISidebarLayout) {
       />
 
       <Footer color="gray">
-        <div className="flex justify-between gap-16 md:gap-32">
+        <div className="flex justify-between gap-16 medium-device:gap-32">
           <svg
             focusable="false"
             aria-label="Sundsvalls Kommun logotyp"

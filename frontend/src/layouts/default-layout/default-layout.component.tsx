@@ -70,7 +70,7 @@ export default function DefaultLayout({ layoutData, title, children }: DefaultLa
         boundaryElement=".DefaultLayout"
         // wrapperClassName="shadow"
         stickyStyle={{ top: menuShow ? 0 : '-150px', transition: 'all .3s ease-in-out' }}
-        // !relative lg:!fixed för desktop only sticky
+        // !relative desktop:!fixed för desktop only sticky
         stickyClassName={`block z-10 shadow-md ${menuShow ? 'menu-show' : 'menu-hide'}`}
       >
         <Header className="!max-width-content py-0">
@@ -127,16 +127,16 @@ export default function DefaultLayout({ layoutData, title, children }: DefaultLa
         }}
       />
 
-      <Footer color="gray">
-        <div className="mx-auto">
-          <div className="w-full flex justify-center mb-2xl md:mb-[84px]">
+      <Footer color="gray" className="justify-start medium-device:justify-center py-50 medium-device:py-100">
+        <div className="w-full flex flex-col justify-start medium-device:justify-center">
+          <div className="w-full flex justify-center mb-2xl medium-device:mb-[84px]">
             <span>
               <Image width={170} height={131} src={logo_stacked} alt="" aria-hidden="true" />
             </span>
           </div>
-          <div className="flex flex-col text-sm gap-2xl lg:gap-3xl md:flex-row">
+          <div className="w-max medium-device:mx-auto flex flex-col text-sm gap-2xl desktop:gap-3xl medium-device:flex-row">
             <div className="max-w-[215px] text-[12px]">
-              <h2 className="text-lg mb-sm">Meny</h2>
+              <h2 className="text-large mb-sm">Meny</h2>
               <div className="flex flex-col gap-[1rem]">
                 <Link href="#">
                   <span>För dig som söker utbildning</span> <ArrowForwardIcon className="material-icon !text-xl" />
@@ -150,7 +150,7 @@ export default function DefaultLayout({ layoutData, title, children }: DefaultLa
               </div>
             </div>
             <div className="max-w-[215px] text-[12px]">
-              <h2 className="text-lg mb-sm">Om sidan</h2>
+              <h2 className="text-large mb-sm">Om sidan</h2>
               <div className="flex flex-col gap-[1rem]">
                 <Link href="#">
                   <span>Behandling av personuppgifter</span> <ArrowForwardIcon className="material-icon !text-xl" />
@@ -167,7 +167,7 @@ export default function DefaultLayout({ layoutData, title, children }: DefaultLa
               </div>
             </div>
             <div className="max-w-[215px] text-[12px]">
-              <h2 className="text-lg mb-sm">{layoutData?.footer?.contactTitle || ''}</h2>
+              <h2 className="text-large mb-sm">{layoutData?.footer?.contactTitle || ''}</h2>
               <span
                 className="text [&>*]:leading-[2.58]"
                 dangerouslySetInnerHTML={{

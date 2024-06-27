@@ -78,7 +78,7 @@ export const Efterfragade: React.FC<EfterfragadeProps> = ({ layoutData, employer
           <Wysiwyg content={educationData.wysiwyg_content} />
 
           <NextLink href={`/utbildningar/sok?q=${educationData.searchPhrase}`}>
-            <Button as="span" className="override !mt-2xl w-fit" variant="solid" rightIcon={<ArrowForwardIcon />}>
+            <Button as="span" className="override !mt-2xl w-fit" rightIcon={<ArrowForwardIcon />}>
               <span>Vidare till utbildningen</span>
             </Button>
           </NextLink>

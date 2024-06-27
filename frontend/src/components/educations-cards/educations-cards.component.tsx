@@ -10,8 +10,8 @@ import { Checkbox } from '@sk-web-gui/react';
 import { XMLParser } from 'fast-xml-parser';
 import SanitizeHTML from 'sanitize-html';
 
-const cardIconClasses = 'lg:!hidden !text-2xl mr-10';
-const cardDataClasses = 'lg:font-bold capitalize';
+const cardIconClasses = 'desktop:!hidden !text-2xl mr-10';
+const cardDataClasses = 'desktop:font-bold capitalize';
 
 const parser = new XMLParser();
 
@@ -88,53 +88,53 @@ export const EducationsCards: React.FC<{
         return (
           <div key={`${index}-${edu.code}`} className="w-full flex flex-col">
             <DropCard
-              // classNameCard="h-[218px] lg:h-[247px]"
+              // classNameCard="h-[218px] desktop:h-[247px]"
               href={`/utbildningar/${edu.code}-${edu.id}`}
-              dropIcon={<SchoolIcon className="material-icon lg:!text-2xl" />}
+              dropIcon={<SchoolIcon className="material-icon desktop:!text-2xl" />}
               footer={
                 <div className="flex flex-col gap-y-20">
-                  <div className="text-[1.3rem] md:text-sm flex flex-row-reverse lg:flex-row flex-wrap gap-x-20 lg:gap-x-[6.9em] lg:gap-y-20">
-                    <div className="hidden lg:block">
+                  <div className="text-[1.3rem] medium-device:text-sm flex flex-row-reverse desktop:flex-row flex-wrap gap-x-20 desktop:gap-x-[6.9em] desktop:gap-y-20">
+                    <div className="hidden desktop:block">
                       <div className="label">Längd</div>
                       <div className="flex items-center">
                         <span className={cardDataClasses}>{getEducationLengthString(edu.start, edu.end) ?? '-'}</span>
                       </div>
                     </div>
                     <div>
-                      <div className="hidden lg:block label">Plats</div>
+                      <div className="hidden desktop:block label">Plats</div>
                       <div className="flex items-center">
                         <LocationOnIcon className={cardIconClasses} />
                         <span className={cardDataClasses}>{edu.studyLocation.split(',')}</span>
                       </div>
                     </div>
                     <div>
-                      <div className="hidden lg:block label">Start</div>
+                      <div className="hidden desktop:block label">Start</div>
                       <div className="flex items-center">
                         <DateRangeIcon className={cardIconClasses} />
                         <span className={cardDataClasses}>{edu.start ?? '-'}</span>
                       </div>
                     </div>
-                    <div className="hidden lg:block">
+                    <div className="hidden desktop:block">
                       <div className="label">Studietakt</div>
                       <div className="flex items-center">
                         <span className={cardDataClasses}>{edu.scope ? edu.scope + '%' : '-'}</span>
                       </div>
                     </div>
                     {/* </div>
-                  <div className="text-[1.3rem] md:text-sm flex justify-between gap-md lg:gap-lg"> */}
-                    <div className="hidden lg:block">
+                  <div className="text-[1.3rem] medium-device:text-sm flex justify-between gap-md desktop:gap-lg"> */}
+                    <div className="hidden desktop:block">
                       <div className="label">Utbildningsform</div>
                       <div className="flex items-center">
                         <span className={cardDataClasses}>{edu.level ?? '-'}</span>
                       </div>
                     </div>
-                    <div className="hidden lg:block">
+                    <div className="hidden desktop:block">
                       <div className="label">Distans (?)</div>
                       <div className="flex items-center">
                         <span className={cardDataClasses}>{'X'}</span>
                       </div>
                     </div>
-                    <div className="hidden lg:block">
+                    <div className="hidden desktop:block">
                       <div className="label">Språk (?)</div>
                       <div className="flex items-center">
                         <span className={cardDataClasses}>{'X'}</span>
@@ -146,7 +146,7 @@ export const EducationsCards: React.FC<{
             >
               <h3 className="mb-10">{edu.name ? edu.name : ''}</h3>
               <div
-                className="text max-h-[9em] lg:max-h-[11em]"
+                className="text max-h-[9em] desktop:max-h-[11em]"
                 dangerouslySetInnerHTML={{ __html: informationSanitized }}
               />
             </DropCard>
@@ -162,7 +162,7 @@ export const EducationsCards: React.FC<{
         );
       })}
       {_meta.totalRecords > _meta.limit && (
-        <LoadMoreBlock loadMoreColorClass="text-white" loadMoreCallback={loadMoreCallback} className="lg:mb-3xl" />
+        <LoadMoreBlock loadMoreColorClass="text-white" loadMoreCallback={loadMoreCallback} className="desktop:mb-3xl" />
       )}
     </>
   );

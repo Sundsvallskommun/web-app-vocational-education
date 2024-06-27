@@ -17,7 +17,7 @@ export const BigDropCard: React.FC<DropCard> = ({ className = '', children, href
 
   return (
     <>
-      <div className="hidden md:block lg:hidden">
+      <div className="hidden medium-device:block desktop:hidden">
         <NextLink href={href} className="flex">
           <div className={`${className} flex w-full max-h-[124px]  overflow-hidden`}>
             <div className="min-w-[124px] w-[124px] overflow-hidden relative rounded-bl-half border-[2px] border-r-0 border-border-color">
@@ -44,9 +44,9 @@ export const BigDropCard: React.FC<DropCard> = ({ className = '', children, href
           </div>
         </NextLink>
       </div>
-      <div className="md:hidden lg:block">
+      <div className="medium-device:hidden desktop:block">
         <DropCard
-          className={`${className} max-h-[210px] lg:max-h-[323px]`}
+          className={`${className} max-h-[210px] desktop:max-h-[323px]`}
           dropClassName="!border-0"
           dropImageSrc={`${imageSrc}`}
           href={href}

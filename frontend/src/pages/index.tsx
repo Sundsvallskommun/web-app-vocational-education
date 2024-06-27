@@ -26,7 +26,7 @@ export const Start: React.FC = ({ pageData, layoutData }: PageProps) => {
         <BigDropHeader
           imageSrc="/drop-2-people-2.png"
           imageAlt="Två studenter skrattar"
-          imageDivClassName="hidden lg:block"
+          imageDivClassName="hidden desktop:block"
         >
           <h1>{pageData.title}</h1>
           <p className="ingress">{pageData.description}</p>

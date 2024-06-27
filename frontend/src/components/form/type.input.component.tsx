@@ -1,5 +1,4 @@
-import { Checkbox, FormControl, FormLabel } from '@sk-web-gui/react';
-import { useWindowSize } from '@utils/use-window-size.hook';
+import { Checkbox, FormControl, FormLabel, useThemeQueries } from '@sk-web-gui/react';
 import { useFormContext } from 'react-hook-form';
 import FilterPopup from './filter-popup.component';
 
@@ -16,18 +15,17 @@ export const typeFilter = [
 
 export default function TypeInput({ showLabel = false, label = typeFilterPlaceholder, size = 'sm' }) {
   const { register } = useFormContext();
-  const { windowSize } = useWindowSize();
-
+  const { isPhone } = useThemeQueries();
   return (
     <div>
-      {(windowSize.mobile || showLabel) && (
+      {(isPhone || showLabel) && (
         <FormLabel htmlFor="type" className="mb-sm">
           {label}
         </FormLabel>
       )}
       <FilterPopup label={label}>
         <FormControl fieldset id="type">
-          <Checkbox.Group size={size}>
+          <Checkbox.Group size={size as 'sm' | 'md' | 'lg'}>
             {typeFilter.map((x) => (
               <Checkbox key={`${x.label}`} labelPosition="right" {...register('type')} value={x.value}>
                 {x.label}

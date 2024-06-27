@@ -1,8 +1,8 @@
 import ContentBlock from '@components/block/content-block.component';
 import Button from '@components/button/button.component';
 import Drop from '@components/drop/drop.component';
-import EducationsCards from '@components/educations-cards/educations-cards.component';
-import EducationsTable from '@components/educations-table/educations-table.component';
+import EducationsCards from '@components/search/educations-cards/educations-cards.component';
+import EducationsTable from '@components/search/educations-table/educations-table.component';
 import { BigDropHeader } from '@components/header/big-drop-header.component';
 import EducationsFilters from '@components/search/educations-filters.component';
 import Search from '@components/search/search.component';

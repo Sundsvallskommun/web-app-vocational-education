@@ -40,7 +40,7 @@
 
           > * {
             @apply flex w-full;
-            @apply pl-0 text-green md:text-2xl py-[18px];
+            @apply pl-0 text-green medium-device:text-2xl py-[18px];
             @apply rounded-none cursor-pointer;
           }
 
@@ -93,7 +93,7 @@
           &-large {
             button,
             a {
-              @apply md:text-2xl py-[18px];
+              @apply medium-device:text-2xl py-[18px];
             }
             a[role='menuitem'] {
               @apply font-normal text-green pl-0;

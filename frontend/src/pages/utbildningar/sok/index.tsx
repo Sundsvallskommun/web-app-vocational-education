@@ -177,7 +177,7 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
         <BigDropHeader
           imageSrc="/drop-2-people.png"
           imageAlt="Två studenter skrattar"
-          imageDivClassName="hidden lg:block"
+          imageDivClassName="hidden desktop:block"
           breadcrumbs={
             <Breadcrumb className="text-[13px]" separator={<span className="mx-1">|</span>}>
               <Breadcrumb.Item>
@@ -204,10 +204,10 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
         >
           <h1>Sugen på att börja studera?</h1>
 
-          <Search className="mobile:mt-[25px] mt-2xl" keepParams />
+          <Search className="phone:mt-[25px] mt-2xl" keepParams />
           {isFiltersTouched && (
             <>
-              <h2 className="mt-md lg:mt-[7.25rem] text-lg lg:text-[2.6rem] leading-[3.6rem] mb-0">
+              <h2 className="mt-md desktop:mt-[7.25rem] text-large desktop:text-[2.6rem] leading-[3.6rem] mb-0">
                 Din sökning<strong>{` ${searchQuery} `}</strong>gav{' '}
                 <strong>
                   {!_meta || _meta?.totalRecords == 0 ?
@@ -233,8 +233,8 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
           />
 
           {searchResults.length > 0 ?
-            <div className="mt-md lg:mt-[6.6rem] flex flex-col gap-lg lg:flex-row">
-              <div className="w-full flex flex-col gap-lg lg:w-[830px]">
+            <div className="mt-md desktop:mt-[6.6rem] flex flex-col gap-lg desktop:flex-row">
+              <div className="w-full flex flex-col gap-lg desktop:w-[830px]">
                 {activeListing === 1 ?
                   <EducationsCards
                     educations={searchResults}
@@ -254,20 +254,20 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
                   
                 <Sticky
                   boundaryElement=".compareStickyParent"
-                  wrapperClassName="fixed bottom-0 inset-x-0 lg:relative lg:bottom-auto lg:inset-x-auto"
-                  stickyClassName="lg:flex lg:mt-[160px] !relative lg:!fixed"
+                  wrapperClassName="fixed bottom-0 inset-x-0 desktop:relative desktop:bottom-auto desktop:inset-x-auto"
+                  stickyClassName="desktop:flex desktop:mt-[160px] !relative desktop:!fixed"
                   topOffset={-160}
                   bottomOffset={60}
                 >
-                  <div className="blocked-green flex flex-col justify-center items-center lg:relative !px-sm lg:!px-lg !py-sm lg:!py-lg text-center">
-                    <div className="hidden lg:block absolute -top-lg mx-auto inset-x-0">
+                  <div className="blocked-green flex flex-col justify-center items-center desktop:relative !px-sm desktop:!px-lg !py-sm desktop:!py-lg text-center">
+                    <div className="hidden desktop:block absolute -top-lg mx-auto inset-x-0">
                       <Drop
                         setSize
                         className="!border-0 !bg-green-light"
                         dropIcon={<CompareArrowsOutlinedIcon className="!text-3xl" />}
                       />
                     </div>
-                    <div className="hidden lg:block mt-md">
+                    <div className="hidden desktop:block mt-md">
                       <h2>Jämför utbildningar</h2>
                       <p className="text">
                         Lägg till minst två utbildningar du vill jämföra genom att trycka på “jämför” på respektive
@@ -276,7 +276,7 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
                     </div>
 
                     <NextLink
-                      className={cx(searchCompareList.length === 0 && 'pointer-events-none', 'lg:mt-md')}
+                      className={cx(searchCompareList.length === 0 && 'pointer-events-none', 'desktop:mt-md')}
                       href={{
                         pathname: '/utbildningar/sok/jamfor',
                         query: searchCompareList ? { id: searchCompareList.map((x) => x.id) } : undefined,
@@ -286,7 +286,7 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
                         as="span"
                         disabled={searchCompareList.length === 0}
                         className="!px-md"
-                        leftIcon={<CompareArrowsOutlinedIcon className="lg:!hidden" />}
+                        leftIcon={<CompareArrowsOutlinedIcon className="desktop:!hidden" />}
                       >
                         <span>
                           Jämför utbildningar{' '}
@@ -296,7 +296,11 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
                     </NextLink>
 
                     {searchCompareList.length > 0 && (
-                      <Button onClick={handleOnResetSearchCompareList} variant="ghost" className="p-0 mt-sm lg:mt-md">
+                      <Button
+                        onClick={handleOnResetSearchCompareList}
+                        variant="ghost"
+                        className="p-0 mt-sm desktop:mt-md"
+                      >
                         <Link as="div" className="text-[12px]">
                           Rensa alla utbildningar
                         </Link>

@@ -1,7 +1,7 @@
 import ContentBlock from '@components/block/content-block.component';
-import { useEffect, useState } from 'react';
-import { useWindowSize } from '@utils/use-window-size.hook';
 import LoadMoreBlock from '@components/block/load-more-block.component';
+import { useThemeQueries } from '@sk-web-gui/react';
+import { useEffect, useState } from 'react';
 
 type ValuesOf<T extends unknown[]> = T[number];
 
@@ -29,11 +29,11 @@ export const CardsBlock = <T extends unknown[] = unknown[]>({
   DesktopDefaultAmount = 6,
 }: CardsBlockProps<T>) => {
   const [showAmount, setShowAmount] = useState(mobileDefaultAmount);
-  const { windowSize } = useWindowSize();
+  const { isMinDesktop, isMinMediumDevice } = useThemeQueries();
 
   const loadMoreCallback = () => {
     setShowAmount((amount) => {
-      if (!windowSize.lg) {
+      if (!isMinDesktop) {
         return amount + mobileDefaultAmount;
       }
       return amount + DesktopDefaultAmount;
@@ -41,26 +41,26 @@ export const CardsBlock = <T extends unknown[] = unknown[]>({
   };
 
   useEffect(() => {
-    if (windowSize.lg) {
+    if (isMinDesktop) {
       setShowAmount(DesktopDefaultAmount);
-    } else if (windowSize.md) {
+    } else if (isMinMediumDevice) {
       setShowAmount(tabletDefaultAmount);
     } else {
       setShowAmount(mobileDefaultAmount);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [windowSize.lg, windowSize.md]);
+  }, [isMinDesktop, isMinMediumDevice]);
 
   return (
     <ContentBlock classNameWrapper={`${className} ${backgroundClass}`} padded>
       <div>
         <h2>{title}</h2>
-        <div className="mt-2xl flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-lg gap-y-2xl">
+        <div className="mt-2xl flex flex-col medium-device:grid medium-device:grid-cols-2 desktop:grid-cols-3 gap-lg gap-y-2xl">
           {cards.slice(0, showAmount).map((card, index) => {
             return cardRender(card, index);
           })}
         </div>
-        {!windowSize.lg && showAmount < cards.length && (
+        {!isMinDesktop && showAmount < cards.length && (
           <LoadMoreBlock
             loadMoreColorClass={loadMoreColorClass}
             loadMoreCallback={loadMoreCallback}

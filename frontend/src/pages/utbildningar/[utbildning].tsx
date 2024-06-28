@@ -51,8 +51,8 @@ export const Yrkesforare: React.FC = ({ layoutData }: LayoutProps) => {
   return (
     <DefaultLayout title={`Yrkesutbildning - Yrkesforare`} layoutData={layoutData}>
       <ContentBlock>
-        <div className="lg:flex">
-          <div className="flex-grow flex flex-col lg:mt-lg lg:pr-xl">
+        <div className="desktop:flex">
+          <div className="flex-grow flex flex-col desktop:mt-lg desktop:pr-xl">
             <div>
               <Breadcrumb className="text-[13px]" separator={<span className="mx-1">|</span>}>
                 <Breadcrumb.Item>
@@ -78,15 +78,18 @@ export const Yrkesforare: React.FC = ({ layoutData }: LayoutProps) => {
             </div>
 
             <div className="h-full flex-grow flex flex-col justify-center max-w-[720px]">
-              <div className="flex justify-between md:justify-start items-center">
+              <div className="flex justify-between medium-device:justify-start items-center">
                 <h1 className="m-0">{educationData.title}</h1>
-                <Drop className="p-sm md:p-md md:ml-lg" dropIcon={<SchoolIcon className="!text-2xl" />} />
+                <Drop
+                  className="p-sm medium-device:p-md medium-device:ml-lg"
+                  dropIcon={<SchoolIcon className="!text-2xl" />}
+                />
               </div>
               <p className="ingress mt-0">Yrkesakademin Vux</p>
             </div>
           </div>
         </div>
-        <div className="text-sm mt-lg grid grid-cols-2 lg:flex gap-xl">
+        <div className="text-sm mt-lg grid grid-cols-2 desktop:flex gap-xl">
           <div>
             <label id="education-length">Utbildningens längd</label>
             <div aria-describedby="education-length">
@@ -120,8 +123,8 @@ export const Yrkesforare: React.FC = ({ layoutData }: LayoutProps) => {
         </div>
       </ContentBlock>
       <ContentBlock classNameWrapper="!mt-2xl bg-blue-light py-lg">
-        <div className="flex flex-col gap-lg lg:flex-row justify-between items-center">
-          <div className="text-sm grid grid-cols-2 gap-lg lg:flex lg:gap-[75px]">
+        <div className="flex flex-col gap-lg desktop:flex-row justify-between items-center">
+          <div className="text-sm grid grid-cols-2 gap-lg desktop:flex desktop:gap-[75px]">
             <div>
               <label id="education-startdate">Nästa utbildningsstart</label>
               <div aria-describedby="education-startdate">
@@ -149,7 +152,7 @@ export const Yrkesforare: React.FC = ({ layoutData }: LayoutProps) => {
             officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
           </p>
           <h2>Grundläggande behörighet</h2>
-          <p className="text hidden md:block">
+          <p className="text hidden medium-device:block">
             Du är behörig att antas till en yrkeshögskoleutbildning om du uppfyller något av följande:
           </p>
           <ol className="drops">

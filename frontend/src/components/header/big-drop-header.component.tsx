@@ -19,14 +19,14 @@ export const BigDropHeader: React.FC<BigDropHeaderProps> = ({
 }) => {
   const _imageSrc = usePlaceholderImg(imageSrc);
   return (
-    <div className="lg:flex">
+    <div className="desktop:flex">
       {imageSrc && (
         <div
           className={`mx-auto ${imageDivClassName} ${
             React.Children.count(children) > 1 ?
-              'max-w-[380px] lg:w-[380px] lg:h-[380px]'
-            : 'max-w-[412px] lg:w-[412px] lg:h-[412px]'
-          } order-2 relative mb-[38px] lg:mb-0`}
+              'max-w-[380px] desktop:w-[380px] desktop:h-[380px]'
+            : 'max-w-[412px] desktop:w-[412px] desktop:h-[412px]'
+          } order-2 relative mb-[38px] desktop:mb-0`}
         >
           <Image
             priority
@@ -39,7 +39,7 @@ export const BigDropHeader: React.FC<BigDropHeaderProps> = ({
           />
         </div>
       )}
-      <div className={`flex-grow flex flex-col ${breadcrumbs ? 'lg:mt-xl' : 'lg:mt-2xl'} lg:pr-xl`}>
+      <div className={`flex-grow flex flex-col ${breadcrumbs ? 'desktop:mt-xl' : 'desktop:mt-2xl'} desktop:pr-xl`}>
         {breadcrumbs && <div>{breadcrumbs}</div>}
 
         <div

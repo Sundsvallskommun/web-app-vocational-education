@@ -1,5 +1,4 @@
-import { FormControl, RadioButton, FormLabel } from '@sk-web-gui/react';
-import { useWindowSize } from '@utils/use-window-size.hook';
+import { FormControl, FormLabel, RadioButton, useThemeQueries } from '@sk-web-gui/react';
 import { useFormContext } from 'react-hook-form';
 import FilterPopup from './filter-popup.component';
 
@@ -12,18 +11,18 @@ const booleanFilter = [
 
 export default function DistanceInput({ label = distanceFilterPlaceholder, showLabel = false, size = 'sm' }) {
   const { register } = useFormContext();
-  const { windowSize } = useWindowSize();
+  const { isPhone } = useThemeQueries();
 
   return (
     <div>
-      {(windowSize.mobile || showLabel) && (
+      {(isPhone || showLabel) && (
         <FormLabel htmlFor="distance" className="mb-sm">
           {label}
         </FormLabel>
       )}
       <FilterPopup label={label}>
         <FormControl fieldset id="distance">
-          <RadioButton.Group size={size}>
+          <RadioButton.Group size={size as 'sm' | 'md' | 'lg'}>
             {booleanFilter.map((x) => (
               <RadioButton key={`${x.value}`} {...register('distance')} value={x.value.toString()}>
                 {x.label}

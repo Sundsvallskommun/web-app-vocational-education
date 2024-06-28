@@ -20,7 +20,7 @@ export default function EducationsRelatedBlock({ educations }: EducationsRelated
       cardRender={(education, index) => (
         <DropCard
           key={`${index}`}
-          classNameCard="max-h-[232px] min-h-[232px] lg:max-h-[270px]"
+          classNameCard="max-h-[232px] min-h-[232px] desktop:max-h-[270px]"
           href={`/utbildningar/${education.courseCode}`}
           dropIcon={<SchoolIcon className="!text-2xl" />}
           footer={

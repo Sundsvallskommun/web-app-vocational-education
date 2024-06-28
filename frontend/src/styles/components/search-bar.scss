@@ -65,7 +65,7 @@
     .searchbar {
       &-button {
         &-search {
-          @apply pl-[1.8rem] pr-[2.4rem] text-lg font-medium  min-h-[5rem] max-h-[5rem] rounded-l-none;
+          @apply pl-[1.8rem] pr-[2.4rem] text-large font-medium  min-h-[5rem] max-h-[5rem] rounded-l-none;
           &[data-color='primary'] {
             @apply text-white bg-black-light hover:underline hover:shadow-none hover:bg-black-light;
           }

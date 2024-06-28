@@ -20,7 +20,7 @@ export const Login: React.FC = ({ layoutData }: PageProps) => {
         <BigDropHeader
           imageSrc="/drop-person-holding-thing.png"
           imageAlt="Två studenter skrattar"
-          imageDivClassName="hidden lg:block"
+          imageDivClassName="hidden desktop:block"
           breadcrumbs={
             <Breadcrumb className="" separator={<span className="mx-1">|</span>}>
               <Breadcrumb.Item>

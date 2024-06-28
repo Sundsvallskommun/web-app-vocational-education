@@ -64,7 +64,7 @@ export const DropCard: React.FC<DropCard> = ({
           <ContentComp href={href} className="flex">
             <div
               className={cx(
-                'drop-card-text px-[15px] pb-[15px] md:px-lg md:pb-lg [&_h2]:break-word [&_h3]:break-word [&_h2]:text-green [&_h3]:text-green group-hover:[&_h2]:underline group-hover:[&_h3]:underline [&_p]:leading-[1.8] [&_ul]:mt-[1rem] [&_ul_li]:text-sm',
+                'drop-card-text px-[15px] pb-[15px] medium-device:px-lg medium-device:pb-lg [&_h2]:break-word [&_h3]:break-word [&_h2]:text-green [&_h3]:text-green group-hover:[&_h2]:underline group-hover:[&_h3]:underline [&_p]:leading-[1.8] [&_ul]:mt-[1rem] [&_ul_li]:text-sm',
                 !toolbar && 'pt-md'
               )}
               style={!toolbar ? { marginTop: dropHeight / 2 + 'px' } : undefined}
@@ -73,7 +73,7 @@ export const DropCard: React.FC<DropCard> = ({
             </div>
             {(footer || textFade) && (
               <div
-                className={`drop-card-footer-container absolute w-full bottom-0 pt-md pb-[15px] pl-[15px] md:pb-lg md:pl-lg pr-[55px] bg-white rounded-b-[15px] ${
+                className={`drop-card-footer-container absolute w-full bottom-0 pt-md pb-[15px] pl-[15px] medium-device:pb-lg medium-device:pl-lg pr-[55px] bg-white rounded-b-[15px] ${
                   textFade ? `shadow-top ${loadMoreColorClass}` : ''
                 }`}
               >
@@ -82,8 +82,8 @@ export const DropCard: React.FC<DropCard> = ({
                 </div>
               </div>
             )}
-            <div className="drop-card-arrow w-[50px] h-[50px] md:w-[60px] md:h-[60px] p-[12px] absolute flex justify-end rounded-tl-full items-end text-green bg-green-light right-0 bottom-0">
-              <ArrowForwardIcon className="material-icon !text-xl md:!text-2xl" />
+            <div className="drop-card-arrow w-[50px] h-[50px] medium-device:w-[60px] medium-device:h-[60px] p-[12px] absolute flex justify-end rounded-tl-full items-end text-green bg-green-light right-0 bottom-0">
+              <ArrowForwardIcon className="material-icon !text-xl medium-device:!text-2xl" />
             </div>
           </ContentComp>
           {toolbar && <div className="drop-card-toolbar px-sm pt-sm flex justify-end">{toolbar}</div>}

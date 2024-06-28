@@ -16,7 +16,7 @@ export async function getServerSideProps({ res }) {
 export const Siteguide: React.FC = ({ layoutData }: LayoutProps) => {
   return (
     <DefaultLayout title={`Yrkesutbildning - Siteguide`} layoutData={layoutData}>
-      <ContentBlock classNameWrapper="lg:mt-lg">
+      <ContentBlock classNameWrapper="desktop:mt-lg">
         <Wysiwyg>
           <h1>Siteguide</h1>
           <p className="ingress">

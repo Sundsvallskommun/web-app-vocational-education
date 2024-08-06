@@ -1,6 +1,6 @@
 .SidebarLayout {
   .main-container {
-    @apply flex pt-10  pb-20 md:px-lg;
+    @apply flex pt-10  pb-20 medium-device:px-lg;
 
     .container {
       @apply mx-auto flex gap-x-5;

@@ -39,12 +39,12 @@
         counter-increment: item;
 
         &:before {
-          @apply absolute mt-[0.4em] mr-[14px] md:ml-lg bg-green inline-flex justify-center text-sm items-center  w-[18px] h-[18px] min-w-[18px] min-h-[18px] drop-right;
+          @apply absolute mt-[0.4em] mr-[14px] medium-device:ml-lg bg-green inline-flex justify-center text-sm items-center  w-[18px] h-[18px] min-w-[18px] min-h-[18px] drop-right;
           content: '';
         }
 
         > * {
-          @apply ml-[32px] lg:ml-[62px];
+          @apply ml-[32px] desktop:ml-[62px];
         }
       }
     }

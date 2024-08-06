@@ -1,13 +1,13 @@
-import { useWindowSize } from '@utils/use-window-size.hook';
+import { useThemeQueries } from '@sk-web-gui/react';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 
 export const useDropProps = (dropIcon, dropDate, dropImageSrc) => {
-  const { windowSize } = useWindowSize();
+  const { isMinDesktop } = useThemeQueries();
   let dropContent;
   let dropHeight = 32;
   if (dropIcon) {
-    dropHeight = !windowSize.lg ? 45 : 64;
+    dropHeight = !isMinDesktop ? 45 : 64;
     dropContent = dropIcon;
   }
   if (dropDate) {
@@ -15,12 +15,12 @@ export const useDropProps = (dropIcon, dropDate, dropImageSrc) => {
     dropContent = (
       <div className="text-center justify-center">
         <div className="text-3xl font-bold">{dayjs(dropDate).format('D')}</div>
-        <div className="text-lg uppercase">{dayjs(dropDate).format('MMM')}</div>
+        <div className="text-large uppercase">{dayjs(dropDate).format('MMM')}</div>
       </div>
     );
   }
   if (dropImageSrc) {
-    dropHeight = !windowSize.lg ? 96 : 140;
+    dropHeight = !isMinDesktop ? 96 : 140;
     dropContent = <Image className="min-h-full" width={dropHeight} height={dropHeight} src={dropImageSrc} alt={''} />;
   }
   return { dropContent, dropHeight };

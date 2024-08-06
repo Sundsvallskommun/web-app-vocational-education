@@ -6,6 +6,7 @@ import { validationMiddleware } from '@middlewares/validation.middleware';
 import { Body, Controller, HttpCode, Post, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 import sanitizeHtml from 'sanitize-html';
+import { isDev } from '../utils/env';
 
 const messageHTML = (userData: ContactFormDto, meta: { pathReference: string }) => {
   const lines = sanitizeHtml(userData.message, {
@@ -26,7 +27,9 @@ const messageHTML = (userData: ContactFormDto, meta: { pathReference: string }) 
 </head>
 <body>
     <h1>Kontaktförfrågan: ${APP_NAME}</h1>
-    <p><strong>Från sida:</strong> ${meta.pathReference}</p>
+    <p><strong>Vald kommun:</strong> ${userData.municipality}</p>
+    <p><strong>Sidreferens:</strong> ${meta.pathReference}</p>
+    <h2>Från</h2>
     <p><strong>Namn:</strong> ${userData.name}</p>
     <p><strong>Email:</strong> ${userData.email}</p>
     <p><strong>Användarens meddelande:</strong></p>
@@ -46,6 +49,29 @@ const base64Encode = (str: string) => {
   return Buffer.from(str, 'utf-8').toString('base64');
 };
 
+type Municipalities = 'Härnösand' | 'Kramfors' | 'Sollefteå' | 'Sundsvall' | 'Timrå' | 'Ånge' | 'Örnsköldsvik';
+const getEmailAdressesfromMunicipality = (municipality: Municipalities) => {
+  if (isDev()) return process.env.DEVELOPMENT_MAIL;
+  switch (municipality) {
+    case 'Härnösand':
+      return process.env.MAIL_HARNOSAND;
+    case 'Kramfors':
+      return process.env.MAIL_KRAMFORS;
+    case 'Sollefte\u00E5':
+      return process.env.MAIL_SOLLEFTEA;
+    case 'Sundsvall':
+      return process.env.MAIL_SUNDSVALL;
+    case 'Timr\u00E5':
+      return process.env.MAIL_TIMRA;
+    case '\u00C5nge':
+      return process.env.MAIL_ANGE;
+    case '\u00D6rnsk\u00F6ldsvik':
+      return process.env.MAIL_ORNSKOLDSVIK;
+    default:
+      return process.env.DEVELOPMENT_MAIL;
+  }
+};
+
 @Controller()
 export class ContactController {
   private apiService = new ApiService();
@@ -57,7 +83,7 @@ export class ContactController {
   async sendContactRequest(@Body() userData: ContactFormDto, @Req() req: RequestWithUser): Promise<any> {
     const pathReference = req.headers['x-referer'];
 
-    const emailString = MAIL_US;
+    const emailString = getEmailAdressesfromMunicipality(userData.municipality as Municipalities);
     if (emailString) {
       const mailAdresses = emailString.split(',');
       mailAdresses.forEach(async email => {

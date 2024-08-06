@@ -11,7 +11,7 @@ export default function FAQBlock({ faqBlock }: FAQBlockProps) {
   if (!faqBlock?.showBlock) return <></>;
   return (
     <ContentBlock>
-      <div className="flex flex-col lg:flex-row lg:justify-between">
+      <div className="flex flex-col desktop:flex-row desktop:justify-between">
         <h2 className="mb-md">{faqBlock.title}</h2>
         <p className="text !max-w-[600px] leading-[1.8] m-0">{faqBlock.description}</p>
       </div>

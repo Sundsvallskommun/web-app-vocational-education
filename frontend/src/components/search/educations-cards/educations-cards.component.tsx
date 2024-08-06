@@ -143,7 +143,7 @@ export const EducationsCards: React.FC<{
             >
               <h3 className="mb-10">{edu.name ? edu.name : ''}</h3>
               <div
-                className="text max-h-[9em] desktop:max-h-[11em]"
+                className="text h-[9em] desktop:h-[11em]"
                 dangerouslySetInnerHTML={{ __html: informationSanitized }}
               />
             </DropCard>

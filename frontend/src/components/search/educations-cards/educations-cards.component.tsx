@@ -88,7 +88,6 @@ export const EducationsCards: React.FC<{
         return (
           <div key={`${index}-${edu.code}`} className="w-full flex flex-col">
             <DropCard
-              // classNameCard="h-[218px] desktop:h-[247px]"
               href={`/utbildningar/${edu.code}-${edu.id}`}
               dropIcon={<SchoolIcon className="material-icon desktop:!text-2xl" />}
               footer={
@@ -120,8 +119,6 @@ export const EducationsCards: React.FC<{
                         <span className={cardDataClasses}>{edu.scope ? edu.scope + '%' : '-'}</span>
                       </div>
                     </div>
-                    {/* </div>
-                  <div className="text-[1.3rem] medium-device:text-sm flex justify-between gap-md desktop:gap-lg"> */}
                     <div className="hidden desktop:block">
                       <div className="label">Utbildningsform</div>
                       <div className="flex items-center">
@@ -146,7 +143,7 @@ export const EducationsCards: React.FC<{
             >
               <h3 className="mb-10">{edu.name ? edu.name : ''}</h3>
               <div
-                className="text max-h-[9em] desktop:max-h-[11em]"
+                className="text h-[9em] desktop:h-[11em]"
                 dangerouslySetInnerHTML={{ __html: informationSanitized }}
               />
             </DropCard>

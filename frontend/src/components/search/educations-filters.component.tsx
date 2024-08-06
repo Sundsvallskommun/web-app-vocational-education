@@ -10,9 +10,8 @@ import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBullet
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import { defaultEducationFilterOptions } from '@services/education-service/education-service';
 import { useUserStore } from '@services/user-service/user-service';
-import { cx, useSnackbar } from '@sk-web-gui/react';
+import { cx, useSnackbar, useThemeQueries } from '@sk-web-gui/react';
 import { objToQueryString } from '@utils/url';
-import { useWindowSize } from '@utils/use-window-size.hook';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -40,7 +39,7 @@ export const EducationsFilters: React.FC<{
   const newSavedSearch = useUserStore((s) => s.newSavedSearch);
   const user = useUserStore((s) => s.user);
 
-  const { windowSize } = useWindowSize();
+  const { isMinDesktop } = useThemeQueries();
   const snackBar = useSnackbar();
 
   const context = useForm<EducationFilterOptions>({
@@ -138,7 +137,7 @@ export const EducationsFilters: React.FC<{
   return (
     <form onSubmit={handleSubmit(handleOnSubmit)} autoComplete="off">
       <FormProvider {...context}>
-        {windowSize.mobile && !windowSize.lg && (
+        {!isMinDesktop && (
           <div className="search-filter">
             <Button type="button" onClick={handleOnFilterOpen} className="mt-lg w-full" leftIcon={<FilterListIcon />}>
               <span>Filtrera / Sortera (3)</span>
@@ -173,13 +172,13 @@ export const EducationsFilters: React.FC<{
           </div>
         )}
 
-        {windowSize.lg && (
+        {isMinDesktop && (
           <div className="search-filter">
             <div className="flex items-end justify-between mt-xl">
               <h3 className="flex items-center">
                 <FilterListIcon className="!text-[1em] mr-[1.25rem]" /> Filtrera / Sortera
               </h3>
-              <div className="gap-md lg:flex lg:items-center">
+              <div className="gap-md desktop:flex desktop:items-center">
                 <ButtonStackedIcon
                   active={activeListing == 0}
                   onClick={() => handleOnClickListing(0)}

@@ -10,6 +10,7 @@ export default function ContactFormLogic({ children }) {
 
   const formSchema = yup
     .object({
+      municipality: yup.string().required('Kommun måste anges'),
       name: yup.string().required('Namn måste anges'),
       email: yup.string().required('Email måste anges').email('Formatet på epostadressen är felaktig'),
       message: yup.string().required('Meddelande måste anges'),
@@ -19,6 +20,7 @@ export default function ContactFormLogic({ children }) {
   const context = useForm<Partial<ContactForm>>({
     resolver: yupResolver(formSchema),
     defaultValues: {
+      municipality: '',
       name: '',
       email: '',
       message: '',

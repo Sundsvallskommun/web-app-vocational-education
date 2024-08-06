@@ -66,7 +66,7 @@ export const Behorighet: React.FC = ({ layoutData, pageData }: PageProps) => {
             officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
           </p>
           <h2>Grundläggande behörighet</h2>
-          <p className="text hidden md:block">
+          <p className="text hidden medium-device:block">
             Du är behörig att antas till en yrkeshögskoleutbildning om du uppfyller något av följande:
           </p>
           <ol className="drops">
@@ -125,14 +125,14 @@ export const Behorighet: React.FC = ({ layoutData, pageData }: PageProps) => {
             velit mollit. Exercitation veniam consequat sunt nostrud amet. Dest sit aliqua dolor do amet sint. Velit
             officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
           </p>
-          <Button className="override !mt-2xl" variant="solid" rightIcon={<ArrowForwardIcon />}>
+          <Button className="override !mt-2xl" rightIcon={<ArrowForwardIcon />}>
             <span>Lorem ipsum dolor sit</span>
           </Button>
         </div>
       </ContentBlock>
       <ContentBlock classNameWrapper="bg-blue-light" padded>
         <h2>Relaterade utbildningar</h2>
-        <div className="mt-2xl flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-lg gap-y-2xl">
+        <div className="mt-2xl flex flex-col medium-device:grid medium-device:grid-cols-2 desktop:grid-cols-3 gap-lg gap-y-2xl">
           <DropCard
             classNameCard="max-h-[270px]"
             href="/"

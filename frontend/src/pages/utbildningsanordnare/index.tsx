@@ -25,7 +25,7 @@ export const Utbildningsanordnare: React.FC = ({ pageData, layoutData }: PagePro
         <BigDropHeader
           imageSrc="/drop-person-holding-thing.png"
           imageAlt="Två studenter skrattar"
-          imageDivClassName="hidden lg:block"
+          imageDivClassName="hidden desktop:block"
         >
           <h1>{pageData.title}</h1>
           <p className="ingress">{pageData.description}</p>
@@ -34,7 +34,7 @@ export const Utbildningsanordnare: React.FC = ({ pageData, layoutData }: PagePro
       </ContentBlock>
 
       <ContentBlock>
-        <div className="grid lg:grid-cols-[auto_50rem] gap-[5.6rem]">
+        <div className="grid desktop:grid-cols-[auto_50rem] gap-[5.6rem]">
           <div className="flex flex-col">
             <h2>Lägg till intresseområden</h2>
             <SavedInterestsFormLogic>

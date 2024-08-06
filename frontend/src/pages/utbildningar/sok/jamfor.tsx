@@ -42,8 +42,8 @@ export const Compare: React.FC = ({ layoutData }: LayoutProps) => {
   return (
     <DefaultLayout title={`Yrkesutbildning - Jämför`} layoutData={layoutData}>
       <ContentBlock>
-        <div className="lg:flex">
-          <div className="flex-grow flex flex-col lg:mt-lg lg:pr-xl">
+        <div className="desktop:flex">
+          <div className="flex-grow flex flex-col desktop:mt-lg desktop:pr-xl">
             <div>
               <Breadcrumb className="text-[13px]" separator={<span className="mx-1">|</span>}>
                 <Breadcrumb.Item>
@@ -75,7 +75,7 @@ export const Compare: React.FC = ({ layoutData }: LayoutProps) => {
             </div>
 
             <div className="h-full flex-grow flex flex-col justify-center max-w-[720px]">
-              <div className="flex justify-between md:justify-start items-center">
+              <div className="flex justify-between medium-device:justify-start items-center">
                 <h1 className="m-0">Jämför utbildningar</h1>
               </div>
             </div>
@@ -88,7 +88,7 @@ export const Compare: React.FC = ({ layoutData }: LayoutProps) => {
               <span>Tillbaka till sökresultat</span>
             </Link>
           </Button>
-          <div className="gap-md hidden lg:flex">
+          <div className="gap-md hidden desktop:flex">
             <ButtonStackedIcon
               active={activeListing == 0}
               onClick={() => handleOnClickListing(0)}

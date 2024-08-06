@@ -67,33 +67,33 @@
 
   h1 {
     @apply text-[2.8rem] leading-[3.8rem];
-    @apply lg:text-[5.2rem] lg:leading-[5.9rem] lg:-tracking-[0.0578rem];
+    @apply desktop:text-[5.2rem] desktop:leading-[5.9rem] desktop:-tracking-[0.0578rem];
 
     & + .ingress {
       @apply text-[1.8rem] leading-[2.7rem] mb-xl text-ellipsis;
-      @apply md:text-[2rem] md:leading-[3rem];
+      @apply medium-device:text-[2rem] medium-device:leading-[3rem];
     }
   }
 
   h2 {
     @apply text-[1.9rem] leading-[2.4rem];
-    @apply md:text-[2.6rem] md:leading-[3.6rem] md:-tracking-[.01rem];
+    @apply medium-device:text-[2.6rem] medium-device:leading-[3.6rem] medium-device:-tracking-[.01rem];
   }
 
   h3 {
     @apply text-[1.7rem] leading-[2.5rem];
-    @apply md:text-[2.1rem] md:leading-[3rem];
+    @apply medium-device:text-[2.1rem] medium-device:leading-[3rem];
   }
 
   h4 {
     @apply text-[1.5rem] leading-[2.5rem];
-    @apply md:text-[1.8rem];
+    @apply medium-device:text-[1.8rem];
   }
 
   p {
     @apply my-[.625em] max-w-[90rem] text-ellipsis;
     @apply leading-[2.6rem];
-    @apply md:leading-[150%];
+    @apply medium-device:leading-[150%];
     // hyphens: auto;
 
     p + & {
@@ -103,7 +103,7 @@
 
   .text {
     @apply text-sm text-body leading-[2.6rem] text-ellipsis;
-    @apply md:text-[1.6rem] md:leading-[150%];
+    @apply medium-device:text-[1.6rem] medium-device:leading-[150%];
   }
 
   p,
@@ -138,11 +138,11 @@
 
     &.text,
     li {
-      @apply text-[1.4rem] leading-[2.6rem] md:text-[1.6rem] md:leading-[2.9rem];
+      @apply text-[1.4rem] leading-[2.6rem] medium-device:text-[1.6rem] medium-device:leading-[2.9rem];
     }
 
     &.ingress {
-      @apply text-[1.8rem] leading-[2.7rem] md:text-[2rem] md:leading-[3rem];
+      @apply text-[1.8rem] leading-[2.7rem] medium-device:text-[2rem] medium-device:leading-[3rem];
     }
   }
 

@@ -12,11 +12,11 @@ export default function ImportantDatesBlock({ importantDatesBlock }: ImportantDa
   return (
     <ContentBlock>
       <h2>{importantDatesBlock.title}</h2>
-      <div className="mt-2xl flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-lg gap-y-2xl">
+      <div className="mt-2xl flex flex-col medium-device:grid medium-device:grid-cols-2 desktop:grid-cols-3 gap-lg gap-y-2xl">
         {importantDatesBlock.dateCards.map((dateCard, i) => (
           <DropCard
             key={`${dateCard.title}-${i}`}
-            classNameCard="max-h-[232px] min-h-[232px] lg:max-h-[270px]"
+            classNameCard="max-h-[232px] min-h-[232px] desktop:max-h-[270px]"
             href={dateCard.url}
             dropDate={dayjs(dateCard.date)}
             textFade

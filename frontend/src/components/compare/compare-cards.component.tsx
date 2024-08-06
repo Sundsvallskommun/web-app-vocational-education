@@ -45,10 +45,10 @@ export const CompareCards: React.FC<{ compareList: Course[]; onRemove? }> = ({ c
         {compareList.map((edu) => {
           return (
             <SwiperSlide key={`${edu.id}`}>
-              <div className="inline-block xs:w-[270px] md:w-[300px] lg:w-full">
+              <div className="inline-block xs:w-[270px] medium-device:w-[300px] desktop:w-full">
                 <DropCard
                   textFade={false}
-                  classNameCard="min-h-[492px] xs:w-[270px] md:w-[300px] lg:w-full"
+                  classNameCard="min-h-[492px] xs:w-[270px] medium-device:w-[300px] desktop:w-full"
                   href="/"
                   dropIcon={<SchoolIcon className="material-icon !text-2xl" />}
                 >
@@ -109,7 +109,7 @@ export const CompareCards: React.FC<{ compareList: Course[]; onRemove? }> = ({ c
         })}
       </Swiper>
       {compareList.length > 1 && (
-        <div className="flex justify-center mt-xl md:mt-2xl">
+        <div className="flex justify-center mt-xl medium-device:mt-2xl">
           <Pagination
             className="pagination override"
             changePage={handlePagination}

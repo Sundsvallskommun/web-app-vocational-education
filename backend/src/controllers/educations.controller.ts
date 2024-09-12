@@ -96,6 +96,8 @@ export class EducationsController {
   async getEducationEvents(@QueryParam('filter') filter?: EducationFilterOptions): Promise<DataResponse<any[]>> {
     const url = `/education-finder/1.2/courses`;
 
+    const today = new Date();
+    const todayFormatted = today.toISOString().split('T')[0];
     const params = {
       // Pagination parameters
       page: filter?.page !== undefined ? parseInt(filter.page) - 1 : undefined,
@@ -106,14 +108,17 @@ export class EducationsController {
       searchString: filter?.q ?? undefined,
       level: filter?.level ?? undefined,
       scope: filter?.scope ?? undefined,
+
       studyLocation: filter?.studyLocation?.join(','),
       // FIXME: should be below, but api lacks support yet
       // studyLocation: filter?.studyLocation ?? defaultStudyLocations,
+
       latestApplicationBefore: filter?.latestApplicationDate ?? undefined,
-      startAfter: filter?.startDate ?? undefined,
+      latestApplicationAfter: filter?.latestApplicationDate ? todayFormatted : undefined,
+      startAfter: filter?.startDate ?? filter?.latestApplicationDate ? todayFormatted : undefined,
 
       category: filter?.category ?? undefined,
-      // distance: filter?.distance ? filter.distance : undefined,
+      distance: filter?.distance ?? undefined,
     };
 
     const res = await this.apiService.get<any>({ url, params });

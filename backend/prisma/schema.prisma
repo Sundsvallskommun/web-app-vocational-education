@@ -72,7 +72,6 @@ model User_SavedInterest {
   userId            Int?
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt @default(now())
-  @@unique([category, level, studyLocation])
 }
 
 model Page {

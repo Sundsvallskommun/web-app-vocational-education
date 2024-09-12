@@ -2,10 +2,14 @@ import ErrorMessage from '@components/error-message/error-message.component';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Button, FormControl, FormLabel, Input, Select, Textarea } from '@sk-web-gui/react';
 import { useFormContext } from 'react-hook-form';
-import { studyLocationFilter, studyLocationFilterPlaceholder } from '../form/studyLocation.input.component';
+import { studyLocationFilterPlaceholder } from '../form/study-location.input.component';
+import { useFiltersContext } from '@contexts/filters.context';
+import { getFormattedLabelFromValue } from '@utils/labels';
 
 export default function ContactForm() {
   const { register, formState } = useFormContext();
+  const { filters } = useFiltersContext();
+
   return (
     <div>
       <div>
@@ -17,9 +21,9 @@ export default function ContactForm() {
               <Select.Option key={`-`} value={''}>
                 {`Välj ${studyLocationFilterPlaceholder}`}
               </Select.Option>
-              {studyLocationFilter.map((x) => (
-                <Select.Option key={`${x.label}`} value={x.value}>
-                  {x.label}
+              {filters?.studyLocation?.map((value) => (
+                <Select.Option key={`${value}`} value={value}>
+                  {getFormattedLabelFromValue(value)}
                 </Select.Option>
               ))}
             </Select>

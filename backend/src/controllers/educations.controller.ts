@@ -78,7 +78,7 @@ export class EducationsController {
 
   getFilter = async (filter: GetEducationFilter) => {
     try {
-      const url = `/education-finder/1.1/courses/filters/${filter}/values`;
+      const url = `/education-finder/1.2/courses/filters/${filter}/values`;
       const res = await this.apiService.get<string[]>({ url });
 
       if (Array.isArray(res.data) && res.data.length < 1) {
@@ -94,8 +94,8 @@ export class EducationsController {
   @Get('/education-events')
   @OpenAPI({ summary: 'Return education events' })
   async getEducationEvents(@QueryParam('filter') filter?: EducationFilterOptions): Promise<DataResponse<any[]>> {
-    const url = `/education-finder/1.1/courses`;
-    console.log('filter', filter);
+    const url = `/education-finder/1.2/courses`;
+
     const params = {
       // Pagination parameters
       page: filter?.page !== undefined ? parseInt(filter.page) - 1 : undefined,

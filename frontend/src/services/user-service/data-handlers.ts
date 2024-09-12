@@ -30,8 +30,8 @@ export const handleGetUserSavedSearchesResponse: (res: ApiResponse<UserSavedSear
 export const handleGetUserSavedInterestResponse: (data: UserSavedInterest) => UserSavedInterest = (data) => ({
   id: data.id,
   category: data.category,
-  type: data.type,
-  location: data.location,
+  level: data.level,
+  studyLocation: data.studyLocation,
   timeInterval: data.timeInterval,
   timeIntervalFrom: data.timeIntervalFrom,
   timeIntervalTo: data.timeIntervalTo,

@@ -1,4 +1,6 @@
+import { useFiltersContext } from '@contexts/filters.context';
 import { Checkbox, FormControl, FormLabel, useThemeQueries } from '@sk-web-gui/react';
+import { getFormattedLabelFromValue } from '@utils/labels';
 import { useFormContext } from 'react-hook-form';
 import FilterPopup from './filter-popup.component';
 
@@ -17,6 +19,7 @@ export const categoryFilter = [
 export default function CategoryInput({ showLabel = false, label = categoryFilterPlaceholder, size = 'sm', ...rest }) {
   const { register } = useFormContext();
   const { isPhone } = useThemeQueries();
+  const { filters } = useFiltersContext();
 
   return (
     <div>
@@ -28,14 +31,14 @@ export default function CategoryInput({ showLabel = false, label = categoryFilte
       <FilterPopup label={label}>
         <FormControl fieldset id="category" {...rest}>
           <Checkbox.Group size={size as 'sm' | 'md' | 'lg'}>
-            {categoryFilter.map((x) => (
+            {filters?.category?.map((value) => (
               <Checkbox
-                key={`${x.label}`}
+                key={`${value}`}
                 labelPosition="right"
                 {...register('category', { required: rest.required ?? undefined })}
-                value={x.value}
+                value={value}
               >
-                {x.label}
+                {getFormattedLabelFromValue(value)}
               </Checkbox>
             ))}
           </Checkbox.Group>

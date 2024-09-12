@@ -18,12 +18,13 @@ import { FormProvider, useForm } from 'react-hook-form';
 import CategoryInput from '../form/category.input.component';
 import DistanceInput from '../form/distance.input.component';
 import LatestApplicationDateInput from '../form/latest-application-date.input.component';
-import LocationInput from '../form/location.input.component';
-import PaceOfStudyInput from '../form/pace-of-study.input.component';
+import StudyLocationInput from '../form/study-location.input.component';
+import ScopeInput from '../form/scope.input.component';
 import SortFunctionInput from '../form/sort-function.input.component';
 import StartDateInput from '../form/start-date.input.component';
-import TypeInput from '../form/type.input.component';
+import LevelInput from '../form/level.input.component';
 import Tags from './educations-filters/tags.component';
+import { FiltersFetcher } from '@contexts/filters.context';
 
 export const EducationsFilters: React.FC<{
   searchQuery: string;
@@ -135,113 +136,115 @@ export const EducationsFilters: React.FC<{
   }, []);
 
   return (
-    <form onSubmit={handleSubmit(handleOnSubmit)} autoComplete="off">
-      <FormProvider {...context}>
-        {!isMinDesktop && (
-          <div className="search-filter">
-            <Button type="button" onClick={handleOnFilterOpen} className="mt-lg w-full" leftIcon={<FilterListIcon />}>
-              <span>Filtrera / Sortera (3)</span>
-            </Button>
-            {filterModalIsOpen && (
-              <MenuModal
-                show={filterModalIsOpen}
-                className="search-filter h-screen pb-[70px]"
-                onClose={handleOnFilterClose}
-              >
-                <h3 className="flex justify-center items-center gap-sm mt-xl">
-                  <FilterListIcon className="!text-[1em]" /> Filtrera / Sortera
+    <FiltersFetcher filters={['category', 'level', 'scope', 'studyLocation']}>
+      <form onSubmit={handleSubmit(handleOnSubmit)} autoComplete="off">
+        <FormProvider {...context}>
+          {!isMinDesktop && (
+            <div className="search-filter">
+              <Button type="button" onClick={handleOnFilterOpen} className="mt-lg w-full" leftIcon={<FilterListIcon />}>
+                <span>Filtrera / Sortera (3)</span>
+              </Button>
+              {filterModalIsOpen && (
+                <MenuModal
+                  show={filterModalIsOpen}
+                  className="search-filter h-screen pb-[70px]"
+                  onClose={handleOnFilterClose}
+                >
+                  <h3 className="flex justify-center items-center gap-sm mt-xl">
+                    <FilterListIcon className="!text-[1em]" /> Filtrera / Sortera
+                  </h3>
+                  <Tags />
+                  <div className="mt-lg flex flex-col gap-md">
+                    <SortFunctionInput />
+                    <CategoryInput />
+                    <LevelInput />
+                    <StudyLocationInput />
+                    <DistanceInput />
+
+                    <LatestApplicationDateInput />
+                    <StartDateInput />
+                    <ScopeInput />
+                  </div>
+                  <Button type="button" onClick={handleOnFilter} className="mt-2xl mx-auto min-w-[242px]">
+                    <span>Sortera</span>
+                  </Button>
+                </MenuModal>
+              )}
+              <div className="flex justify-between mt-lg "></div>
+            </div>
+          )}
+
+          {isMinDesktop && (
+            <div className="search-filter">
+              <div className="flex items-end justify-between mt-xl">
+                <h3 className="flex items-center">
+                  <FilterListIcon className="!text-[1em] mr-[1.25rem]" /> Filtrera / Sortera
                 </h3>
-                <Tags />
-                <div className="mt-lg flex flex-col gap-md">
+                <div className="gap-md desktop:flex desktop:items-center">
+                  <ButtonStackedIcon
+                    active={activeListing == 0}
+                    onClick={() => handleOnClickListing(0)}
+                    className="text-[12px]"
+                    icon={<FormatListBulletedOutlinedIcon />}
+                  >
+                    Lista
+                  </ButtonStackedIcon>
+                  <ButtonStackedIcon
+                    active={activeListing == 1}
+                    onClick={() => handleOnClickListing(1)}
+                    className="text-[12px]"
+                    icon={<CropPortraitOutlinedIcon />}
+                  >
+                    Kort
+                  </ButtonStackedIcon>
+                  {user.permissions.userSaveSearches && (
+                    <>
+                      <div className="w-[.1rem] h-[3rem] bg-border-color"></div>
+                      <ButtonStackedIcon
+                        disabled={isSavedSearch}
+                        onClick={handleSaveSearch}
+                        className="text-[12px]"
+                        icon={<FavoriteBorderOutlinedIcon />}
+                      >
+                        Spara
+                      </ButtonStackedIcon>
+                    </>
+                  )}
+                </div>
+              </div>
+              <div className="mt-md border border-border-color rounded bg-green-light">
+                <div className="filter-items-desktop">
                   <SortFunctionInput />
                   <CategoryInput />
-                  <TypeInput />
-                  <LocationInput />
+                  <LevelInput />
+                  <StudyLocationInput />
                   <DistanceInput />
 
+                  <Button
+                    type="button"
+                    onClick={handleToggleFilterList}
+                    className="more-button"
+                    variant="ghost"
+                    size="sm"
+                    aria-expanded={filterIsOpen}
+                    rightIcon={filterIsOpen ? <RemoveOutlinedIcon /> : <AddOutlinedIcon />}
+                  >
+                    <span>{filterIsOpen ? 'Mindre' : 'Fler'} filtreringar</span>
+                  </Button>
+                </div>
+                <div className={cx('filter-items-desktop', filterIsOpen === false && 'invisible h-0')}>
                   <LatestApplicationDateInput />
                   <StartDateInput />
-                  <PaceOfStudyInput />
+                  <ScopeInput />
                 </div>
-                <Button type="button" onClick={handleOnFilter} className="mt-2xl mx-auto min-w-[242px]">
-                  <span>Sortera</span>
-                </Button>
-              </MenuModal>
-            )}
-            <div className="flex justify-between mt-lg "></div>
-          </div>
-        )}
-
-        {isMinDesktop && (
-          <div className="search-filter">
-            <div className="flex items-end justify-between mt-xl">
-              <h3 className="flex items-center">
-                <FilterListIcon className="!text-[1em] mr-[1.25rem]" /> Filtrera / Sortera
-              </h3>
-              <div className="gap-md desktop:flex desktop:items-center">
-                <ButtonStackedIcon
-                  active={activeListing == 0}
-                  onClick={() => handleOnClickListing(0)}
-                  className="text-[12px]"
-                  icon={<FormatListBulletedOutlinedIcon />}
-                >
-                  Lista
-                </ButtonStackedIcon>
-                <ButtonStackedIcon
-                  active={activeListing == 1}
-                  onClick={() => handleOnClickListing(1)}
-                  className="text-[12px]"
-                  icon={<CropPortraitOutlinedIcon />}
-                >
-                  Kort
-                </ButtonStackedIcon>
-                {user.permissions.userSaveSearches && (
-                  <>
-                    <div className="w-[.1rem] h-[3rem] bg-border-color"></div>
-                    <ButtonStackedIcon
-                      disabled={isSavedSearch}
-                      onClick={handleSaveSearch}
-                      className="text-[12px]"
-                      icon={<FavoriteBorderOutlinedIcon />}
-                    >
-                      Spara
-                    </ButtonStackedIcon>
-                  </>
-                )}
               </div>
+
+              <Tags />
             </div>
-            <div className="mt-md border border-border-color rounded bg-green-light">
-              <div className="filter-items-desktop">
-                <SortFunctionInput />
-                <CategoryInput />
-                <TypeInput />
-                <LocationInput />
-                <DistanceInput />
-
-                <Button
-                  type="button"
-                  onClick={handleToggleFilterList}
-                  className="more-button"
-                  variant="ghost"
-                  size="sm"
-                  aria-expanded={filterIsOpen}
-                  rightIcon={filterIsOpen ? <RemoveOutlinedIcon /> : <AddOutlinedIcon />}
-                >
-                  <span>{filterIsOpen ? 'Mindre' : 'Fler'} filtreringar</span>
-                </Button>
-              </div>
-              <div className={cx('filter-items-desktop', filterIsOpen === false && 'invisible h-0')}>
-                <LatestApplicationDateInput />
-                <StartDateInput />
-                <PaceOfStudyInput />
-              </div>
-            </div>
-
-            <Tags />
-          </div>
-        )}
-      </FormProvider>
-    </form>
+          )}
+        </FormProvider>
+      </form>
+    </FiltersFetcher>
   );
 };
 

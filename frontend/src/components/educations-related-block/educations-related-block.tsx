@@ -29,7 +29,7 @@ export default function EducationsRelatedBlock({ educations }: EducationsRelated
                 <DateRangeIcon className="!text-2xl mr-sm" /> <span>{dayjs(education.date).format('DD MMM YYYY')}</span>
               </div>
               <div className="flex items-center">
-                <LocationOnIcon className="!text-2xl mr-sm" /> <span>{education.location}</span>
+                <LocationOnIcon className="!text-2xl mr-sm" /> <span>{education.studyLocation}</span>
               </div>
             </>
           }

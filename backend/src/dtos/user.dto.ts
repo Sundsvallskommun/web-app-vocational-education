@@ -13,7 +13,7 @@ export class SavedInterestDto {
   @IsString()
   type: string;
   @IsArray()
-  location: string[];
+  studyLocation: string[];
   @IsString()
   timeInterval: string;
   @IsOptional()

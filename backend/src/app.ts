@@ -34,6 +34,7 @@ import { dataDir } from './utils/util';
 import bcrypt from 'bcryptjs';
 import { additionalConverters } from './utils/custom-validation-classes';
 import { SessionUser } from './interfaces/users.interface';
+import qs from 'qs';
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -188,11 +189,11 @@ class App {
 
   private initializeMiddlewares() {
     this.app.use(morgan(LOG_FORMAT, { stream }));
-    this.app.use(hpp());
     this.app.use(helmet());
     this.app.use(compression());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(hpp());
     this.app.use(cookieParser());
 
     // FIXME: Enable when login-flow is corrected
@@ -211,6 +212,8 @@ class App {
     this.app.use(passport.session());
     // passport.use('saml', samlStrategy);
     passport.use('initial-auth', customStrategy);
+
+    this.app.set('query parser', 'extended');
 
     this.app.use(
       cors({

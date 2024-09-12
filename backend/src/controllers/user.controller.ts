@@ -9,7 +9,7 @@ import authMiddleware from '@middlewares/auth.middleware';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Res, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 
-const dbInterestToData = dbData => ({ ...dbData, location: dbData.location.split(',') });
+const dbInterestToData = dbData => ({ ...dbData, studyLocation: dbData.studyLocation.split(',') });
 
 const getStatisticsData = parametersList =>
   parametersList.map(() => ({
@@ -131,7 +131,7 @@ export class UserController {
     const interest = await prisma.user_SavedInterest.create({
       data: {
         ...body,
-        location: body.location.join(','),
+        studyLocation: body.studyLocation.join(','),
         userId: req.user.id,
       },
     });
@@ -165,7 +165,7 @@ export class UserController {
       },
       data: {
         ...body,
-        location: body.location.join(','),
+        studyLocation: body.studyLocation.join(','),
       },
     });
 

@@ -39,8 +39,8 @@ export interface UserSavedSearchDto {
 interface UserSavedInterestResponse {
   id: number;
   category: string;
-  type: string;
-  location: string[];
+  level: string;
+  studyLocation: string[];
   timeInterval: string;
   timeIntervalTo?: string;
   timeIntervalFrom?: string;
@@ -58,8 +58,8 @@ export interface UserSavedInterest extends UserSavedInterestResponse {
 
 export interface UserSavedInterestDto {
   category: string;
-  type: string;
-  location: string[];
+  level: string;
+  studyLocation: string[];
   timeInterval: string;
   timeIntervalTo?: string;
   timeIntervalFrom?: string;

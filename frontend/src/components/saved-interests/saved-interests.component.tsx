@@ -68,13 +68,13 @@ export default function SavedInterests() {
                   <div className="saved-interest-header-texts-heading">
                     <h3>
                       {`${interest.category}`}
-                      {interest.type && ` - ${interest.type}`}
+                      {interest.level && ` - ${interest.level}`}
                     </h3>
                     <div className="mt-[.9rem] text-sm text-label">
-                      {interest.location.map((x, i) => (
+                      {interest.studyLocation.map((x, i) => (
                         <span key={`${x}`}>
                           {x}
-                          {i < interest.location.length - 1 && ' | '}
+                          {i < interest.studyLocation.length - 1 && ' | '}
                         </span>
                       ))}
                     </div>
@@ -130,8 +130,8 @@ export default function SavedInterests() {
                     pathname: '/utbildningar/sok',
                     query: objToQueryString({
                       category: [interest.category],
-                      type: [interest.type],
-                      location: interest.location,
+                      level: [interest.level],
+                      studyLocation: interest.studyLocation,
                     }),
                   }}
                 >
@@ -145,7 +145,7 @@ export default function SavedInterests() {
                   onClick={handleRemoveInterest(interestIndex)}
                   className="text-[12px] text-blue"
                   icon={<DeleteIcon />}
-                  aria-label={`Radera, ${interest.category} - ${interest.type} - ${interest.location.join(', ')}`}
+                  aria-label={`Radera, ${interest.category} - ${interest.level} - ${interest.studyLocation.join(', ')}`}
                 >
                   Radera
                 </ButtonStackedIcon>
@@ -153,7 +153,7 @@ export default function SavedInterests() {
                   onClick={handleEditInterest(interestIndex)}
                   className="text-[12px] text-blue"
                   icon={<EditIcon />}
-                  aria-label={`Ändra, ${interest.category} - ${interest.type} - ${interest.location.join(', ')}`}
+                  aria-label={`Ändra, ${interest.category} - ${interest.level} - ${interest.studyLocation.join(', ')}`}
                 >
                   Ändra
                 </ButtonStackedIcon>

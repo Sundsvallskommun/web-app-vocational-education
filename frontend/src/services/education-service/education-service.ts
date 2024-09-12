@@ -1,5 +1,12 @@
 import { sortFilter } from '@components/form/sort-function.input.component';
-import { Course, EducationFilterOptions, PagedCoursesResponse, PagingMetaData } from '@interfaces/education';
+import {
+  Course,
+  EducationFilterOptions,
+  GetEducationFilters,
+  GetEducationFiltersResponseData,
+  PagedCoursesResponse,
+  PagingMetaData,
+} from '@interfaces/education';
 import { ValueOf } from '@utils/types';
 import { objToQueryString } from '@utils/url';
 import dayjs from 'dayjs';
@@ -9,12 +16,12 @@ export const emptyEducationFilterOptions: EducationFilterOptions = {
   q: '',
   sortFunction: sortFilter[0].value,
   category: [],
-  type: [],
-  location: [],
+  level: [],
+  studyLocation: [],
   distance: '',
   latestApplicationDate: '',
   startDate: '',
-  paceOfStudy: [],
+  scope: [],
 };
 
 export const defaultEducationFilterOptions: EducationFilterOptions = {
@@ -23,23 +30,23 @@ export const defaultEducationFilterOptions: EducationFilterOptions = {
   q: '',
   sortFunction: sortFilter[0].value,
   category: [],
-  type: [],
-  location: [],
+  level: [],
+  studyLocation: [],
   distance: '',
   latestApplicationDate: '',
   startDate: dayjs(new Date()).format('YYYY-MM-DD'),
-  paceOfStudy: [],
+  scope: [],
 };
 
 export const educationFilterTagLabels = {
   sortFunction: 'Sortera',
   category: 'Utbildningskategori',
-  type: 'Utbildningstyp',
-  location: 'Plats',
+  level: 'Utbildningsform',
+  studyLocation: 'Plats',
   distance: 'Distansutbildning',
   latestApplicationDate: 'Sista ansökningsdatum',
   startDate: 'Startdatum',
-  paceOfStudy: 'Studietakt',
+  scope: 'Studietakt',
 };
 
 export const getEducationFilterValueString = (filter, value) => {
@@ -48,9 +55,9 @@ export const getEducationFilterValueString = (filter, value) => {
       return sortFilter.find((choice) => choice.value === value).label;
     case 'category':
       return value.join(' | ');
-    case 'type':
+    case 'level':
       return value.join(' | ');
-    case 'location':
+    case 'studyLocation':
       return value.join(' | ');
     case 'distance':
       return value === 'true' ? 'Ja' : 'Nej';
@@ -58,7 +65,7 @@ export const getEducationFilterValueString = (filter, value) => {
       return value;
     case 'startDate':
       return value;
-    case 'paceOfStudy':
+    case 'scope':
       return value.map((x) => `${x}%`).join(' | ');
     default:
       return '';
@@ -77,12 +84,12 @@ export const getValidValue = <TFallback = null>(
   const validValues = {
     sortFunction: sortFilter.map((x) => x.value).includes(value as string) ? value : fallback,
     category: Array.isArray(value) && value[0] ? value : fallback,
-    type: Array.isArray(value) && value[0] ? value : fallback,
-    location: Array.isArray(value) && value[0] ? value : fallback,
+    level: Array.isArray(value) && value[0] ? value : fallback,
+    studyLocation: Array.isArray(value) && value[0] ? value : fallback,
     distance: ['true', 'false'].includes(value as string) ? value : fallback,
     latestApplicationDate: value ? value : fallback,
     startDate: value ? value : fallback,
-    paceOfStudy: Array.isArray(value) && value[0] ? value : fallback,
+    scope: Array.isArray(value) && value[0] ? value : fallback,
   };
   return validValues[key];
 };
@@ -96,12 +103,12 @@ export const getFilterDataStrings: {
   const filterDataStrings = Object.assign({}, filterData, {
     sortFunction: getValidValue('sortFunction', filterData.sortFunction, fallback),
     category: getValidValue('category', filterData.category, fallback),
-    type: getValidValue('type', filterData.type, fallback),
-    location: getValidValue('location', filterData.location, fallback),
+    level: getValidValue('level', filterData.level, fallback),
+    studyLocation: getValidValue('studyLocation', filterData.studyLocation, fallback),
     distance: getValidValue('distance', filterData.distance, fallback),
     latestApplicationDate: getValidValue('latestApplicationDate', filterData.latestApplicationDate, fallback),
     startDate: getValidValue('startDate', filterData.startDate, fallback),
-    paceOfStudy: getValidValue('paceOfStudy', filterData.paceOfStudy, fallback),
+    scope: getValidValue('scope', filterData.scope, fallback),
   });
   return filterDataStrings;
 };
@@ -146,16 +153,25 @@ export const getEducationEvents: (
     .get<ApiResponse<PagedCoursesResponse>>(`education-events`, {
       params: { filter: getFilterDataStrings(filterData, null) },
     })
-    .then((res) => {
-      console.log('getEducationEvents', res);
-      return res;
-    })
     .then((res) => ({
       courses: handleGetEducationEvents(res?.data?.data?.courses),
       _meta: handleGetEducationEventsMeta(res?.data?.data?._meta),
     }))
     .catch((e) => ({
       courses: [],
+      error: e.response?.status ?? 'UNKNOWN ERROR',
+    }));
+};
+
+export const getEducationEventsFilters: (
+  filters: GetEducationFilters
+) => Promise<{ data?: GetEducationFiltersResponseData; error?: unknown }> = (filters) => {
+  return apiService
+    .get<ApiResponse<GetEducationFiltersResponseData>>(`education-events/filters`, {
+      params: { filters: filters },
+    })
+    .then((res) => ({ data: res.data.data }))
+    .catch((e) => ({
       error: e.response?.status ?? 'UNKNOWN ERROR',
     }));
 };

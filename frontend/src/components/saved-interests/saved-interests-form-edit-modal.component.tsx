@@ -11,8 +11,8 @@ export default function SavedInterestsFormEditModal({ interestData, show = false
   const handleOnSubmit = async (values: UserSavedInterest, context) => {
     const data: UserSavedInterestDto = {
       category: values.category,
-      type: values.type,
-      location: values.location,
+      level: values.level,
+      studyLocation: values.studyLocation,
       timeInterval: values.timeInterval,
       timeIntervalFrom: values.timeIntervalFrom,
       timeIntervalTo: values.timeIntervalTo,

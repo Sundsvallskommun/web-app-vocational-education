@@ -263,13 +263,13 @@ export interface EducationFilterOptions {
   // Filter parameters
   q?: string | null;
   category?: string[] | null;
-  type?: string[] | null;
-  location?: string[] | null;
+  level?: string[] | null;
+  studyLocation?: string[] | null;
   distance?: string | null;
   cost?: string | null;
   latestApplicationDate?: string | null;
   startDate?: string | null;
-  paceOfStudy?: string[] | null;
+  scope?: string[] | null;
 }
 
 export interface Education {
@@ -277,9 +277,15 @@ export interface Education {
   text: string;
   courseCode: string;
   date: Date;
-  location: string;
+  studyLocation: string;
 }
 
 export interface EducationsRelated {
   educations: Education[];
 }
+
+export type GetEducationFilter = 'level' | 'scope' | 'studyLocation' | 'category';
+export type GetEducationFilters = GetEducationFilter[];
+export type GetEducationFiltersResponseData = {
+  [key in GetEducationFilter]?: string[];
+};

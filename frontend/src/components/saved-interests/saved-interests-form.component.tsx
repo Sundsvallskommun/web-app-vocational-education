@@ -1,8 +1,8 @@
 import Button from '@components/button/button.component';
 import { categoryFilter, categoryFilterPlaceholder } from '@components/form/category.input.component';
-import LocationInput, { locationFilterPlaceholder } from '@components/form/location.input.component';
+import StudyLocationInput, { studyLocationFilterPlaceholder } from '@components/form/study-location.input.component';
 import TimeIntervalInput, { timeIntervalFilterPlaceholder } from '@components/form/time-interval.input.component';
-import { typeFilter, typeFilterPlaceholder } from '@components/form/type.input.component';
+import { levelFilter, levelFilterPlaceholder } from '@components/form/level.input.component';
 import AddIcon from '@mui/icons-material/Add';
 import { FormControl, FormLabel, Select } from '@sk-web-gui/react';
 import { useFormContext } from 'react-hook-form';
@@ -32,16 +32,16 @@ export default function SavedInterestsForm({ mode = 'new' }: SavedInterestsFormP
         </FormControl>
       </div>
       <div>
-        <LocationInput showLabel label={`Välj ${locationFilterPlaceholder}`} />
+        <StudyLocationInput showLabel label={`Välj ${studyLocationFilterPlaceholder}`} />
       </div>
       <div>
         <FormControl className="w-full">
-          <FormLabel>{`Välj ${typeFilterPlaceholder}`}</FormLabel>
-          <Select {...register('type')}>
+          <FormLabel>{`Välj ${levelFilterPlaceholder}`}</FormLabel>
+          <Select {...register('level')}>
             <Select.Option key={`-`} value={''}>
-              {`Välj ${typeFilterPlaceholder}`}
+              {`Välj ${levelFilterPlaceholder}`}
             </Select.Option>
-            {typeFilter.map((x) => (
+            {levelFilter.map((x) => (
               <Select.Option key={`${x.label}`} value={x.value}>
                 {x.label}
               </Select.Option>

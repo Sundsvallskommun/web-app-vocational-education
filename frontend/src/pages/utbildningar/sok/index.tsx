@@ -17,7 +17,7 @@ import {
   getEducationEvents,
 } from '@services/education-service/education-service';
 import { getLayout } from '@services/layout-service';
-import { Breadcrumb, Link, cx, omit } from '@sk-web-gui/react';
+import { Breadcrumb, Link, Spinner, cx, omit } from '@sk-web-gui/react';
 import { ValueOf } from '@utils/types';
 import { addToQueryString, createObjectFromQueryString } from '@utils/url';
 import _ from 'lodash';
@@ -41,6 +41,7 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
 
   const [_meta, setPageMeta] = useState<PagingMetaData | undefined>();
   const [searchResults, setSearchResults] = useState<Course[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [searchQuery, setSearchQuery] = useState<string>(defaultEducationFilterOptions.q);
   const [searchFilters, setSearchFilters] = useState<EducationFilterOptions>(
@@ -54,7 +55,6 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
   const [isFiltersTouched, setIsFiltersTouched] = useState(false);
 
   const updateParams = (query: string | ParsedUrlQueryInput) => {
-    console.log('updateParams', query);
     router.replace(
       {
         pathname: router.pathname,
@@ -93,14 +93,13 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
   };
 
   const fetchSearch = (filterData?: EducationFilterOptions) => {
-    console.log('FETCH', filterData);
+    setIsLoading(true);
     getEducationEvents({ ...filterData }).then((res) => {
       if (!res.error) {
         setSearchResults(res.courses);
         setPageMeta(res._meta);
-      } else {
-        console.log('error');
       }
+      setIsLoading(false);
     });
   };
 
@@ -208,16 +207,23 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
           {isFiltersTouched && (
             <>
               <h2 className="mt-md desktop:mt-[7.25rem] text-large desktop:text-[2.6rem] leading-[3.6rem] mb-0">
-                Din sökning<strong>{` ${searchQuery} `}</strong>gav{' '}
-                <strong>
-                  {!_meta || _meta?.totalRecords == 0 ?
-                    <span>Inga träffar</span>
-                  : <>
-                      <span>{_meta?.totalRecords}</span>{' '}
-                      {_meta?.totalRecords > 1 || _meta?.totalRecords == 0 ? 'träffar' : 'träff'}
-                    </>
-                  }
-                </strong>
+                {isLoading ?
+                  <>
+                    Sökresultat laddar för <strong>{searchQuery}</strong>
+                  </>
+                : <>
+                    Din sökning<strong>{` ${searchQuery} `}</strong>gav{' '}
+                    <strong>
+                      {!_meta || _meta?.totalRecords == 0 ?
+                        <span>Inga träffar</span>
+                      : <>
+                          <span>{_meta?.totalRecords}</span>{' '}
+                          {_meta?.totalRecords > 1 || _meta?.totalRecords == 0 ? 'träffar' : 'träff'}
+                        </>
+                      }
+                    </strong>
+                  </>
+                }
               </h2>
             </>
           )}
@@ -232,7 +238,12 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
             searchQuery={searchQuery}
           />
 
-          {searchResults.length > 0 ?
+          {isLoading && (
+            <div className="mt-md w-full flex justify-center">
+              <Spinner aria-label="Laddar sökresultat" />
+            </div>
+          )}
+          {!isLoading && searchResults.length > 0 ?
             <div className="mt-md desktop:mt-[6.6rem] flex flex-col gap-lg desktop:flex-row">
               <div className="w-full flex flex-col gap-lg desktop:w-[830px]">
                 {activeListing === 1 ?
@@ -310,6 +321,8 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
                 </Sticky>
               </div>
             </div>
+          : isLoading ?
+            ''
           : <div className="mt-2xl">
               {!isFiltersTouched ?
                 'Ange ett sökrord eller använd filtreringen för att finna utbildningar.'

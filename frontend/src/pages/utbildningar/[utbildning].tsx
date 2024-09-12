@@ -97,8 +97,8 @@ export const Yrkesforare: React.FC = ({ layoutData }: LayoutProps) => {
             </div>
           </div>
           <div>
-            <label id="education-location">Plats</label>
-            <div aria-describedby="education-location">
+            <label id="education-studyLocation">Plats</label>
+            <div aria-describedby="education-studyLocation">
               <strong>Sundsvall</strong>
             </div>
           </div>
@@ -177,7 +177,7 @@ export const Yrkesforare: React.FC = ({ layoutData }: LayoutProps) => {
           text: 'Amet minimimi mollot non deseret ullamco est sit alique dolor do sint. Velit officia consequat duis enim.',
           courseCode: `${educationData.courseCode}-${educationData.title}-${i}`,
           date: new Date(),
-          location: `Location-${i}`,
+          studyLocation: `Location-${i}`,
         }))}
       />
 

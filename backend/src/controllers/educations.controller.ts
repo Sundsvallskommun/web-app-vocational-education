@@ -106,7 +106,9 @@ export class EducationsController {
       searchString: filter?.q ?? undefined,
       level: filter?.level ?? undefined,
       scope: filter?.scope ?? undefined,
-      studyLocation: filter?.studyLocation ?? defaultStudyLocations,
+      studyLocation: filter?.studyLocation?.join(','),
+      // FIXME: should be below, but api lacks support yet
+      // studyLocation: filter?.studyLocation ?? defaultStudyLocations,
       latestApplicationBefore: filter?.latestApplicationDate ?? undefined,
       startAfter: filter?.startDate ?? undefined,
 

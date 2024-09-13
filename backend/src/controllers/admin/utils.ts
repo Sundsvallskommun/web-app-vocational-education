@@ -47,12 +47,6 @@ export const checkPageRoles = () => async (req: RequestWithUser, res: Response, 
   let pageName;
   let pageId;
 
-  // console.log('req.body', req.body);
-
-  if (req.body.method === 'create') {
-    console.log('req', req.body);
-  }
-
   if (['getOne', 'update', 'delete'].includes(req.body.method)) {
     // @ts-expect-error adapter will always return resource
     const resource = await prisma[req.body.resource].findUnique({
@@ -81,7 +75,6 @@ export const checkPageRoles = () => async (req: RequestWithUser, res: Response, 
   }
 
   if (typeof pageId !== 'number' && typeof pageName !== 'string') {
-    console.log('error throw req.body', req.body);
     throw Error('Neither pageId or pageName present, which is needed for page role right access check.');
   }
 

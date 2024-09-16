@@ -1,6 +1,7 @@
 import ButtonStackedIcon from '@components/button/button-stacked-icon.component';
 import Button from '@components/button/button.component';
 import MenuModal from '@components/modal/menu-modal.component';
+import { FiltersFetcher } from '@contexts/filters.context';
 import { EducationFilterOptions } from '@interfaces/education';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import CropPortraitOutlinedIcon from '@mui/icons-material/CropPortraitOutlined';
@@ -11,20 +12,19 @@ import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import { defaultEducationFilterOptions } from '@services/education-service/education-service';
 import { useUserStore } from '@services/user-service/user-service';
 import { cx, useSnackbar, useThemeQueries } from '@sk-web-gui/react';
-import { objToQueryString } from '@utils/url';
+import { serializeURL } from '@utils/url';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import CategoryInput from '../form/category.input.component';
 import DistanceInput from '../form/distance.input.component';
 import LatestApplicationDateInput from '../form/latest-application-date.input.component';
-import StudyLocationInput from '../form/study-location.input.component';
+import LevelInput from '../form/level.input.component';
 import ScopeInput from '../form/scope.input.component';
 import SortFunctionInput from '../form/sort-function.input.component';
 import StartDateInput from '../form/start-date.input.component';
-import LevelInput from '../form/level.input.component';
+import StudyLocationInput from '../form/study-location.input.component';
 import Tags from './educations-filters/tags.component';
-import { FiltersFetcher } from '@contexts/filters.context';
 
 export const EducationsFilters: React.FC<{
   searchQuery: string;
@@ -50,7 +50,7 @@ export const EducationsFilters: React.FC<{
 
   const { watch, handleSubmit, reset, getValues, formState } = context;
 
-  const currentParameters = objToQueryString({ ...getValues(), q: searchQuery });
+  const currentParameters = serializeURL({ ...getValues() });
 
   const isSavedSearch = userSavedSearches.filter((x) => _.isEqual(x.parameters, currentParameters)).length > 0;
 
@@ -116,22 +116,18 @@ export const EducationsFilters: React.FC<{
   }, [formData, reset, formState.defaultValues]);
 
   useEffect(() => {
-    setTimeout(() => {
-      handleFilterItems(filterIsOpen);
-    }, 150);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     const subscription = watch(() => handleSubmit(handleOnSubmit)());
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [handleSubmit, watch]);
+  }, [handleSubmit, watch, reset]);
 
   useEffect(() => {
     if (user.permissions.userSaveSearches) {
       getSavedSearches();
     }
+    setTimeout(() => {
+      handleFilterItems(filterIsOpen);
+    }, 150);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

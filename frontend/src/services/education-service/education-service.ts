@@ -8,7 +8,7 @@ import {
   PagingMetaData,
 } from '@interfaces/education';
 import { ValueOf } from '@utils/types';
-import { objToQueryString } from '@utils/url';
+import { serializeURL } from '@utils/url';
 import dayjs from 'dayjs';
 import { ApiResponse, apiService } from '../api-service';
 import { getFormattedLabelFromValue } from '@utils/labels';
@@ -115,7 +115,7 @@ export const getFilterDataStrings: {
 };
 
 export const getSearchParamsFromEducationSearchFilters = (filterData: EducationFilterOptions): string => {
-  return objToQueryString(getFilterDataStrings(filterData, ''));
+  return serializeURL(getFilterDataStrings(filterData, ''));
 };
 
 export const handleGetEducationEvents: (courses: Course[]) => Course[] = (courses) =>

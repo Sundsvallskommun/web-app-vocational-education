@@ -19,11 +19,11 @@ export async function middleware(req: NextRequest) {
         },
       });
       if (res.status === 401 && protectedRoutes.includes(req.nextUrl.pathname)) {
-        const absoluteURL = new URL(`/login?path=${req.nextUrl.pathname}`, req.nextUrl.origin);
+        const absoluteURL = new URL(`${process.env.BASE_PATH}/login?path=${req.nextUrl.pathname}`, req.nextUrl.origin);
         return NextResponse.redirect(absoluteURL.toString());
       }
     } catch {
-      return NextResponse.redirect(new URL('/', req.nextUrl.origin));
+      return NextResponse.redirect(new URL(process.env.BASE_PATH, req.nextUrl.origin));
     }
   }
 }

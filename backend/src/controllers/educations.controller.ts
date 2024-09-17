@@ -204,11 +204,11 @@ export class EducationsController {
   async getEducationEventsStatistics(@QueryParam('filter') filter?: EducationStatisticsFilterOptions): Promise<DataResponse<Statistics>> {
     const url = `/education-finder/1.2/statistics`;
 
-    const params: EducationStatisticsFilterOptions = {
+    const params = {
       // Filter parameters
-      levels: filter?.levels ?? undefined,
-      studyLocations: filter?.studyLocations ?? undefined,
-      categories: filter?.categories ?? undefined,
+      levels: filter?.levels.join(', ') ?? undefined,
+      studyLocations: filter?.studyLocations.join(', ') ?? undefined,
+      categories: filter?.categories.join(', ') ?? undefined,
       startDate: filter?.startDate ?? undefined,
       endDate: filter?.endDate ?? undefined,
     };

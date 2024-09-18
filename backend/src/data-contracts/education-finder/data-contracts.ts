@@ -146,8 +146,10 @@ export interface Statistics {
   totalCapacity?: number;
   /** Study locations used for filtering */
   studyLocations?: string[];
-  /** Education forms used for filtering */
-  educationForms?: string[];
+  /** Scopes used for filtering */
+  scopes?: string[];
+  /** Levels used for filtering */
+  levels?: string[];
   /** Categories used for filtering */
   categories?: string[];
   /** Category ids used for filtering */
@@ -166,7 +168,8 @@ export interface Statistics {
 
 /** Statistics filter model */
 export enum StatisticsFilter {
-  EducationForm = 'educationForm',
+  Level = 'level',
+  Scope = 'scope',
   Category = 'category',
   CategoryId = 'categoryId',
   StudyLocation = 'studyLocation',
@@ -176,6 +179,12 @@ export enum StatisticsFilter {
 
 /** Course model */
 export interface Course {
+  /**
+   * Course ID
+   * @format int64
+   * @example 1
+   */
+  id?: number;
   /**
    * Course code
    * @example "PRRPRR02"

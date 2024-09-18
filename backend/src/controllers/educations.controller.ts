@@ -112,8 +112,8 @@ export class EducationsController {
       }
 
       return res.data;
-    } catch {
-      throw new HttpException(500, `Failed to fetch ${filter}`);
+    } catch (err) {
+      throw new HttpException(500, `Failed to fetch ${filter}: ${err}`);
     }
   };
 

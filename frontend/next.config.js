@@ -16,14 +16,4 @@ module.exports = withBundleAnalyzer({
   sassOptions: {
     prependData: `$basePath: '${process.env.BASE_PATH}';`,
   },
-  async redirects() {
-    return [
-      {
-        source: '/admin',
-        destination: `${process.env.ADMIN_URL}`,
-        permanent: false,
-        basePath: false,
-      },
-    ];
-  },
 });

@@ -29,7 +29,7 @@ export default function TwoFactorModal({ show, setShow, checkError }) {
     if (!res.error) {
       setUser(res.data);
       const path = new URLSearchParams(window.location.search).get('path') || router.query.path;
-      router.push(appURL(path?.toString() || '/'));
+      window.location.href = appURL(path?.toString() || '/');
     } else {
       checkError(res.error);
     }
@@ -37,7 +37,13 @@ export default function TwoFactorModal({ show, setShow, checkError }) {
   };
 
   return (
-    <Modal show={show} label="Verifiera engångskod" className="!w-[33rem]" onClose={() => setShow(false)}>
+    <Modal
+      disableCloseOutside
+      show={show}
+      label="Verifiera engångskod"
+      className="!w-[33rem]"
+      onClose={() => setShow(false)}
+    >
       <form onSubmit={handleSubmit(onVerify)}>
         <FormControl>
           <FormLabel>Engångskod</FormLabel>

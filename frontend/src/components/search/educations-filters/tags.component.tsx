@@ -36,7 +36,7 @@ export default function Tags() {
     router.replace(
       {
         pathname: router.pathname,
-        query: serializeURL({ q: queryString ?? '', startDate: defaultEducationFilterOptions.startDate }),
+        query: serializeURL({ ...defaultEducationFilterOptions, q: queryString ?? '' }),
       },
       undefined,
       {

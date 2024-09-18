@@ -1,6 +1,7 @@
+import ModalCustom from '@components/modal/modal-custom.component';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useUserStore } from '@services/user-service/user-service';
-import { Button, FormControl, FormLabel, Input, Modal } from '@sk-web-gui/react';
+import { Button, FormControl, FormLabel, Input } from '@sk-web-gui/react';
 import { appURL } from '@utils/app-url';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
@@ -37,22 +38,17 @@ export default function TwoFactorModal({ show, setShow, checkError }) {
   };
 
   return (
-    <Modal
-      disableCloseOutside
-      show={show}
-      label="Verifiera engångskod"
-      className="!w-[33rem]"
-      onClose={() => setShow(false)}
-    >
-      <form onSubmit={handleSubmit(onVerify)}>
-        <FormControl>
+    <ModalCustom disableCloseOutside show={show} onClose={() => setShow(false)}>
+      <form onSubmit={handleSubmit(onVerify)} className="min-w-[56rem] w-full">
+        <h1>Verifiera engångskod</h1>
+        <FormControl className="w-full">
           <FormLabel>Engångskod</FormLabel>
           <Input {...register('code')} />
         </FormControl>
-        <Button className="mt-md" rounded color="primary" type="submit" data-cy="verifyTwoFactorButton">
+        <Button className="mt-md px-[8rem]" rounded color="primary" type="submit" data-cy="verifyTwoFactorButton">
           Verifiera
         </Button>
       </form>
-    </Modal>
+    </ModalCustom>
   );
 }

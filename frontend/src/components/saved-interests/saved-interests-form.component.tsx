@@ -67,7 +67,7 @@ export default function SavedInterestsForm({ mode = 'new' }: SavedInterestsFormP
         )}
         {mode === 'edit' && (
           <Button disabled={!formState.isValid} dense className="w-full" type="submit">
-            Spara ändringar
+            Uppdatera
           </Button>
         )}
       </div>

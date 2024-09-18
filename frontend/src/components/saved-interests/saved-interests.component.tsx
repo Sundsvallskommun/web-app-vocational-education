@@ -168,7 +168,7 @@ export default function SavedInterests() {
       }
       {showEditModal && (
         <SavedInterestsFormEditModal
-          interestData={{ ...selectedInterest }}
+          interestData={{ ...emptyUserSavedInterest, ...selectedInterest }}
           show={showEditModal}
           setShow={handleSetShowModal}
         />

@@ -12,6 +12,8 @@ import { serializeURL } from '@utils/url';
 import dayjs from 'dayjs';
 import { ApiResponse, apiService } from '../api-service';
 import { getFormattedLabelFromValue } from '@utils/labels';
+import { XMLParser } from 'fast-xml-parser';
+import SanitizeHTML from 'sanitize-html';
 
 export const emptyEducationFilterOptions: EducationFilterOptions = {
   q: '',
@@ -118,27 +120,6 @@ export const getSearchParamsFromEducationSearchFilters = (filterData: EducationF
   return serializeURL(getFilterDataStrings(filterData, ''));
 };
 
-export const handleGetEducationEvents: (courses: Course[]) => Course[] = (courses) =>
-  courses.map((course, index) => ({
-    id: index, // FIXME: CRITICAL: Should be id from endpoint, this is temporary fix
-    code: course.code,
-    name: course.name,
-    provider: course.provider,
-    providerUrl: course.providerUrl,
-    level: course.level,
-    url: course.url,
-    credits: course.credits,
-    scope: course.scope,
-    studyLocation: course.studyLocation,
-    subjectCode: course.subjectCode,
-    numberOfSeats: course.numberOfSeats,
-    start: course.start,
-    end: course.end,
-    earliestApplication: course.earliestApplication,
-    latestApplication: course.latestApplication,
-    information: course.information,
-  }));
-
 export const handleGetEducationEventsMeta: (_meta: PagingMetaData) => PagingMetaData = (_meta) => ({
   page: _meta.page,
   limit: _meta.limit,
@@ -147,19 +128,33 @@ export const handleGetEducationEventsMeta: (_meta: PagingMetaData) => PagingMeta
   totalPages: _meta.totalPages,
 });
 
-export const getEducationEvents: (
-  filterData: EducationFilterOptions
-) => Promise<{ courses: Course[]; _meta?: PagingMetaData; error?: unknown }> = (filterData) => {
+export interface GetEducationEvents {
+  courses: Course[];
+  _meta?: PagingMetaData;
+  error?: unknown;
+}
+export const getEducationEvents: (filterData: EducationFilterOptions) => Promise<GetEducationEvents> = (filterData) => {
   return apiService
     .get<ApiResponse<PagedCoursesResponse>>(`education-events`, {
       params: { filter: getFilterDataStrings(filterData, null) },
     })
     .then((res) => ({
-      courses: handleGetEducationEvents(res?.data?.data?.courses),
+      courses: res?.data?.data?.courses,
       _meta: handleGetEducationEventsMeta(res?.data?.data?._meta),
     }))
     .catch((e) => ({
       courses: [],
+      error: e.response?.status ?? 'UNKNOWN ERROR',
+    }));
+};
+
+export const getEducationEvent: (id: string) => Promise<{ data?: Course; error?: unknown }> = (id) => {
+  return apiService
+    .get<ApiResponse<Course>>(`education-events/event/${id}`)
+    .then((res) => ({
+      data: res?.data?.data,
+    }))
+    .catch((e) => ({
       error: e.response?.status ?? 'UNKNOWN ERROR',
     }));
 };
@@ -200,4 +195,64 @@ export const getEducationLengthString: (start: string, end: string) => string = 
   } else {
     return days + ' dagar';
   }
+};
+
+const parser = new XMLParser();
+const cardInformationSanitizeOptions = {
+  allowedTags: [
+    'p',
+    'a',
+    'ul',
+    'ol',
+    'li',
+    'b',
+    'i',
+    'strong',
+    'em',
+    'strike',
+    'del',
+    'div',
+    'sup',
+    'sub',
+    'span',
+    'br',
+  ],
+  allowedAttributes: {
+    a: ['class'],
+    p: ['class'],
+    br: ['class'],
+  },
+  transformTags: {
+    a: function () {
+      return {
+        tagName: 'span',
+      };
+    },
+    p: function () {
+      return {
+        tagName: 'p',
+        attribs: {
+          class: 'my-0',
+        },
+      };
+    },
+    br: function () {
+      return {
+        tagName: 'br',
+        attribs: {
+          class: 'block mt-[.4rem]',
+        },
+      };
+    },
+  },
+};
+export const getSanitizedInformation = (
+  information: Course['information'],
+  informationSanitizeOptions = cardInformationSanitizeOptions
+) => {
+  if (information.includes('CDATA')) {
+    const xmlParsedInformation = parser.parse(information);
+    information = xmlParsedInformation ? xmlParsedInformation['#text'] : '';
+  }
+  return SanitizeHTML(information, informationSanitizeOptions);
 };

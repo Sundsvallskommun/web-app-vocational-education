@@ -25,8 +25,6 @@ export const Compare: React.FC = ({ layoutData }: LayoutProps) => {
   const [activeListing, setActiveListing] = useState(1);
   const router = useRouter();
 
-  // Handle URL-params: ?id=e.fbr.288992.378951&id=e.fbr.288992.378947 setSearchCompareList
-
   const handleBackLink = () => {
     router.back();
   };

@@ -45,9 +45,7 @@ export const EducationsTable: React.FC<{
                 </Table.Column>
                 <Table.Column>
                   <span className="inline-block">
-                    <NextLink
-                      href={`/utbildningar/${edu?.code}-${edu?.id}`} /* This should be built and point to dynamic page */
-                    >
+                    <NextLink href={`/utbildningar/${edu?.id}`} /* This should be built and point to dynamic page */>
                       <Link as="span" className="line-clamp-2 text-base mb-6 leading-[1.5]">
                         {edu?.name ?? '-'}
                       </Link>

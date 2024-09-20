@@ -8,16 +8,18 @@ import EducationsTable from '@components/search/educations-table/educations-tabl
 import Search from '@components/search/search.component';
 import { useAppContext } from '@contexts/app.context';
 import { LayoutProps } from '@interfaces/admin-data';
-import { Course, EducationFilterOptions, PagingMetaData } from '@interfaces/education';
+import { Course, EducationFilterOptions } from '@interfaces/education';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import CompareArrowsOutlinedIcon from '@mui/icons-material/CompareArrowsOutlined';
 import {
   defaultEducationFilterOptions,
   emptyEducationFilterOptions,
+  GetEducationEvents,
   getEducationEvents,
 } from '@services/education-service/education-service';
 import { getLayout } from '@services/layout-service';
-import { Breadcrumb, Link, Spinner, cx, omit } from '@sk-web-gui/react';
+import { Breadcrumb, cx, Link, omit, Spinner } from '@sk-web-gui/react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { addToQueryString, createObjectFromQueryString, serializeURL } from '@utils/url';
 import _ from 'lodash';
 import NextLink from 'next/link';
@@ -37,9 +39,9 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
   const searchParams = useSearchParams();
   const [activeListing, setActiveListing] = useState(1);
 
-  const [_meta, setPageMeta] = useState<PagingMetaData | undefined>();
-  const [searchResults, setSearchResults] = useState<Course[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  // const [_meta, setPageMeta] = useState<PagingMetaData | undefined>();
+  // const [searchResults, setSearchResults] = useState<Course[]>([]);
+  // const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [searchQuery, setSearchQuery] = useState<string>(defaultEducationFilterOptions.q);
   const [searchFilters, setSearchFilters] = useState<EducationFilterOptions>(
@@ -51,6 +53,30 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
   const [page, setPage] = useState<number>(defaultEducationFilterOptions.page);
 
   const [isFiltersTouched, setIsFiltersTouched] = useState(false);
+
+  const queryClient = useQueryClient();
+
+  const { data: searchResults, isFetching: isLoading } = useQuery({
+    queryKey: ['searchResults', searchFilters],
+    queryFn: async () => {
+      const res = await getEducationEvents({ ...searchFilters });
+      if (!res.error) {
+        // setSearchResults(res.courses);
+        // setPageMeta(res._meta);
+        return res;
+      } else {
+        // setSearchResults([])
+        // setPageMeta(null);
+        return null;
+      }
+    },
+    enabled: !!searchFilters.q, // only run query if query is not empty
+    refetchOnWindowFocus: false, // default: true
+    staleTime: 5 * 60 * 1000, // Data is considered fresh for 5 minutes
+    placeholderData: () => {
+      return queryClient.getQueryData<GetEducationEvents>(['searchResults', searchFilters]) || null;
+    }, // Use cached data if available, or an empty array
+  });
 
   const updateParams = (values: string) => {
     router.replace(
@@ -90,16 +116,16 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
     setActiveListing(listType);
   };
 
-  const fetchSearch = (filterData?: EducationFilterOptions) => {
-    setIsLoading(true);
-    getEducationEvents({ ...filterData }).then((res) => {
-      if (!res.error) {
-        setSearchResults(res.courses);
-        setPageMeta(res._meta);
-      }
-      setIsLoading(false);
-    });
-  };
+  // const fetchSearch = (filterData?: EducationFilterOptions) => {
+  //   setIsLoading(true);
+  //   // getEducationEvents({ ...filterData }).then((res) => {
+  //   //   if (!res.error) {
+  //   //     setSearchResults(res.courses);
+  //   //     setPageMeta(res._meta);
+  //   //   }
+  //   //   setIsLoading(false);
+  //   // });
+  // };
 
   const handleCheckboxClick = (edu: Course) => (e: React.BaseSyntheticEvent) => {
     setSearchCompareList((items) => {
@@ -158,7 +184,7 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
 
     if (isChanged) {
       setIsFiltersTouched(true);
-      fetchSearch(filtersWithBaseDefaults);
+      // fetchSearch(filtersWithBaseDefaults);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
@@ -210,11 +236,13 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
                 : <>
                     Din sökning<strong>{` ${searchQuery} `}</strong>gav{' '}
                     <strong>
-                      {!_meta || _meta?.totalRecords == 0 ?
+                      {!searchResults?._meta || searchResults?._meta?.totalRecords == 0 ?
                         <span>Inga träffar</span>
                       : <>
-                          <span>{_meta?.totalRecords}</span>{' '}
-                          {_meta?.totalRecords > 1 || _meta?.totalRecords == 0 ? 'träffar' : 'träff'}
+                          <span>{searchResults?._meta?.totalRecords}</span>{' '}
+                          {searchResults?._meta?.totalRecords > 1 || searchResults?._meta?.totalRecords == 0 ?
+                            'träffar'
+                          : 'träff'}
                         </>
                       }
                     </strong>
@@ -239,20 +267,20 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
               <Spinner aria-label="Laddar sökresultat" />
             </div>
           )}
-          {!isLoading && searchResults.length > 0 ?
+          {!isLoading && searchResults?.courses?.length > 0 ?
             <div className="mt-md desktop:mt-[6.6rem] flex flex-col gap-lg desktop:flex-row">
               <div className="w-full flex flex-col gap-lg desktop:w-[830px]">
                 {activeListing === 1 ?
                   <EducationsCards
-                    educations={searchResults}
+                    educations={searchResults?.courses}
                     handleCheckboxClick={handleCheckboxClick}
-                    _meta={_meta}
+                    _meta={searchResults?._meta}
                     setPageSize={handleSetPageSize}
                   />
                 : <EducationsTable
-                    educations={searchResults}
+                    educations={searchResults?.courses}
                     handleCheckboxClick={handleCheckboxClick}
-                    _meta={_meta}
+                    _meta={searchResults?._meta}
                     setPage={handleSetPage}
                   />
                 }

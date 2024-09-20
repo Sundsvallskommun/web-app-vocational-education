@@ -39,10 +39,6 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
   const searchParams = useSearchParams();
   const [activeListing, setActiveListing] = useState(1);
 
-  // const [_meta, setPageMeta] = useState<PagingMetaData | undefined>();
-  // const [searchResults, setSearchResults] = useState<Course[]>([]);
-  // const [isLoading, setIsLoading] = useState<boolean>(true);
-
   const [searchQuery, setSearchQuery] = useState<string>(defaultEducationFilterOptions.q);
   const [searchFilters, setSearchFilters] = useState<EducationFilterOptions>(
     omit(defaultEducationFilterOptions, ['q'])
@@ -61,12 +57,8 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
     queryFn: async () => {
       const res = await getEducationEvents({ ...searchFilters });
       if (!res.error) {
-        // setSearchResults(res.courses);
-        // setPageMeta(res._meta);
         return res;
       } else {
-        // setSearchResults([])
-        // setPageMeta(null);
         return null;
       }
     },
@@ -115,17 +107,6 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
     );
     setActiveListing(listType);
   };
-
-  // const fetchSearch = (filterData?: EducationFilterOptions) => {
-  //   setIsLoading(true);
-  //   // getEducationEvents({ ...filterData }).then((res) => {
-  //   //   if (!res.error) {
-  //   //     setSearchResults(res.courses);
-  //   //     setPageMeta(res._meta);
-  //   //   }
-  //   //   setIsLoading(false);
-  //   // });
-  // };
 
   const handleCheckboxClick = (edu: Course) => (e: React.BaseSyntheticEvent) => {
     setSearchCompareList((items) => {
@@ -184,7 +165,6 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
 
     if (isChanged) {
       setIsFiltersTouched(true);
-      // fetchSearch(filtersWithBaseDefaults);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);

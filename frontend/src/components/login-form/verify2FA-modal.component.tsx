@@ -30,7 +30,7 @@ export default function TwoFactorModal({ show, setShow, checkError }) {
     if (!res.error) {
       setUser(res.data);
       const path: string = new URLSearchParams(window.location.search).get('path') || router.query.path.toString();
-      window.location.href = path.startsWith('http') ? path : appURL(path?.toString() || '/');
+      window.location.href = path?.startsWith('http') ? path : appURL(path?.toString() || '/');
     } else {
       checkError(res.error);
     }

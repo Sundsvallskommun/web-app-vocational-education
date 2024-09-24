@@ -8,6 +8,7 @@ interface FiltersContext {
   filters: GetEducationFiltersResponseData;
 }
 
+/** @ts-expect-error gets set on mount */
 const FiltersContext = createContext<FiltersContext>(null);
 
 interface FiltersFetcherProps {
@@ -22,7 +23,9 @@ export function FiltersFetcher({ children, filters }: FiltersFetcherProps) {
   const fetchFilters = async (filters) => {
     const res = await getEducationEventsFilters(filters);
     if (!res.error) {
-      setFiltersData(res.data);
+      if (res.data) {
+        setFiltersData(res.data);
+      }
       setFetchedFilters(filters);
     }
   };

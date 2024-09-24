@@ -68,7 +68,9 @@ export const Utbildning: React.FC = ({ layoutData, educationData }: LayoutProps 
                   dropIcon={<SchoolIcon className="!text-2xl" />}
                 />
               </div>
-              <p className="ingress mt-0">{getFormattedLabelFromValue(educationData.level)}</p>
+              <p className="ingress mt-0">
+                {educationData.level ? getFormattedLabelFromValue(educationData.level) : '-'}
+              </p>
             </div>
           </div>
         </div>
@@ -76,7 +78,11 @@ export const Utbildning: React.FC = ({ layoutData, educationData }: LayoutProps 
           <div>
             <label id="education-length">Utbildningens längd</label>
             <div aria-describedby="education-length">
-              <strong>{getEducationLengthString(educationData?.start, educationData?.end) ?? '-'}</strong>
+              <strong>
+                {educationData?.start && educationData?.end ?
+                  getEducationLengthString(educationData?.start, educationData?.end)
+                : '-'}
+              </strong>
             </div>
           </div>
           <div>

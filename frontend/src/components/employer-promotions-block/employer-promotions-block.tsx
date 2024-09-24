@@ -11,7 +11,7 @@ export default function EmployerPromotionsBlock({ employerPromotionsBlock }: Emp
   if (!employerPromotionsBlock?.showBlock) return <></>;
   return (
     <CardsBlock<EmployerPromotionsBlockType['employerPromotions']>
-      title={employerPromotionsBlock.title}
+      title={employerPromotionsBlock.title || ''}
       backgroundClass="bg-blue-light"
       loadMoreColorClass="text-blue-light"
       cards={employerPromotionsBlock.employerPromotions}

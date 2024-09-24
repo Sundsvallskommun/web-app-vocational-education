@@ -16,7 +16,7 @@ export default function EducationsRelatedBlock({ educations }: EducationsRelated
       title={`Relaterade utbildningar`}
       backgroundClass="bg-blue-light"
       loadMoreColorClass="text-blue-light"
-      cards={educations}
+      cards={educations || []}
       cardRender={(education, index) => (
         <DropCard
           key={`${index}`}

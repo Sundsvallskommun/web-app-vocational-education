@@ -18,7 +18,7 @@ const MenuModal = ({ show = false, onClose, className, children }: IModalProps) 
     onClose();
   };
 
-  const closeRef = useRef(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
 
   const setInitialFocus = () => {
     setTimeout(() => {

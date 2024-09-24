@@ -8,9 +8,10 @@ import {
   PagingMetaData,
 } from '@interfaces/education';
 import { ValueOf } from '@utils/types';
-import { objToQueryString } from '@utils/url';
+import { serializeURL } from '@utils/url';
 import dayjs from 'dayjs';
 import { ApiResponse, apiService } from '../api-service';
+import { getFormattedLabelFromValue } from '@utils/labels';
 
 export const emptyEducationFilterOptions: EducationFilterOptions = {
   q: '',
@@ -54,11 +55,11 @@ export const getEducationFilterValueString = (filter, value) => {
     case 'sortFunction':
       return sortFilter.find((choice) => choice.value === value).label;
     case 'category':
-      return value.join(' | ');
+      return value.map((x) => getFormattedLabelFromValue(x)).join(' | ');
     case 'level':
-      return value.join(' | ');
+      return value.map((x) => getFormattedLabelFromValue(x)).join(' | ');
     case 'studyLocation':
-      return value.join(' | ');
+      return value.map((x) => getFormattedLabelFromValue(x)).join(' | ');
     case 'distance':
       return value === 'true' ? 'Ja' : 'Nej';
     case 'latestApplicationDate':
@@ -66,7 +67,7 @@ export const getEducationFilterValueString = (filter, value) => {
     case 'startDate':
       return value;
     case 'scope':
-      return value.map((x) => `${x}%`).join(' | ');
+      return value.map((x) => x.replace('.0', '%')).join(' | ');
     default:
       return '';
   }
@@ -114,7 +115,7 @@ export const getFilterDataStrings: {
 };
 
 export const getSearchParamsFromEducationSearchFilters = (filterData: EducationFilterOptions): string => {
-  return objToQueryString(getFilterDataStrings(filterData, ''));
+  return serializeURL(getFilterDataStrings(filterData, ''));
 };
 
 export const handleGetEducationEvents: (courses: Course[]) => Course[] = (courses) =>

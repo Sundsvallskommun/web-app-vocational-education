@@ -9,18 +9,21 @@ export async function middleware(req: NextRequest) {
     const cookieName = 'connect.sid';
     const token = req.cookies.get(cookieName)?.value || '';
 
-    const res = await fetch(apiURL('/me'), {
-      cache: 'no-cache',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Cookie: `${cookieName}=${encodeURI(token)}`,
-      },
-    });
-
-    if (res.status === 401 && protectedRoutes.includes(req.nextUrl.pathname)) {
-      const absoluteURL = new URL(`/login?path=${req.nextUrl.pathname}`, req.nextUrl.origin);
-      return NextResponse.redirect(absoluteURL.toString());
+    try {
+      const res = await fetch(apiURL('/me'), {
+        cache: 'no-cache',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Cookie: `${cookieName}=${encodeURI(token)}`,
+        },
+      });
+      if (res.status === 401 && protectedRoutes.includes(req.nextUrl.pathname)) {
+        const absoluteURL = new URL(`/login?path=${req.nextUrl.pathname}`, req.nextUrl.origin);
+        return NextResponse.redirect(absoluteURL.toString());
+      }
+    } catch {
+      return NextResponse.redirect(new URL('/', req.nextUrl.origin));
     }
   }
 }

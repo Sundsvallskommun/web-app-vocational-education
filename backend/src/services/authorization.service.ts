@@ -1,8 +1,9 @@
 // import { AUTHORIZED_GROUPS } from '@/config';
+import { MUNICIPALITY_ID } from '@/config';
 import { Permissions } from '@interfaces/users.interface';
-import ApiService from './api.service';
-import { UserRole, UserRoleEnum, UserRolesOnUser } from '@prisma/client';
+import { UserRoleEnum, UserRolesOnUser } from '@prisma/client';
 import { getRandomValues } from 'node:crypto';
+import ApiService from './api.service';
 
 // export function authorizeGroups(groups) {
 //   const authorizedGroupsList = AUTHORIZED_GROUPS.split(',');
@@ -125,6 +126,6 @@ export const send2FACodeToEmail = async (email: string, twoFactorCode: string) =
     message: twoFactorCode,
     htmlMessage: base64Encode(messageHTML(twoFactorCode)),
   };
-  const url = 'messaging/4.4/email';
+  const url = `messaging/5.0/${MUNICIPALITY_ID}/email`;
   return await apiService.post({ url, data: sendOTP });
 };

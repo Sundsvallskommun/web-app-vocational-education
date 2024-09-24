@@ -1,6 +1,12 @@
-import { emptyEducationFilterOptions, getFilterOptionString } from '@services/education-service/education-service';
-import { Chip, omit } from '@sk-web-gui/react';
+import {
+  defaultEducationFilterOptions,
+  emptyEducationFilterOptions,
+  getFilterOptionString,
+} from '@services/education-service/education-service';
+import { Chip } from '@sk-web-gui/react';
+import { serializeURL } from '@utils/url';
 import _ from 'lodash';
+import { useRouter } from 'next/router';
 import { useFormContext } from 'react-hook-form';
 interface Tag {
   formName: string;
@@ -9,8 +15,8 @@ interface Tag {
 }
 
 export default function Tags() {
-  const { watch, reset, setValue } = useFormContext();
-
+  const { watch, setValue, getValues } = useFormContext();
+  const router = useRouter();
   const values = watch();
 
   const removeTag = (tag: Tag) => () => {
@@ -26,12 +32,22 @@ export default function Tags() {
   };
 
   const removeAll = () => {
-    reset(omit(emptyEducationFilterOptions, ['q']));
+    const queryString = getValues().q;
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: serializeURL({ q: queryString ?? '', startDate: defaultEducationFilterOptions.startDate }),
+      },
+      undefined,
+      {
+        shallow: true,
+      }
+    );
   };
 
   const tagList = [];
   Object.keys(values)
-    .filter((filter) => !['page', 'size'].includes(filter))
+    .filter((filter) => !['page', 'size', 'q'].includes(filter))
     .forEach((filter) => {
       const filterValue = values[filter];
       if (filterValue && !_.isEqual(filterValue, emptyEducationFilterOptions[filter])) {
@@ -63,6 +79,7 @@ export default function Tags() {
           <span className="flex-grow flex gap-md gap-y-sm flex-wrap">
             {tagList.map((tag) => (
               <Chip
+                type="button"
                 key={`${tag.formName}-${tag.label}`}
                 className="override bg-blue text-white hover:bg-blue"
                 onClick={removeTag(tag)}
@@ -70,7 +87,7 @@ export default function Tags() {
                 {tag.label}
               </Chip>
             ))}
-            <Chip onClick={removeAll} className="override bg-red text-white hover:bg-red">
+            <Chip type="button" onClick={removeAll} className="override bg-red text-white hover:bg-red">
               Rensa alla filter
             </Chip>
           </span>

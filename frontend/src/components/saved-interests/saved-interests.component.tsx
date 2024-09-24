@@ -5,27 +5,24 @@ import SavedContentBlock from '@components/saved-content-block/saved-content-blo
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { emptyUserSavedInterest } from '@services/user-service/defaults';
 import { useUserStore } from '@services/user-service/user-service';
 import { useSnackbar } from '@sk-web-gui/react';
+import { serializeURL } from '@utils/url';
 import dayjs from 'dayjs';
+import NextLink from 'next/link';
 import { useEffect, useState } from 'react';
 import SavedInterestsFormEditModal from './saved-interests-form-edit-modal.component';
-import { emptyUserSavedInterest } from '@services/user-service/defaults';
-import NextLink from 'next/link';
-import { objToQueryString } from '@utils/url';
+import { UserSavedInterest } from '@interfaces/user';
+import { getFormattedLabelFromValue } from '@utils/labels';
 
 export default function SavedInterests() {
   const userSavedInterests = useUserStore((s) => s.userSavedInterests);
   const getSavedInterests = useUserStore((s) => s.getSavedInterests);
   const deleteSavedInterest = useUserStore((s) => s.deleteSavedInterest);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedInterestIndex, setSelectedInterestIndex] = useState(null);
   const snackBar = useSnackbar();
-
-  const selectedInterest =
-    selectedInterestIndex !== null ?
-      Object.assign({}, emptyUserSavedInterest, userSavedInterests[selectedInterestIndex])
-    : emptyUserSavedInterest;
+  const [selectedInterest, setSelectedInterest] = useState<Partial<UserSavedInterest>>(emptyUserSavedInterest);
 
   const handleRemoveInterest = (index: number) => async () => {
     const res = await deleteSavedInterest(userSavedInterests[index].id);
@@ -43,12 +40,12 @@ export default function SavedInterests() {
   };
 
   const handleSetShowModal = (value) => {
-    setSelectedInterestIndex(null);
+    setSelectedInterest(emptyUserSavedInterest);
     setShowEditModal(value);
   };
 
   const handleEditInterest = (index: number) => async () => {
-    setSelectedInterestIndex(index);
+    setSelectedInterest({ ...userSavedInterests[index] });
     setShowEditModal(true);
   };
 
@@ -67,16 +64,20 @@ export default function SavedInterests() {
                 <div className="saved-interest-header-texts grow flex flex-col-reverse">
                   <div className="saved-interest-header-texts-heading">
                     <h3>
-                      {`${interest.category}`}
-                      {interest.level && ` - ${interest.level}`}
+                      {`${getFormattedLabelFromValue(interest.category)}`}
+                      {interest.level && ` - ${getFormattedLabelFromValue(interest.level)}`}
                     </h3>
                     <div className="mt-[.9rem] text-sm text-label">
-                      {interest.studyLocation.map((x, i) => (
-                        <span key={`${x}`}>
-                          {x}
+                      {interest.studyLocation.map((location, i) => (
+                        <span key={`${location}`}>
+                          {getFormattedLabelFromValue(location)}
                           {i < interest.studyLocation.length - 1 && ' | '}
                         </span>
                       ))}
+                      {' | '}
+                      {interest.timeInterval === '0' ?
+                        <span>{`${dayjs(interest.timeIntervalFrom).format('YYYY-MM-DD')} till ${dayjs(interest.timeIntervalTo).format('YYYY-MM-DD')}`}</span>
+                      : <span>{interest.timeInterval} månader framåt</span>}
                     </div>
                   </div>
                   <span className="saved-interest-header-texts-meta mb-[1.8rem] text-label text-xs leading-[1.8rem]">{`Uppdaterad ${dayjs(interest.updatedAt).format('YYYY-MM-DD')}`}</span>
@@ -128,7 +129,7 @@ export default function SavedInterests() {
                 <NextLink
                   href={{
                     pathname: '/utbildningar/sok',
-                    query: objToQueryString({
+                    query: serializeURL({
                       category: [interest.category],
                       level: [interest.level],
                       studyLocation: interest.studyLocation,
@@ -167,7 +168,7 @@ export default function SavedInterests() {
       }
       {showEditModal && (
         <SavedInterestsFormEditModal
-          interestData={selectedInterest}
+          interestData={{ ...selectedInterest }}
           show={showEditModal}
           setShow={handleSetShowModal}
         />

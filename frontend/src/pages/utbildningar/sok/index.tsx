@@ -1,10 +1,10 @@
 import ContentBlock from '@components/block/content-block.component';
 import Button from '@components/button/button.component';
 import Drop from '@components/drop/drop.component';
-import EducationsCards from '@components/search/educations-cards/educations-cards.component';
-import EducationsTable from '@components/search/educations-table/educations-table.component';
 import { BigDropHeader } from '@components/header/big-drop-header.component';
+import EducationsCards from '@components/search/educations-cards/educations-cards.component';
 import EducationsFilters from '@components/search/educations-filters.component';
+import EducationsTable from '@components/search/educations-table/educations-table.component';
 import Search from '@components/search/search.component';
 import { useAppContext } from '@contexts/app.context';
 import { LayoutProps } from '@interfaces/admin-data';
@@ -18,13 +18,11 @@ import {
 } from '@services/education-service/education-service';
 import { getLayout } from '@services/layout-service';
 import { Breadcrumb, Link, Spinner, cx, omit } from '@sk-web-gui/react';
-import { ValueOf } from '@utils/types';
-import { addToQueryString, createObjectFromQueryString } from '@utils/url';
+import { addToQueryString, createObjectFromQueryString, serializeURL } from '@utils/url';
 import _ from 'lodash';
 import NextLink from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
-import { ParsedUrlQueryInput } from 'querystring';
 import React, { useEffect, useState } from 'react';
 import Sticky from 'react-sticky-el';
 
@@ -54,11 +52,11 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
 
   const [isFiltersTouched, setIsFiltersTouched] = useState(false);
 
-  const updateParams = (query: string | ParsedUrlQueryInput) => {
+  const updateParams = (values: string) => {
     router.replace(
       {
         pathname: router.pathname,
-        query: query,
+        query: values,
       },
       undefined,
       {
@@ -72,7 +70,7 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
       return handleSetPage(page(page));
     }
     setPage(page);
-    updateParams(addToQueryString({ page }));
+    updateParams(addToQueryString({ page: page as number }));
   };
 
   const handleSetPageSize = (size) => {
@@ -80,7 +78,7 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
       return handleSetPageSize(size(pageSize));
     }
     setPageSize(size);
-    updateParams(addToQueryString({ size }));
+    updateParams(addToQueryString({ page: page as number }));
   };
 
   const handleSetActiveListing = (listType: number) => {
@@ -118,8 +116,8 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
       objectReference: emptyEducationFilterOptions,
       objectReferenceAsBase: true,
     });
-    if (!_.isEqual(omit(filters, ['q']), filterData)) {
-      updateParams(addToQueryString(filterData as Record<string, ValueOf<EducationFilterOptions>>));
+    if (!_.isEqual(filters, filterData)) {
+      updateParams(serializeURL({ ...filterData }));
     }
   };
 
@@ -130,6 +128,7 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
   useEffect(() => {
     const filters = createObjectFromQueryString(window.location.search, {
       objectReference: emptyEducationFilterOptions,
+      objectReferenceOnly: true,
     });
     const filtersWithBaseDefaults = Object.assign(
       {},
@@ -144,7 +143,7 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
     const updatedQuery = filtersWithBaseDefaults.q;
     const isQueryChanged = updatedQuery !== searchQuery;
 
-    const updatedFilters = omit(filtersWithBaseDefaults, ['q']);
+    const updatedFilters = filtersWithBaseDefaults;
     const isFiltersChanged = !_.isEqual(updatedFilters, searchFilters);
 
     const isChanged = isQueryChanged || isFiltersChanged;
@@ -160,9 +159,6 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
     if (isChanged) {
       setIsFiltersTouched(true);
       fetchSearch(filtersWithBaseDefaults);
-      updateParams(
-        addToQueryString(filtersWithBaseDefaults as unknown as Record<string, ValueOf<EducationFilterOptions>>)
-      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);

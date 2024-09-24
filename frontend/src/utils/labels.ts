@@ -1,10 +1,8 @@
 import _ from 'lodash';
 
+const abbreviations = ['IT', 'SFI', 'AUB'];
 export const formatAbbreviations = (word: string) => {
-  if (word.match(/it/i)) return word.toUpperCase();
-  if (word.match(/sfi/i)) return word.toUpperCase();
-  if (word.match(/aub/i)) return word.toUpperCase();
-
+  if (abbreviations.includes(word.toUpperCase())) return word.toUpperCase();
   return word;
 };
 

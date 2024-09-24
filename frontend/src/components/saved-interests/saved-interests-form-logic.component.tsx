@@ -1,3 +1,4 @@
+import { FiltersFetcher } from '@contexts/filters.context';
 import { emptyUserSavedInterest } from '@services/user-service/defaults';
 import { useUserStore } from '@services/user-service/user-service';
 import { useSnackbar } from '@sk-web-gui/react';
@@ -68,7 +69,9 @@ export default function SavedInterestsFormLogic({
 
   return (
     <FormProvider {...context}>
-      <form onSubmit={handleSubmit(_onSubmit)}>{children}</form>
+      <FiltersFetcher filters={['category', 'level', 'studyLocation']}>
+        <form onSubmit={handleSubmit(_onSubmit)}>{children}</form>
+      </FiltersFetcher>
     </FormProvider>
   );
 }

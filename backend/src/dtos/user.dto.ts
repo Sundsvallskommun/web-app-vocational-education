@@ -11,7 +11,7 @@ export class SavedInterestDto {
   @IsString()
   category: string;
   @IsString()
-  type: string;
+  level: string;
   @IsArray()
   studyLocation: string[];
   @IsString()

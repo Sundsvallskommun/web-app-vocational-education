@@ -134,8 +134,33 @@ export const Utbildning: React.FC = ({ layoutData, educationData }: LayoutProps 
           </a>
         </div>
       </ContentBlock>
-      <ContentBlock classNameWrapper="!mt-2xl">
-        <div dangerouslySetInnerHTML={{ __html: getSanitizedInformation(educationData.information) }} />
+      <ContentBlock classNameWrapper="!mt-[8rem]">
+        <h2>Om utbildningen</h2>
+        <p dangerouslySetInnerHTML={{ __html: getSanitizedInformation(educationData.information) }} />
+      </ContentBlock>
+
+      <ContentBlock classNameWrapper="!mt-60">
+        <h2>Kontaktuppgifter</h2>
+        <p>Sundsvalls kommun (Komunal)Lasarettsvägen 19, 851 85 Sundsvall</p>
+        <a className="inline-block mt-30" href={educationData.url} target="_blank">
+          <Button as="span" className="override w-fit" rightIcon={<ArrowForwardIcon />}>
+            <span>Till utbildningens hemsida</span>
+          </Button>
+        </a>
+      </ContentBlock>
+
+      <ContentBlock classNameWrapper="!mt-60">
+        <h2>Söker du kontakt med utbildningsanordnare?</h2>
+        <p>
+          Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim
+          velit mollit. Exercitation veniam consequat sunt nostrud amet. Dest sit aliqua dolor do amet sint. Velit
+          officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
+        </p>
+        <NextLink className="inline-block mt-30" href={'/arbetsgivare/kontaktautbildningsanordnare'}>
+          <Button as="span" className="override w-fit" rightIcon={<ArrowForwardIcon />}>
+            <span>Till utbildningsanordnare</span>
+          </Button>
+        </NextLink>
       </ContentBlock>
 
       <EducationsRelatedBlock

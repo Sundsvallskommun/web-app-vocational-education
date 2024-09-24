@@ -14,18 +14,17 @@ import CompareArrowsOutlinedIcon from '@mui/icons-material/CompareArrowsOutlined
 import {
   defaultEducationFilterOptions,
   emptyEducationFilterOptions,
-  GetEducationEvents,
   getEducationEvents,
 } from '@services/education-service/education-service';
 import { getLayout } from '@services/layout-service';
 import { Breadcrumb, cx, Link, omit, Spinner } from '@sk-web-gui/react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { addToQueryString, createObjectFromQueryString, serializeURL } from '@utils/url';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { addToQueryString, createObjectFromQueryString, deserializeURL, serializeURL } from '@utils/url';
 import _ from 'lodash';
 import NextLink from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Sticky from 'react-sticky-el';
 
 export async function getServerSideProps({ res }) {
@@ -33,7 +32,7 @@ export async function getServerSideProps({ res }) {
 }
 
 export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
-  const { searchCompareList, setSearchCompareList } = useAppContext();
+  const { searchCompareList, setSearchCompareList, searchCurrent, setSearchCurrent } = useAppContext();
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -50,9 +49,11 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
 
   const [isFiltersTouched, setIsFiltersTouched] = useState(false);
 
-  const queryClient = useQueryClient();
-
-  const { data: searchResults, isFetching: isLoading } = useQuery({
+  const {
+    data: searchResults,
+    isPending: isPending,
+    isFetching,
+  } = useQuery({
     queryKey: ['searchResults', searchFilters],
     queryFn: async () => {
       const res = await getEducationEvents({ ...searchFilters });
@@ -65,9 +66,7 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
     enabled: !!searchFilters.q, // only run query if query is not empty
     refetchOnWindowFocus: false, // default: true
     staleTime: 5 * 60 * 1000, // Data is considered fresh for 5 minutes
-    placeholderData: () => {
-      return queryClient.getQueryData<GetEducationEvents>(['searchResults', searchFilters]) || null;
-    }, // Use cached data if available, or an empty array
+    placeholderData: keepPreviousData,
   });
 
   const updateParams = (values: string) => {
@@ -91,13 +90,24 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
     updateParams(addToQueryString({ page: page as number }));
   };
 
-  const handleSetPageSize = (size) => {
-    if (typeof size === 'function') {
-      return handleSetPageSize(size(pageSize));
-    }
-    setPageSize(size);
-    updateParams(addToQueryString({ page: page as number }));
-  };
+  const handleSetPageSize = useCallback(
+    (size) => {
+      if (typeof size === 'function') {
+        return handleSetPageSize(size(pageSize));
+      }
+      setSearchCurrent(
+        serializeURL({
+          ...searchFilters,
+          size: size,
+          id: searchResults?.courses[searchResults.courses.length - 1].id || '',
+        })
+      );
+      setPageSize(size);
+      updateParams(addToQueryString({ size: size, page: page as number }));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [searchFilters, searchResults, pageSize]
+  );
 
   const handleSetActiveListing = (listType: number) => {
     setPageSize(defaultEducationFilterOptions.size);
@@ -132,23 +142,41 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
     setSearchCompareList([]);
   };
 
+  const handleOnClickResult = useCallback(
+    (id?: number) => {
+      if (id) {
+        setSearchCurrent(
+          serializeURL({
+            ...searchFilters,
+            id: id,
+          })
+        );
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [searchFilters]
+  );
+
   useEffect(() => {
-    const filters = createObjectFromQueryString(window.location.search, {
-      objectReference: emptyEducationFilterOptions,
+    const filters = createObjectFromQueryString(searchCurrent || window.location.search, {
+      objectReference: defaultEducationFilterOptions,
       objectReferenceOnly: true,
     });
+
+    const updatedQuery = filters.q || '';
+    const isQueryChanged = updatedQuery !== searchQuery;
+
     const filtersWithBaseDefaults = Object.assign(
       {},
       emptyEducationFilterOptions,
-      Object.keys(filters).length === 1 && filters.q ? defaultEducationFilterOptions : {},
-      {
-        page: page,
-        size: pageSize,
-      },
-      filters
+      (Object.keys(filters).length === 1 && updatedQuery) || isQueryChanged ?
+        { ...defaultEducationFilterOptions, q: updatedQuery }
+      : {
+          page: page,
+          size: pageSize,
+          ...filters,
+        }
     );
-    const updatedQuery = filtersWithBaseDefaults.q;
-    const isQueryChanged = updatedQuery !== searchQuery;
 
     const updatedFilters = filtersWithBaseDefaults;
     const isFiltersChanged = !_.isEqual(updatedFilters, searchFilters);
@@ -157,6 +185,8 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
 
     if (isQueryChanged) {
       setSearchQuery(updatedQuery);
+      setPage(defaultEducationFilterOptions.page);
+      setPageSize(defaultEducationFilterOptions.size);
     }
 
     if (isFiltersChanged) {
@@ -168,6 +198,19 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
+
+  useEffect(() => {
+    if (searchCurrent && !isPending) {
+      const currentSearchFilters = deserializeURL(searchCurrent);
+
+      const currentElem = document.querySelector(`[data-id="${currentSearchFilters.id}"]`);
+      if (currentElem) {
+        (currentElem as HTMLElement).focus();
+        setSearchCurrent(null);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchResults]);
 
   return (
     <DefaultLayout
@@ -209,7 +252,7 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
           {isFiltersTouched && (
             <>
               <h2 className="mt-md desktop:mt-[7.25rem] text-large desktop:text-[2.6rem] leading-[3.6rem] mb-0">
-                {isLoading ?
+                {isFetching ?
                   <>
                     Sökresultat laddar för <strong>{searchQuery}</strong>
                   </>
@@ -220,7 +263,10 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
                         <span>Inga träffar</span>
                       : <>
                           <span>{searchResults?._meta?.totalRecords}</span>{' '}
-                          {searchResults?._meta?.totalRecords > 1 || searchResults?._meta?.totalRecords == 0 ?
+                          {(
+                            (searchResults?._meta?.totalRecords && searchResults?._meta?.totalRecords > 1) ||
+                            searchResults?._meta?.totalRecords == 0
+                          ) ?
                             'träffar'
                           : 'träff'}
                         </>
@@ -242,12 +288,12 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
             searchQuery={searchQuery}
           />
 
-          {isLoading && (
+          {isPending && isFetching && (
             <div className="mt-md w-full flex justify-center">
               <Spinner aria-label="Laddar sökresultat" />
             </div>
           )}
-          {!isLoading && searchResults?.courses?.length > 0 ?
+          {!isPending && searchResults?.courses?.length && searchResults?.courses?.length > 0 ?
             <div className="mt-md desktop:mt-[6.6rem] flex flex-col gap-lg desktop:flex-row">
               <div className="w-full flex flex-col gap-lg desktop:w-[830px]">
                 {activeListing === 1 ?
@@ -256,14 +302,21 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
                     handleCheckboxClick={handleCheckboxClick}
                     _meta={searchResults?._meta}
                     setPageSize={handleSetPageSize}
+                    handleOnClickResult={handleOnClickResult}
                   />
                 : <EducationsTable
                     educations={searchResults?.courses}
                     handleCheckboxClick={handleCheckboxClick}
                     _meta={searchResults?._meta}
                     setPage={handleSetPage}
+                    handleOnClickResult={handleOnClickResult}
                   />
                 }
+                {isFetching && (
+                  <div className="mt-md w-full flex justify-center">
+                    <Spinner aria-label="Laddar sökresultat" />
+                  </div>
+                )}
               </div>
               <div className="max-w-[300px] compareStickyParent">
                   
@@ -294,7 +347,14 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
                       className={cx(searchCompareList.length === 0 && 'pointer-events-none', 'desktop:mt-md')}
                       href={{
                         pathname: '/utbildningar/sok/jamfor',
-                        query: searchCompareList ? { id: searchCompareList.map((x) => x.id) } : undefined,
+                        query:
+                          searchCompareList.length > 0 ?
+                            {
+                              id: searchCompareList
+                                .map((x) => x.id?.toString())
+                                .filter((id): id is string => id !== undefined),
+                            }
+                          : undefined,
                       }}
                     >
                       <Button
@@ -325,7 +385,7 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
                 </Sticky>
               </div>
             </div>
-          : isLoading ?
+          : isPending ?
             ''
           : <div className="mt-2xl">
               {!isFiltersTouched ?

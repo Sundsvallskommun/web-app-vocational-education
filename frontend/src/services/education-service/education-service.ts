@@ -27,7 +27,7 @@ export const emptyEducationFilterOptions: EducationFilterOptions = {
   scope: [],
 };
 
-export const defaultEducationFilterOptions: EducationFilterOptions = {
+export const defaultEducationFilterOptions = {
   page: 1,
   size: 10,
   q: '',
@@ -55,13 +55,13 @@ export const educationFilterTagLabels = {
 export const getEducationFilterValueString = (filter, value) => {
   switch (filter) {
     case 'sortFunction':
-      return sortFilter.find((choice) => choice.value === value).label;
+      return sortFilter.find((choice) => choice.value === value)?.label;
     case 'category':
-      return value.map((x) => getFormattedLabelFromValue(x)).join(' | ');
+      return Array.isArray(value) ? value?.map((x) => getFormattedLabelFromValue(x)).join(' | ') : value;
     case 'level':
-      return value.map((x) => getFormattedLabelFromValue(x)).join(' | ');
+      return Array.isArray(value) ? value?.map((x) => getFormattedLabelFromValue(x)).join(' | ') : value;
     case 'studyLocation':
-      return value.map((x) => getFormattedLabelFromValue(x)).join(' | ');
+      return Array.isArray(value) ? value?.map((x) => getFormattedLabelFromValue(x)).join(' | ') : value;
     case 'distance':
       return value === 'true' ? 'Ja' : 'Nej';
     case 'latestApplicationDate':
@@ -69,19 +69,19 @@ export const getEducationFilterValueString = (filter, value) => {
     case 'startDate':
       return value;
     case 'scope':
-      return value.map((x) => x.replace('.0', '%')).join(' | ');
+      return Array.isArray(value) ? value?.map((x) => x.replace('.0', '%')).join(' | ') : value;
     default:
       return '';
   }
 };
 
 export const getFilterOptionString = (filter, value) => {
-  return `${educationFilterTagLabels[filter]}: ${getEducationFilterValueString(filter, value)}`;
+  return value ? `${educationFilterTagLabels[filter]}: ${getEducationFilterValueString(filter, value)}` : '';
 };
 
 export const getValidValue = <TFallback = null>(
   key: string,
-  value: string | string[],
+  value: null | undefined | string | string[],
   fallback: TFallback
 ): Record<string, TFallback> => {
   const validValues = {
@@ -94,7 +94,7 @@ export const getValidValue = <TFallback = null>(
     startDate: value ? value : fallback,
     scope: Array.isArray(value) && value[0] ? value : fallback,
   };
-  return validValues[key];
+  return value ? validValues[key] : fallback;
 };
 
 export const getFilterDataStrings: {
@@ -120,14 +120,6 @@ export const getSearchParamsFromEducationSearchFilters = (filterData: EducationF
   return serializeURL(getFilterDataStrings(filterData, ''));
 };
 
-export const handleGetEducationEventsMeta: (_meta: PagingMetaData) => PagingMetaData = (_meta) => ({
-  page: _meta.page,
-  limit: _meta.limit,
-  count: _meta.count,
-  totalRecords: _meta.totalRecords,
-  totalPages: _meta.totalPages,
-});
-
 export interface GetEducationEvents {
   courses: Course[];
   _meta?: PagingMetaData;
@@ -139,8 +131,8 @@ export const getEducationEvents: (filterData: EducationFilterOptions) => Promise
       params: { filter: getFilterDataStrings(filterData, null) },
     })
     .then((res) => ({
-      courses: res?.data?.data?.courses,
-      _meta: handleGetEducationEventsMeta(res?.data?.data?._meta),
+      courses: res?.data?.data?.courses || [],
+      _meta: res?.data?.data?._meta,
     }))
     .catch((e) => ({
       courses: [],
@@ -181,7 +173,7 @@ export const getLangString: (_langCodes: string[]) => string = (_langCodes) => {
   return _langCodes.map((code) => langCodes.get(code)).join(', ');
 };
 
-export const getEducationLengthString: (start: string, end: string) => string = (start, end) => {
+export const getEducationLengthString: (start: string, end: string) => string | null = (start, end) => {
   const days = Math.abs(dayjs(end).diff(start, 'day'));
   const weeks = Math.abs(dayjs(end).diff(start, 'week'));
   const years = Math.abs(dayjs(end).diff(start, 'year'));
@@ -250,7 +242,7 @@ export const getSanitizedInformation = (
   information: Course['information'],
   informationSanitizeOptions = cardInformationSanitizeOptions
 ) => {
-  if (information.includes('CDATA')) {
+  if (information?.includes('CDATA')) {
     const xmlParsedInformation = parser.parse(information);
     information = xmlParsedInformation ? xmlParsedInformation['#text'] : '';
   }

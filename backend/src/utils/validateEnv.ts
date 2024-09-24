@@ -10,6 +10,7 @@ const validateEnv = () => {
     CLIENT_SECRET: str(),
     PORT: port(),
     BASE_URL_PREFIX: str(),
+    MUNICIPALITY_ID: str(),
     // SAML_CALLBACK_URL: url(),
     // SAML_LOGOUT_CALLBACK_URL: url(),
     // SAML_SUCCESS_REDIRECT: url(),

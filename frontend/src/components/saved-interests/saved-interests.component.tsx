@@ -74,6 +74,10 @@ export default function SavedInterests() {
                           {i < interest.studyLocation.length - 1 && ' | '}
                         </span>
                       ))}
+                      {' | '}
+                      {interest.timeInterval === '0' ?
+                        <span>{`${dayjs(interest.timeIntervalFrom).format('YYYY-MM-DD')} till ${dayjs(interest.timeIntervalTo).format('YYYY-MM-DD')}`}</span>
+                      : <span>{interest.timeInterval} månader framåt</span>}
                     </div>
                   </div>
                   <span className="saved-interest-header-texts-meta mb-[1.8rem] text-label text-xs leading-[1.8rem]">{`Uppdaterad ${dayjs(interest.updatedAt).format('YYYY-MM-DD')}`}</span>

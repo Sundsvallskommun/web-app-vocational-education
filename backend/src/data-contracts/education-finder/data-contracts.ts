@@ -112,6 +112,68 @@ export interface Violation {
   message?: string;
 }
 
+/** Statistics model */
+export interface Statistics {
+  /**
+   * Number of on-going courses
+   * @format int32
+   * @example 10
+   */
+  onGoingCourses?: number;
+  /**
+   * Number of planned courses
+   * @format int32
+   * @example 10
+   */
+  plannedCourses?: number;
+  /**
+   * Number of finished courses
+   * @format int32
+   * @example 10
+   */
+  finishedCourses?: number;
+  /**
+   * Number of available seats
+   * @format int32
+   * @example 10
+   */
+  availableSeats?: number;
+  /**
+   * Total capacity
+   * @format int32
+   * @example 10
+   */
+  totalCapacity?: number;
+  /** Study locations used for filtering */
+  studyLocations?: string[];
+  /** Education forms used for filtering */
+  educationForms?: string[];
+  /** Categories used for filtering */
+  categories?: string[];
+  /** Category ids used for filtering */
+  categoryIds?: string[];
+  /**
+   * Start date used for filtering
+   * @format date
+   */
+  startDate?: string;
+  /**
+   * End date used for filtering
+   * @format date
+   */
+  endDate?: string;
+}
+
+/** Statistics filter model */
+export enum StatisticsFilter {
+  EducationForm = 'educationForm',
+  Category = 'category',
+  CategoryId = 'categoryId',
+  StudyLocation = 'studyLocation',
+  StartDate = 'startDate',
+  EndDate = 'endDate',
+}
+
 /** Course model */
 export interface Course {
   /**

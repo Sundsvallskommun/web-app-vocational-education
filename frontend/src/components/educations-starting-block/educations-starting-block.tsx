@@ -21,7 +21,7 @@ export default function EducationsStartingBlock({ educationsStartingBlock }: edu
         title: `mock_title${i}`,
         text: `mock_text${i}`,
         date: new Date(),
-        location: `mock_location${i}`,
+        studyLocation: `mock_studyLocation${i}`,
         courseCode: `mock_XCODE${i}`,
       })),
     ],
@@ -44,7 +44,7 @@ export default function EducationsStartingBlock({ educationsStartingBlock }: edu
                 <span className="min-w-[10rem]">{dayjs(card.date).format('DD MMM YYYY')}</span>
               </div>
               <div className="flex items-center">
-                <LocationOnIcon className="!text-2xl mr-sm" /> <span>{card.location}</span>
+                <LocationOnIcon className="!text-2xl mr-sm" /> <span>{card.studyLocation}</span>
               </div>
             </>
           }

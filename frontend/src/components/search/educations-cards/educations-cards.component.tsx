@@ -78,17 +78,17 @@ export const EducationsCards: React.FC<{
 
   return (
     <>
-      {educations.slice(0, _meta.limit).map((edu, index) => {
-        let information = edu.information;
-        if (edu.information.includes('CDATA')) {
-          const xmlParsedInformation = parser.parse(edu.information);
+      {educations?.slice(0, _meta.limit)?.map((edu, index) => {
+        let information = edu?.information;
+        if (edu?.information.includes('CDATA')) {
+          const xmlParsedInformation = parser.parse(edu?.information);
           information = xmlParsedInformation ? xmlParsedInformation['#text'] : '';
         }
         const informationSanitized = SanitizeHTML(information, cardInformationSanitizeOptions);
         return (
-          <div key={`${index}-${edu.code}`} className="w-full flex flex-col">
+          <div key={`${index}-${edu?.code}`} className="w-full flex flex-col">
             <DropCard
-              href={`/utbildningar/${edu.code}-${edu.id}`}
+              href={`/utbildningar/${edu?.code}-${edu?.id}`}
               dropIcon={<SchoolIcon className="material-icon desktop:!text-2xl" />}
               footer={
                 <div className="flex flex-col gap-y-20">
@@ -96,33 +96,33 @@ export const EducationsCards: React.FC<{
                     <div className="hidden desktop:block">
                       <div className="label">Längd</div>
                       <div className="flex items-center">
-                        <span className={cardDataClasses}>{getEducationLengthString(edu.start, edu.end) ?? '-'}</span>
+                        <span className={cardDataClasses}>{getEducationLengthString(edu?.start, edu?.end) ?? '-'}</span>
                       </div>
                     </div>
                     <div>
                       <div className="hidden desktop:block label">Plats</div>
                       <div className="flex items-center">
                         <LocationOnIcon className={cardIconClasses} />
-                        <span className={cardDataClasses}>{edu.studyLocation.split(',')}</span>
+                        <span className={cardDataClasses}>{edu?.studyLocation?.split(',')}</span>
                       </div>
                     </div>
                     <div>
                       <div className="hidden desktop:block label">Start</div>
                       <div className="flex items-center">
                         <DateRangeIcon className={cardIconClasses} />
-                        <span className={cardDataClasses}>{edu.start ?? '-'}</span>
+                        <span className={cardDataClasses}>{edu?.start ?? '-'}</span>
                       </div>
                     </div>
                     <div className="hidden desktop:block">
                       <div className="label">Studietakt</div>
                       <div className="flex items-center">
-                        <span className={cardDataClasses}>{edu.scope ? edu.scope + '%' : '-'}</span>
+                        <span className={cardDataClasses}>{edu?.scope ? edu?.scope + '%' : '-'}</span>
                       </div>
                     </div>
                     <div className="hidden desktop:block">
                       <div className="label">Utbildningsform</div>
                       <div className="flex items-center">
-                        <span className={cardDataClasses}>{edu.level ?? '-'}</span>
+                        <span className={cardDataClasses}>{edu?.level ?? '-'}</span>
                       </div>
                     </div>
                     <div className="hidden desktop:block">
@@ -141,7 +141,7 @@ export const EducationsCards: React.FC<{
                 </div>
               }
             >
-              <h3 className="mb-10">{edu.name ? edu.name : ''}</h3>
+              <h3 className="mb-10">{edu?.name ? edu?.name : ''}</h3>
               <div
                 className="text h-[9em] desktop:h-[11em]"
                 dangerouslySetInnerHTML={{ __html: informationSanitized }}
@@ -149,7 +149,7 @@ export const EducationsCards: React.FC<{
             </DropCard>
             <div className="mt-sm flex justify-end">
               <Checkbox
-                checked={searchCompareList.filter((x) => x.id == edu.id).length > 0}
+                checked={searchCompareList.filter((x) => x.id == edu?.id).length > 0}
                 onChange={handleCheckboxClick(edu)}
               >
                 Jämför utbildning

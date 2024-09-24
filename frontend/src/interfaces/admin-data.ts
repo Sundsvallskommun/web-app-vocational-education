@@ -54,7 +54,7 @@ interface EducationsStartingBlockEducations {
   title: string;
   text: string;
   date: Date;
-  location: string;
+  studyLocation: string;
   courseCode: string;
 }
 

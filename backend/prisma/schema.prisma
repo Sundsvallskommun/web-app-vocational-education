@@ -63,8 +63,8 @@ model User_SavedSearch {
 model User_SavedInterest {
   id                Int    @id @default(autoincrement())
   category          String
-  type              String
-  location          String
+  level             String  @default("")
+  studyLocation     String  @default("")
   timeInterval      String  
   timeIntervalFrom  String  
   timeIntervalTo    String  
@@ -72,7 +72,6 @@ model User_SavedInterest {
   userId            Int?
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt @default(now())
-  @@unique([category, type, location])
 }
 
 model Page {

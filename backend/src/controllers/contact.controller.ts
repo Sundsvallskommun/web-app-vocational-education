@@ -1,7 +1,7 @@
 import { ContactFormDto } from '@/dtos/contact.dto';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import ApiService from '@/services/api.service';
-import { APP_NAME, MAIL_US } from '@config';
+import { APP_NAME, MUNICIPALITY_ID } from '@config';
 import { validationMiddleware } from '@middlewares/validation.middleware';
 import { Body, Controller, HttpCode, Post, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
@@ -97,7 +97,7 @@ export class ContactController {
           message: message(userData.message),
           htmlMessage: base64Encode(messageHTML(userData, { pathReference: pathReference as string })),
         };
-        const url = 'messaging/4.4/email';
+        const url = `messaging/5.0/${MUNICIPALITY_ID}/email`;
         await this.apiService.post({ url, data: sendContactRequest });
       });
     }

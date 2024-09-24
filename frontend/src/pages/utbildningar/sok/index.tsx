@@ -1,10 +1,10 @@
 import ContentBlock from '@components/block/content-block.component';
 import Button from '@components/button/button.component';
 import Drop from '@components/drop/drop.component';
-import EducationsCards from '@components/search/educations-cards/educations-cards.component';
-import EducationsTable from '@components/search/educations-table/educations-table.component';
 import { BigDropHeader } from '@components/header/big-drop-header.component';
+import EducationsCards from '@components/search/educations-cards/educations-cards.component';
 import EducationsFilters from '@components/search/educations-filters.component';
+import EducationsTable from '@components/search/educations-table/educations-table.component';
 import Search from '@components/search/search.component';
 import { useAppContext } from '@contexts/app.context';
 import { LayoutProps } from '@interfaces/admin-data';
@@ -17,14 +17,12 @@ import {
   getEducationEvents,
 } from '@services/education-service/education-service';
 import { getLayout } from '@services/layout-service';
-import { Breadcrumb, Link, cx, omit } from '@sk-web-gui/react';
-import { ValueOf } from '@utils/types';
-import { addToQueryString, createObjectFromQueryString } from '@utils/url';
+import { Breadcrumb, Link, Spinner, cx, omit } from '@sk-web-gui/react';
+import { addToQueryString, createObjectFromQueryString, serializeURL } from '@utils/url';
 import _ from 'lodash';
 import NextLink from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
-import { ParsedUrlQueryInput } from 'querystring';
 import React, { useEffect, useState } from 'react';
 import Sticky from 'react-sticky-el';
 
@@ -41,6 +39,7 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
 
   const [_meta, setPageMeta] = useState<PagingMetaData | undefined>();
   const [searchResults, setSearchResults] = useState<Course[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [searchQuery, setSearchQuery] = useState<string>(defaultEducationFilterOptions.q);
   const [searchFilters, setSearchFilters] = useState<EducationFilterOptions>(
@@ -53,12 +52,11 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
 
   const [isFiltersTouched, setIsFiltersTouched] = useState(false);
 
-  const updateParams = (query: string | ParsedUrlQueryInput) => {
-    console.log('updateParams', query);
+  const updateParams = (values: string) => {
     router.replace(
       {
         pathname: router.pathname,
-        query: query,
+        query: values,
       },
       undefined,
       {
@@ -72,7 +70,7 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
       return handleSetPage(page(page));
     }
     setPage(page);
-    updateParams(addToQueryString({ page }));
+    updateParams(addToQueryString({ page: page as number }));
   };
 
   const handleSetPageSize = (size) => {
@@ -80,7 +78,7 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
       return handleSetPageSize(size(pageSize));
     }
     setPageSize(size);
-    updateParams(addToQueryString({ size }));
+    updateParams(addToQueryString({ page: page as number }));
   };
 
   const handleSetActiveListing = (listType: number) => {
@@ -93,14 +91,13 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
   };
 
   const fetchSearch = (filterData?: EducationFilterOptions) => {
-    console.log('FETCH', filterData);
+    setIsLoading(true);
     getEducationEvents({ ...filterData }).then((res) => {
       if (!res.error) {
         setSearchResults(res.courses);
         setPageMeta(res._meta);
-      } else {
-        console.log('error');
       }
+      setIsLoading(false);
     });
   };
 
@@ -119,8 +116,8 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
       objectReference: emptyEducationFilterOptions,
       objectReferenceAsBase: true,
     });
-    if (!_.isEqual(omit(filters, ['q']), filterData)) {
-      updateParams(addToQueryString(filterData as Record<string, ValueOf<EducationFilterOptions>>));
+    if (!_.isEqual(filters, filterData)) {
+      updateParams(serializeURL({ ...filterData }));
     }
   };
 
@@ -131,6 +128,7 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
   useEffect(() => {
     const filters = createObjectFromQueryString(window.location.search, {
       objectReference: emptyEducationFilterOptions,
+      objectReferenceOnly: true,
     });
     const filtersWithBaseDefaults = Object.assign(
       {},
@@ -145,7 +143,7 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
     const updatedQuery = filtersWithBaseDefaults.q;
     const isQueryChanged = updatedQuery !== searchQuery;
 
-    const updatedFilters = omit(filtersWithBaseDefaults, ['q']);
+    const updatedFilters = filtersWithBaseDefaults;
     const isFiltersChanged = !_.isEqual(updatedFilters, searchFilters);
 
     const isChanged = isQueryChanged || isFiltersChanged;
@@ -161,9 +159,6 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
     if (isChanged) {
       setIsFiltersTouched(true);
       fetchSearch(filtersWithBaseDefaults);
-      updateParams(
-        addToQueryString(filtersWithBaseDefaults as unknown as Record<string, ValueOf<EducationFilterOptions>>)
-      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
@@ -208,16 +203,23 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
           {isFiltersTouched && (
             <>
               <h2 className="mt-md desktop:mt-[7.25rem] text-large desktop:text-[2.6rem] leading-[3.6rem] mb-0">
-                Din sökning<strong>{` ${searchQuery} `}</strong>gav{' '}
-                <strong>
-                  {!_meta || _meta?.totalRecords == 0 ?
-                    <span>Inga träffar</span>
-                  : <>
-                      <span>{_meta?.totalRecords}</span>{' '}
-                      {_meta?.totalRecords > 1 || _meta?.totalRecords == 0 ? 'träffar' : 'träff'}
-                    </>
-                  }
-                </strong>
+                {isLoading ?
+                  <>
+                    Sökresultat laddar för <strong>{searchQuery}</strong>
+                  </>
+                : <>
+                    Din sökning<strong>{` ${searchQuery} `}</strong>gav{' '}
+                    <strong>
+                      {!_meta || _meta?.totalRecords == 0 ?
+                        <span>Inga träffar</span>
+                      : <>
+                          <span>{_meta?.totalRecords}</span>{' '}
+                          {_meta?.totalRecords > 1 || _meta?.totalRecords == 0 ? 'träffar' : 'träff'}
+                        </>
+                      }
+                    </strong>
+                  </>
+                }
               </h2>
             </>
           )}
@@ -232,7 +234,12 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
             searchQuery={searchQuery}
           />
 
-          {searchResults.length > 0 ?
+          {isLoading && (
+            <div className="mt-md w-full flex justify-center">
+              <Spinner aria-label="Laddar sökresultat" />
+            </div>
+          )}
+          {!isLoading && searchResults.length > 0 ?
             <div className="mt-md desktop:mt-[6.6rem] flex flex-col gap-lg desktop:flex-row">
               <div className="w-full flex flex-col gap-lg desktop:w-[830px]">
                 {activeListing === 1 ?
@@ -310,6 +317,8 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
                 </Sticky>
               </div>
             </div>
+          : isLoading ?
+            ''
           : <div className="mt-2xl">
               {!isFiltersTouched ?
                 'Ange ett sökrord eller använd filtreringen för att finna utbildningar.'

@@ -1,3 +1,4 @@
+import { FiltersFetcher } from '@contexts/filters.context';
 import { emptyUserSavedInterest } from '@services/user-service/defaults';
 import { useUserStore } from '@services/user-service/user-service';
 import { useSnackbar } from '@sk-web-gui/react';
@@ -6,9 +7,9 @@ import { FormProvider, UseFormReturn, useForm } from 'react-hook-form';
 
 interface SavedInterestsForm {
   id?: number;
-  location: string[];
+  studyLocation: string[];
   category: string;
-  type: string;
+  level: string;
   /** Time interval from now plus 12 or 6
    * @default 12
    * Actual radio-picker, choices: 12, 6, 0(using date defined interval)
@@ -68,7 +69,9 @@ export default function SavedInterestsFormLogic({
 
   return (
     <FormProvider {...context}>
-      <form onSubmit={handleSubmit(_onSubmit)}>{children}</form>
+      <FiltersFetcher filters={['category', 'level', 'studyLocation']}>
+        <form onSubmit={handleSubmit(_onSubmit)}>{children}</form>
+      </FiltersFetcher>
     </FormProvider>
   );
 }

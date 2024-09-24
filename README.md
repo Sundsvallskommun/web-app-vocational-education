@@ -6,8 +6,8 @@ Dessa APIer används i projektet, applikationsanvändaren i WSO2 måste prenumer
 
 | API             | Version |
 | --------------- | ------: |
-| Messaging       |     4.1 |
-| EducationFinder |     1.1 |
+| Messaging       |     5.0 |
+| EducationFinder |     1.2 |
 
 ## Utveckling
 

@@ -10,11 +10,11 @@ const PATH_TO_OUTPUT_DIR = path.resolve(process.cwd(), './src/data-contracts');
 const APIS = [
   {
     name: 'education-finder',
-    version: '1.0',
+    version: '1.2',
   },
   {
     name: 'messaging',
-    version: '4.4',
+    version: '5.0',
   },
 ];
 

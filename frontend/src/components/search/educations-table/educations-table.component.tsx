@@ -36,45 +36,45 @@ export const EducationsTable: React.FC<{
           </Table.Header>
           <Table.Body>
             {pagedList.map((edu, index) => (
-              <Table.Row key={`${index}-${edu.id}`} className="[&>td]:h-full">
+              <Table.Row key={`${index}-${edu?.id}`} className="[&>td]:h-full">
                 <Table.Column>
                   <Checkbox
-                    checked={searchCompareList.filter((x) => x.id == edu.id).length > 0}
+                    checked={searchCompareList.filter((x) => x.id == edu?.id).length > 0}
                     onChange={handleCheckboxClick(edu)}
                   />
                 </Table.Column>
                 <Table.Column>
                   <span className="inline-block">
                     <NextLink
-                      href={`/utbildningar/${edu.code}-${edu.id}`} /* This should be built and point to dynamic page */
+                      href={`/utbildningar/${edu?.code}-${edu?.id}`} /* This should be built and point to dynamic page */
                     >
                       <Link as="span" className="line-clamp-2 text-base mb-6 leading-[1.5]">
-                        {edu.name ?? '-'}
+                        {edu?.name ?? '-'}
                       </Link>
                     </NextLink>
-                    <div className="text-sm capitalize">{edu.level ?? '-'}</div>
+                    <div className="text-sm capitalize">{edu?.level ?? '-'}</div>
                   </span>
                 </Table.Column>
                 <Table.Column className="min-w-[11em]">
-                  <span className={tableCellTextClasses}>{edu.numberOfSeats ?? '-'}</span>
+                  <span className={tableCellTextClasses}>{edu?.numberOfSeats ?? '-'}</span>
                 </Table.Column>
                 <Table.Column>
                   <span>
                     <div className={tableCellTextClasses}>{'(?)'}</div>
-                    <div className={tableCellTextClasses}>{edu.studyLocation ?? '-'}</div>
+                    <div className={tableCellTextClasses}>{edu?.studyLocation ?? '-'}</div>
                   </span>
                 </Table.Column>
                 <Table.Column>
                   <span>
-                    <div className={tableCellTextClasses}>{edu.start ?? '-'}</div>
-                    <div className={tableCellTextClasses}>{edu.end ?? '-'}</div>
+                    <div className={tableCellTextClasses}>{edu?.start ?? '-'}</div>
+                    <div className={tableCellTextClasses}>{edu?.end ?? '-'}</div>
                   </span>
                 </Table.Column>
                 <Table.Column>
-                  <span className={tableCellTextClasses}>{edu.scope ? edu.scope + '%' : '-'}</span>
+                  <span className={tableCellTextClasses}>{edu?.scope ? edu?.scope + '%' : '-'}</span>
                 </Table.Column>
                 <Table.Column>
-                  <span className={tableCellTextClasses}>{edu.level ?? '-'}</span>
+                  <span className={tableCellTextClasses}>{edu?.level ?? '-'}</span>
                 </Table.Column>
                 <Table.Column>
                   <span className={tableCellTextClasses}>(?)</span>

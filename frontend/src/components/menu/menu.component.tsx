@@ -94,18 +94,13 @@ export const Menu: React.FC = () => {
                 <span>Cookies</span> <ArrowForwardIcon className="material-icon !text-xl" />
               </Link>
             </NextLink>
-            {user.username ?
+            {user.username && (
               <NextLink href="/logout">
                 <Link as="span">
                   <span>Logga ut</span> <ArrowForwardIcon className="material-icon !text-xl" />
                 </Link>
               </NextLink>
-            : <NextLink href={`/login?path=${router.pathname}`}>
-                <Link as="span">
-                  <span>Logga in</span> <ArrowForwardIcon className="material-icon !text-xl" />
-                </Link>
-              </NextLink>
-            }
+            )}
           </div>
         </div>
       </MenuModal>

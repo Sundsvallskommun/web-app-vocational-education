@@ -4,6 +4,7 @@ import { sendFormData } from '@services/contact-service';
 import { FormProvider, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { useSnackbar } from '@sk-web-gui/react';
+import { FiltersFetcher } from '@contexts/filters.context';
 
 export default function ContactFormLogic({ children }) {
   const message = useSnackbar();
@@ -42,7 +43,9 @@ export default function ContactFormLogic({ children }) {
   return (
     <>
       <FormProvider {...context}>
-        <form onSubmit={handleSubmit(onSend)}>{children}</form>
+        <FiltersFetcher filters={['studyLocation']}>
+          <form onSubmit={handleSubmit(onSend)}>{children}</form>
+        </FiltersFetcher>
       </FormProvider>
     </>
   );

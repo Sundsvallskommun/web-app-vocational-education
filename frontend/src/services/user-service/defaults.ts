@@ -21,9 +21,9 @@ export const emptyUserResponse: ApiResponse<User> = {
 };
 
 export const emptyUserSavedInterest = {
-  location: [],
+  studyLocation: [],
   category: '',
-  type: '',
+  level: '',
   timeInterval: '12',
   timeIntervalFrom: dayjs(new Date()).format('YYYY-MM-DD'),
 };

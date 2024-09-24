@@ -1,9 +1,11 @@
+import { Course, Statistics } from '@/data-contracts/education-finder/data-contracts';
 import { HttpException } from '@/exceptions/HttpException';
 import DataResponse from '@/interfaces/dataResponse.interface';
 import ApiService from '@/services/api.service';
 import { IsNullable } from '@/utils/custom-validation-classes';
 import { IsArray, IsBooleanString, IsOptional, IsString } from 'class-validator';
-import { Controller, Get, QueryParam } from 'routing-controllers';
+import hpp from 'hpp';
+import { Controller, Get, QueryParam, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 
 class EducationFilterOptions {
@@ -33,12 +35,12 @@ class EducationFilterOptions {
   @IsNullable()
   @IsArray()
   @IsString({ each: true }) // https://github.com/typestack/routing-controllers/issues/123
-  type?: string[];
+  level?: string[];
   @IsOptional()
   @IsNullable()
   @IsArray()
   @IsString({ each: true }) // https://github.com/typestack/routing-controllers/issues/123
-  location?: string[];
+  studyLocation?: string[];
   @IsOptional()
   @IsNullable()
   @IsBooleanString()
@@ -59,8 +61,39 @@ class EducationFilterOptions {
   @IsNullable()
   @IsArray()
   @IsString({ each: true }) // https://github.com/typestack/routing-controllers/issues/123
-  paceOfStudy?: string[];
+  scope?: string[];
 }
+
+class EducationStatisticsFilterOptions {
+  @IsOptional()
+  @IsNullable()
+  @IsArray()
+  @IsString({ each: true }) // https://github.com/typestack/routing-controllers/issues/123
+  categories?: string[];
+  @IsOptional()
+  @IsNullable()
+  @IsArray()
+  @IsString({ each: true }) // https://github.com/typestack/routing-controllers/issues/123
+  levels?: string[];
+  @IsOptional()
+  @IsNullable()
+  @IsArray()
+  @IsString({ each: true }) // https://github.com/typestack/routing-controllers/issues/123
+  studyLocations?: string[];
+  @IsOptional()
+  @IsNullable()
+  @IsString()
+  startDate?: string;
+  @IsOptional()
+  @IsNullable()
+  @IsString()
+  endDate?: string;
+}
+
+type GetEducationFilter = 'level' | 'scope' | 'studyLocation' | 'category';
+type GetEducationFiltersResponseData = {
+  [key in GetEducationFilter]?: string[];
+};
 
 const defaultStudyLocations = ['Härnösand', 'Kramfors', 'Sollefteå', 'Sundsvall', 'Timrå', 'Ånge', 'Örnsköldsvik'];
 
@@ -68,11 +101,28 @@ const defaultStudyLocations = ['Härnösand', 'Kramfors', 'Sollefteå', 'Sundsva
 export class EducationsController {
   private apiService = new ApiService();
 
+  getFilter = async (filter: GetEducationFilter) => {
+    try {
+      const url = `/education-finder/1.2/courses/filters/${filter}/values`;
+      const res = await this.apiService.get<string[]>({ url });
+
+      if (Array.isArray(res.data) && res.data.length < 1) {
+        throw new HttpException(404, 'Not Found');
+      }
+
+      return res.data;
+    } catch {
+      throw new HttpException(500, `Failed to fetch ${filter}`);
+    }
+  };
+
   @Get('/education-events')
   @OpenAPI({ summary: 'Return education events' })
   async getEducationEvents(@QueryParam('filter') filter?: EducationFilterOptions): Promise<DataResponse<any[]>> {
-    const url = `/education-finder/1.1/courses`;
+    const url = `/education-finder/1.2/courses`;
 
+    const today = new Date();
+    const todayFormatted = today.toISOString().split('T')[0];
     const params = {
       // Pagination parameters
       page: filter?.page !== undefined ? parseInt(filter.page) - 1 : undefined,
@@ -81,18 +131,89 @@ export class EducationsController {
 
       // Filter parameters
       searchString: filter?.q ?? undefined,
-      level: filter?.type ?? undefined,
-      scope: filter?.paceOfStudy ?? undefined,
-      // Update to this when API is updated with multi for-> studyLocation: filter?.location ?? defaultStudyLocations,
-      studyLocation: filter?.location?.join(',') ?? undefined,
-      latestApplicationBefore: filter?.latestApplicationDate ?? undefined,
-      startAfter: filter?.startDate ?? undefined,
+      level: filter?.level ?? undefined,
+      scope: filter?.scope ?? undefined,
 
-      // category = areaIds parameter?
-      // distance: filter?.distance ? filter.distance : undefined,
+      studyLocation: filter?.studyLocation?.join(','),
+      // FIXME: should be below, but api lacks support yet
+      // studyLocation: filter?.studyLocation ?? defaultStudyLocations,
+
+      latestApplicationBefore: filter?.latestApplicationDate ?? undefined,
+      latestApplicationAfter: filter?.latestApplicationDate ? todayFormatted : undefined,
+      startAfter: filter?.startDate ?? filter?.latestApplicationDate ? todayFormatted : undefined,
+
+      category: filter?.category ?? undefined,
+      distance: filter?.distance ?? undefined,
     };
 
-    const res = await this.apiService.get<any>({ url, params });
+    const res = await this.apiService.get<Course[]>({ url, params });
+
+    if (Array.isArray(res.data) && res.data.length < 1) {
+      throw new HttpException(404, 'Not Found');
+    }
+
+    return { data: res.data, message: 'success' };
+  }
+
+  @Get('/education-events/filters')
+  @OpenAPI({ summary: 'Return education events filters' })
+  @UseBefore(hpp({ whitelist: ['filters'] }))
+  async getEducationEventsFilters(
+    @QueryParam('filters', { isArray: true }) filters: GetEducationFilter[],
+  ): Promise<DataResponse<GetEducationFiltersResponseData>> {
+    let data: GetEducationFiltersResponseData = {};
+    await Promise.all(
+      filters.map(async filter => {
+        if (filter === 'studyLocation') {
+          data[filter] = defaultStudyLocations;
+        } else if (filter === 'category') {
+          data[filter] = [
+            'BYGG OCH ANLÄGGNING',
+            'DATA OCH IT',
+            'EKONOMI, MARKNADSFÖRING OCH ADMINISTRATION',
+            'FRISK- OCH SKÖNHETSVÅRD',
+            'FÖRBEREDANDE UTBILDNINGAR',
+            'HANTVERK',
+            'HOTELL, RESTAURANG OCH TURISM',
+            'INFORMATION OCH MEDIA',
+            'KONSTNÄRLIGA UTBILDNINGAR',
+            'KULTUR OCH HUMANISTISKA ÄMNEN',
+            'MEDICIN OCH VÅRD',
+            'NATURBRUK',
+            'NATURVETENSKAP',
+            'SAMHÄLLSVETENSKAP OCH JURIDIK',
+            'SPRÅK',
+            'SÄKERHET, FÖRSVAR OCH RÄDDNINGSTJÄNST',
+            'TEKNIK',
+            'TILLVERKNING OCH UNDERHÅLL',
+            'TRANSPORT',
+            'UNDERVISNING OCH IDROTT',
+            'ÖVRIGA KURSER OCH TVÄRVETENSKAP',
+          ];
+        } else {
+          data[filter] = await this.getFilter(filter);
+        }
+      }),
+    );
+
+    return { data: data, message: 'success' };
+  }
+
+  @Get('/education-events/statistics')
+  @OpenAPI({ summary: 'Return education events' })
+  async getEducationEventsStatistics(@QueryParam('filter') filter?: EducationStatisticsFilterOptions): Promise<DataResponse<Statistics>> {
+    const url = `/education-finder/1.2/statistics`;
+
+    const params = {
+      // Filter parameters
+      levels: filter?.levels.join(', ') ?? undefined,
+      studyLocations: filter?.studyLocations.join(', ') ?? undefined,
+      categories: filter?.categories.join(', ') ?? undefined,
+      startDate: filter?.startDate ?? undefined,
+      endDate: filter?.endDate ?? undefined,
+    };
+
+    const res = await this.apiService.get<Statistics>({ url, params });
 
     if (Array.isArray(res.data) && res.data.length < 1) {
       throw new HttpException(404, 'Not Found');

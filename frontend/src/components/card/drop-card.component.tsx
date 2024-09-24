@@ -17,6 +17,7 @@ export interface DropCard {
   dropClassName?;
   loadMoreColorClass?;
   allCardClickable?: boolean;
+  onClick?: () => void;
 }
 
 export const DropCard: React.FC<DropCard> = ({
@@ -33,6 +34,8 @@ export const DropCard: React.FC<DropCard> = ({
   dropClassName = '',
   loadMoreColorClass = 'text-white',
   allCardClickable = toolbar ? false : true,
+  onClick,
+  ...rest
 }) => {
   const { dropContent, dropHeight } = useDropProps(dropIcon, dropDate, dropImageSrc);
 
@@ -41,9 +44,11 @@ export const DropCard: React.FC<DropCard> = ({
 
   return (
     <CardComp
-      href={href}
+      href={allCardClickable ? href : undefined}
+      onClick={allCardClickable ? onClick : undefined}
       className={`${className} drop-card-wrapper box-content flex flex-col group`}
       style={{ paddingTop: dropHeight / 2 + 'px' }}
+      {...rest}
     >
       <div
         className={`${classNameCard} drop-card max-h-[inherit] group-hover:shadow-md bg-white relative h-full flex flex-grow w-full justify-center border-[2px] border-border-color rounded`}
@@ -61,7 +66,11 @@ export const DropCard: React.FC<DropCard> = ({
             toolbar && 'flex-col-reverse'
           )}
         >
-          <ContentComp href={href} className="flex">
+          <ContentComp
+            href={!allCardClickable ? href : undefined}
+            className="flex"
+            onClick={!allCardClickable ? onClick : undefined}
+          >
             <div
               className={cx(
                 'drop-card-text px-[15px] pb-[15px] medium-device:px-lg medium-device:pb-lg [&_h2]:break-word [&_h3]:break-word [&_h2]:text-green [&_h3]:text-green group-hover:[&_h2]:underline group-hover:[&_h3]:underline [&_p]:leading-[1.8] [&_ul]:mt-[1rem] [&_ul_li]:text-sm',

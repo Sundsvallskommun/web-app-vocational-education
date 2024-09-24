@@ -14,15 +14,16 @@ const cardDataClasses = 'desktop:font-bold capitalize';
 export const EducationsCards: React.FC<{
   educations: Course[];
   handleCheckboxClick: (edu: Course) => (e) => void;
-  _meta: PagingMetaData;
+  handleOnClickResult: (id?: number) => void;
+  _meta?: PagingMetaData;
   setPageSize: React.Dispatch<React.SetStateAction<number>>;
-}> = ({ educations, handleCheckboxClick, _meta, setPageSize }) => {
+}> = ({ educations, handleCheckboxClick, _meta, setPageSize, handleOnClickResult }) => {
   const { searchCompareList } = useAppContext();
 
   if (!_meta) return <></>;
 
   const loadMoreCallback = () => {
-    setPageSize((amount) => (_meta?.totalRecords <= amount ? amount : amount + 10)); // make new request
+    setPageSize((_meta?.count as number) + 10); // make new request
   };
 
   return (
@@ -32,7 +33,9 @@ export const EducationsCards: React.FC<{
         return (
           <div key={`${index}-${edu?.id}`} className="w-full flex flex-col">
             <DropCard
+              data-id={edu?.id}
               href={`/utbildningar/${edu?.id}`}
+              onClick={() => handleOnClickResult(edu?.id)}
               dropIcon={<SchoolIcon className="material-icon desktop:!text-2xl" />}
               footer={
                 <div className="flex flex-col gap-y-20">
@@ -40,7 +43,9 @@ export const EducationsCards: React.FC<{
                     <div className="hidden desktop:block">
                       <div className="label">Längd</div>
                       <div className="flex items-center">
-                        <span className={cardDataClasses}>{getEducationLengthString(edu?.start, edu?.end) ?? '-'}</span>
+                        <span className={cardDataClasses}>
+                          {edu?.start && edu?.end ? getEducationLengthString(edu?.start, edu?.end) : '-'}
+                        </span>
                       </div>
                     </div>
                     <div>
@@ -102,7 +107,7 @@ export const EducationsCards: React.FC<{
           </div>
         );
       })}
-      {_meta.totalRecords > _meta.limit && (
+      {_meta.totalRecords && _meta.limit && _meta.totalRecords > _meta.limit && (
         <LoadMoreBlock loadMoreColorClass="text-white" loadMoreCallback={loadMoreCallback} className="desktop:mb-3xl" />
       )}
     </>

@@ -1,18 +1,17 @@
 import { CookieConsent, Footer, Header, Link } from '@sk-web-gui/react';
-import { useEffect, useRef, useState } from 'react';
-
-import Head from 'next/head';
-import NextLink from 'next/link';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import Menu from '@components/menu/menu.component';
-import Image from 'next/image';
-import logo_stacked from '@public/svg/logo_stacked.svg';
+import { useEffect, useState } from 'react';
 import HeaderLogo from '@components/logo/header-logo.component';
-import Sticky from 'react-sticky-el';
-import { useRouter } from 'next/router';
+import Menu from '@components/menu/menu.component';
 import { LayoutData } from '@interfaces/admin-data';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import logo_stacked from '@public/svg/logo_stacked.svg';
 import { getLayout } from '@services/layout-service';
 import sanitized from '@services/sanitizer-service';
+import Head from 'next/head';
+import Image from 'next/image';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import Sticky from 'react-sticky-el';
 
 interface DefaultLayoutProps {
   title: string;
@@ -25,14 +24,15 @@ export async function getServerSideProps({ res }) {
 }
 
 export default function DefaultLayout({ layoutData, title, children }: DefaultLayoutProps) {
-  const initialFocus = useRef(null);
   const [menuShow, setMenuShow] = useState(false);
   let lastScrollTop = 0;
   const router = useRouter();
+
   const setInitialFocus = () => {
-    setTimeout(() => {
-      initialFocus.current && initialFocus.current.focus();
-    });
+    const contentElement = document.getElementById('content');
+    if (contentElement) {
+      contentElement.focus();
+    }
   };
 
   const listenToScroll = () => {
@@ -84,7 +84,7 @@ export default function DefaultLayout({ layoutData, title, children }: DefaultLa
       </Sticky>
 
       <div className="main-container flex-grow">
-        <main>{children}</main>
+        <main id="content">{children}</main>
       </div>
 
       <CookieConsent

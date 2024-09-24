@@ -12,7 +12,7 @@ interface educationsStartingBlockProps {
 
 export default function EducationsStartingBlock({ educationsStartingBlock }: educationsStartingBlockProps) {
   console.log('educationsStartingBlock', educationsStartingBlock);
-  if (!educationsStartingBlock?.showBlock) return <></>;
+  // if (!educationsStartingBlock?.showBlock) return <></>;
 
   const tmp: EducationsStartingBlockType = {
     showBlock: true,

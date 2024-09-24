@@ -1,0 +1,35 @@
+@layer components {
+  .content-block {
+    // @apply w-full [.content-block+.content-block]:mt-2xl [.content-block.padded+.content-block.padded]:mt-0 [.content-block:last-of-type]:mb-2xl desktop:[.content-block+.content-block]:mt-3xl desktop:[.content-block:last-of-type]:mb-3xl;
+
+    @apply w-full last:mb-2xl;
+
+    // Custom styles for .content-block + .content-block
+    & + .content-block {
+      @apply mt-2xl;
+
+      @screen desktop {
+        @apply mt-3xl;
+      }
+    }
+
+    // Custom styles for .content-block.padded + .content-block.padded
+    &.padded + .content-block.padded {
+      @apply mt-0;
+    }
+
+    @screen desktop {
+      &:last-of-type {
+        @apply mb-3xl;
+      }
+    }
+
+    &.padded {
+      @apply py-2xl desktop:py-3xl;
+    }
+
+    &-container {
+      @apply max-width-content container;
+    }
+  }
+}

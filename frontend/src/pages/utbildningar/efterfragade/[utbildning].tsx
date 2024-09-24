@@ -7,7 +7,7 @@ export async function getServerSideProps({ res }) {
   const layoutProps = await getLayout(res);
   const pageProps = await getPage('/utbildningar', res);
   const employerPromotionsProps = {
-    props: { employerPromotionsBlock: pageProps.props.pageData.employerPromotionsBlock[0] },
+    props: { employerPromotionsBlock: pageProps?.props?.pageData?.employerPromotionsBlock?.pop() },
   };
   return await _.merge(layoutProps, employerPromotionsProps);
 }

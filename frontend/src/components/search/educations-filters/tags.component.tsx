@@ -45,7 +45,7 @@ export default function Tags() {
     );
   };
 
-  const tagList = [];
+  const tagList: { formName: string; label: string; value: unknown }[] = [];
   Object.keys(values)
     .filter((filter) => !['page', 'size', 'q'].includes(filter))
     .forEach((filter) => {

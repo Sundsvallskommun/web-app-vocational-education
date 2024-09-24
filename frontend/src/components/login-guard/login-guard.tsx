@@ -3,7 +3,7 @@ import { useUserStore } from '@services/user-service/user-service';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-const protectedRoutes = JSON.parse(process.env.NEXT_PUBLIC_PROTECTED_ROUTES);
+const protectedRoutes = JSON.parse(process.env.NEXT_PUBLIC_PROTECTED_ROUTES as string);
 
 export const LoginGuard: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const { user, setUser, getMe, reset: resetUser } = useUserStore();
@@ -14,7 +14,9 @@ export const LoginGuard: React.FC<{ children?: React.ReactNode }> = ({ children 
     setMounted(true);
     getMe()
       .then((res) => {
-        setUser(res.data);
+        if (res.data) {
+          setUser(res.data);
+        }
       })
       .catch(() => {
         resetUser();

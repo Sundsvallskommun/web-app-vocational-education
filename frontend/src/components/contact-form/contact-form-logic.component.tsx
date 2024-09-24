@@ -18,7 +18,7 @@ export default function ContactFormLogic({ children }) {
     })
     .required();
 
-  const context = useForm<Partial<ContactForm>>({
+  const context = useForm<ContactForm>({
     resolver: yupResolver(formSchema),
     defaultValues: {
       municipality: '',

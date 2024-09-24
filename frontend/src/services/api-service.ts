@@ -11,7 +11,7 @@ export interface ApiResponse<T> {
   message: string;
 }
 
-const protectedRoutes = JSON.parse(process.env.NEXT_PUBLIC_PROTECTED_ROUTES);
+const protectedRoutes = JSON.parse(process.env.NEXT_PUBLIC_PROTECTED_ROUTES as string);
 
 export const handleError = (error) => {
   if (!protectedRoutes.includes(window?.location.pathname)) throw error;

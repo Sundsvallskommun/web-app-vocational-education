@@ -58,11 +58,13 @@ export const Drop: React.FC<{
   return (
     <div
       style={
-        setSize && {
-          height: dropHeight ? dropHeight + 'px' : _dropHeight + 'px',
-          width: dropHeight ? dropHeight + 'px' : _dropHeight + 'px',
-          top: topStyle ? topStyle + 'px' : 'initial',
-        }
+        setSize ?
+          {
+            height: dropHeight ? dropHeight + 'px' : _dropHeight + 'px',
+            width: dropHeight ? dropHeight + 'px' : _dropHeight + 'px',
+            top: topStyle ? topStyle + 'px' : 'initial',
+          }
+        : {}
       }
       className={`drop-card-drop ${className} ${dropDirectionClass} ${
         dropContent ? 'absolute mx-auto' : 'block'

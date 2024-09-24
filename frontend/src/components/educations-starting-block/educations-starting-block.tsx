@@ -7,11 +7,13 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import dayjs from 'dayjs';
 
 interface educationsStartingBlockProps {
-  educationsStartingBlock: EducationsStartingBlockType;
+  educationsStartingBlock?: EducationsStartingBlockType;
 }
 
 export default function EducationsStartingBlock({ educationsStartingBlock }: educationsStartingBlockProps) {
   console.log('educationsStartingBlock', educationsStartingBlock);
+  if (!educationsStartingBlock?.showBlock) return <></>;
+
   const tmp: EducationsStartingBlockType = {
     showBlock: true,
     pageName: 'utbildningar',
@@ -29,7 +31,7 @@ export default function EducationsStartingBlock({ educationsStartingBlock }: edu
   if (!tmp?.showBlock) return <></>;
   return (
     <CardsBlock<EducationsStartingBlockType['educations']>
-      title={tmp.title}
+      title={tmp.title || ''}
       cards={tmp.educations}
       cardRender={(card, index) => (
         <DropCard

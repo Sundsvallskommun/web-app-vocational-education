@@ -28,7 +28,9 @@ export default function TwoFactorModal({ show, setShow, checkError }) {
   const onVerify = async (formValues: { code: string }) => {
     const res = await verify2FA(formValues.code.trim());
     if (!res.error) {
-      setUser(res.data);
+      if (res.data) {
+        setUser(res.data);
+      }
       const path = new URLSearchParams(window.location.search).get('path') || router.query.path;
       window.location.href = appURL(path?.toString() || '/');
     } else {

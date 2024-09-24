@@ -53,7 +53,7 @@ export const Utbildningsanordnare: React.FC = ({ pageData, layoutData }: PagePro
       </ContentBlock>
 
       <ContentBlock>
-        <EducationManagerContactTable tableBlock={pageData?.tableBlock.pop()} />
+        <EducationManagerContactTable tableBlock={pageData?.tableBlock?.pop()} />
       </ContentBlock>
     </DefaultLayout>
   );

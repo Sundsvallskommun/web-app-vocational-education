@@ -8,6 +8,7 @@ Dessa APIer används i projektet, applikationsanvändaren i WSO2 måste prenumer
 | --------------- | ------: |
 | Messaging       |     5.0 |
 | EducationFinder |     1.2 |
+| SimulatorServer |     2.0 |
 
 ## Utveckling
 

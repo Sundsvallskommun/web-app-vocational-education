@@ -52,11 +52,11 @@ export class UserController {
             updatedAt: parameters.updatedAt,
           });
         }
-      } catch {
-        //
+      } catch (err) {
+        throw new HttpException(500, `Could not fetch interest ${parameters.category}: ${err}`);
       }
-      return statisticsData;
     }
+    return statisticsData;
   };
 
   @Get('/me')
@@ -138,9 +138,9 @@ export class UserController {
         userId: req.user.id,
       },
     });
-
+    console.log('interests', interests);
     const statisticsData = await this.getStatisticsData(interests);
-
+    console.log('statisticsData', statisticsData);
     if (!statisticsData) {
       throw new HttpException(400, 'Missing statistics data');
     }

@@ -26,11 +26,13 @@ import { AdminTableBlockRowController } from './controllers/admin/table-block-ro
 import { AdminTableBlockCellController } from './controllers/admin/table-block-cell.controller';
 import { ContactController } from './controllers/contact.controller';
 import { EditRolesOnPageController } from './controllers/admin/edit-roles-on-page.controller';
+import { HealthController } from '@/controllers/health.controller';
 
 validateEnv();
 
 const app = new App([
   IndexController,
+  HealthController,
   UserController,
   EducationsController,
   PageController,

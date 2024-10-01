@@ -204,6 +204,56 @@ async function main() {
     },
   });
 
+  await prisma.page.upsert({
+    where: { pageName: 'utbildningar_utbildning' },
+    update: {},
+    create: {
+      url: '/utbildningar/[utbildning]',
+      pageName: 'utbildningar_utbildning',
+      title: '',
+      description: '',
+      editRoles: {
+        connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
+          where: {
+            pageName_role: {
+              pageName: 'utbildningar_utbildning',
+              role: role,
+            },
+          },
+          create: {
+            role: role,
+          },
+        })),
+      },
+      faqBlock: {
+        create: [
+          {
+            title: 'Vanliga frågor om yrkesutbildning',
+            description:
+              'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
+            showBlock: true,
+            questions: {
+              create: [
+                {
+                  question: 'utbildningar_faq_question1',
+                  answer: 'utbildningar_faq_answer1',
+                },
+                {
+                  question: 'utbildningar_faq_question2',
+                  answer: 'utbildningar_faq_answer2',
+                },
+                {
+                  question: 'utbildningar_faq_question3',
+                  answer: 'utbildningar_faq_answer3',
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  });
+
   const utbildningar = await prisma.page.upsert({
     where: { pageName: 'utbildningar' },
     update: {},

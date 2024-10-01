@@ -2,8 +2,9 @@ import ContentBlock from '@components/block/content-block.component';
 import Button from '@components/button/button.component';
 import Drop from '@components/drop/drop.component';
 import EducationsRelatedBlock from '@components/educations-related-block/educations-related-block';
+import FAQBlock from '@components/faq-block/faq-block';
 import Search from '@components/search/search.component';
-import { LayoutProps } from '@interfaces/admin-data';
+import { PageProps } from '@interfaces/admin-data';
 import { Course } from '@interfaces/education';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -14,6 +15,7 @@ import {
   getSanitizedInformation,
 } from '@services/education-service/education-service';
 import { getLayout } from '@services/layout-service';
+import { getPage } from '@services/page-service';
 import { Breadcrumb } from '@sk-web-gui/react';
 import { getFormattedLabelFromValue } from '@utils/labels';
 import NextLink from 'next/link';
@@ -21,15 +23,21 @@ import NextLink from 'next/link';
 export async function getServerSideProps(context) {
   const layout = await getLayout(context.res);
   const educationEventRes = await getEducationEvent(context.query.utbildning);
+  const pageProps = await getPage('/utbildningar/[utbildning]', context.res);
   return {
     props: {
       layoutData: layout.props,
       educationData: !educationEventRes.error ? educationEventRes.data : null,
+      pageData: pageProps.props?.pageData,
     },
   };
 }
 
-export const Utbildning: React.FC = ({ layoutData, educationData }: LayoutProps & { educationData: Course }) => {
+export const Utbildning: React.FC = ({
+  layoutData,
+  educationData,
+  pageData,
+}: PageProps & { educationData: Course }) => {
   if (!educationData) return <></>;
   return (
     <DefaultLayout title={`Yrkesutbildning - ${educationData.name}`} layoutData={layoutData}>
@@ -162,6 +170,8 @@ export const Utbildning: React.FC = ({ layoutData, educationData }: LayoutProps 
           </Button>
         </NextLink>
       </ContentBlock>
+
+      <FAQBlock classNameWrapper="pt-80" faqBlock={pageData.faqBlock?.pop()} />
 
       <EducationsRelatedBlock
         educations={Array.from({ length: 3 }, (_, i) => ({

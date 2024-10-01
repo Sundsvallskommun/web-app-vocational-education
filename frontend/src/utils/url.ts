@@ -1,7 +1,7 @@
-const hasValue = (value: string | string[]) => {
+const hasValue = (value: unknown | unknown[]) => {
   if (value == null || value == undefined || value === '') return false;
   if (Array.isArray(value)) {
-    return !!value[0]?.length;
+    return !!value[0]?.toString().length;
   } else {
     return true;
   }
@@ -14,6 +14,7 @@ export function serializeURL(params: URLSearchParams | Record<string, string | n
   if (params instanceof URLSearchParams) {
     // Convert URLSearchParams to a regular object
     for (const [key, value] of params.entries()) {
+      if (!hasValue(value)) continue;
       if (Array.isArray(value)) {
         // Convert all values in the array to strings
         result[key] = value.map((v) => String(v));
@@ -25,6 +26,7 @@ export function serializeURL(params: URLSearchParams | Record<string, string | n
   } else {
     // Assume params is a regular object
     for (const [key, value] of Object.entries(params)) {
+      if (!hasValue(value)) continue;
       if (Array.isArray(value)) {
         // Convert all values in the array to strings
         result[key] = value.map((v) => String(v));
@@ -37,7 +39,12 @@ export function serializeURL(params: URLSearchParams | Record<string, string | n
 
   // Serialize using "|" as delimiter
   return Object.entries(result)
-    .filter(([, values]) => values.length > 0)
+    .filter(([, values]) => hasValue(values))
+    .sort(([key], [key2]) =>
+      key2 === 'q' ? 1
+      : key === 'q' ? 0
+      : key.localeCompare(key2)
+    )
     .map(([key, values]) => `${encodeURIComponent(key)}=${values.map(encodeURIComponent).join('|')}`)
     .join('&');
 }
@@ -84,13 +91,13 @@ function convertValue<TReference = string | string[] | number>(
 ): TReference {
   if (typeof referenceValue === 'string') {
     // If the referenceValue is a string, return the value as is
-    return value ? (decodeURIComponent(value) as TReference) : ('' as TReference);
+    return hasValue(value) ? (decodeURIComponent(value) as TReference) : ('' as TReference);
   } else if (typeof referenceValue === 'number') {
     // If the referenceValue is a number, parse the value as a number
-    return value ? (parseInt(value) as TReference) : (0 as TReference);
+    return hasValue(value) ? (parseInt(value) as TReference) : (0 as TReference);
   } else {
     // For other types, return the value as is
-    return value ? (value as TReference) : ('' as TReference);
+    return hasValue(value) ? (value as TReference) : ('' as TReference);
   }
 }
 

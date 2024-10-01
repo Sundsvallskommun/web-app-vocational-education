@@ -1,3 +1,4 @@
+import { MUNICIPALITY_ID } from '@/config';
 import { Course, Statistics } from '@/data-contracts/education-finder/data-contracts';
 import { HttpException } from '@/exceptions/HttpException';
 import DataResponse from '@/interfaces/dataResponse.interface';
@@ -103,7 +104,7 @@ export class EducationsController {
 
   getFilter = async (filter: GetEducationFilter) => {
     try {
-      const url = `/education-finder/1.2/courses/filters/${filter}/values`;
+      const url = `/education-finder/2.0/${MUNICIPALITY_ID}/courses/filters/${filter}/values`;
       const res = await this.apiService.get<string[]>({ url });
 
       if (Array.isArray(res.data) && res.data.length < 1) {
@@ -111,15 +112,15 @@ export class EducationsController {
       }
 
       return res.data;
-    } catch {
-      throw new HttpException(500, `Failed to fetch ${filter}`);
+    } catch (err) {
+      throw new HttpException(500, `Failed to fetch ${filter}: ${err}`);
     }
   };
 
   @Get('/education-events')
   @OpenAPI({ summary: 'Return education events' })
   async getEducationEvents(@QueryParam('filter') filter?: EducationFilterOptions): Promise<DataResponse<any[]>> {
-    const url = `/education-finder/1.2/courses`;
+    const url = `/education-finder/2.0/${MUNICIPALITY_ID}/courses`;
 
     const today = new Date();
     const todayFormatted = today.toISOString().split('T')[0];
@@ -131,12 +132,10 @@ export class EducationsController {
 
       // Filter parameters
       searchString: filter?.q ?? undefined,
+      // level should have preset defaults if unset as studyLocation
       level: filter?.level ?? undefined,
       scope: filter?.scope ?? undefined,
-
-      studyLocation: filter?.studyLocation?.join(','),
-      // FIXME: should be below, but api lacks support yet
-      // studyLocation: filter?.studyLocation ?? defaultStudyLocations,
+      studyLocation: filter?.studyLocation ?? defaultStudyLocations,
 
       latestApplicationBefore: filter?.latestApplicationDate ?? undefined,
       latestApplicationAfter: filter?.latestApplicationDate ? todayFormatted : undefined,
@@ -202,7 +201,7 @@ export class EducationsController {
   @Get('/education-events/statistics')
   @OpenAPI({ summary: 'Return education events' })
   async getEducationEventsStatistics(@QueryParam('filter') filter?: EducationStatisticsFilterOptions): Promise<DataResponse<Statistics>> {
-    const url = `/education-finder/1.2/statistics`;
+    const url = `/education-finder/2.0/${MUNICIPALITY_ID}/statistics`;
 
     const params = {
       // Filter parameters

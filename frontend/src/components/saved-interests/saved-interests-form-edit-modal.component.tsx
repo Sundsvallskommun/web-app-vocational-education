@@ -1,10 +1,22 @@
+import ModalCustom from '@components/modal/modal-custom.component';
 import { UserSavedInterest, UserSavedInterestDto } from '@interfaces/user';
 import { useUserStore } from '@services/user-service/user-service';
-import { Modal, useSnackbar } from '@sk-web-gui/react';
+import { useSnackbar } from '@sk-web-gui/react';
 import SavedInterestsFormLogic from './saved-interests-form-logic.component';
 import SavedInterestsForm from './saved-interests-form.component';
+import { getFormattedLabelFromValue } from '@utils/labels';
 
-export default function SavedInterestsFormEditModal({ interestData, show = false, setShow }) {
+interface SavedInterestsFormEditModalProps {
+  interestData: UserSavedInterestDto;
+  show: boolean;
+  setShow: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function SavedInterestsFormEditModal({
+  interestData,
+  show = false,
+  setShow,
+}: SavedInterestsFormEditModalProps) {
   const editSavedInterest = useUserStore((s) => s.editSavedInterest);
   const snackBar = useSnackbar();
 
@@ -34,10 +46,11 @@ export default function SavedInterestsFormEditModal({ interestData, show = false
   };
 
   return (
-    <Modal show={show} label="Editera intresseområdet" className="!w-[60rem]" onClose={() => setShow(false)}>
+    <ModalCustom show={show} className="!w-[72rem]" onClose={() => setShow(false)}>
+      <h1>Ändra kort för intresseområde {getFormattedLabelFromValue(interestData.category)}</h1>
       <SavedInterestsFormLogic formData={interestData} onSubmit={handleOnSubmit}>
         <SavedInterestsForm mode="edit" />
       </SavedInterestsFormLogic>
-    </Modal>
+    </ModalCustom>
   );
 }

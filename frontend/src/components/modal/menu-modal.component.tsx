@@ -28,7 +28,7 @@ const MenuModal = ({ show = false, onClose, className, children }: IModalProps) 
 
   useEffect(() => {
     setInitialFocus();
-  }, []);
+  }, [show]);
 
   return (
     <Transition appear show={show} as={Fragment}>

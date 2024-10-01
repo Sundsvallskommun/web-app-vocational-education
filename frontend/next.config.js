@@ -38,4 +38,7 @@ module.exports = withBundleAnalyzer({
   async rewrites() {
     return [{ source: '/napi/:path*', destination: '/api/:path*' }];
   },
+  async rewrites() {
+    return [{ source: '/napi/:path*', destination: '/api/:path*' }];
+  },
 });

@@ -1,55 +1,38 @@
-import DefaultLayout from '@layouts/default-layout/default-layout.component';
-import { Breadcrumb } from '@sk-web-gui/react';
-import SchoolIcon from '@mui/icons-material/School';
-import dayjs from 'dayjs';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ContentBlock from '@components/block/content-block.component';
-import Search from '@components/search/search.component';
-import Drop from '@components/drop/drop.component';
 import Button from '@components/button/button.component';
-import NextLink from 'next/link';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import Drop from '@components/drop/drop.component';
 import EducationsRelatedBlock from '@components/educations-related-block/educations-related-block';
-import { getLayout } from '@services/layout-service';
+import Search from '@components/search/search.component';
 import { LayoutProps } from '@interfaces/admin-data';
+import { Course } from '@interfaces/education';
+import DefaultLayout from '@layouts/default-layout/default-layout.component';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import SchoolIcon from '@mui/icons-material/School';
+import {
+  getEducationEvent,
+  getEducationLengthString,
+  getSanitizedInformation,
+} from '@services/education-service/education-service';
+import { getLayout } from '@services/layout-service';
+import { Breadcrumb } from '@sk-web-gui/react';
+import { getFormattedLabelFromValue } from '@utils/labels';
+import NextLink from 'next/link';
 
-interface EducationData {
-  title: string;
-  courseCode: string;
+export async function getServerSideProps(context) {
+  const layout = await getLayout(context.res);
+  const educationEventRes = await getEducationEvent(context.query.utbildning);
+  return {
+    props: {
+      layoutData: layout.props,
+      educationData: !educationEventRes.error ? educationEventRes.data : null,
+    },
+  };
 }
 
-export async function getServerSideProps({ res }) {
-  return await getLayout(res);
-}
-
-export const Yrkesforare: React.FC = ({ layoutData }: LayoutProps) => {
-  const router = useRouter();
-  const [educationData, setEducationData] = useState<EducationData>();
-
-  useEffect(() => {
-    const loadEducation = async () => {
-      const education: string = router.query['utbildning'] as string;
-      const [courseCode, title] = education.split(/-(.*)/s);
-      //search education based on ~courseCode(?), perhaps with serversideprops instead
-      setEducationData({ courseCode: courseCode, title: title });
-    };
-
-    if (router.isReady) {
-      loadEducation();
-    }
-
-    router.events.on('routeChangeComplete', loadEducation);
-    return () => {
-      router.events.off('routeChangeComplete', loadEducation);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query, router.isReady]);
-
+export const Utbildning: React.FC = ({ layoutData, educationData }: LayoutProps & { educationData: Course }) => {
   if (!educationData) return <></>;
-
   return (
-    <DefaultLayout title={`Yrkesutbildning - Yrkesforare`} layoutData={layoutData}>
+    <DefaultLayout title={`Yrkesutbildning - ${educationData.name}`} layoutData={layoutData}>
       <ContentBlock>
         <div className="desktop:flex">
           <div className="flex-grow flex flex-col desktop:mt-lg desktop:pr-xl">
@@ -79,13 +62,15 @@ export const Yrkesforare: React.FC = ({ layoutData }: LayoutProps) => {
 
             <div className="h-full flex-grow flex flex-col justify-center max-w-[720px]">
               <div className="flex justify-between medium-device:justify-start items-center">
-                <h1 className="m-0">{educationData.title}</h1>
+                <h1 className="m-0">{educationData.name}</h1>
                 <Drop
                   className="p-sm medium-device:p-md medium-device:ml-lg"
                   dropIcon={<SchoolIcon className="!text-2xl" />}
                 />
               </div>
-              <p className="ingress mt-0">Yrkesakademin Vux</p>
+              <p className="ingress mt-0">
+                {educationData.level ? getFormattedLabelFromValue(educationData.level) : '-'}
+              </p>
             </div>
           </div>
         </div>
@@ -93,31 +78,35 @@ export const Yrkesforare: React.FC = ({ layoutData }: LayoutProps) => {
           <div>
             <label id="education-length">Utbildningens längd</label>
             <div aria-describedby="education-length">
-              <strong>6 veckor</strong>
+              <strong>
+                {educationData?.start && educationData?.end ?
+                  getEducationLengthString(educationData?.start, educationData?.end)
+                : '-'}
+              </strong>
             </div>
           </div>
           <div>
             <label id="education-studyLocation">Plats</label>
             <div aria-describedby="education-studyLocation">
-              <strong>Sundsvall</strong>
+              <strong>{educationData?.studyLocation?.split(',')}</strong>
             </div>
           </div>
           <div>
             <label id="education-pace">Studietakt</label>
             <div aria-describedby="education-pace">
-              <strong>100%</strong>
+              <strong>{educationData?.scope ? educationData?.scope + '%' : '-'}</strong>
             </div>
           </div>
           <div>
             <label id="education-distance">Distans</label>
             <div aria-describedby="education-distance">
-              <strong>Nej</strong>
+              <strong>?</strong>
             </div>
           </div>
           <div>
             <label id="education-language">Språk</label>
             <div aria-describedby="education-language">
-              <strong>Svenska, Engelska</strong>
+              <strong>?</strong>
             </div>
           </div>
         </div>
@@ -128,54 +117,57 @@ export const Yrkesforare: React.FC = ({ layoutData }: LayoutProps) => {
             <div>
               <label id="education-startdate">Nästa utbildningsstart</label>
               <div aria-describedby="education-startdate">
-                <strong>{dayjs('2022-12-28').format('YYYY-MM-DD')}</strong>
+                <strong>{educationData?.start ?? '-'}</strong>
               </div>
             </div>
             <div>
               <label id="education-latestapplyday">Sista ansökningsdag</label>
               <div aria-describedby="education-latestapplyday">
-                <strong>{dayjs('2023-12-28').format('YYYY-MM-DD')}</strong>
+                <strong>{educationData?.latestApplication ?? '-'}</strong>
               </div>
             </div>
           </div>
-          <Button className="override" rightIcon={<ArrowForwardIcon />}>
-            <span>Till utbildningens hemsida</span>
-          </Button>
+          <a href={educationData.url} target="_blank">
+            <Button as="span" className="override" rightIcon={<ArrowForwardIcon />}>
+              <span>Till utbildningens hemsida</span>
+            </Button>
+          </a>
         </div>
       </ContentBlock>
-      <ContentBlock classNameWrapper="!mt-2xl">
-        <div>
-          <h2>Om utbildningen</h2>
-          <p className="text">
-            Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim
-            velit mollit. Exercitation veniam consequat sunt nostrud amet. Dest sit aliqua dolor do amet sint. Velit
-            officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
-          </p>
-          <h2>Grundläggande behörighet</h2>
-          <p className="text hidden medium-device:block">
-            Du är behörig att antas till en yrkeshögskoleutbildning om du uppfyller något av följande:
-          </p>
-          <ol className="drops">
-            <li>Har en gymnasieexamen från gymnasieskolan eller kommunal vuxenutbildning.</li>
-            <li>Har en svensk eller utländsk utbildning som motsvarar kraven i punkt 1 ovan.</li>
-            <li>Är bosatt i Danmark, Finland, Island eller Norge och där är behörig till motsvarande utbildning.</li>
-            <li>
-              Genom svensk eller utländsk utbildning, praktisk erfarenhet eller på grund av någon annan omständighet har
-              förutsättningar att tillgodogöra dig utbildningen.Utöver detta kräver vissa utbildningar särskilda
-              förkunskaper och/eller villkor. Se nedan vad som gäller för just denna utbildning.
-            </li>
-          </ol>
-          <Button className="override !mt-2xl" rightIcon={<ArrowForwardIcon />}>
+      <ContentBlock classNameWrapper="!mt-[8rem]">
+        <h2>Om utbildningen</h2>
+        <p dangerouslySetInnerHTML={{ __html: getSanitizedInformation(educationData.information) }} />
+      </ContentBlock>
+
+      <ContentBlock classNameWrapper="!mt-60">
+        <h2>Kontaktuppgifter</h2>
+        <p>Sundsvalls kommun (Komunal)Lasarettsvägen 19, 851 85 Sundsvall</p>
+        <a className="inline-block mt-30" href={educationData.url} target="_blank">
+          <Button as="span" className="override w-fit" rightIcon={<ArrowForwardIcon />}>
             <span>Till utbildningens hemsida</span>
           </Button>
-        </div>
+        </a>
+      </ContentBlock>
+
+      <ContentBlock classNameWrapper="!mt-60">
+        <h2>Söker du kontakt med utbildningsanordnare?</h2>
+        <p>
+          Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim
+          velit mollit. Exercitation veniam consequat sunt nostrud amet. Dest sit aliqua dolor do amet sint. Velit
+          officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
+        </p>
+        <NextLink className="inline-block mt-30" href={'/arbetsgivare/kontaktautbildningsanordnare'}>
+          <Button as="span" className="override w-fit" rightIcon={<ArrowForwardIcon />}>
+            <span>Till utbildningsanordnare</span>
+          </Button>
+        </NextLink>
       </ContentBlock>
 
       <EducationsRelatedBlock
         educations={Array.from({ length: 3 }, (_, i) => ({
-          title: `${educationData.title}-related-${i}`,
+          title: `${educationData.name}-related-${i}`,
           text: 'Amet minimimi mollot non deseret ullamco est sit alique dolor do sint. Velit officia consequat duis enim.',
-          courseCode: `${educationData.courseCode}-${educationData.title}-${i}`,
+          courseCode: `${educationData.id}`,
           date: new Date(),
           studyLocation: `Location-${i}`,
         }))}
@@ -198,4 +190,4 @@ export const Yrkesforare: React.FC = ({ layoutData }: LayoutProps) => {
   );
 };
 
-export default Yrkesforare;
+export default Utbildning;

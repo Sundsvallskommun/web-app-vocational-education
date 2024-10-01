@@ -53,11 +53,11 @@ export const Utbildningar: React.FC = ({ layoutData, pageData }: PageProps) => {
         <PromotionsBlock promotionsBlock={pageData.promotionsBlock?.pop()} />
       </ContentBlock>
 
-      <EducationsStartingBlock educationsStartingBlock={pageData.educationsStartingBlock?.pop()} />
+      <EducationsStartingBlock educationsStartingBlock={pageData?.educationsStartingBlock?.pop()} />
 
-      <EmployerPromotionsBlock employerPromotionsBlock={pageData.employerPromotionsBlock?.pop()} />
+      <EmployerPromotionsBlock employerPromotionsBlock={pageData?.employerPromotionsBlock?.pop()} />
 
-      <FAQBlock faqBlock={pageData.faqBlock.pop()} />
+      <FAQBlock faqBlock={pageData?.faqBlock?.pop()} />
     </DefaultLayout>
   );
 };

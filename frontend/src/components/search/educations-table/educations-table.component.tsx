@@ -8,19 +8,18 @@ export const tableCellTextClasses = 'text-base leading-[2.9rem] capitalize';
 export const EducationsTable: React.FC<{
   educations: Course[];
   handleCheckboxClick: (edu: Course) => (e) => void;
-  _meta: PagingMetaData;
+  handleOnClickResult: (id?: number) => void;
+  _meta?: PagingMetaData;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-}> = ({ educations, handleCheckboxClick, _meta, setPage }) => {
+}> = ({ educations, handleCheckboxClick, _meta, setPage, handleOnClickResult }) => {
   const { searchCompareList } = useAppContext();
-
-  const pagedList = educations;
 
   return (
     <div>
       <div className="table-compare">
         <Table>
           <caption className="sr-only">
-            Sökresultat av utbildingar, sida {_meta.page} av {_meta.totalPages}.
+            Sökresultat av utbildingar, sida {_meta?.page} av {_meta?.totalPages}.
             <br />
             <small>Lista över de utbildningar som matchar ditt sökord och dina sökfilter.</small>
           </caption>
@@ -35,8 +34,8 @@ export const EducationsTable: React.FC<{
             <Table.HeaderColumn>Språk</Table.HeaderColumn>
           </Table.Header>
           <Table.Body>
-            {pagedList.map((edu, index) => (
-              <Table.Row key={`${index}-${edu?.id}`} className="[&>td]:h-full">
+            {educations.map((edu, index) => (
+              <Table.Row key={`${index}-${edu?.id}`} className="[&>td]:h-full" data-id={edu?.id}>
                 <Table.Column>
                   <Checkbox
                     checked={searchCompareList.filter((x) => x.id == edu?.id).length > 0}
@@ -46,7 +45,8 @@ export const EducationsTable: React.FC<{
                 <Table.Column>
                   <span className="inline-block">
                     <NextLink
-                      href={`/utbildningar/${edu?.code}-${edu?.id}`} /* This should be built and point to dynamic page */
+                      onClick={() => handleOnClickResult(edu?.id)}
+                      href={`/utbildningar/${edu?.id}`} /* This should be built and point to dynamic page */
                     >
                       <Link as="span" className="line-clamp-2 text-base mb-6 leading-[1.5]">
                         {edu?.name ?? '-'}
@@ -84,12 +84,12 @@ export const EducationsTable: React.FC<{
           </Table.Body>
         </Table>
       </div>
-      {_meta.totalPages > 1 && (
+      {_meta?.totalPages && _meta?.totalPages > 1 && (
         <div className="flex justify-center mt-2xl">
           <Pagination
             className="pagination override"
             changePage={(page) => setPage(page)}
-            activePage={_meta.page + 1}
+            activePage={_meta?.page ? _meta.page + 1 : 1}
             pages={_meta.totalPages}
           />
         </div>

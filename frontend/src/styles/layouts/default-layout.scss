@@ -8,7 +8,8 @@
   }
 
   .next-link-a {
-    @apply sr-only focus:not-sr-only bg-primary-light border-2 border-black p-4 text-black inline-block focus:absolute focus:top-0 focus:left-0 focus:right-0 focus:m-auto focus:w-80 text-center;
+    @apply sr-only bg-primary-light text-white w-fit border-2 border-black inline-block text-center;
+    @apply focus:not-sr-only focus:z-50 focus:p-10 focus:absolute focus:top-0 focus:left-0 focus:right-0 focus:m-auto focus:w-fit;
   }
 
   .TabMenu {

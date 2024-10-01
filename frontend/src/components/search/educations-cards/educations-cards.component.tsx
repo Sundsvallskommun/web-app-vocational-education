@@ -5,90 +5,37 @@ import { Course, PagingMetaData } from '@interfaces/education';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import SchoolIcon from '@mui/icons-material/School';
-import { getEducationLengthString } from '@services/education-service/education-service';
+import { getEducationLengthString, getSanitizedInformation } from '@services/education-service/education-service';
 import { Checkbox } from '@sk-web-gui/react';
-import { XMLParser } from 'fast-xml-parser';
-import SanitizeHTML from 'sanitize-html';
 
 const cardIconClasses = 'desktop:!hidden !text-2xl mr-10';
 const cardDataClasses = 'desktop:font-bold capitalize';
 
-const parser = new XMLParser();
-
-const cardInformationSanitizeOptions = {
-  allowedTags: [
-    'p',
-    'a',
-    'ul',
-    'ol',
-    'li',
-    'b',
-    'i',
-    'strong',
-    'em',
-    'strike',
-    'del',
-    'div',
-    'sup',
-    'sub',
-    'span',
-    'br',
-  ],
-  allowedAttributes: {
-    a: ['class'],
-    p: ['class'],
-    br: ['class'],
-  },
-  transformTags: {
-    a: function () {
-      return {
-        tagName: 'span',
-      };
-    },
-    p: function () {
-      return {
-        tagName: 'p',
-        attribs: {
-          class: 'my-0',
-        },
-      };
-    },
-    br: function () {
-      return {
-        tagName: 'br',
-        attribs: {
-          class: 'block mt-[.4rem]',
-        },
-      };
-    },
-  },
-};
-
 export const EducationsCards: React.FC<{
   educations: Course[];
   handleCheckboxClick: (edu: Course) => (e) => void;
-  _meta: PagingMetaData;
+  handleOnClickResult: (id?: number) => void;
+  _meta?: PagingMetaData;
   setPageSize: React.Dispatch<React.SetStateAction<number>>;
-}> = ({ educations, handleCheckboxClick, _meta, setPageSize }) => {
+}> = ({ educations, handleCheckboxClick, _meta, setPageSize, handleOnClickResult }) => {
   const { searchCompareList } = useAppContext();
 
+  if (!_meta) return <></>;
+
   const loadMoreCallback = () => {
-    setPageSize((amount) => (_meta.totalRecords <= amount ? amount : amount + 10)); // make new request
+    setPageSize((_meta?.count as number) + 10); // make new request
   };
 
   return (
     <>
-      {educations?.slice(0, _meta.limit)?.map((edu, index) => {
-        let information = edu?.information;
-        if (edu?.information.includes('CDATA')) {
-          const xmlParsedInformation = parser.parse(edu?.information);
-          information = xmlParsedInformation ? xmlParsedInformation['#text'] : '';
-        }
-        const informationSanitized = SanitizeHTML(information, cardInformationSanitizeOptions);
+      {educations?.slice(0, _meta?.limit)?.map((edu, index) => {
+        const informationSanitized = getSanitizedInformation(edu?.information);
         return (
-          <div key={`${index}-${edu?.code}`} className="w-full flex flex-col">
+          <div key={`${index}-${edu?.id}`} className="w-full flex flex-col">
             <DropCard
-              href={`/utbildningar/${edu?.code}-${edu?.id}`}
+              data-id={edu?.id}
+              href={`/utbildningar/${edu?.id}`}
+              onClick={() => handleOnClickResult(edu?.id)}
               dropIcon={<SchoolIcon className="material-icon desktop:!text-2xl" />}
               footer={
                 <div className="flex flex-col gap-y-20">
@@ -96,7 +43,9 @@ export const EducationsCards: React.FC<{
                     <div className="hidden desktop:block">
                       <div className="label">Längd</div>
                       <div className="flex items-center">
-                        <span className={cardDataClasses}>{getEducationLengthString(edu?.start, edu?.end) ?? '-'}</span>
+                        <span className={cardDataClasses}>
+                          {edu?.start && edu?.end ? getEducationLengthString(edu?.start, edu?.end) : '-'}
+                        </span>
                       </div>
                     </div>
                     <div>
@@ -158,7 +107,7 @@ export const EducationsCards: React.FC<{
           </div>
         );
       })}
-      {_meta.totalRecords > _meta.limit && (
+      {_meta.totalRecords && _meta.limit && _meta.totalRecords > _meta.limit && (
         <LoadMoreBlock loadMoreColorClass="text-white" loadMoreCallback={loadMoreCallback} className="desktop:mb-3xl" />
       )}
     </>

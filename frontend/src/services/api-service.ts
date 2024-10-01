@@ -11,21 +11,21 @@ export interface ApiResponse<T> {
   message: string;
 }
 
-const protectedRoutes = JSON.parse(process.env.NEXT_PUBLIC_PROTECTED_ROUTES);
+const protectedRoutes = JSON.parse(process.env.NEXT_PUBLIC_PROTECTED_ROUTES as string);
 
 export const handleError = (error) => {
-  if (!protectedRoutes.includes(window.location.pathname)) throw error;
+  if (!protectedRoutes.includes(window?.location.pathname)) throw error;
 
   if (error?.response?.status === 401 && !Router.pathname.includes('login')) {
     Router.push(
       {
-        pathname: `/login?path=${window.location.pathname}`,
+        pathname: `/login?path=${window?.location.pathname}`,
         query: {
-          path: window.location.pathname,
+          path: window?.location.pathname,
           failMessage: error,
         },
       },
-      `/login?path=${window.location.pathname}`
+      `/login?path=${window?.location.pathname}`
     );
   }
 

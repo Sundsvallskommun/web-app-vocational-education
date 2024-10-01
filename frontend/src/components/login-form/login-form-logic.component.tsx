@@ -19,7 +19,7 @@ export default function LoginFormLogic({ children }) {
     })
     .required();
 
-  const context = useForm<Partial<LoginCredentials>>({
+  const context = useForm<LoginCredentials>({
     resolver: yupResolver(formSchema),
     defaultValues: {
       username: '',
@@ -30,7 +30,7 @@ export default function LoginFormLogic({ children }) {
 
   const { handleSubmit, setError } = context;
 
-  const checkError = (error: string) => {
+  const checkError = (error: string | null) => {
     switch (error) {
       case 'INVALID_CREDENTIALS':
         setError('root', { type: 'string', message: 'Felaktigt användarnamn eller lösenord' });

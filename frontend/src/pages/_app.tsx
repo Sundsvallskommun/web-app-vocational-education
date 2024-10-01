@@ -7,6 +7,10 @@ import updateLocale from 'dayjs/plugin/updateLocale';
 import utc from 'dayjs/plugin/utc';
 import type { AppProps /*, AppContext */ } from 'next/app';
 import { AppWrapper } from '../contexts/app.context';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+// Create a client
+const queryClient = new QueryClient();
 
 dayjs.extend(utc);
 dayjs.locale('sv');
@@ -32,11 +36,13 @@ dayjs.updateLocale('sv', {
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <GuiProvider theme={defaultTheme}>
-      <AppWrapper>
-        <LoginGuard>
-          <Component {...pageProps} />
-        </LoginGuard>
-      </AppWrapper>
+      <QueryClientProvider client={queryClient}>
+        <AppWrapper>
+          <LoginGuard>
+            <Component {...pageProps} />
+          </LoginGuard>
+        </AppWrapper>
+      </QueryClientProvider>
     </GuiProvider>
   );
 }

@@ -24,6 +24,7 @@
     "@next/bundle-analyzer": "14.2.12",
     "@sk-web-gui/core": "3.6.0",
     "@sk-web-gui/react": "1.2.29",
+    "@tanstack/react-query": "^5.56.2",
     "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",
     "dayjs": "^1.11.11",

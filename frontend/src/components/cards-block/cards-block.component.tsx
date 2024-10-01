@@ -1,6 +1,6 @@
 import ContentBlock from '@components/block/content-block.component';
 import LoadMoreBlock from '@components/block/load-more-block.component';
-import { useThemeQueries } from '@sk-web-gui/react';
+import { cx, useThemeQueries } from '@sk-web-gui/react';
 import { useEffect, useState } from 'react';
 
 type ValuesOf<T extends unknown[]> = T[number];
@@ -52,7 +52,7 @@ export const CardsBlock = <T extends unknown[] = unknown[]>({
   }, [isMinDesktop, isMinMediumDevice]);
 
   return (
-    <ContentBlock classNameWrapper={`${className} ${backgroundClass}`} padded>
+    <ContentBlock classNameWrapper={cx(className, backgroundClass)} padded>
       <div>
         <h2>{title}</h2>
         <div className="mt-2xl flex flex-col medium-device:grid medium-device:grid-cols-2 desktop:grid-cols-3 gap-lg gap-y-2xl">

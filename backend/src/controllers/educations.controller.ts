@@ -6,7 +6,7 @@ import ApiService from '@/services/api.service';
 import { IsNullable } from '@/utils/custom-validation-classes';
 import { IsArray, IsBooleanString, IsOptional, IsString } from 'class-validator';
 import hpp from 'hpp';
-import { Controller, Get, QueryParam, UseBefore } from 'routing-controllers';
+import { Controller, Get, Param, QueryParam, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 
 class EducationFilterOptions {
@@ -119,7 +119,7 @@ export class EducationsController {
 
   @Get('/education-events')
   @OpenAPI({ summary: 'Return education events' })
-  async getEducationEvents(@QueryParam('filter') filter?: EducationFilterOptions): Promise<DataResponse<any[]>> {
+  async getEducationEvents(@QueryParam('filter') filter?: EducationFilterOptions): Promise<DataResponse<Course[]>> {
     const url = `/education-finder/2.0/${MUNICIPALITY_ID}/courses`;
 
     const today = new Date();
@@ -132,7 +132,7 @@ export class EducationsController {
 
       // Filter parameters
       searchString: filter?.q ?? undefined,
-      // level should have preset defaults if unset as studyLocation
+      // FIXME: level should have preset defaults if unset as studyLocation
       level: filter?.level ?? undefined,
       scope: filter?.scope ?? undefined,
       studyLocation: filter?.studyLocation ?? defaultStudyLocations,
@@ -150,6 +150,16 @@ export class EducationsController {
     if (Array.isArray(res.data) && res.data.length < 1) {
       throw new HttpException(404, 'Not Found');
     }
+
+    return { data: res.data, message: 'success' };
+  }
+
+  @Get('/education-events/event/:id')
+  @OpenAPI({ summary: 'Return education events' })
+  async getEducationEvent(@Param('id') id: string): Promise<DataResponse<Course>> {
+    const url = `/education-finder/2.0/${MUNICIPALITY_ID}/courses/${id}`;
+
+    const res = await this.apiService.get<Course>({ url });
 
     return { data: res.data, message: 'success' };
   }

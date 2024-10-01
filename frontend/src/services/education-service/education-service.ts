@@ -12,6 +12,8 @@ import { serializeURL } from '@utils/url';
 import dayjs from 'dayjs';
 import { ApiResponse, apiService } from '../api-service';
 import { getFormattedLabelFromValue } from '@utils/labels';
+import { XMLParser } from 'fast-xml-parser';
+import SanitizeHTML from 'sanitize-html';
 
 export const emptyEducationFilterOptions: EducationFilterOptions = {
   q: '',
@@ -25,7 +27,7 @@ export const emptyEducationFilterOptions: EducationFilterOptions = {
   scope: [],
 };
 
-export const defaultEducationFilterOptions: EducationFilterOptions = {
+export const defaultEducationFilterOptions = {
   page: 1,
   size: 10,
   q: '',
@@ -53,13 +55,13 @@ export const educationFilterTagLabels = {
 export const getEducationFilterValueString = (filter, value) => {
   switch (filter) {
     case 'sortFunction':
-      return sortFilter.find((choice) => choice.value === value).label;
+      return sortFilter.find((choice) => choice.value === value)?.label;
     case 'category':
-      return value.map((x) => getFormattedLabelFromValue(x)).join(' | ');
+      return Array.isArray(value) ? value?.map((x) => getFormattedLabelFromValue(x)).join(' | ') : value;
     case 'level':
-      return value.map((x) => getFormattedLabelFromValue(x)).join(' | ');
+      return Array.isArray(value) ? value?.map((x) => getFormattedLabelFromValue(x)).join(' | ') : value;
     case 'studyLocation':
-      return value.map((x) => getFormattedLabelFromValue(x)).join(' | ');
+      return Array.isArray(value) ? value?.map((x) => getFormattedLabelFromValue(x)).join(' | ') : value;
     case 'distance':
       return value === 'true' ? 'Ja' : 'Nej';
     case 'latestApplicationDate':
@@ -67,19 +69,19 @@ export const getEducationFilterValueString = (filter, value) => {
     case 'startDate':
       return value;
     case 'scope':
-      return value.map((x) => x.replace('.0', '%')).join(' | ');
+      return Array.isArray(value) ? value?.map((x) => x.replace('.0', '%')).join(' | ') : value;
     default:
       return '';
   }
 };
 
 export const getFilterOptionString = (filter, value) => {
-  return `${educationFilterTagLabels[filter]}: ${getEducationFilterValueString(filter, value)}`;
+  return value ? `${educationFilterTagLabels[filter]}: ${getEducationFilterValueString(filter, value)}` : '';
 };
 
 export const getValidValue = <TFallback = null>(
   key: string,
-  value: string | string[],
+  value: null | undefined | string | string[],
   fallback: TFallback
 ): Record<string, TFallback> => {
   const validValues = {
@@ -92,7 +94,7 @@ export const getValidValue = <TFallback = null>(
     startDate: value ? value : fallback,
     scope: Array.isArray(value) && value[0] ? value : fallback,
   };
-  return validValues[key];
+  return value ? validValues[key] : fallback;
 };
 
 export const getFilterDataStrings: {
@@ -118,48 +120,33 @@ export const getSearchParamsFromEducationSearchFilters = (filterData: EducationF
   return serializeURL(getFilterDataStrings(filterData, ''));
 };
 
-export const handleGetEducationEvents: (courses: Course[]) => Course[] = (courses) =>
-  courses.map((course, index) => ({
-    id: index, // FIXME: CRITICAL: Should be id from endpoint, this is temporary fix
-    code: course.code,
-    name: course.name,
-    provider: course.provider,
-    providerUrl: course.providerUrl,
-    level: course.level,
-    url: course.url,
-    credits: course.credits,
-    scope: course.scope,
-    studyLocation: course.studyLocation,
-    subjectCode: course.subjectCode,
-    numberOfSeats: course.numberOfSeats,
-    start: course.start,
-    end: course.end,
-    earliestApplication: course.earliestApplication,
-    latestApplication: course.latestApplication,
-    information: course.information,
-  }));
-
-export const handleGetEducationEventsMeta: (_meta: PagingMetaData) => PagingMetaData = (_meta) => ({
-  page: _meta.page,
-  limit: _meta.limit,
-  count: _meta.count,
-  totalRecords: _meta.totalRecords,
-  totalPages: _meta.totalPages,
-});
-
-export const getEducationEvents: (
-  filterData: EducationFilterOptions
-) => Promise<{ courses: Course[]; _meta?: PagingMetaData; error?: unknown }> = (filterData) => {
+export interface GetEducationEvents {
+  courses: Course[];
+  _meta?: PagingMetaData;
+  error?: unknown;
+}
+export const getEducationEvents: (filterData: EducationFilterOptions) => Promise<GetEducationEvents> = (filterData) => {
   return apiService
     .get<ApiResponse<PagedCoursesResponse>>(`education-events`, {
       params: { filter: getFilterDataStrings(filterData, null) },
     })
     .then((res) => ({
-      courses: handleGetEducationEvents(res?.data?.data?.courses),
-      _meta: handleGetEducationEventsMeta(res?.data?.data?._meta),
+      courses: res?.data?.data?.courses || [],
+      _meta: res?.data?.data?._meta,
     }))
     .catch((e) => ({
       courses: [],
+      error: e.response?.status ?? 'UNKNOWN ERROR',
+    }));
+};
+
+export const getEducationEvent: (id: string) => Promise<{ data?: Course; error?: unknown }> = (id) => {
+  return apiService
+    .get<ApiResponse<Course>>(`education-events/event/${id}`)
+    .then((res) => ({
+      data: res?.data?.data,
+    }))
+    .catch((e) => ({
       error: e.response?.status ?? 'UNKNOWN ERROR',
     }));
 };
@@ -186,7 +173,7 @@ export const getLangString: (_langCodes: string[]) => string = (_langCodes) => {
   return _langCodes.map((code) => langCodes.get(code)).join(', ');
 };
 
-export const getEducationLengthString: (start: string, end: string) => string = (start, end) => {
+export const getEducationLengthString: (start: string, end: string) => string | null = (start, end) => {
   const days = Math.abs(dayjs(end).diff(start, 'day'));
   const weeks = Math.abs(dayjs(end).diff(start, 'week'));
   const years = Math.abs(dayjs(end).diff(start, 'year'));
@@ -200,4 +187,64 @@ export const getEducationLengthString: (start: string, end: string) => string = 
   } else {
     return days + ' dagar';
   }
+};
+
+const parser = new XMLParser();
+const cardInformationSanitizeOptions = {
+  allowedTags: [
+    'p',
+    'a',
+    'ul',
+    'ol',
+    'li',
+    'b',
+    'i',
+    'strong',
+    'em',
+    'strike',
+    'del',
+    'div',
+    'sup',
+    'sub',
+    'span',
+    'br',
+  ],
+  allowedAttributes: {
+    a: ['class'],
+    p: ['class'],
+    br: ['class'],
+  },
+  transformTags: {
+    a: function () {
+      return {
+        tagName: 'span',
+      };
+    },
+    p: function () {
+      return {
+        tagName: 'p',
+        attribs: {
+          class: 'my-0',
+        },
+      };
+    },
+    br: function () {
+      return {
+        tagName: 'br',
+        attribs: {
+          class: 'block mt-[.4rem]',
+        },
+      };
+    },
+  },
+};
+export const getSanitizedInformation = (
+  information: Course['information'],
+  informationSanitizeOptions = cardInformationSanitizeOptions
+) => {
+  if (information?.includes('CDATA')) {
+    const xmlParsedInformation = parser.parse(information);
+    information = xmlParsedInformation ? xmlParsedInformation['#text'] : '';
+  }
+  return SanitizeHTML(information, informationSanitizeOptions);
 };

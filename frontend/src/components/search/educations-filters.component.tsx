@@ -34,7 +34,7 @@ export const EducationsFilters: React.FC<{
   formData?: Partial<EducationFilterOptions>;
 }> = ({ searchQuery, activeListing, setActiveListing, submitCallback, formData = defaultEducationFilterOptions }) => {
   const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
-  const [filterIsOpen, setFilterIsOpen] = useState(null);
+  const [filterIsOpen, setFilterIsOpen] = useState<boolean | null>(null);
   const getSavedSearches = useUserStore((s) => s.getSavedSearches);
   const userSavedSearches = useUserStore((s) => s.userSavedSearches);
   const newSavedSearch = useUserStore((s) => s.newSavedSearch);
@@ -74,7 +74,7 @@ export const EducationsFilters: React.FC<{
     handleOnFilterClose();
   };
 
-  const handleFilterItems = (open: boolean) => {
+  const handleFilterItems = (open: boolean | null) => {
     const filterItems = document.querySelectorAll('.filter-items-desktop > *');
     filterItems.forEach((item: HTMLElement) => {
       const itemWidth = item.getBoundingClientRect().width;
@@ -222,7 +222,7 @@ export const EducationsFilters: React.FC<{
                     className="more-button"
                     variant="ghost"
                     size="sm"
-                    aria-expanded={filterIsOpen}
+                    aria-expanded={!!filterIsOpen}
                     rightIcon={filterIsOpen ? <RemoveOutlinedIcon /> : <AddOutlinedIcon />}
                   >
                     <span>{filterIsOpen ? 'Mindre' : 'Fler'} filtreringar</span>

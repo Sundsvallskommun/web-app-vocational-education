@@ -7,7 +7,9 @@ const hasValue = (value: unknown | unknown[]) => {
   }
 };
 
-export function serializeURL(params: URLSearchParams | Record<string, string | number | (string | number)[]>): string {
+export function serializeURL(
+  params: URLSearchParams | Record<string, null | string | number | (string | number)[]>
+): string {
   const result: Record<string, string[]> = {};
 
   // Check if params is URLSearchParams or a regular object
@@ -49,19 +51,20 @@ export function serializeURL(params: URLSearchParams | Record<string, string | n
     .join('&');
 }
 
-export function deserializeURL(queryString) {
+export function deserializeURL(queryString: string) {
   const params = new URLSearchParams(queryString);
-  const result = {};
+  const result: Record<string, string | string[]> = {};
 
   for (const [key, value] of params.entries()) {
     // Split the value by '|' to handle multiple values
     const values = value.split('|').map(decodeURIComponent);
 
-    // If the key already exists, merge the values; otherwise, set it
     if (result[key]) {
-      result[key] = result[key].concat(values);
+      // If the key already exists, convert to array and merge
+      result[key] =
+        Array.isArray(result[key]) ? (result[key] as string[]).concat(values) : [result[key] as string].concat(values);
     } else {
-      result[key] = values;
+      result[key] = values.length > 1 ? values : values[0];
     }
   }
 
@@ -91,10 +94,10 @@ function convertValue<TReference = string | string[] | number>(
 ): TReference {
   if (typeof referenceValue === 'string') {
     // If the referenceValue is a string, return the value as is
-    return hasValue(value) ? (decodeURIComponent(value) as TReference) : ('' as TReference);
+    return hasValue(value) ? (decodeURIComponent(value as string) as TReference) : ('' as TReference);
   } else if (typeof referenceValue === 'number') {
     // If the referenceValue is a number, parse the value as a number
-    return hasValue(value) ? (parseInt(value) as TReference) : (0 as TReference);
+    return hasValue(value) ? (parseInt(value as string) as TReference) : (0 as TReference);
   } else {
     // For other types, return the value as is
     return hasValue(value) ? (value as TReference) : ('' as TReference);
@@ -107,7 +110,7 @@ export function createObjectFromQueryString<T = unknown>(
 ) {
   const newObject: Partial<T> = {};
   const _options = Object.assign({}, { objectReferenceOnly: false, objectReferenceAsBase: false }, options);
-  const referenceKeys = Object.keys(_options.objectReference);
+  const referenceKeys = Object.keys(_options.objectReference as object);
 
   // Use custom deserialization function
   const deserializedParams = deserializeURL(queryString);

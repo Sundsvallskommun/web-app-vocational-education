@@ -7,7 +7,7 @@ export interface Permissions {
 }
 
 export interface User {
-  id: number;
+  id: number | null;
   username: string;
   role: string;
   permissions: Permissions;

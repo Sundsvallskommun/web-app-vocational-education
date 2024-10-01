@@ -15,7 +15,8 @@ export const CompareCards: React.FC<{ compareList: Course[]; onRemove? }> = ({ c
   const [page, setPage] = useState<number>(1);
 
   const handlePagination = (page: number) => {
-    compareSwiperRef.current.swiper.slideTo(page - 1);
+    /** @ts-expect-error Swiper attaches swiper */
+    compareSwiperRef?.current?.swiper.slideTo(page - 1);
     setPage(page);
   };
 
@@ -57,7 +58,7 @@ export const CompareCards: React.FC<{ compareList: Course[]; onRemove? }> = ({ c
                     <div>
                       <div className="label">Längd</div>
                       <div>
-                        <strong>{getEducationLengthString(edu.start, edu.end)}</strong>
+                        <strong>{edu.start && edu.end ? getEducationLengthString(edu.start, edu.end) : '-'}</strong>
                       </div>
                     </div>
                     <div>

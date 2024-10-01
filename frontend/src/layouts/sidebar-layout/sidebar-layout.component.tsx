@@ -1,19 +1,17 @@
 import { CookieConsent, Footer, Header, Link } from '@sk-web-gui/react';
 import Head from 'next/head';
 import NextLink from 'next/link';
-import { useRef } from 'react';
 interface ISidebarLayout {
   title;
   children;
 }
 
 export default function SidebarLayout({ title, children }: ISidebarLayout) {
-  const initialFocus = useRef(null);
-
   const setInitialFocus = () => {
-    setTimeout(() => {
-      initialFocus.current && initialFocus.current.focus();
-    });
+    const contentElement = document.getElementById('content');
+    if (contentElement) {
+      contentElement.focus();
+    }
   };
 
   return (

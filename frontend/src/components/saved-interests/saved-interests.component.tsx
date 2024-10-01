@@ -83,46 +83,47 @@ export default function SavedInterests() {
                   <span className="saved-interest-header-texts-meta mb-[1.8rem] text-label text-xs leading-[1.8rem]">{`Uppdaterad ${dayjs(interest.updatedAt).format('YYYY-MM-DD')}`}</span>
                 </div>
               </div>
-              <div className="saved-interest-body  divide-y-1 divide-divider">
-                <div className="grid grid-cols-2">
-                  <p className="leading-[2.6rem] my-[2.5rem]">
-                    Pågående
-                    <br />
-                    utbildningar
-                    <br />
-                    <strong>{interest.ongoing}</strong>
-                  </p>
-                  <p className="leading-[2.6rem] my-[2.5rem]">
-                    Kapacitet
-                    <br />
-                    utbildningsplatser
-                    <br />
-                    <strong>{interest.capacity}</strong>
-                  </p>
-                </div>
-                <div className="grid grid-cols-2">
-                  <p className="leading-[2.6rem] my-[2.5rem]">
+              <div className="saved-interest-body grid grid-cols-2">
+                <div className="divide-y-1 divide-divider">
+                  {interest.timeInterval !== '0' && (
+                    <div className="leading-[2.6rem] py-[2.5rem]">
+                      Pågående
+                      <br />
+                      utbildningar
+                      <br />
+                      <strong>{interest.ongoing}</strong>
+                    </div>
+                  )}
+                  <div className="leading-[2.6rem] py-[2.5rem]">
                     Planerade
                     <br />
                     utbildningar
                     <br />
                     <strong>{interest.planned}</strong>
-                  </p>
-                  <p className="leading-[2.6rem] my-[2.5rem]">
+                  </div>
+                  <div className="leading-[2.6rem] py-[2.5rem]">
+                    Avslutade utbildningar
+                    <br />
+                    <strong>{interest.ended}</strong>
+                  </div>
+                </div>
+
+                <div className="divide-y-1 divide-divider">
+                  <div className="leading-[2.6rem] py-[2.5rem]">
+                    Kapacitet
+                    <br />
+                    utbildningsplatser
+                    <br />
+                    <strong>{interest.capacity}</strong>
+                  </div>
+                  <div className="leading-[2.6rem] py-[2.5rem]">
                     Tillgängliga
                     <br />
                     utbildningsplatser
                     <br />
                     <strong>{interest.available}</strong>
-                  </p>
-                </div>
-                <div className="grid grid-cols-2">
-                  <p className="leading-[2.6rem] my-[2.5rem]">
-                    Avslutade utbildningar
-                    <br />
-                    <strong>{interest.ended}</strong>
-                  </p>
-                  <p className="leading-[2.6rem] my-[2.5rem] line-clamp-2">{interest.freetext}</p>
+                  </div>
+                  {interest.timeInterval !== '0' && <div></div>}
                 </div>
               </div>
               <div className="mt-[4.3rem] flex justify-center">

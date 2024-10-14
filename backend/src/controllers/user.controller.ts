@@ -138,9 +138,8 @@ export class UserController {
         userId: req.user.id,
       },
     });
-    console.log('interests', interests);
+
     const statisticsData = await this.getStatisticsData(interests);
-    console.log('statisticsData', statisticsData);
     if (!statisticsData) {
       throw new HttpException(400, 'Missing statistics data');
     }

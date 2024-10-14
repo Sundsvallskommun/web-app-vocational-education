@@ -36,23 +36,35 @@ export const PageEdit = (props: any) => {
         </h1>
         <TextInput source="url" validate={[required()]} readOnly />
         <TextInput source="pageName" validate={[required()]} readOnly />
-        <TextInput
-          source="title"
-          validate={[required()]}
-          multiline
-          inputProps={{
-            sx: { width: '222px', fontFamily: 'Montserrat', letterSpacing: '-0.0111em' },
-          }}
+        <WithRecord
+          label="pageName"
+          render={(record) => (
+            <>
+              {!record.url.includes('[') && (
+                <>
+                  <TextInput
+                    source="title"
+                    validate={[required()]}
+                    multiline
+                    inputProps={{
+                      sx: { width: '222px', fontFamily: 'Montserrat', letterSpacing: '-0.0111em' },
+                    }}
+                  />
+                  <TextInput
+                    source="description"
+                    validate={[required()]}
+                    multiline
+                    sx={{ hyphens: 'auto' }}
+                    inputProps={{
+                      sx: { width: '576px', fontFamily: 'Montserrat', minHeight: '3em' },
+                    }}
+                  />
+                </>
+              )}
+            </>
+          )}
         />
-        <TextInput
-          source="description"
-          validate={[required()]}
-          multiline
-          sx={{ hyphens: 'auto' }}
-          inputProps={{
-            sx: { width: '576px', fontFamily: 'Montserrat', minHeight: '3em' },
-          }}
-        />
+
         <WithRecord
           label="pageName"
           render={(record) => (

@@ -90,6 +90,18 @@ export const PageSwitch = () => {
           )}
         </>
       );
+    case 'utbildningar_utbildning':
+      return (
+        <>
+          {(isSuperAdmin || record.faqBlock.length) && (
+            <>
+              <br />
+              <h2>{translate('resources.faqBlock.name', { smart_count: 2 })}</h2>
+              <EditFAQBlock />
+            </>
+          )}
+        </>
+      );
     default:
       return <></>;
   }

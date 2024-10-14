@@ -1,16 +1,17 @@
-import ContentBlock from '@components/block/content-block.component';
+import ContentBlock, { ContentBlockProps } from '@components/block/content-block.component';
 import { FAQBlock as FAQBlockType } from '@interfaces/admin-data';
 import sanitized from '@services/sanitizer-service';
 import { Accordion } from '@sk-web-gui/react';
 
-interface FAQBlockProps {
+interface FAQBlockProps extends ContentBlockProps {
   faqBlock?: FAQBlockType;
 }
 
-export default function FAQBlock({ faqBlock }: FAQBlockProps) {
+export default function FAQBlock(props: FAQBlockProps) {
+  const { faqBlock, ...rest } = props;
   if (!faqBlock?.showBlock) return <></>;
   return (
-    <ContentBlock>
+    <ContentBlock {...rest}>
       <div className="flex flex-col desktop:flex-row desktop:justify-between">
         <h2 className="mb-md">{faqBlock.title}</h2>
         <p className="text !max-w-[600px] leading-[1.8] m-0">{faqBlock.description}</p>

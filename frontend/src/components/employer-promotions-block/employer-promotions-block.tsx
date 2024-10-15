@@ -18,7 +18,7 @@ export default function EmployerPromotionsBlock({ employerPromotionsBlock }: Emp
       cardRender={(card, index) => (
         <DropCard
           key={`${index}`}
-          classNameCard="max-h-[232px] min-h-[232px] desktop:max-h-[270px]"
+          classNameCard="h-[232px] desktop:h-[270px]"
           href={`/utbildningar/efterfragade/${card.title}`}
           dropIcon={<SchoolIcon className="!text-2xl" />}
         >

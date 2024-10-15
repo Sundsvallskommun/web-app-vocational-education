@@ -7,7 +7,7 @@ import Search from '@components/search/search.component';
 import { PageProps } from '@interfaces/admin-data';
 import { Course } from '@interfaces/education';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import SchoolIcon from '@mui/icons-material/School';
 import {
   getEducationEvent,
@@ -16,7 +16,7 @@ import {
 } from '@services/education-service/education-service';
 import { getLayout } from '@services/layout-service';
 import { getPage } from '@services/page-service';
-import { Breadcrumb } from '@sk-web-gui/react';
+import { Breadcrumb, useThemeQueries } from '@sk-web-gui/react';
 import { getFormattedLabelFromValue } from '@utils/labels';
 import NextLink from 'next/link';
 
@@ -38,6 +38,7 @@ export const Utbildning: React.FC = ({
   educationData,
   pageData,
 }: PageProps & { educationData: Course }) => {
+  const { isMinDesktop } = useThemeQueries();
   if (!educationData) return <></>;
   return (
     <DefaultLayout title={`Yrkesutbildning - ${educationData.name}`} layoutData={layoutData}>
@@ -136,7 +137,12 @@ export const Utbildning: React.FC = ({
             </div>
           </div>
           <a href={educationData.url} target="_blank">
-            <Button as="span" className="override" rightIcon={<ArrowForwardIcon />}>
+            <Button
+              as="span"
+              dense={!isMinDesktop}
+              className="override !text-sm small-device-min:!text-base"
+              rightIcon={<OpenInNewIcon />}
+            >
               <span>Till utbildningens hemsida</span>
             </Button>
           </a>
@@ -149,26 +155,17 @@ export const Utbildning: React.FC = ({
 
       <ContentBlock classNameWrapper="!mt-60">
         <h2>Kontaktuppgifter</h2>
-        <p>Sundsvalls kommun (Komunal)Lasarettsvägen 19, 851 85 Sundsvall</p>
+        <p>Sundsvalls kommun (Komunal) Lasarettsvägen 19, 851 85 Sundsvall</p>
         <a className="inline-block mt-30" href={educationData.url} target="_blank">
-          <Button as="span" className="override w-fit" rightIcon={<ArrowForwardIcon />}>
+          <Button
+            as="span"
+            dense={!isMinDesktop}
+            className="override w-fit !text-sm small-device-min:!text-base"
+            rightIcon={<OpenInNewIcon />}
+          >
             <span>Till utbildningens hemsida</span>
           </Button>
         </a>
-      </ContentBlock>
-
-      <ContentBlock classNameWrapper="!mt-60">
-        <h2>Söker du kontakt med utbildningsanordnare?</h2>
-        <p>
-          Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim
-          velit mollit. Exercitation veniam consequat sunt nostrud amet. Dest sit aliqua dolor do amet sint. Velit
-          officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
-        </p>
-        <NextLink className="inline-block mt-30" href={'/arbetsgivare/kontaktautbildningsanordnare'}>
-          <Button as="span" className="override w-fit" rightIcon={<ArrowForwardIcon />}>
-            <span>Till utbildningsanordnare</span>
-          </Button>
-        </NextLink>
       </ContentBlock>
 
       <FAQBlock classNameWrapper="pt-80" faqBlock={pageData.faqBlock?.pop()} />

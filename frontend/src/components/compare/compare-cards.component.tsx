@@ -46,10 +46,9 @@ export const CompareCards: React.FC<{ compareList: Course[]; onRemove? }> = ({ c
         {compareList.map((edu) => {
           return (
             <SwiperSlide key={`${edu.id}`}>
-              <div className="inline-block xs:w-[270px] medium-device:w-[300px] desktop:w-full">
+              <div className="inline-block w-[270px] medium-device:w-[300px] desktop:w-full">
                 <DropCard
-                  textFade={false}
-                  classNameCard="min-h-[492px] xs:w-[270px] medium-device:w-[300px] desktop:w-full"
+                  classNameCard="min-h-[492px] w-[270px] medium-device:w-[300px] desktop:w-full"
                   href="/"
                   dropIcon={<SchoolIcon className="material-icon !text-2xl" />}
                 >

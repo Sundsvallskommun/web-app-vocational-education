@@ -106,7 +106,7 @@ export const Compare: React.FC = ({ layoutData }: LayoutProps) => {
           </div>
         </div>
       </ContentBlock>
-      <ContentBlock classNameWrapper="!mt-xl" classNameContent="to-tablet:px-0">
+      <ContentBlock className="px-0" classNameWrapper="!mt-xl" classNameContent="to-tablet:px-0">
         {activeListing == 0 && <CompareList compareList={searchCompareList} onRemove={onRemove} />}
         {activeListing == 1 && <CompareCards compareList={searchCompareList} onRemove={onRemove} />}
       </ContentBlock>

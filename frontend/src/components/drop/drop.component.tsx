@@ -68,7 +68,7 @@ export const Drop: React.FC<{
       }
       className={`drop-card-drop ${className} ${dropDirectionClass} ${
         dropContent ? 'absolute mx-auto' : 'block'
-      } overflow-hidden shadow-md bg-white inline-flex flex-grow-0 items-center justify-center border-2 border-border-color`}
+      } min-w-[4.8rem] min-h-[4.8rem] overflow-hidden shadow-md bg-white inline-flex flex-grow-0 items-center justify-center border-2 border-border-color`}
     >
       {dropContent ? dropContent : _dropContent}
     </div>

@@ -13,12 +13,12 @@ export default function PromotionsBlock({ promotionsBlock }: PromotionsBlockProp
         <BigDropCard
           key={`${promotion.url}-${i}`}
           className="desktop:h-[377px]"
-          textFade
           href={promotion.promotedPage.url}
           dropImageSrc={`/YM_puff${i + 1}.jpg`}
+          footer={<></>}
         >
           <h2>{promotion.promotedPage.title}</h2>
-          <p className="text">{promotion.promotedPage.description}</p>
+          <p className="text text-full">{promotion.promotedPage.description}</p>
         </BigDropCard>
       ))}
     </div>

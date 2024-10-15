@@ -4,6 +4,7 @@ import NextLink from 'next/link';
 import DropCard from './drop-card.component';
 import { useEffect, useState } from 'react';
 import { usePlaceholderImg } from '@utils/use-placeholder-image.hook';
+import { cx } from '@sk-web-gui/react';
 
 export const BigDropCard: React.FC<DropCard> = ({ className = '', children, href = '#', dropImageSrc, ...rest }) => {
   const [mounted, setMounted] = useState(false);
@@ -46,7 +47,7 @@ export const BigDropCard: React.FC<DropCard> = ({ className = '', children, href
       </div>
       <div className="medium-device:hidden desktop:block">
         <DropCard
-          className={`${className} max-h-[210px] desktop:max-h-[323px]`}
+          className={cx(`h-[210px] desktop:h-[323px]`, className)}
           dropClassName="!border-0"
           dropImageSrc={`${imageSrc}`}
           href={href}

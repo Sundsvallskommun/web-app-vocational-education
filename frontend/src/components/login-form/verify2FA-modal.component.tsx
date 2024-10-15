@@ -42,7 +42,7 @@ export default function TwoFactorModal({ show, setShow, checkError }) {
 
   return (
     <ModalCustom disableCloseOutside show={show} onClose={() => setShow(false)}>
-      <form onSubmit={handleSubmit(onVerify)} className="min-w-[56rem] w-full">
+      <form onSubmit={handleSubmit(onVerify)} className="w-full medium-device-min:min-w-[56rem]">
         <h1>Verifiera engångskod</h1>
         <FormControl className="w-full">
           <FormLabel>Engångskod</FormLabel>

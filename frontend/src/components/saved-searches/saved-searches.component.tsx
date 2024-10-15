@@ -47,13 +47,13 @@ export default function SavedSearches() {
 
   return (
     <div className="grow flex flex-col mt-[1.8rem]">
-      <SavedContentBlock className="!px-[3.3rem]">
+      <SavedContentBlock className="desktop:!px-[3.3rem]">
         {pagedList.map((search, index) => (
           <DropCard
             key={`${index}`}
-            textFade={false}
             href={`/utbildningar/sok?${search.parameters}`}
             dropIcon={<SearchIcon className="min-w-[3.2rem] min-h-[3.2rem]" />}
+            footer={<></>}
             toolbar={
               <>
                 <ButtonStackedIcon

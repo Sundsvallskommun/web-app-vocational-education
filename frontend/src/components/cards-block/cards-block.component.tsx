@@ -24,7 +24,7 @@ export const CardsBlock = <T extends unknown[] = unknown[]>({
   className,
   backgroundClass = 'bg-white',
   loadMoreColorClass = 'text-white',
-  mobileDefaultAmount = 2,
+  mobileDefaultAmount = 3,
   tabletDefaultAmount = 4,
   DesktopDefaultAmount = 6,
 }: CardsBlockProps<T>) => {

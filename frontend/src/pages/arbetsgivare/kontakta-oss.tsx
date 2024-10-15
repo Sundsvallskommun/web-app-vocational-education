@@ -51,7 +51,9 @@ export const KontaktaOss: React.FC = ({ layoutData }: PageProps) => {
             officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
           </p>
         </Wysiwyg>
-        <ContactFormWrapper className="mt-[5.15rem]">
+      </ContentBlock>
+      <ContentBlock classNameWrapper="mt-[5.15rem]">
+        <ContactFormWrapper>
           <ContactFormLogic>
             <ContactForm />
           </ContactFormLogic>

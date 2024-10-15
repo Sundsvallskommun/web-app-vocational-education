@@ -24,7 +24,7 @@ export default function MapBlock({ mapBlock }: MapBlockProps) {
               quality={100}
             />
           </div>
-          <div className="container bg-green p-lg desktop:p-0 desktop:col-span-2">
+          <div className="container bg-green p-sm medium-device-min:p-lg desktop:p-0 desktop:col-span-2">
             <h2>{mapBlock.title}</h2>
             <p className="text !text-inverted-body mt-[2rem]">{mapBlock.text}</p>
             <Button className="override sk-btn-white mx-auto desktop:mx-0 mt-lg mb-md" rightIcon={<ArrowForwardIcon />}>

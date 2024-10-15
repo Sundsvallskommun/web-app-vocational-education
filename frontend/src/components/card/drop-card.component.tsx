@@ -9,13 +9,11 @@ export interface DropCard {
   href?;
   dropIcon?;
   dropDate?;
-  dropImageSrc?;
-  className?;
-  classNameCard?;
+  dropImageSrc?: string;
+  className?: string;
+  classNameCard?: string;
   footer?;
-  textFade?;
-  dropClassName?;
-  loadMoreColorClass?;
+  dropClassName?: string;
   allCardClickable?: boolean;
   onClick?: () => void;
 }
@@ -30,9 +28,7 @@ export const DropCard: React.FC<DropCard> = ({
   className = '',
   classNameCard = '',
   footer,
-  textFade = true,
   dropClassName = '',
-  loadMoreColorClass = 'text-white',
   allCardClickable = toolbar ? false : true,
   onClick,
   ...rest
@@ -50,9 +46,7 @@ export const DropCard: React.FC<DropCard> = ({
       style={{ paddingTop: dropHeight / 2 + 'px' }}
       {...rest}
     >
-      <div
-        className={`${classNameCard} drop-card max-h-[inherit] group-hover:shadow-md bg-white relative h-full flex flex-grow w-full justify-center border-[2px] border-border-color rounded`}
-      >
+      <div className={cx('drop-card', classNameCard)}>
         <Drop
           setSize
           dropHeight={dropHeight}
@@ -60,42 +54,24 @@ export const DropCard: React.FC<DropCard> = ({
           topStyle={'-' + dropHeight / 2}
           className={dropClassName}
         />
-        <div
-          className={cx(
-            `drop-card-container w-full relative overflow-hidden rounded-b-[15px] flex flex-col`,
-            toolbar && 'flex-col-reverse'
-          )}
-        >
+        <div className={cx(`drop-card-container`, toolbar && 'flex-col-reverse')}>
           <ContentComp
             href={!allCardClickable ? href : undefined}
-            className="flex"
+            className="drop-card-container-inner"
             onClick={!allCardClickable ? onClick : undefined}
           >
-            <div
-              className={cx(
-                'drop-card-text px-[15px] pb-[15px] medium-device:px-lg medium-device:pb-lg [&_h2]:break-word [&_h3]:break-word [&_h2]:text-green [&_h3]:text-green group-hover:[&_h2]:underline group-hover:[&_h3]:underline [&_p]:leading-[1.8] [&_ul]:mt-[1rem] [&_ul_li]:text-sm',
-                !toolbar && 'pt-md'
-              )}
-              style={!toolbar ? { marginTop: dropHeight / 2 + 'px' } : undefined}
-            >
-              {children}
-            </div>
-            {(footer || textFade) && (
-              <div
-                className={`drop-card-footer-container absolute w-full bottom-0 pt-md pb-[15px] pl-[15px] medium-device:pb-lg medium-device:pl-lg pr-[55px] bg-white rounded-b-[15px] ${
-                  textFade ? `shadow-top ${loadMoreColorClass}` : ''
-                }`}
-              >
-                <div className="drop-card-footer flex items-center gap-sm text-label text-sm">
-                  {footer ? footer : ''}
-                </div>
+            {!toolbar && <div style={{ paddingTop: dropHeight / 2 + 'px' }} className="pb-[1.5rem]"></div>}
+            <div className="drop-card-text">{children}</div>
+            {footer && (
+              <div className="drop-card-footer-container">
+                {footer && <div className="drop-card-footer">{footer ? footer : ''}</div>}
               </div>
             )}
-            <div className="drop-card-arrow w-[50px] h-[50px] medium-device:w-[60px] medium-device:h-[60px] p-[12px] absolute flex justify-end rounded-tl-full items-end text-green bg-green-light right-0 bottom-0">
-              <ArrowForwardIcon className="material-icon !text-xl medium-device:!text-2xl" />
+            <div className="drop-card-arrow">
+              <ArrowForwardIcon className="drop-card-arrow-icon" />
             </div>
           </ContentComp>
-          {toolbar && <div className="drop-card-toolbar px-sm pt-sm flex justify-end">{toolbar}</div>}
+          {toolbar && <div className="drop-card-toolbar">{toolbar}</div>}
         </div>
       </div>
     </CardComp>

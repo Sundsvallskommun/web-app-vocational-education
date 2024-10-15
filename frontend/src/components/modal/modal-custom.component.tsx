@@ -16,7 +16,7 @@ export default function ModalCustom(props: ModalCustom) {
     <Modal
       disableCloseOutside={disableCloseOutside}
       show={show}
-      className={cx('px-[8rem] pb-[8rem] pt-[7.5rem]', className)}
+      className={cx('medium-device-min:px-[8rem] medium-device-min:pb-[8rem] medium-device-min:pt-[7.5rem]', className)}
       hideLabel
       hideClosebutton
       onClose={onClose}

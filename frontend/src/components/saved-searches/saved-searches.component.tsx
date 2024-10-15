@@ -51,7 +51,6 @@ export default function SavedSearches() {
         {pagedList.map((search, index) => (
           <DropCard
             key={`${index}`}
-            textFade={false}
             href={`/utbildningar/sok?${search.parameters}`}
             dropIcon={<SearchIcon className="min-w-[3.2rem] min-h-[3.2rem]" />}
             toolbar={

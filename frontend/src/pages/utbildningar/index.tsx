@@ -49,9 +49,8 @@ export const Utbildningar: React.FC = ({ layoutData, pageData }: PageProps) => {
           <p className="ingress">{pageData.description}</p>
           <Search />
         </BigDropHeader>
-
-        <PromotionsBlock promotionsBlock={pageData.promotionsBlock?.pop()} />
       </ContentBlock>
+      <PromotionsBlock promotionsBlock={pageData.promotionsBlock?.pop()} />
 
       <EducationsStartingBlock educationsStartingBlock={pageData?.educationsStartingBlock?.pop()} />
 

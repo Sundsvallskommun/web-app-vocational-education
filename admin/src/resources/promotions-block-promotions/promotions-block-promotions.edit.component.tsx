@@ -7,7 +7,9 @@ export const PromotionsBlockPromotionsEdit = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
   const { data } = useGetList('page');
-  const choices = data ? data.map((x) => ({ id: x.pageName, name: x.pageName })) : [];
+  const choices = data
+    ? data.map((x) => ({ id: x.pageName, name: x.pageName, url: x.url })).filter((x) => !x.url.includes('['))
+    : [];
   return (
     <Edit {...props} redirect={() => history.back()} mutationMode="pessimistic">
       <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete />}>

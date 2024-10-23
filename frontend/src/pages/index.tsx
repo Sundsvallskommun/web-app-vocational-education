@@ -32,9 +32,8 @@ export const Start: React.FC = ({ pageData, layoutData }: PageProps) => {
           <p className="ingress">{pageData.description}</p>
           <Search />
         </BigDropHeader>
-
-        <PromotionsBlock promotionsBlock={pageData.promotionsBlock?.pop()} />
       </ContentBlock>
+      <PromotionsBlock promotionsBlock={pageData.promotionsBlock?.pop()} />
 
       <MapBlock mapBlock={pageData.mapBlock?.pop()} />
 

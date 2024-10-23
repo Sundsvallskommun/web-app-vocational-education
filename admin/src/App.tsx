@@ -32,6 +32,7 @@ import { PageCreate } from './resources/page/page.create.component';
 import { TableBlockCreate } from './resources/table-block/table-block.create.component';
 import { TableBlockEdit } from './resources/table-block/table-block.edit.component';
 import { TableBlockList } from './resources/table-block/table-block.list.component';
+import './styles/index.css';
 
 export const App = () => (
   <Admin

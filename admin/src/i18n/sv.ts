@@ -1,7 +1,7 @@
 import _sv from '@kolben/ra-language-swedish';
-import { TranslationMessages } from 'react-admin';
+import { TranslationMessagesExtended } from './type';
 
-const sv: TranslationMessages = {
+const sv: TranslationMessagesExtended = {
   ..._sv,
   ra: {
     ..._sv.ra,
@@ -67,6 +67,11 @@ const sv: TranslationMessages = {
         secondaryText: 'string',
         tertiaryText: 'string',
       },
+    },
+    tiptap: {
+      select_level: 'Välj nivå',
+      list_bulleted: 'Punktlista',
+      list_numbered: 'Numrerad lista',
     },
   },
   validation: {
@@ -233,6 +238,24 @@ const sv: TranslationMessages = {
         password: 'Lösenord',
       },
       generatePassword: 'Generera nytt lösenord',
+    },
+    wysiwyg: {
+      customimage: {
+        toolbarText: 'Bild',
+      },
+      youtube: {
+        toolbarText: 'Lägg till Youtube-video',
+      },
+      factblock: {
+        toolbarText: 'Faktablock',
+      },
+      sitenavigationbutton: {
+        toolbarText: 'Sidnavigationsknapp',
+        form: {
+          buttonText: 'Knapptext',
+          href: 'Sida att gå till',
+        },
+      },
     },
   },
 };

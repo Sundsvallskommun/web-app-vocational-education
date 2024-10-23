@@ -58,10 +58,18 @@ async function main() {
             },
           },
           create: {
-            role: role,
+            userRole: {
+              connect: {
+                name: role,
+              },
+            },
           },
           update: {
-            role: role,
+            userRole: {
+              connect: {
+                name: role,
+              },
+            },
           },
         })),
       },
@@ -69,22 +77,23 @@ async function main() {
     create: {
       ...hashedUser,
       roles: {
-        connect: hashedUser.roles.map(role => ({
-          username_role: {
-            role: role,
-            username: hashedUser.username,
+        create: hashedUser.roles.map(role => ({
+          userRole: {
+            connect: {
+              name: role,
+            },
           },
         })),
       },
     },
   });
 
-  const jobb = await prisma.page.upsert({
-    where: { pageName: 'jobb' },
+  const vagledning = await prisma.page.upsert({
+    where: { pageName: 'vagledning' },
     update: {},
     create: {
-      url: '/jobb',
-      pageName: 'jobb',
+      url: '/vagledning',
+      pageName: 'vagledning',
       title: 'Här finns jobben',
       description:
         'Ta reda på vilka branscher som ger jobb nu och x år framåt. Regionen växer och behovet av arbetskraft är stort. Vi behöver dina kompetenser! Utbildning är och kommer att bli en allt viktigare faktor för att få ett jobb',
@@ -92,7 +101,7 @@ async function main() {
         connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
           where: {
             pageName_role: {
-              pageName: 'jobb',
+              pageName: 'vagledning',
               role: role,
             },
           },
@@ -400,7 +409,7 @@ async function main() {
                 promotedPageName: utbildningar.pageName,
               },
               {
-                promotedPageName: jobb.pageName,
+                promotedPageName: vagledning.pageName,
               },
               {
                 promotedPageName: arbetsgivare.pageName,

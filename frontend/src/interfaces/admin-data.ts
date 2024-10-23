@@ -135,6 +135,7 @@ export interface PageData {
   educationsStartingBlock?: EducationsStartingBlock[];
   logosBlock?: LogosBlock[];
   tableBlock?: TableBlock[];
+  wysiwyg_content?: string;
 }
 
 export interface PageDataResponse {

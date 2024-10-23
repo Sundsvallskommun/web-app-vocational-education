@@ -79,7 +79,7 @@ model Page {
   url         String @unique
   pageName    String @unique
   title       String
-  description String @db.Text
+  description String? @db.Text
 
   // permissions by role
   editRoles       EditRolesOnPage[]
@@ -104,6 +104,8 @@ model Page {
 
   // TableBlock
   tableBlock TableBlock[] @relation("TableBlock")
+
+  wysiwyg_content	String? @db.Text
 
   @@unique([id, pageName])
 }

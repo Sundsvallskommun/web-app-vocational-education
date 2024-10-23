@@ -1,11 +1,13 @@
 import IconButton from '@mui/material/IconButton';
 import { Editor } from '@tiptap/react';
+import { useTranslate } from 'react-admin';
 
 export const YoutubeButton = ({ editor }: { editor: Editor }) => {
+  const translate = useTranslate();
   return (
     <IconButton
-      aria-label="Add youtube video"
-      title="Add youtube video"
+      aria-label={translate('resources.wysiwyg.youtube.toolbarText')}
+      title={translate('resources.wysiwyg.youtube.toolbarText')}
       sx={{ border: '1px solid rgba(0, 0, 0, 0.12)', borderRadius: '4px', padding: '4px' }}
       onClick={() => {
         const url = prompt('Enter YouTube URL');

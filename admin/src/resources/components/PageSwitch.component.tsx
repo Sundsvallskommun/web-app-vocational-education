@@ -7,15 +7,16 @@ import { EditLogosBlock } from './logos-block.edit.component';
 import { EditMapBlock } from './map-block.edit.component';
 import { EditPromotionsBlock } from './promotions-block.edit.component';
 import { EditTableBlock } from './table-block.edit.component';
+import { Wysiwyg } from './wysiwyig/wysiwyg.component';
 
 export const PageSwitch = () => {
   const record = useRecordContext();
-  const pageName: string = record?.pageName || '';
+  const url: string = record?.url || '';
   const translate = useTranslate();
   const { isSuperAdmin } = useRoutePermissions();
 
-  switch (pageName) {
-    case 'startsida':
+  switch (url) {
+    case '/':
       return (
         <>
           {(isSuperAdmin || record.promotionsBlock.length) && (
@@ -54,7 +55,7 @@ export const PageSwitch = () => {
           )}
         </>
       );
-    case 'utbildningar':
+    case '/utbildningar':
       return (
         <>
           {(isSuperAdmin || record.promotionsBlock.length) && (
@@ -79,9 +80,14 @@ export const PageSwitch = () => {
           )}
         </>
       );
-    case 'arbetsgivare_kontaktautbildningsanordnare':
+    case '/arbetsgivare/kontaktautbildningsanordnare':
       return (
         <>
+          {(isSuperAdmin || record.tableBlock.length) && (
+            <>
+              <Wysiwyg />
+            </>
+          )}
           {(isSuperAdmin || record.tableBlock.length) && (
             <>
               <h2>{translate('resources.tableBlock.name', { smart_count: 2 })}</h2>
@@ -90,7 +96,7 @@ export const PageSwitch = () => {
           )}
         </>
       );
-    case 'utbildningar_utbildning':
+    case '/utbildningar/[utbildning]':
       return (
         <>
           {(isSuperAdmin || record.faqBlock.length) && (
@@ -98,6 +104,18 @@ export const PageSwitch = () => {
               <br />
               <h2>{translate('resources.faqBlock.name', { smart_count: 2 })}</h2>
               <EditFAQBlock />
+            </>
+          )}
+        </>
+      );
+    // StandardPages
+    case '/utbildningar/behorighet':
+    case '/utbildningar/vagledning':
+      return (
+        <>
+          {(isSuperAdmin || record.tableBlock.length) && (
+            <>
+              <Wysiwyg />
             </>
           )}
         </>

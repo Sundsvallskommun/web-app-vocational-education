@@ -73,7 +73,7 @@ export const App = () => (
     <CustomRoutes>
       <Route path="/tableBlock" element={<TableBlockList />} />
       <Route path="/tableBlock/:tableId" element={<TableBlockEdit />} />
-      <Route path="/tableBlock/create" element={<TableBlockCreate />} />
+      <Route path="tableBlock/create/page/:pageId/" element={<TableBlockCreate />} />
     </CustomRoutes>
 
     <Resource name="footer" edit={FooterEdit} />

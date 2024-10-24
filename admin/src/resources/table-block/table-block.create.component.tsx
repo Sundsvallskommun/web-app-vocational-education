@@ -8,34 +8,41 @@ import {
   TextInput,
   TransformData,
   WithRecord,
+  useCreateContext,
   useStore,
   useTranslate,
 } from 'react-admin';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
 import Box from '@mui/material/Box';
+import { useParams } from 'react-router-dom';
 
-const transform: TransformData = (data) => {
+const transform: (pageId: number) => TransformData = (pageId) => (data) => {
   return {
     ...data,
+    pageId: pageId,
     page: {
       connect: {
-        id: data.page,
+        id: pageId,
       },
     },
   };
 };
 
 export const TableBlockCreate = (props: any) => {
+  const params = useParams();
   useRoutePermissions();
   const translate = useTranslate();
   const [activePageIdEdit] = useStore('activePageIdEdit');
+
+  if (!params.pageId) return <></>;
+
   return (
     <Create
       {...props}
       resource="tableBlock"
       redirect={(resource: string, id?: Identifier) => `${resource}/${id}`}
       mutationMode="pessimistic"
-      transform={transform}
+      transform={transform(parseInt(params.pageId))}
     >
       <SimpleForm margin="none">
         <h1>{`${translate('ra.action.create')} ${translate('resources.tableBlock.name', {

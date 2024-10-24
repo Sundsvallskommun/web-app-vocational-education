@@ -74,6 +74,11 @@ export const checkPageRoles = () => async (req: RequestWithUser, res: Response, 
     pageName = req.body.params.filter.pageName;
   }
 
+  if (['create'].includes(req.body.method) && req.body.resource !== 'page') {
+    pageId = req.body.params.data.pageId;
+    delete req.body.params.data.pageId;
+  }
+
   if (typeof pageId !== 'number' && typeof pageName !== 'string') {
     throw Error('Neither pageId or pageName present, which is needed for page role right access check.');
   }

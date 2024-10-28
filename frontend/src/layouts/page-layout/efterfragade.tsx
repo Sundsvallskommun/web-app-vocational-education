@@ -6,12 +6,13 @@ import { EmployerPromotionsBlock, EmployerPromotionsBlockPromotions, LayoutProps
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Breadcrumb } from '@sk-web-gui/react';
+import { routeDynamicSlugFormatExtract } from '@utils/app-url';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 export interface EfterfragadeProps extends LayoutProps {
-  employerPromotionsBlock: EmployerPromotionsBlock;
+  employerPromotionsBlock: EmployerPromotionsBlock | null;
 }
 
 export const Efterfragade: React.FC<EfterfragadeProps> = ({ layoutData, employerPromotionsBlock }) => {
@@ -20,8 +21,11 @@ export const Efterfragade: React.FC<EfterfragadeProps> = ({ layoutData, employer
 
   useEffect(() => {
     const loadEducation = async () => {
-      const educationTitle: string = router.query['utbildning'] as string;
-      const data = employerPromotionsBlock.employerPromotions.find((x) => x.title === educationTitle);
+      const educationTitle = routeDynamicSlugFormatExtract({
+        slug: '/utbildningar/efterfragade/[efterfragad]',
+        formattedString: router.query['efterfragad'] as string,
+      }).title;
+      const data = employerPromotionsBlock?.employerPromotions.find((x) => x.title === educationTitle);
       setEducationData(data);
     };
 

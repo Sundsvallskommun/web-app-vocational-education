@@ -129,7 +129,7 @@ export interface PageData {
   description: string;
   promotionsBlock?: PromotionsBlock[];
   mapBlock?: MapBlock[];
-  employerPromotionsBlock?: EmployerPromotionsBlock[];
+  employerPromotionsBlock?: EmployerPromotionsBlock;
   importantDatesBlock?: ImportantDatesBlock[];
   faqBlock?: FAQBlock[];
   educationsStartingBlock?: EducationsStartingBlock[];

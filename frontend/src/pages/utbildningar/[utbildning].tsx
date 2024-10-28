@@ -17,12 +17,15 @@ import {
 import { getLayout } from '@services/layout-service';
 import { getPage } from '@services/page-service';
 import { Breadcrumb, useThemeQueries } from '@sk-web-gui/react';
+import { routeDynamicSlugFormatExtract } from '@utils/app-url';
 import { getFormattedLabelFromValue } from '@utils/labels';
 import NextLink from 'next/link';
 
 export async function getServerSideProps(context) {
   const layout = await getLayout(context.res);
-  const educationEventRes = await getEducationEvent(context.query.utbildning);
+  const educationEventRes = await getEducationEvent(
+    routeDynamicSlugFormatExtract({ slug: '/utbildningar/[utbildning]', formattedString: context.query.utbildning }).id
+  );
   const pageProps = await getPage('/utbildningar/[utbildning]', context.res);
   return {
     props: {

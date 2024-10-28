@@ -2,6 +2,7 @@ import DropCard from '@components/card/drop-card.component';
 import { CardsBlock } from '@components/cards-block/cards-block.component';
 import { EmployerPromotionsBlock as EmployerPromotionsBlockType } from '@interfaces/admin-data';
 import SchoolIcon from '@mui/icons-material/School';
+import { routeDynamicSlugFormat } from '@utils/app-url';
 
 interface EmployerPromotionsBlockProps {
   employerPromotionsBlock?: EmployerPromotionsBlockType;
@@ -19,7 +20,7 @@ export default function EmployerPromotionsBlock({ employerPromotionsBlock }: Emp
         <DropCard
           key={`${index}`}
           classNameCard="h-[232px] desktop:h-[270px]"
-          href={`/utbildningar/efterfragade/${card.title}`}
+          href={`/utbildningar/efterfragade/${routeDynamicSlugFormat({ slug: '/utbildningar/efterfragade/[efterfragad]', data: card })}`}
           dropIcon={<SchoolIcon className="!text-2xl" />}
         >
           <h3>{card.title}</h3>

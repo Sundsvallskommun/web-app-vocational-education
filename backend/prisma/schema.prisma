@@ -76,11 +76,14 @@ model User_SavedInterest {
 }
 
 model Page {
-  id          Int    @id @default(autoincrement())
-  url         String @unique
-  pageName    String @unique
-  title       String
-  description String? @db.Text
+  id              Int                       @id @default(autoincrement())
+  url             String @unique
+  pageName        String @unique
+  title           String
+  description     String? @db.Text
+  imgSrc          String? @default("")
+  imgAlt          String? @default("")
+  imgTitle        String? @default("")
 
   // permissions by role
   editRoles       EditRolesOnPage[]
@@ -94,6 +97,7 @@ model Page {
   // EmployerPromotionsBlock
   employerPromotionsBlock EmployerPromotionsBlock? @relation("EmployerPromotionsBlock", fields: [employerPromotionsBlockId], references: [id])
   employerPromotionsBlockId Int?
+  showEmployerPromotionsBlock Boolean @default(false)
 
   // ImportantDatesBlock
   importantDatesBlock ImportantDatesBlock[] @relation("ImportantDatesBlock")
@@ -107,7 +111,16 @@ model Page {
   // TableBlock
   tableBlock TableBlock[] @relation("TableBlock")
 
+  // ContactFormBlock
+  contactFormBlock ContactFormBlock[] @relation("ContactFormBlock")
+
   wysiwyg_content	String? @db.Text
+
+  // EducationsRelatedBlock
+  showEducationsRelatedBlock Boolean @default(false)
+  
+  // SearchBlock
+  showSearchBlock Boolean @default(false)
 
   @@unique([id, pageName])
 }
@@ -119,7 +132,7 @@ model TableBlock {
   pageId     Int
   title      String?                     @default("")
   summary    String?                     @default("") @db.Text
-  showBlock  Boolean                     @default(false)
+  showBlock  Boolean                     @default(true)
   headers    TableBlockHeader[]          @relation("TableBlockHeader")
   rows       TableBlockRow[]             @relation("TableBlockRow")
   cells      TableBlockCell[]            @relation("TableBlockCells")
@@ -157,12 +170,33 @@ model TableBlockCell {
   wysiwyg_content     String?           @db.Text
 }
 
+model ContactFormBlock {
+  id            Int                         @id @default(autoincrement())
+  page          Page                        @relation("ContactFormBlock", fields: [pageName, pageId], references: [pageName, id], onDelete: Cascade)
+  pageName      String
+  pageId        Int
+  title         String?                     @default("")
+  description   String?                     @default("")  @db.Text
+  showBlock     Boolean                     @default(true)
+  emails        ContactFormBlockEmails[]    @relation("ContactFormBlockEmails")
+  @@unique([id, pageId])
+}
+
+model ContactFormBlockEmails {
+  id                  Int               @id @default(autoincrement())
+  contactFormBlock    ContactFormBlock  @relation("ContactFormBlockEmails", fields: [formId, pageId], references: [id, pageId], onDelete: Cascade)
+  pageId              Int
+  formId              Int
+  label               String
+  email               String
+}
+
 model PromotionsBlock {
   id         Int                         @id @default(autoincrement())
   page       Page                        @relation("PromotionsBlock", fields: [pageName, pageId], references: [pageName, id], onDelete: Cascade)
   pageName   String
   pageId     Int
-  showBlock  Boolean                     @default(false)
+  showBlock  Boolean                     @default(true)
   promotions PromotionsBlockPromotions[] @relation("PromotionsBlockPromotions")
   @@unique([id, pageName, pageId])
 }
@@ -181,7 +215,7 @@ model PromotionsBlockPromotions {
 model EmployerPromotionsBlock {
   id                 Int                                 @id @default(autoincrement())
   page               Page[]                              @relation("EmployerPromotionsBlock")
-  showBlock          Boolean                             @default(false)
+  showBlock          Boolean                             @default(true)
   title              String
   employerPromotions EmployerPromotionsBlockPromotions[] @relation("EmployerPromotionsBlockPromotions")
   @@unique([id])
@@ -202,7 +236,7 @@ model MapBlock {
   page       Page    @relation("MapBlock", fields: [pageName, pageId], references: [pageName, id], onDelete: Cascade)
   pageName   String
   pageId     Int
-  showBlock  Boolean @default(false)
+  showBlock  Boolean @default(true)
   title      String
   text       String  @db.Text
   buttonText String
@@ -213,7 +247,7 @@ model ImportantDatesBlock {
   page      Page                           @relation("ImportantDatesBlock", fields: [pageName, pageId], references: [pageName, id], onDelete: Cascade)
   pageName  String
   pageId    Int
-  showBlock Boolean                        @default(false)
+  showBlock Boolean                        @default(true)
   title     String
   dateCards ImportantDatesBlockDateCards[] @relation("ImportantDatesBlockDateCards")
 
@@ -237,7 +271,7 @@ model FaqBlock {
   page        Page                @relation("FaqBlock", fields: [pageName, pageId], references: [pageName, id], onDelete: Cascade)
   pageName    String
   pageId      Int
-  showBlock   Boolean             @default(false)
+  showBlock   Boolean             @default(true)
   title       String
   description String              @db.Text
   questions   FaqBlockQuestions[] @relation("FaqBlockQuestions")
@@ -262,7 +296,7 @@ model LogosBlock {
   pageId      Int
   title       String
   description String            @db.Text
-  showBlock   Boolean           @default(false)
+  showBlock   Boolean           @default(true)
   logos       LogosBlockLogos[] @relation("LogosBlockLogos")
 
   @@unique([id, pageName, pageId])

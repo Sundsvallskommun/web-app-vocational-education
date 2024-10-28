@@ -126,16 +126,22 @@ export interface PageData {
   url: string;
   pageName: string;
   title: string;
-  description: string;
+  imgSrc?: string;
+  imgAlt?: string;
+  imgTitle?: string;
+  description?: string;
   promotionsBlock?: PromotionsBlock[];
   mapBlock?: MapBlock[];
   employerPromotionsBlock?: EmployerPromotionsBlock;
+  showEmployerPromotionsBlock: boolean;
   importantDatesBlock?: ImportantDatesBlock[];
   faqBlock?: FAQBlock[];
   educationsStartingBlock?: EducationsStartingBlock[];
   logosBlock?: LogosBlock[];
   tableBlock?: TableBlock[];
   wysiwyg_content?: string;
+  showSearchBlock: boolean;
+  showEducationsRelatedBlock: boolean;
 }
 
 export interface PageDataResponse {

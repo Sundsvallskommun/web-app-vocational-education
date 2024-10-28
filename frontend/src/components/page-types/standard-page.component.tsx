@@ -1,15 +1,11 @@
 import ContentBlock from '@components/block/content-block.component';
-import DropCard from '@components/card/drop-card.component';
+import EducationsRelatedBlock from '@components/educations-related-block/educations-related-block';
 import { BigDropHeader } from '@components/header/big-drop-header.component';
-import Search from '@components/search/search.component';
+import SearchBlock from '@components/search-block/search-block.component';
 import Wysiwyg from '@components/wysiwyg/wysiwyg';
 import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import SchoolIcon from '@mui/icons-material/School';
 import { Breadcrumb } from '@sk-web-gui/react';
-import dayjs from 'dayjs';
 import NextLink from 'next/link';
 
 export default function StandardPage({ layoutData, pageData }: PageProps) {
@@ -48,91 +44,23 @@ export default function StandardPage({ layoutData, pageData }: PageProps) {
         </BigDropHeader>
       </ContentBlock>
 
-      <ContentBlock classNameWrapper="mt-lg">
-        <Wysiwyg content={pageData.wysiwyg_content} />
-      </ContentBlock>
+      {pageData.wysiwyg_content ?
+        <ContentBlock classNameWrapper="mt-lg">
+          <Wysiwyg content={pageData.wysiwyg_content} />
+        </ContentBlock>
+      : <></>}
 
-      <ContentBlock classNameWrapper="bg-blue-light" padded>
-        <h2>Relaterade utbildningar</h2>
-        <div className="mt-2xl flex flex-col medium-device:grid medium-device:grid-cols-2 desktop:grid-cols-3 gap-lg gap-y-2xl">
-          <DropCard
-            classNameCard="h-[232px] desktop:h-[270px]"
-            href="/"
-            dropIcon={<SchoolIcon className="material-icon !text-2xl" />}
-            footer={
-              <>
-                <div className="flex items-center">
-                  <DateRangeIcon className="!text-2xl mr-sm" /> <span>{dayjs('2021-05-20').format('DD MMM YYYY')}</span>
-                </div>
-                <div className="flex items-center">
-                  <LocationOnIcon className="!text-2xl mr-sm" /> <span>Sundsvall</span>
-                </div>
-              </>
-            }
-          >
-            <h3>Yrkesförare Buss</h3>
-            <p className="text">
-              Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis
-              enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
-            </p>
-          </DropCard>
-          <DropCard
-            classNameCard="h-[232px] desktop:h-[270px]"
-            href="/"
-            dropIcon={<SchoolIcon className="material-icon !text-2xl" />}
-            footer={
-              <>
-                <div className="flex items-center">
-                  <DateRangeIcon className="!text-2xl mr-sm" /> <span>{dayjs('2021-05-20').format('DD MMM YYYY')}</span>
-                </div>
-                <div className="flex items-center">
-                  <LocationOnIcon className="!text-2xl mr-sm" /> <span>Sundsvall</span>
-                </div>
-              </>
-            }
-          >
-            <h3>Yrkesförare Buss</h3>
-            <p className="text">
-              Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis
-              enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
-            </p>
-          </DropCard>
-          <DropCard
-            classNameCard="h-[232px] desktop:h-[270px]"
-            href="/"
-            dropIcon={<SchoolIcon className="material-icon !text-2xl" />}
-            footer={
-              <>
-                <div className="flex items-center">
-                  <DateRangeIcon className="!text-2xl mr-sm" /> <span>{dayjs('2021-05-20').format('DD MMM YYYY')}</span>
-                </div>
-                <div className="flex items-center">
-                  <LocationOnIcon className="!text-2xl mr-sm" /> <span>Sundsvall</span>
-                </div>
-              </>
-            }
-          >
-            <h3>Yrkesförare Buss</h3>
-            <p className="text">
-              Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis
-              enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
-            </p>
-          </DropCard>
-        </div>
-      </ContentBlock>
-      <ContentBlock>
-        <div className="flex w-full justify-center">
-          <div className="flex flex-col max-w-[720px]">
-            <h2 className="text-center">Sugen på att börja studera?</h2>
-            <p className="text mt-md">
-              Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis
-              enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Exercitation veniam consequat sunt
-              nostrud amet.
-            </p>
-            <Search className="mt-lg" />
-          </div>
-        </div>
-      </ContentBlock>
+      <EducationsRelatedBlock
+        show={pageData.showEducationsRelatedBlock}
+        educations={Array.from({ length: 3 }, (_, i) => ({
+          title: `${pageData.title}-related-${i}`,
+          text: 'Amet minimimi mollot non deseret ullamco est sit alique dolor do sint. Velit officia consequat duis enim.',
+          courseCode: `${i}`,
+          date: new Date(),
+          studyLocation: `Location-${i}`,
+        }))}
+      />
+      <SearchBlock show={pageData.showSearchBlock} />
     </DefaultLayout>
   );
 }

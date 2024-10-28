@@ -212,6 +212,8 @@ async function main() {
           },
         ],
       },
+      showEducationsRelatedBlock: true,
+      showSearchBlock: true,
     },
   });
 

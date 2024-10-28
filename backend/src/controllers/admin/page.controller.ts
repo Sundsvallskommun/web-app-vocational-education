@@ -35,6 +35,7 @@ export class AdminPageController {
               where: {
                 OR: rolesToDisconnect.map(role => ({
                   pageName: req.body.params.data.pageName,
+                  pageId: req.body.params.data.id,
                   role: role.role,
                 })),
               },
@@ -46,6 +47,7 @@ export class AdminPageController {
               .filter(newRole => !req.body.params.previousData.editRoles.some(oldRole => oldRole.role === newRole.role))
               .map(role => ({
                 pageName: req.body.params.data.pageName,
+                pageId: req.body.params.data.id,
                 role: role.role,
               })),
           });

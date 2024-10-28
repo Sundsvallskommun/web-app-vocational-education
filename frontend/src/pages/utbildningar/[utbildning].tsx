@@ -3,7 +3,7 @@ import Button from '@components/button/button.component';
 import Drop from '@components/drop/drop.component';
 import EducationsRelatedBlock from '@components/educations-related-block/educations-related-block';
 import FAQBlock from '@components/faq-block/faq-block';
-import Search from '@components/search/search.component';
+import SearchBlock from '@components/search-block/search-block.component';
 import { PageProps } from '@interfaces/admin-data';
 import { Course } from '@interfaces/education';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
@@ -174,6 +174,7 @@ export const Utbildning: React.FC = ({
       <FAQBlock classNameWrapper="pt-80" faqBlock={pageData.faqBlock?.pop()} />
 
       <EducationsRelatedBlock
+        show={pageData.showEducationsRelatedBlock}
         educations={Array.from({ length: 3 }, (_, i) => ({
           title: `${educationData.name}-related-${i}`,
           text: 'Amet minimimi mollot non deseret ullamco est sit alique dolor do sint. Velit officia consequat duis enim.',
@@ -183,19 +184,7 @@ export const Utbildning: React.FC = ({
         }))}
       />
 
-      <ContentBlock>
-        <div className="flex w-full justify-center">
-          <div className="flex flex-col max-w-[720px]">
-            <h2 className="text-center">Sugen på att börja studera?</h2>
-            <p className="text">
-              Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis
-              enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Exercitation veniam consequat sunt
-              nostrud amet.
-            </p>
-            <Search className="mt-lg" />
-          </div>
-        </div>
-      </ContentBlock>
+      <SearchBlock show={pageData.showSearchBlock} />
     </DefaultLayout>
   );
 };

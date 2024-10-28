@@ -127,13 +127,26 @@ const sv: TranslationMessagesExtended = {
         showBlock: 'Visa Kartblock',
       },
     },
+    searchBlock: {
+      name: 'Sökblock',
+      fields: {
+        showBlock: 'Visa Sökblock',
+      },
+    },
+    educationsRelatedBlock: {
+      name: 'Relaterad utbildningar-block',
+      fields: {
+        showBlock: 'Visa relaterade utbildningar-block',
+      },
+    },
     employerPromotionsBlock: {
-      name: 'Arbetsgivarvalda utbildningar-block (samma över alla sidor) |||| Arbetsgivarvalda utbildningar-block (samma över alla sidor)',
+      name: 'Arbetsgivarvalda utbildningar-block',
+      editButton: 'Redigera arbetsgivarvalda utbildningar-block',
       fields: {
         pageName: 'Sidreferensnamn',
         title: 'Rubrik',
         description: 'Beskrivning',
-        showBlock: 'Visa Arbetsgivarvalda utbildningar-block (samma över alla sidor)',
+        showBlock: 'Visa Arbetsgivarvalda utbildningar-block',
       },
     },
     employerPromotionsBlockPromotions: {
@@ -212,16 +225,16 @@ const sv: TranslationMessagesExtended = {
         cell_label: 'Innehåll',
         add_row: 'Lägg till',
       },
-      headersHeading: 'Tabellens kolumnnamn',
-      rowsHeading: 'Tabellens rader',
-      new_header: 'Nytt kolumnnamn',
+      headersHeading: 'Kolumner',
+      rowsHeading: 'Rader',
+      new_header: 'Ny kolumn',
       missing_rows: 'Inga rader hittades',
     },
     tableBlockHeader: {
-      name: 'Tabellens kolumnnamn',
+      name: 'Kolumner',
     },
     tableBlockRow: {
-      name: 'Tabellens rader',
+      name: 'Rader',
     },
     footer: {
       name: 'Sidfot',

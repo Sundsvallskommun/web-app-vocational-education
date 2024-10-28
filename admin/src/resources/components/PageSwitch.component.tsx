@@ -1,4 +1,4 @@
-import { useRecordContext, useTranslate } from 'react-admin';
+import { BooleanInput, useRecordContext, useTranslate } from 'react-admin';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
 import { EditEmployerPromotionsBlock } from './employer-promotions-block.edit.component';
 import { EditFAQBlock } from './faq-block.edit.component';
@@ -19,34 +19,34 @@ export const PageSwitch = () => {
     case '/':
       return (
         <>
-          {(isSuperAdmin || record.promotionsBlock.length) && (
+          {(isSuperAdmin || record.promotionsBlock?.length) && (
             <>
               <h2>{translate('resources.promotionsBlock.name', { smart_count: 2 })}</h2>
               <EditPromotionsBlock />
             </>
           )}
-          {(isSuperAdmin || record.mapBlock.length) && (
+          {(isSuperAdmin || record.mapBlock?.length) && (
             <>
               <br />
               <h2>{translate('resources.mapBlock.name', { smart_count: 2 })}</h2>
               <EditMapBlock />
             </>
           )}
-          {(isSuperAdmin || record.employerPromotionsBlock.length) && (
+          {(isSuperAdmin || record.employerPromotionsBlock?.length) && (
             <>
               <br />
-              <h2>{translate('resources.employerPromotionsBlock.name', { smart_count: 2 })}</h2>
+              <h2>{translate('resources.employerPromotionsBlock.name')}</h2>
               <EditEmployerPromotionsBlock />
             </>
           )}
-          {(isSuperAdmin || record.importantDatesBlock.length) && (
+          {(isSuperAdmin || record.importantDatesBlock?.length) && (
             <>
               <br />
               <h2>{translate('resources.importantDatesBlock.name', { smart_count: 2 })}</h2>
               <EditImportantDatesBlock />
             </>
           )}
-          {(isSuperAdmin || record.faqBlock.length) && (
+          {(isSuperAdmin || record.faqBlock?.length) && (
             <>
               <br />
               <h2>{translate('resources.faqBlock.name', { smart_count: 2 })}</h2>
@@ -58,20 +58,20 @@ export const PageSwitch = () => {
     case '/utbildningar':
       return (
         <>
-          {(isSuperAdmin || record.promotionsBlock.length) && (
+          {(isSuperAdmin || record.promotionsBlock?.length) && (
             <>
               <h2>{translate('resources.promotionsBlock.name', { smart_count: 2 })}</h2>
               <EditPromotionsBlock />
             </>
           )}
-          {(isSuperAdmin || record.employerPromotionsBlock.length) && (
+          {(isSuperAdmin || record.employerPromotionsBlock?.length) && (
             <>
               <br />
-              <h2>{translate('resources.employerPromotionsBlock.name', { smart_count: 2 })}</h2>
+              <h2>{translate('resources.employerPromotionsBlock.name')}</h2>
               <EditEmployerPromotionsBlock />
             </>
           )}
-          {(isSuperAdmin || record.faqBlock.length) && (
+          {(isSuperAdmin || record.faqBlock?.length) && (
             <>
               <br />
               <h2>{translate('resources.faqBlock.name', { smart_count: 2 })}</h2>
@@ -83,12 +83,12 @@ export const PageSwitch = () => {
     case '/arbetsgivare/kontaktautbildningsanordnare':
       return (
         <>
-          {(isSuperAdmin || record.tableBlock.length) && (
+          {(isSuperAdmin || record.wysiwyg_content?.length) && (
             <>
               <Wysiwyg />
             </>
           )}
-          {(isSuperAdmin || record.tableBlock.length) && (
+          {(isSuperAdmin || record.tableBlock?.length) && (
             <>
               <h2>{translate('resources.tableBlock.name', { smart_count: 2 })}</h2>
               <EditTableBlock />
@@ -99,28 +99,93 @@ export const PageSwitch = () => {
     case '/utbildningar/[utbildning]':
       return (
         <>
-          {(isSuperAdmin || record.faqBlock.length) && (
+          {(isSuperAdmin || record.faqBlock?.length) && (
             <>
               <br />
               <h2>{translate('resources.faqBlock.name', { smart_count: 2 })}</h2>
               <EditFAQBlock />
             </>
           )}
-        </>
-      );
-    // StandardPages
-    case '/utbildningar/behorighet':
-    case '/utbildningar/vagledning':
-      return (
-        <>
-          {(isSuperAdmin || record.tableBlock.length) && (
+          {isSuperAdmin && (
             <>
-              <Wysiwyg />
+              <br />
+              <h2>{translate('resources.educationsRelatedBlock.name')}</h2>
+              <BooleanInput
+                source="showEducationsRelatedBlock"
+                label={translate('resources.educationsRelatedBlock.fields.showBlock')}
+              />
+            </>
+          )}
+          {isSuperAdmin && (
+            <>
+              <br />
+              <h2>{translate('resources.searchBlock.name')}</h2>
+              <BooleanInput source="showSearchBlock" label={translate('resources.searchBlock.fields.showBlock')} />
             </>
           )}
         </>
       );
     default:
-      return <></>;
+      // StandardPage
+      return (
+        <>
+          {(isSuperAdmin || record.wysiwyg_content?.length) && (
+            <>
+              <Wysiwyg />
+            </>
+          )}
+          {(isSuperAdmin || record.promotionsBlock?.length) && (
+            <>
+              <h2>{translate('resources.promotionsBlock.name', { smart_count: 2 })}</h2>
+              <EditPromotionsBlock />
+            </>
+          )}
+          {(isSuperAdmin || record.mapBlock?.length) && (
+            <>
+              <br />
+              <h2>{translate('resources.mapBlock.name', { smart_count: 2 })}</h2>
+              <EditMapBlock />
+            </>
+          )}
+          {(isSuperAdmin || record.employerPromotionsBlock?.length) && (
+            <>
+              <br />
+              <h2>{translate('resources.employerPromotionsBlock.name')}</h2>
+              <EditEmployerPromotionsBlock />
+            </>
+          )}
+          {(isSuperAdmin || record.importantDatesBlock?.length) && (
+            <>
+              <br />
+              <h2>{translate('resources.importantDatesBlock.name', { smart_count: 2 })}</h2>
+              <EditImportantDatesBlock />
+            </>
+          )}
+          {(isSuperAdmin || record.tableBlock?.length) && (
+            <>
+              <br />
+              <h2>{translate('resources.tableBlock.name', { smart_count: 2 })}</h2>
+              <EditTableBlock />
+            </>
+          )}
+          {isSuperAdmin && (
+            <>
+              <br />
+              <h2>{translate('resources.educationsRelatedBlock.name')}</h2>
+              <BooleanInput
+                source="showEducationsRelatedBlock"
+                label={translate('resources.educationsRelatedBlock.fields.showBlock')}
+              />
+            </>
+          )}
+          {isSuperAdmin && (
+            <>
+              <br />
+              <h2>{translate('resources.searchBlock.name')}</h2>
+              <BooleanInput source="showSearchBlock" label={translate('resources.searchBlock.fields.showBlock')} />
+            </>
+          )}
+        </>
+      );
   }
 };

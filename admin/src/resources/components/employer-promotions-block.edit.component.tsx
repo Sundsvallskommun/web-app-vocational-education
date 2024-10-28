@@ -1,12 +1,15 @@
-import { ReferenceArrayField, useRecordContext } from 'react-admin';
-import { EmployerPromotionsBlockList } from '../employer-promotions-block/employer-promotions-block.list.component';
+import { BooleanInput, useTranslate } from 'react-admin';
+import { Link } from 'react-router-dom';
 
 export const EditEmployerPromotionsBlock = () => {
+  const translate = useTranslate();
   return (
     <div>
-      <ReferenceArrayField source="title" reference="employerPromotionsBlock">
-        <EmployerPromotionsBlockList pagination={false} actions={false} />
-      </ReferenceArrayField>
+      <BooleanInput
+        source="employerPromotionsBlock"
+        label={translate('resources.employerPromotionsBlock.fields.showBlock')}
+      />
+      <Link to="/employerPromotionsBlock/1">{translate('resources.employerPromotionsBlock.editButton')}</Link>
     </div>
   );
 };

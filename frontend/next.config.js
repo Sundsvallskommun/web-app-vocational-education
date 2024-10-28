@@ -1,6 +1,8 @@
-const envalid = require('envalid');
+const envalid = await import('envalid');
 
-const authDependent = envalid.makeValidator((x) => {
+const { str, bool, makeValidator, cleanEnv } = envalid.default || envalid;
+
+const authDependent = makeValidator((x) => {
   const authEnabled = process.env.HEALTH_AUTH === 'true';
 
   if (authEnabled && !x.length) {
@@ -10,18 +12,18 @@ const authDependent = envalid.makeValidator((x) => {
   return x;
 });
 
-envalid.cleanEnv(process.env, {
-  NEXT_PUBLIC_API_URL: envalid.str(),
-  HEALTH_AUTH: envalid.bool(),
+cleanEnv(process.env, {
+  NEXT_PUBLIC_API_URL: str(),
+  HEALTH_AUTH: bool(),
   HEALTH_USERNAME: authDependent(),
   HEALTH_PASSWORD: authDependent(),
 });
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
+const withBundleAnalyzer = (await import('@next/bundle-analyzer')).default({
   enabled: process.env.ANALYZE === 'true',
 });
 
-module.exports = withBundleAnalyzer({
+export default withBundleAnalyzer({
   output: 'standalone',
   i18n: {
     locales: ['sv'],
@@ -34,9 +36,6 @@ module.exports = withBundleAnalyzer({
   basePath: process.env.BASE_PATH,
   sassOptions: {
     prependData: `$basePath: '${process.env.BASE_PATH}';`,
-  },
-  async rewrites() {
-    return [{ source: '/napi/:path*', destination: '/api/:path*' }];
   },
   async rewrites() {
     return [{ source: '/napi/:path*', destination: '/api/:path*' }];

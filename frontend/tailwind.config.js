@@ -1,4 +1,6 @@
-module.exports = {
+import { preset } from '@sk-web-gui/core';
+
+const config = {
   mode: 'jit',
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx}',
@@ -100,5 +102,7 @@ module.exports = {
       },
     },
   },
-  presets: [require('@sk-web-gui/core').preset],
+  presets: [preset()],
 };
+
+export default config;

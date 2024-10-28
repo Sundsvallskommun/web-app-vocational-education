@@ -74,9 +74,6 @@ export const Menu: React.FC = () => {
                 <MenuVertical.Item menuIndex="/kontakta-oss">
                   <NextLink href="/kontakta-oss">Kontakta oss</NextLink>
                 </MenuVertical.Item>
-                <MenuVertical.Item menuIndex="/siteguide">
-                  <NextLink href="/siteguide">Siteguide (Development)</NextLink>
-                </MenuVertical.Item>
               </MenuVertical>
             </MenuVertical.Nav>
           </MenuVertical.Provider>

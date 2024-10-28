@@ -51,13 +51,16 @@ export const App = () => (
 
     <Resource name="promotionsBlock" edit={PromotionsBlockEdit} />
     <Resource name="promotionsBlockPromotions" edit={PromotionsBlockPromotionsEdit} />
+
     <Resource name="mapBlock" edit={MapBlockEdit} />
+
     <Resource name="employerPromotionsBlock" edit={EmployerPromotionsBlockEdit} />
     <Resource
       name="employerPromotionsBlockPromotions"
       edit={EmployerPromotionsBlockPromotionsEdit}
       create={EmployerPromotionsBlockPromotionsCreate}
     />
+
     <Resource name="importantDatesBlock" edit={ImportantDatesBlockEdit} />
     <Resource
       name="importantDatesBlockDateCards"
@@ -67,13 +70,14 @@ export const App = () => (
 
     <Resource name="faqBlock" edit={FAQBlockEdit} />
     <Resource name="faqBlockQuestions" edit={FAQBlockQuestionsEdit} create={FAQBlockQuestionsCreate} />
+
     <Resource name="logosBlock" edit={LogosBlockEdit} />
     <Resource name="logosBlockLogos" edit={LogosBlockLogosEdit} create={LogosBlockLogosCreate} />
 
     <CustomRoutes>
       <Route path="/tableBlock" element={<TableBlockList />} />
       <Route path="/tableBlock/:tableId" element={<TableBlockEdit />} />
-      <Route path="tableBlock/create/page/:pageId/" element={<TableBlockCreate />} />
+      <Route path="/tableBlock/create" element={<TableBlockCreate />} />
     </CustomRoutes>
 
     <Resource name="footer" edit={FooterEdit} />

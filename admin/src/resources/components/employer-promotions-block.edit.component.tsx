@@ -4,8 +4,8 @@ import { EmployerPromotionsBlockList } from '../employer-promotions-block/employ
 export const EditEmployerPromotionsBlock = () => {
   return (
     <div>
-      <ReferenceArrayField source="pageName" reference="employerPromotionsBlock">
-        <EmployerPromotionsBlockList filter={{ pageName: 'utbildningar' }} pagination={false} actions={false} />
+      <ReferenceArrayField source="title" reference="employerPromotionsBlock">
+        <EmployerPromotionsBlockList pagination={false} actions={false} />
       </ReferenceArrayField>
     </div>
   );

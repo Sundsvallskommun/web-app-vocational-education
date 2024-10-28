@@ -1,23 +1,43 @@
-import * as React from 'react';
+import { useEffect } from 'react';
 import { Edit, SelectInput, SimpleForm, TextInput, useGetList, useTranslate } from 'react-admin';
-import { CustomToolbar } from '../components/custom-toolbar.component';
+import { useFormContext } from 'react-hook-form';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
+import { CustomToolbar } from '../components/custom-toolbar.component';
+
+const FormElements = () => {
+  const translate = useTranslate();
+  const { watch, setValue } = useFormContext();
+  const promotedPageName = watch('promotedPageName');
+
+  const { data } = useGetList('page');
+  const choices = data
+    ? data
+        .map((x) => ({ id: x.pageName, name: x.pageName, pageId: x.id, url: x.url }))
+        .filter((x) => !x.url.includes('['))
+    : [];
+
+  useEffect(() => {
+    setValue('promotedPageId', choices.find((x) => x.name === promotedPageName)?.pageId);
+  }, [promotedPageName]);
+
+  return (
+    <>
+      <h1>{`${translate('ra.action.edit')} ${translate('resources.promotionsBlockPromotions.name', {
+        smart_count: 1,
+      }).toLowerCase()}`}</h1>
+      <TextInput source="pageName" readOnly />
+      <SelectInput source="promotedPageName" choices={choices} />
+    </>
+  );
+};
 
 export const PromotionsBlockPromotionsEdit = (props: any) => {
   useRoutePermissions();
-  const translate = useTranslate();
-  const { data } = useGetList('page');
-  const choices = data
-    ? data.map((x) => ({ id: x.pageName, name: x.pageName, url: x.url })).filter((x) => !x.url.includes('['))
-    : [];
+
   return (
     <Edit {...props} redirect={() => history.back()} mutationMode="pessimistic">
       <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete />}>
-        <h1>{`${translate('ra.action.edit')} ${translate('resources.promotionsBlockPromotions.name', {
-          smart_count: 1,
-        }).toLowerCase()}`}</h1>
-        <TextInput source="pageName" readOnly />
-        <SelectInput source="promotedPageName" choices={choices} />
+        <FormElements />
       </SimpleForm>
     </Edit>
   );

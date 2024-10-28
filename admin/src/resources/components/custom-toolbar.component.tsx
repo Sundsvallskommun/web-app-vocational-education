@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import {
   Button,
   DeleteButton,
@@ -6,12 +7,8 @@ import {
   SaveButtonProps,
   Toolbar,
   ToolbarProps,
-  useRecordContext,
-  useSaveContext,
 } from 'react-admin';
-import { Box } from '@mui/material';
-import { useEffect } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useSaveShortCut } from '../../utils/use-save-shortcut.hook';
 
 interface CustomToolbarProps extends ToolbarProps {
   saveProps?: SaveButtonProps;
@@ -22,27 +19,8 @@ interface CustomToolbarProps extends ToolbarProps {
 
 export const CustomToolbar = (props: CustomToolbarProps) => {
   const { saveProps, deleteProps, hideSave = false, hideDelete = false, ...rest } = props;
-  const { save } = useSaveContext();
-  const { getValues } = useFormContext();
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.ctrlKey && event.key === 's') {
-        event.preventDefault(); // Prevent the browser's default "Save" dialog
-        if (save) {
-          save(getValues());
-        }
-      }
-    };
-
-    // Add event listener for keydown events
-    document.addEventListener('keydown', handleKeyDown);
-
-    // Cleanup the event listener when the component unmounts
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [save, getValues]);
+  useSaveShortCut();
 
   return (
     <Toolbar {...rest} sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>

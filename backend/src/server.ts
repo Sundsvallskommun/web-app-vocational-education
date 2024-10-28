@@ -27,6 +27,7 @@ import { AdminTableBlockCellController } from './controllers/admin/table-block-c
 import { ContactController } from './controllers/contact.controller';
 import { EditRolesOnPageController } from './controllers/admin/edit-roles-on-page.controller';
 import { HealthController } from '@/controllers/health.controller';
+import { BlockController } from '@/controllers/block.controller';
 
 validateEnv();
 
@@ -36,6 +37,7 @@ const app = new App([
   UserController,
   EducationsController,
   PageController,
+  BlockController,
 
   //Admin
   AdminUserController,

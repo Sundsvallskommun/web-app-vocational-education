@@ -79,6 +79,10 @@ export const checkPageRoles = () => async (req: RequestWithUser, res: Response, 
     delete req.body.params.data.pageId;
   }
 
+  if (['employerPromotionsBlock', 'employerPromotionsBlockPromotions'].includes(req.body.resource)) {
+    pageName = 'utbildningar'; // there is only one employerPromotionsBlock but it exists on many places
+  }
+
   if (typeof pageId !== 'number' && typeof pageName !== 'string') {
     throw Error('Neither pageId or pageName present, which is needed for page role right access check.');
   }

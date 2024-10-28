@@ -13,11 +13,7 @@ export async function getPages(dir) {
       results = results.concat(await getPages(filePath)); // Recursive call
     } else if (file.isFile() && (file.name.endsWith('.ts') || file.name.endsWith('.tsx'))) {
       // Exclude special Next.js files and dynamic routes, and the sitemap itself
-      if (
-        !file.name.startsWith('_') &&
-        !(filePath.includes('/api/') || filePath.includes('\\api\\')) &&
-        !filePath.includes('server-site-map-index.xml')
-      ) {
+      if (!file.name.startsWith('_') && !(filePath.includes('/api/') || filePath.includes('\\api\\'))) {
         results.push(
           filePath
             .replace(/\\/g, '/')

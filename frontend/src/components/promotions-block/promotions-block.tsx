@@ -16,7 +16,7 @@ export default function PromotionsBlock({ promotionsBlock }: PromotionsBlockProp
             key={`${promotion.url}-${i}`}
             className="desktop:h-[377px]"
             href={promotion.promotedPage.url}
-            dropImageSrc={`/YM_puff${i + 1}.jpg`}
+            dropImageSrc={promotion.promotedPage.imgSrc}
             footer={<></>}
           >
             <h2>{promotion.promotedPage.title}</h2>

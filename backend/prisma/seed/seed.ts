@@ -498,6 +498,86 @@ async function main() {
     },
   });
 
+  await prisma.page.upsert({
+    where: { pageName: 'utbildningar_sok' },
+    update: {},
+    create: {
+      url: '/utbildningar/sok',
+      pageName: 'utbildningar_sok',
+      title: 'Sugen på att börja studera?',
+      description: '',
+      editRoles: {
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
+        })),
+      },
+    },
+  });
+
+  await prisma.page.upsert({
+    where: { pageName: 'personuppgifter' },
+    update: {},
+    create: {
+      url: '/personuppgifter',
+      pageName: 'personuppgifter',
+      title: 'Personuppgifter',
+      description: '',
+      editRoles: {
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
+        })),
+      },
+    },
+  });
+
+  await prisma.page.upsert({
+    where: { pageName: 'tillganglighetsredogorelse' },
+    update: {},
+    create: {
+      url: '/tillganglighetsredogorelse',
+      pageName: 'tillganglighetsredogorelse',
+      title: 'Tillgänglighetsredogörelse',
+      description: '',
+      editRoles: {
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
+        })),
+      },
+    },
+  });
+
+  await prisma.page.upsert({
+    where: { pageName: 'om-webbplatsen' },
+    update: {},
+    create: {
+      url: '/om-webbplatsen',
+      pageName: 'om-webbplatsen',
+      title: 'Om webbplatsen',
+      description: '',
+      editRoles: {
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
+        })),
+      },
+    },
+  });
+
+  await prisma.page.upsert({
+    where: { pageName: 'kakor' },
+    update: {},
+    create: {
+      url: '/kakor',
+      pageName: 'kakor',
+      title: 'Kakor',
+      description: '',
+      editRoles: {
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
+        })),
+      },
+    },
+  });
+
   await prisma.footer.upsert({
     where: { id: 1 },
     update: {},

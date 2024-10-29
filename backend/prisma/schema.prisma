@@ -79,8 +79,8 @@ model Page {
   id              Int                       @id @default(autoincrement())
   url             String @unique
   pageName        String @unique
-  title           String
-  description     String? @db.Text
+  title           String? @default("")
+  description     String? @db.Text @default("")
   imgSrc          String? @default("")
   imgAlt          String? @default("")
   imgTitle        String? @default("")

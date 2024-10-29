@@ -23,7 +23,7 @@ export const EmployerPromotionsBlockPromotionsCreate = (props: any) => {
         <ReferenceInput source="employerPromotionsBlock" reference="employerPromotionsBlock">
           <SelectInput
             source="employerPromotionsBlock"
-            optionText="pageName"
+            optionText="id"
             readOnly
             value={parseInt(activeBlockIdEdit)}
             defaultValue={parseInt(activeBlockIdEdit)}

@@ -26,10 +26,10 @@ export const EmployerPromotionsBlockPromotionsEdit = (props: any) => {
             <ReferenceInput source="employerPromotionsBlock" reference="employerPromotionsBlock">
               <SelectInput
                 source="employerPromotionsBlock"
-                optionText="pageName"
+                optionText="id"
                 readOnly
-                value={data.blockId}
-                defaultValue={data.blockId}
+                value={data.employerPromotionsBlock}
+                defaultValue={data.employerPromotionsBlock}
               />
             </ReferenceInput>
             <TextInput source="title" />

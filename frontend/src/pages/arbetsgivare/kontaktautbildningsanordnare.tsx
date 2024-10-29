@@ -3,16 +3,12 @@ import { BigDropHeader } from '@components/header/big-drop-header.component';
 import EducationManagerContactTable from '@components/utbildningsanordnare/contact-table.component';
 import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
-import { getLayout } from '@services/layout-service';
-import { getPage } from '@services/page-service';
 import { Breadcrumb } from '@sk-web-gui/react';
-import _ from 'lodash';
+import { getStandardPageProps } from '@utils/page-types';
 import NextLink from 'next/link';
 
-export async function getServerSideProps({ res }) {
-  const layoutProps = await getLayout(res);
-  const pageProps = await getPage('/arbetsgivare/kontaktautbildningsanordnare', res);
-  return await _.merge(layoutProps, pageProps);
+export async function getServerSideProps(context) {
+  return getStandardPageProps(context);
 }
 
 export const Utbildningsanordnare: React.FC = ({ pageData, layoutData }: PageProps) => {
@@ -20,8 +16,8 @@ export const Utbildningsanordnare: React.FC = ({ pageData, layoutData }: PagePro
     <DefaultLayout title={`Yrkesutbildning - Arbetsgivare - Kontakta utbildningsanordnare`} layoutData={layoutData}>
       <ContentBlock>
         <BigDropHeader
-          imageSrc="/drop-person-holding-thing.png"
-          imageAlt="Två studenter skrattar"
+          imageSrc={pageData?.imgSrc}
+          imageAlt={pageData?.imgAlt}
           imageDivClassName="hidden desktop:block"
           breadcrumbs={
             <Breadcrumb className="" separator={<span className="mx-1">|</span>}>

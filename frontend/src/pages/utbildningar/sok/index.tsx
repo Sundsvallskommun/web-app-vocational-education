@@ -7,7 +7,7 @@ import EducationsFilters from '@components/search/educations-filters.component';
 import EducationsTable from '@components/search/educations-table/educations-table.component';
 import Search from '@components/search/search.component';
 import { useAppContext } from '@contexts/app.context';
-import { LayoutProps } from '@interfaces/admin-data';
+import { PageProps } from '@interfaces/admin-data';
 import { Course, EducationFilterOptions } from '@interfaces/education';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import CompareArrowsOutlinedIcon from '@mui/icons-material/CompareArrowsOutlined';
@@ -16,9 +16,9 @@ import {
   emptyEducationFilterOptions,
   getEducationEvents,
 } from '@services/education-service/education-service';
-import { getLayout } from '@services/layout-service';
 import { Breadcrumb, cx, Link, omit, Spinner } from '@sk-web-gui/react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { getStandardPageProps } from '@utils/page-types';
 import { addToQueryString, createObjectFromQueryString, deserializeURL, serializeURL } from '@utils/url';
 import _ from 'lodash';
 import NextLink from 'next/link';
@@ -27,11 +27,11 @@ import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 import Sticky from 'react-sticky-el';
 
-export async function getServerSideProps({ res }) {
-  return await getLayout(res);
+export async function getServerSideProps(context) {
+  return getStandardPageProps(context);
 }
 
-export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
+export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
   const { searchCompareList, setSearchCompareList, searchCurrent, setSearchCurrent } = useAppContext();
 
   const router = useRouter();
@@ -219,8 +219,8 @@ export const Sok: React.FC = ({ layoutData }: LayoutProps) => {
     >
       <ContentBlock>
         <BigDropHeader
-          imageSrc="/drop-2-people.png"
-          imageAlt="Två studenter skrattar"
+          imageSrc={pageData?.imgSrc}
+          imageAlt={pageData?.imgAlt}
           imageDivClassName="hidden desktop:block"
           breadcrumbs={
             <Breadcrumb className="text-[13px]" separator={<span className="mx-1">|</span>}>

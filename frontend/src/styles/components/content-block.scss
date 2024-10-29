@@ -5,7 +5,7 @@
     @apply w-full last:mb-2xl;
 
     // Custom styles for .content-block + .content-block
-    &:nth-child(n + 2) + .content-block {
+    &:nth-child(n + 1) + .content-block {
       @apply mt-2xl;
 
       @screen desktop {

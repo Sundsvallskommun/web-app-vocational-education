@@ -13,8 +13,8 @@ export default function StandardPage({ layoutData, pageData }: PageProps) {
     <DefaultLayout title={`Yrkesutbildning - ${pageData.title}`} layoutData={layoutData}>
       <ContentBlock>
         <BigDropHeader
-          imageSrc={`/YM_puff1.jpg`}
-          imageAlt="Två studenter skrattar"
+          imageSrc={pageData?.imgSrc}
+          imageAlt={pageData?.imgAlt}
           breadcrumbs={
             <Breadcrumb className="" separator={<span className="mx-1">|</span>}>
               <Breadcrumb.Item>
@@ -45,7 +45,7 @@ export default function StandardPage({ layoutData, pageData }: PageProps) {
       </ContentBlock>
 
       {pageData.wysiwyg_content ?
-        <ContentBlock classNameWrapper="mt-lg">
+        <ContentBlock classNameWrapper="!mt-0">
           <Wysiwyg content={pageData.wysiwyg_content} />
         </ContentBlock>
       : <></>}

@@ -16,6 +16,7 @@ import { ServiceResponse } from '../../../providers/apiProvider';
 import { deleteMedia, editMedia, getAllMedia, saveMedia } from '../../../services/media-service';
 import { gridKeyboardNav } from '../../../shared/keyboard-navigation/grid-keyboard-nav';
 import styles from './styles.module.scss';
+import { useTranslate } from 'react-admin';
 
 interface ModalProps {
   open: boolean;
@@ -40,6 +41,7 @@ const defaultValues = {
 const defaultSetValueOptions = { shouldDirty: true, shouldTouch: true, shouldValidate: true };
 
 export const Gallery = ({ open, handleClose, setMedia, selectedMedia: _selectedMedia = defaultValues }: ModalProps) => {
+  const translate = useTranslate();
   const [mediaItems, setMediaItems] = useState<MediaResponse[]>([]);
   const [selectedMedia, setSelectedMedia] = useState<InternalMedia | undefined>(_selectedMedia);
 
@@ -124,6 +126,7 @@ export const Gallery = ({ open, handleClose, setMedia, selectedMedia: _selectedM
   useEffect(() => {
     if (open) {
       fetchAllMedia();
+      setSelectedMedia(_selectedMedia);
     }
     return () => {
       reset();
@@ -190,13 +193,13 @@ export const Gallery = ({ open, handleClose, setMedia, selectedMedia: _selectedM
                 <CloseIcon />
               </IconButton>
               <Button variant="outlined" component="label">
-                Ladda upp ny
+                {translate('gallery.uploadNew')}
                 <input {...register('media')} type="file" hidden />
               </Button>
             </Box>
           </Box>
           <Typography id="gallery-modal-description" sx={{ mt: 2 }}>
-            Välj en bild bland de som finns uppladdade eller ladda upp en ny bild.
+            {translate('gallery.description')}
           </Typography>
 
           <ImageList className={styles['gallery-modal-image-list']} cols={5} rowHeight={164}>
@@ -257,10 +260,10 @@ export const Gallery = ({ open, handleClose, setMedia, selectedMedia: _selectedM
                 <TextField {...register('alt')} label="Alt" variant="filled" />
                 <Box className={styles['gallery-modal-selected-image-box-form-buttons']}>
                   <Button disabled={!formState.isDirty} variant="contained" type="button" onClick={() => saveItem()}>
-                    Spara
+                    {translate('ra.action.save')}
                   </Button>
                   <Button color="error" variant="contained" type="button" onClick={() => deleteItem()}>
-                    Ta bort
+                    {translate('ra.action.delete')}
                   </Button>
                 </Box>
               </Box>
@@ -271,7 +274,7 @@ export const Gallery = ({ open, handleClose, setMedia, selectedMedia: _selectedM
 
           <Box className={styles['gallery-modal-lead-buttons']}>
             <Button variant="outlined" type="button" onClick={handleClose}>
-              Stäng
+              {translate('ra.action.close')}
             </Button>
             <Button
               disabled={selectedMedia === undefined}
@@ -279,7 +282,7 @@ export const Gallery = ({ open, handleClose, setMedia, selectedMedia: _selectedM
               type="button"
               onClick={handleSubmit(onMediaSubmit)}
             >
-              Välj bild
+              {translate('gallery.useImage')}
             </Button>
           </Box>
         </form>

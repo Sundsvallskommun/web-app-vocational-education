@@ -85,6 +85,16 @@ const sv: TranslationMessagesExtended = {
       minSpecialCharacters: `Lösenordet måste innehålla minst antal specialtecken: %{minSpecialCharacters}`,
     },
   },
+  gallery: {
+    title: 'Bildgalleri',
+    description: 'Välj en bild bland de som finns uppladdade eller ladda upp en ny bild.',
+    uploadNew: 'Ladda upp ny bild',
+    addImage: 'Lägg till bild',
+    editImage: 'Ändra bild',
+    removeImage: 'Ta bort bild',
+    imageUploading: 'Laddar upp bild...',
+    useImage: 'Använd bild',
+  },
   resources: {
     components: {
       chosenImageLabel: 'Vald bild',

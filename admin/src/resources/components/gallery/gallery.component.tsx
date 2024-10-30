@@ -233,7 +233,7 @@ export const Gallery = ({ open, handleClose, setMedia, selectedMedia: _selectedM
                     alt={item.title}
                     loading="lazy"
                   />
-                  <ImageListItemBar title={'test'} position="below" />
+                  <ImageListItemBar title={item.title} position="below" />
                 </ImageListItem>
               );
             })}

@@ -46,7 +46,7 @@ export default function SavedInterestsFormEditModal({
   };
 
   return (
-    <ModalCustom show={show} className="!w-[72rem]" onClose={() => setShow(false)}>
+    <ModalCustom show={show} className="w-full desktop:!w-[72rem]" onClose={() => setShow(false)}>
       <h1>Ändra kort för intresseområde {getFormattedLabelFromValue(interestData.category)}</h1>
       <SavedInterestsFormLogic formData={interestData} onSubmit={handleOnSubmit}>
         <SavedInterestsForm mode="edit" />

@@ -46,7 +46,7 @@ export default function SavedSearches() {
   }, []);
 
   return (
-    <div className="grow flex flex-col mt-[1.8rem]">
+    <div className="grow flex flex-col mt-md">
       <SavedContentBlock className="desktop:!px-[3.3rem]">
         {pagedList.map((search, index) => (
           <DropCard

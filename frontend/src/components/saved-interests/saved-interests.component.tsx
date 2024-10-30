@@ -1,20 +1,19 @@
-import ButtonStackedIcon from '@components/button/button-stacked-icon.component';
 import Button from '@components/button/button.component';
 import SavedContentBlockEmpty from '@components/saved-content-block/saved-content-block-empty.component';
 import SavedContentBlock from '@components/saved-content-block/saved-content-block.component';
+import { UserSavedInterest } from '@interfaces/user';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { emptyUserSavedInterest } from '@services/user-service/defaults';
 import { useUserStore } from '@services/user-service/user-service';
-import { useSnackbar } from '@sk-web-gui/react';
+import { Button as SKButton, cx, useSnackbar, useThemeQueries } from '@sk-web-gui/react';
+import { getFormattedLabelFromValue } from '@utils/labels';
 import { serializeURL } from '@utils/url';
 import dayjs from 'dayjs';
 import NextLink from 'next/link';
 import { useEffect, useState } from 'react';
 import SavedInterestsFormEditModal from './saved-interests-form-edit-modal.component';
-import { UserSavedInterest } from '@interfaces/user';
-import { getFormattedLabelFromValue } from '@utils/labels';
 
 export default function SavedInterests() {
   const userSavedInterests = useUserStore((s) => s.userSavedInterests);
@@ -23,6 +22,7 @@ export default function SavedInterests() {
   const [showEditModal, setShowEditModal] = useState(false);
   const snackBar = useSnackbar();
   const [selectedInterest, setSelectedInterest] = useState<Partial<UserSavedInterest>>(emptyUserSavedInterest);
+  const { isMinDesktop } = useThemeQueries();
 
   const handleRemoveInterest = (index: number) => async () => {
     const res = await deleteSavedInterest(userSavedInterests[index].id);
@@ -67,7 +67,7 @@ export default function SavedInterests() {
                       {`${getFormattedLabelFromValue(interest.category)}`}
                       {interest.level && ` - ${getFormattedLabelFromValue(interest.level)}`}
                     </h3>
-                    <div className="mt-[.9rem] text-sm text-label">
+                    <div className="mt-[.9rem] leading-[140%] text-[1rem] desktop:text-sm text-label">
                       {interest.studyLocation.map((location, i) => (
                         <span key={`${location}`}>
                           {getFormattedLabelFromValue(location)}
@@ -80,52 +80,56 @@ export default function SavedInterests() {
                       : <span>{interest.timeInterval} månader framåt</span>}
                     </div>
                   </div>
-                  <span className="saved-interest-header-texts-meta mb-[1.8rem] text-label text-xs leading-[1.8rem]">{`Uppdaterad ${dayjs(interest.updatedAt).format('YYYY-MM-DD')}`}</span>
+                  <span className="saved-interest-header-texts-meta mb-md text-label text-[1rem] desktop:text-sm leading-[1.8rem]">{`Uppdaterad ${dayjs(interest.updatedAt).format('YYYY-MM-DD')}`}</span>
                 </div>
               </div>
-              <div className="saved-interest-body grid grid-cols-2">
-                <div className="divide-y-1 divide-divider">
-                  {interest.timeInterval !== '0' && (
-                    <div className="leading-[2.6rem] py-[2.5rem]">
-                      Pågående
-                      <br />
-                      utbildningar
-                      <br />
-                      <strong>{interest.ongoing}</strong>
-                    </div>
+              <div className="saved-interest-body flex flex-wrap mt-sm desktop:grid desktop:grid-cols-2">
+                {interest.timeInterval !== '0' && (
+                  <div
+                    className={cx(
+                      'flex justify-between desktop:block leading-[2.6rem] py-sm desktop:py-[2.5rem] w-full',
+                      { 'border-b-1 border-divider': true }
+                    )}
+                  >
+                    <div className="desktop:max-w-[75%]">Pågående under perioden</div>
+                    <strong>{interest.ongoing}</strong>
+                  </div>
+                )}
+                <div
+                  className={cx(
+                    'flex justify-between desktop:block leading-[2.6rem] py-sm desktop:py-[2.5rem] w-full',
+                    { 'border-b-1 border-divider': true }
                   )}
-                  <div className="leading-[2.6rem] py-[2.5rem]">
-                    Planerade
-                    <br />
-                    utbildningar
-                    <br />
-                    <strong>{interest.planned}</strong>
-                  </div>
-                  <div className="leading-[2.6rem] py-[2.5rem]">
-                    Avslutade utbildningar
-                    <br />
-                    <strong>{interest.ended}</strong>
-                  </div>
+                >
+                  <div className="desktop:max-w-[75%]">Kapacitet utbildningsplatser</div>
+                  <strong>{interest.capacity}</strong>
                 </div>
-
-                <div className="divide-y-1 divide-divider">
-                  <div className="leading-[2.6rem] py-[2.5rem]">
-                    Kapacitet
-                    <br />
-                    utbildningsplatser
-                    <br />
-                    <strong>{interest.capacity}</strong>
-                  </div>
-                  <div className="leading-[2.6rem] py-[2.5rem]">
-                    Tillgängliga
-                    <br />
-                    utbildningsplatser
-                    <br />
-                    <strong>{interest.available}</strong>
-                  </div>
-                  {interest.timeInterval !== '0' && <div></div>}
+                <div
+                  className={cx(
+                    'flex justify-between desktop:block leading-[2.6rem] py-sm desktop:py-[2.5rem] w-full',
+                    { 'border-b-1 border-divider': true }
+                  )}
+                >
+                  <div className="desktop:max-w-[75%]">Plannerade utbildningstarter</div>
+                  <strong>{interest.planned}</strong>
+                </div>
+                <div
+                  className={cx(
+                    'flex justify-between desktop:block leading-[2.6rem] py-sm desktop:py-[2.5rem] w-full',
+                    {
+                      'border-b-1 border-divider': interest.timeInterval !== '0' || !isMinDesktop,
+                    }
+                  )}
+                >
+                  <div className="desktop:max-w-[75%]">Tillgängliga utbildningsplatser</div>
+                  <strong>{interest.available}</strong>
+                </div>
+                <div className="flex justify-between desktop:block leading-[2.6rem] py-sm desktop:py-[2.5rem] w-full">
+                  <div className="desktop:max-w-[75%]">Slutförda under perioden</div>
+                  <strong>{interest.ended}</strong>
                 </div>
               </div>
+
               <div className="mt-[4.3rem] flex justify-center">
                 <NextLink
                   href={{
@@ -137,28 +141,30 @@ export default function SavedInterests() {
                     }),
                   }}
                 >
-                  <Button as="span" dense rightIcon={<ArrowForwardIcon />}>
+                  <Button variant="secondary" as="span" dense rightIcon={<ArrowForwardIcon />}>
                     <span>Visa utbildningar</span>
                   </Button>
                 </NextLink>
               </div>
-              <div className="saved-interest-header-toolbar flex gap-md justify-end absolute -top-[1.5rem] -right-[1.5rem] desktop:-top-[1.5rem] desktop:-right-[3rem]">
-                <ButtonStackedIcon
-                  onClick={handleRemoveInterest(interestIndex)}
-                  className="text-[12px] text-blue"
-                  icon={<DeleteIcon />}
+              <div className="saved-interest-header-toolbar flex gap-sm justify-end absolute -top-[1.35rem] -right-[.5rem] desktop:-top-[1.4rem] desktop:-right-[3rem]">
+                <SKButton
+                  variant="ghost"
                   aria-label={`Radera, ${interest.category} - ${interest.level} - ${interest.studyLocation.join(', ')}`}
+                  className="text-[1rem] desktop:text-sm px-0 text-blue underline hover:no-underline"
+                  onClick={handleRemoveInterest(interestIndex)}
+                  rightIcon={<DeleteIcon className="!text-[1.6rem]" />}
                 >
-                  Radera
-                </ButtonStackedIcon>
-                <ButtonStackedIcon
-                  onClick={handleEditInterest(interestIndex)}
-                  className="text-[12px] text-blue"
-                  icon={<EditIcon />}
+                  <span>Radera</span>
+                </SKButton>
+                <SKButton
+                  variant="ghost"
                   aria-label={`Ändra, ${interest.category} - ${interest.level} - ${interest.studyLocation.join(', ')}`}
+                  className="text-[1rem] desktop:text-sm px-0 text-blue underline hover:no-underline"
+                  onClick={handleEditInterest(interestIndex)}
+                  rightIcon={<EditIcon className="!text-[1.6rem]" />}
                 >
-                  Ändra
-                </ButtonStackedIcon>
+                  <span>Ändra</span>
+                </SKButton>
               </div>
             </div>
           </SavedContentBlock>

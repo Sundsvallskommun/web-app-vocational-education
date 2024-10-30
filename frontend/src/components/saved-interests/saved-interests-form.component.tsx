@@ -18,7 +18,7 @@ export default function SavedInterestsForm({ mode = 'new' }: SavedInterestsFormP
   const { filters } = useFiltersContext();
 
   return (
-    <div className="saved-interests-form mt-[1.3rem] grid desktop:grid-cols-2 items-end gap-y-[2rem] gap-x-[4.7rem]">
+    <div className="saved-interests-form mt-md grid desktop:grid-cols-2 items-end gap-y-[2rem] gap-x-[4.7rem]">
       <div>
         <FormControl className="w-full" required>
           <FormLabel>{`Välj ${categoryFilterPlaceholder}`}</FormLabel>

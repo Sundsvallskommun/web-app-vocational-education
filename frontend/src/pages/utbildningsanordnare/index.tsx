@@ -18,7 +18,7 @@ export const Utbildningsanordnare: React.FC = ({ pageData, layoutData }: PagePro
   return (
     <DefaultLayout title={`Yrkesutbildning - Utbildningsanordnare`} layoutData={layoutData}>
       <ContentBlock>
-        <BigDropHeader imageSrc={pageData?.imgSrc} imageAlt={pageData?.imgAlt} imageDivClassName="hidden desktop:block">
+        <BigDropHeader imageSrc={pageData?.imgSrc} imageAlt={pageData?.imgAlt}>
           <h1>{pageData.title}</h1>
           <p className="ingress">{pageData.description}</p>
           <Search />

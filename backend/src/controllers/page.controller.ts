@@ -34,6 +34,11 @@ export class PageController {
             questions: true,
           },
         },
+        contactFormBlock: {
+          include: {
+            emails: true,
+          },
+        },
         logosBlock: {
           include: {
             logos: true,

@@ -1,6 +1,6 @@
 import ContentBlock from '@components/block/content-block.component';
 import { BigDropHeader } from '@components/header/big-drop-header.component';
-import EducationManagerContactTable from '@components/utbildningsanordnare/contact-table.component';
+import TableBlock from '@components/table-block/table-block.component';
 import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import { Breadcrumb } from '@sk-web-gui/react';
@@ -48,9 +48,11 @@ export const Utbildningsanordnare: React.FC = ({ pageData, layoutData }: PagePro
         </BigDropHeader>
       </ContentBlock>
 
-      <ContentBlock>
-        <EducationManagerContactTable tableBlock={pageData?.tableBlock?.pop()} />
-      </ContentBlock>
+      {pageData.tableBlock ?
+        <ContentBlock>
+          <TableBlock tableBlock={pageData?.tableBlock?.pop()} />
+        </ContentBlock>
+      : <></>}
     </DefaultLayout>
   );
 };

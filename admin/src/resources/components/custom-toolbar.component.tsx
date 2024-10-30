@@ -26,7 +26,7 @@ export const CustomToolbar = (props: CustomToolbarProps) => {
     <Toolbar {...rest} sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
       <Box sx={{ display: 'flex', gap: '2rem' }}>
         <Button onClick={() => history.back()} label="Tillbaka" />
-        {!hideSave && <SaveButton {...saveProps} />}
+        {!hideSave && <SaveButton alwaysEnable {...saveProps} />}
         {!hideDelete && <DeleteButton {...deleteProps} />}
       </Box>
     </Toolbar>

@@ -1,7 +1,15 @@
 import ContentBlock from '@components/block/content-block.component';
+import ContactFormBlock from '@components/contact-form-block/contact-form-block.component';
 import EducationsRelatedBlock from '@components/educations-related-block/educations-related-block';
+import EmployerPromotionsBlock from '@components/employer-promotions-block/employer-promotions-block';
+import FAQBlock from '@components/faq-block/faq-block';
 import { BigDropHeader } from '@components/header/big-drop-header.component';
+import ImportantDatesBlock from '@components/importantdates-block/importantdates-block';
+import LogosBlock from '@components/logos-block/logos-block';
+import MapBlock from '@components/map-block/map-block';
+import PromotionsBlock from '@components/promotions-block/promotions-block';
 import SearchBlock from '@components/search-block/search-block.component';
+import TableBlock from '@components/table-block/table-block.component';
 import Wysiwyg from '@components/wysiwyg/wysiwyg';
 import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
@@ -50,6 +58,18 @@ export default function StandardPage({ layoutData, pageData }: PageProps) {
         </ContentBlock>
       : <></>}
 
+      {pageData.tableBlock ?
+        <ContentBlock>
+          <TableBlock tableBlock={pageData?.tableBlock?.pop()} />
+        </ContentBlock>
+      : <></>}
+
+      <PromotionsBlock promotionsBlock={pageData.promotionsBlock?.pop()} />
+
+      <MapBlock mapBlock={pageData.mapBlock?.pop()} />
+
+      <EmployerPromotionsBlock employerPromotionsBlock={pageData.employerPromotionsBlock} />
+
       <EducationsRelatedBlock
         show={pageData.showEducationsRelatedBlock}
         educations={Array.from({ length: 3 }, (_, i) => ({
@@ -60,7 +80,18 @@ export default function StandardPage({ layoutData, pageData }: PageProps) {
           studyLocation: `Location-${i}`,
         }))}
       />
+
+      <ImportantDatesBlock importantDatesBlock={pageData.importantDatesBlock?.pop()} />
+
+      <FAQBlock faqBlock={pageData.faqBlock?.pop()} />
+
+      {pageData.contactFormBlock ?
+        <ContactFormBlock contactFormBlock={pageData.contactFormBlock.pop()} />
+      : <></>}
+
       <SearchBlock show={pageData.showSearchBlock} />
+
+      <LogosBlock logosBlock={pageData.logosBlock?.pop()} />
     </DefaultLayout>
   );
 }

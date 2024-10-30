@@ -28,6 +28,8 @@ import { ContactController } from './controllers/contact.controller';
 import { EditRolesOnPageController } from './controllers/admin/edit-roles-on-page.controller';
 import { HealthController } from '@/controllers/health.controller';
 import { BlockController } from '@/controllers/block.controller';
+import { AdminContactFormBlockController } from '@/controllers/admin/contact-form-block.controller';
+import { AdminContactFormBlockEmailsController } from '@/controllers/admin/contact-form-block-emails.controller';
 
 validateEnv();
 
@@ -59,6 +61,8 @@ const app = new App([
   AdminTableBlockHeaderController,
   AdminTableBlockRowController,
   AdminTableBlockCellController,
+  AdminContactFormBlockController,
+  AdminContactFormBlockEmailsController,
 
   // Permissions
   EditRolesOnPageController,

@@ -8,6 +8,7 @@ import { EditMapBlock } from './map-block.edit.component';
 import { EditPromotionsBlock } from './promotions-block.edit.component';
 import { EditTableBlock } from './table-block.edit.component';
 import { Wysiwyg } from './wysiwyig/wysiwyg.component';
+import { EditContactFormBlock } from './contact-form-block.edit.component';
 
 export const PageSwitch = () => {
   const record = useRecordContext();
@@ -51,6 +52,12 @@ export const PageSwitch = () => {
               <br />
               <h2>{translate('resources.faqBlock.name', { smart_count: 2 })}</h2>
               <EditFAQBlock />
+            </>
+          )}
+          {(isSuperAdmin || record.logosBlock?.length) && (
+            <>
+              <h2>{translate('resources.logosBlock.name', { smart_count: 2 })}</h2>
+              <EditLogosBlock />
             </>
           )}
         </>
@@ -134,6 +141,13 @@ export const PageSwitch = () => {
               <Wysiwyg />
             </>
           )}
+          {(isSuperAdmin || record.tableBlock?.length) && (
+            <>
+              <br />
+              <h2>{translate('resources.tableBlock.name', { smart_count: 2 })}</h2>
+              <EditTableBlock />
+            </>
+          )}
           {(isSuperAdmin || record.promotionsBlock?.length) && (
             <>
               <h2>{translate('resources.promotionsBlock.name', { smart_count: 2 })}</h2>
@@ -154,20 +168,6 @@ export const PageSwitch = () => {
               <EditEmployerPromotionsBlock />
             </>
           )}
-          {(isSuperAdmin || record.importantDatesBlock?.length) && (
-            <>
-              <br />
-              <h2>{translate('resources.importantDatesBlock.name', { smart_count: 2 })}</h2>
-              <EditImportantDatesBlock />
-            </>
-          )}
-          {(isSuperAdmin || record.tableBlock?.length) && (
-            <>
-              <br />
-              <h2>{translate('resources.tableBlock.name', { smart_count: 2 })}</h2>
-              <EditTableBlock />
-            </>
-          )}
           {isSuperAdmin && (
             <>
               <br />
@@ -178,11 +178,38 @@ export const PageSwitch = () => {
               />
             </>
           )}
+          {(isSuperAdmin || record.importantDatesBlock?.length) && (
+            <>
+              <br />
+              <h2>{translate('resources.importantDatesBlock.name', { smart_count: 2 })}</h2>
+              <EditImportantDatesBlock />
+            </>
+          )}
+          {(isSuperAdmin || record.faqBlock?.length) && (
+            <>
+              <br />
+              <h2>{translate('resources.faqBlock.name', { smart_count: 2 })}</h2>
+              <EditFAQBlock />
+            </>
+          )}
+          {(isSuperAdmin || record.contactFormBlock?.length) && (
+            <>
+              <br />
+              <h2>{translate('resources.contactFormBlock.name')}</h2>
+              <EditContactFormBlock />
+            </>
+          )}
           {isSuperAdmin && (
             <>
               <br />
               <h2>{translate('resources.searchBlock.name')}</h2>
               <BooleanInput source="showSearchBlock" label={translate('resources.searchBlock.fields.showBlock')} />
+            </>
+          )}
+          {(isSuperAdmin || record.logosBlock?.length) && (
+            <>
+              <h2>{translate('resources.logosBlock.name', { smart_count: 2 })}</h2>
+              <EditLogosBlock />
             </>
           )}
         </>

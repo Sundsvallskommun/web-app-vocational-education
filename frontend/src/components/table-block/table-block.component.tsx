@@ -1,12 +1,7 @@
-import { TableBlock } from '@interfaces/admin-data';
 import { Link, Table, cx, SortMode } from '@sk-web-gui/react';
 import { useState } from 'react';
 
-interface EducationManagerContactTableProps {
-  tableBlock?: TableBlock;
-}
-
-export const EducationManagerContactTable: React.FC<EducationManagerContactTableProps> = ({ tableBlock }) => {
+export const TableBlock = ({ tableBlock }) => {
   const [sortColumn, setSortColumn] = useState<number>(0);
   const [sortOrder, setSortOrder] = useState(SortMode.ASC);
 
@@ -90,4 +85,4 @@ export const EducationManagerContactTable: React.FC<EducationManagerContactTable
   );
 };
 
-export default EducationManagerContactTable;
+export default TableBlock;

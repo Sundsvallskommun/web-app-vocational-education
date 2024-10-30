@@ -49,7 +49,7 @@ const FormValues = () => {
           }}
         />
       </Box>
-      <BooleanInput source="showBlock" />
+      <BooleanInput source="showBlock" defaultValue={true} />
     </>
   );
 };

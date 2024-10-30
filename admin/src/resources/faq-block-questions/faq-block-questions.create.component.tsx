@@ -26,7 +26,7 @@ export const FAQBlockQuestionsCreate = (props: any) => {
         >
           <SelectInput
             source="faqBlock"
-            optionText="pageName"
+            optionText="pageId"
             readOnly
             value={parseInt(activeBlockIdEdit)}
             defaultValue={parseInt(activeBlockIdEdit)}

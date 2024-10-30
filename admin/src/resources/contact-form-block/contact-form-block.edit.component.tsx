@@ -1,13 +1,14 @@
-import { BooleanInput, Edit, SimpleForm, TextInput, useGetRecordId, useStore, useTranslate } from 'react-admin';
-import { EditPromotionsBlockPromotions } from '../components/promotions-block-promotions.edit.component';
-import { CustomToolbar } from '../components/custom-toolbar.component';
-import useRoutePermissions from '../../utils/use-route-permissions.hook';
 import { useEffect } from 'react';
+import { BooleanInput, Edit, SimpleForm, TextInput, useGetRecordId, useStore, useTranslate } from 'react-admin';
+import useRoutePermissions from '../../utils/use-route-permissions.hook';
+import { EditContactFormBlockEmails } from '../components/contact-form-block-emails.edit.component';
+import { CustomToolbar } from '../components/custom-toolbar.component';
 
-export const PromotionsBlockEdit = (props: any) => {
+export const ContactFormBlockEdit = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
-  const [activePageIdEdit, setValue] = useStore('activeBlockIdEdit', '');
+  const [activePageIdEdit] = useStore('activePageIdEdit');
+  const [, setValue] = useStore('activeBlockIdEdit', '');
   const recordId = useGetRecordId();
   useEffect(() => {
     setValue(recordId.toString());
@@ -24,12 +25,18 @@ export const PromotionsBlockEdit = (props: any) => {
           />
         }
       >
-        <h1>{`${translate('ra.action.edit')} ${translate('resources.promotionsBlock.name', {
-          smart_count: 2,
-        }).toLowerCase()}`}</h1>
+        <h1>{`${translate('ra.action.edit')} ${translate('resources.contactFormBlock.name', { smart_count: 1 })}`}</h1>
         <TextInput source="pageName" readOnly />
         <BooleanInput source="showBlock" />
-        <EditPromotionsBlockPromotions />
+        <TextInput source="title" />
+        <TextInput
+          multiline
+          inputProps={{
+            sx: { width: '400px', minHeight: '3em' },
+          }}
+          source="description"
+        />
+        <EditContactFormBlockEmails />
       </SimpleForm>
     </Edit>
   );

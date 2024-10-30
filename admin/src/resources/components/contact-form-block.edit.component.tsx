@@ -1,15 +1,16 @@
 import { ReferenceArrayField, useRecordContext } from 'react-admin';
-import { PromotionsBlockPromotionsList } from '../promotions-block-promotions/promotions-block-promotions.list.component';
+import { ContactFormBlockList } from '../contact-form-block/contact-form-block.list.component';
 import { ListCreateButton } from './list-create-button.component';
 
-export const EditPromotionsBlockPromotions = () => {
+export const EditContactFormBlock = () => {
   const record = useRecordContext();
   return (
     <div>
-      <ReferenceArrayField source="pageName" reference="promotionsBlockPromotions">
-        <PromotionsBlockPromotionsList
+      <ReferenceArrayField source="pageName" reference="contactFormBlock">
+        <ContactFormBlockList
           filter={{ pageName: record.pageName }}
           pagination={false}
+          actions={false}
           empty={<ListCreateButton />}
         />
       </ReferenceArrayField>

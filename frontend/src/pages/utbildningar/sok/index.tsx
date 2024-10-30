@@ -246,7 +246,8 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
             </Breadcrumb>
           }
         >
-          <h1>Sugen på att börja studera?</h1>
+          <h1>{pageData?.title}</h1>
+          {pageData.description && <p className="ingress">{pageData.description}</p>}
 
           <Search className="phone:mt-[25px] mt-2xl" keepParams />
           {isFiltersTouched && (

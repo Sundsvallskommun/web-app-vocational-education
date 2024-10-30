@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Edit, SelectInput, SimpleForm, TextInput, useGetList, useTranslate } from 'react-admin';
+import { Edit, SelectInput, SimpleForm, TextInput, useGetList, useStore, useTranslate } from 'react-admin';
 import { useFormContext } from 'react-hook-form';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
 import { CustomToolbar } from '../components/custom-toolbar.component';
@@ -33,10 +33,19 @@ const FormElements = () => {
 
 export const PromotionsBlockPromotionsEdit = (props: any) => {
   useRoutePermissions();
-
+  const [activeBlockIdEdit] = useStore('activeBlockIdEdit', '');
   return (
     <Edit {...props} redirect={() => history.back()} mutationMode="pessimistic">
-      <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete />}>
+      <SimpleForm
+        margin="none"
+        toolbar={
+          <CustomToolbar
+            deleteProps={{
+              redirect: () => `promotionsBlock/${activeBlockIdEdit}`,
+            }}
+          />
+        }
+      >
         <FormElements />
       </SimpleForm>
     </Edit>

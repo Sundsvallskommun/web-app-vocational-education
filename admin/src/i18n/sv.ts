@@ -205,6 +205,23 @@ const sv: TranslationMessagesExtended = {
         faqBlock: 'FAQ-block',
       },
     },
+    contactFormBlock: {
+      name: 'Kontaktformulär-block',
+      fields: {
+        pageName: 'Sidreferensnamn',
+        title: 'Rubrik',
+        description: 'Beskrivning',
+        showBlock: 'Visa Kontaktformulär-block',
+      },
+    },
+    contactFormBlockEmails: {
+      name: 'Kontaktformulär-email',
+      fields: {
+        label: 'Kommun',
+        email: 'Email',
+        contactFormBlock: 'Kontaktformulär-block',
+      },
+    },
     logosBlock: {
       name: 'Logos-block |||| Logos-block',
       fields: {

@@ -81,6 +81,7 @@ const config = {
         secondary: {
           DEFAULT: '#208357',
         },
+        white: '#FCFCFC',
         black: {
           DEFAULT: '#000',
           light: '#333',

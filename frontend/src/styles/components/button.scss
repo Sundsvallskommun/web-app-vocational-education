@@ -16,7 +16,11 @@
     }
 
     &-secondary[data-color='primary'] {
-      @apply border-primary bg-transparent text-primary;
+      @apply border-primary bg-white text-primary;
+
+      &:hover {
+        @apply underline shadow-md;
+      }
     }
   }
 

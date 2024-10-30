@@ -1,4 +1,5 @@
 import { preset } from '@sk-web-gui/core';
+import { defaultTheme } from '@sk-web-gui/react';
 
 const config = {
   mode: 'jit',
@@ -11,6 +12,15 @@ const config = {
   darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {
+      screens: {
+        ...defaultTheme,
+        'small-phone': '320px',
+        'small-phone-min': '320px',
+        'small-phone-max': '375px',
+        phone: '375px',
+        'phone-min': '375px',
+        'phone-max': '479px',
+      },
       borderWidth: {
         DEFAULT: '.1rem',
       },

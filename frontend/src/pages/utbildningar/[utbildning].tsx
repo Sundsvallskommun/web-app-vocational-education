@@ -82,7 +82,7 @@ export const Utbildning: React.FC = ({
             </div>
           </div>
         </div>
-        <div className="text-[1.3rem] small-device:text-sm mt-lg grid grid-cols-[repeat(2,auto)] gap-md desktop:flex">
+        <div className="text-[1.3rem] small-device:text-sm mt-lg grid grid-cols-[40%,60%] gap-md desktop:flex">
           <div>
             <label id="education-length">Längd</label>
             <div aria-describedby="education-length">
@@ -120,7 +120,9 @@ export const Utbildning: React.FC = ({
           <div>
             <label id="education-language">Utbildningsform</label>
             <div aria-describedby="education-form">
-              <strong>{educationData?.level ? `${getFormattedLabelFromValue(educationData?.level)}` : '-'}</strong>
+              <strong className="break-all">
+                {educationData?.level ? `${getFormattedLabelFromValue(educationData?.level)}` : '-'}
+              </strong>
             </div>
           </div>
         </div>

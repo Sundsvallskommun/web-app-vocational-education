@@ -8,7 +8,7 @@ import { Search } from '@components/search/search.component';
 import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import { Breadcrumb } from '@sk-web-gui/react';
-import { getStandardPageProps } from '@utils/page-types';
+import { getBlockData, getStandardPageProps } from '@utils/page-types';
 import NextLink from 'next/link';
 
 export async function getServerSideProps(context) {
@@ -46,13 +46,13 @@ export const Utbildningar: React.FC = ({ layoutData, pageData }: PageProps) => {
           <Search />
         </BigDropHeader>
       </ContentBlock>
-      <PromotionsBlock promotionsBlock={pageData.promotionsBlock?.pop()} />
+      <PromotionsBlock promotionsBlock={getBlockData(pageData?.promotionsBlock)} />
 
-      <EducationsStartingBlock educationsStartingBlock={pageData?.educationsStartingBlock?.pop()} />
+      <EducationsStartingBlock educationsStartingBlock={getBlockData(pageData?.educationsStartingBlock)} />
 
       <EmployerPromotionsBlock employerPromotionsBlock={pageData?.employerPromotionsBlock} />
 
-      <FAQBlock faqBlock={pageData?.faqBlock?.pop()} />
+      <FAQBlock faqBlock={getBlockData(pageData?.faqBlock)} />
     </DefaultLayout>
   );
 };

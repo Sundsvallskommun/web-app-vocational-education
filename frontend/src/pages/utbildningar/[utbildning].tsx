@@ -14,26 +14,22 @@ import {
   getEducationLengthString,
   getSanitizedInformation,
 } from '@services/education-service/education-service';
-import { getLayout } from '@services/layout-service';
-import { getPage } from '@services/page-service';
 import { Breadcrumb, useThemeQueries } from '@sk-web-gui/react';
 import { routeDynamicSlugFormatExtract } from '@utils/app-url';
 import { getFormattedLabelFromValue } from '@utils/labels';
+import { getBlockData, getStandardPageProps } from '@utils/page-types';
+import { merge } from 'lodash';
 import NextLink from 'next/link';
 
 export async function getServerSideProps(context) {
-  const layout = await getLayout(context.res);
   const educationEventRes = await getEducationEvent(
     routeDynamicSlugFormatExtract({ slug: '/utbildningar/[utbildning]', formattedString: context.query.utbildning }).id
   );
-  const pageProps = await getPage('/utbildningar/[utbildning]', context.res);
-  return {
+  return merge(await getStandardPageProps(context), {
     props: {
-      layoutData: layout.props,
       educationData: !educationEventRes.error ? educationEventRes.data : null,
-      pageData: pageProps.props?.pageData,
     },
-  };
+  });
 }
 
 export const Utbildning: React.FC = ({
@@ -86,9 +82,9 @@ export const Utbildning: React.FC = ({
             </div>
           </div>
         </div>
-        <div className="text-sm mt-lg grid grid-cols-2 desktop:flex gap-xl">
+        <div className="text-[1.3rem] small-device:text-sm mt-lg grid grid-cols-[repeat(2,auto)] gap-md desktop:flex">
           <div>
-            <label id="education-length">Utbildningens längd</label>
+            <label id="education-length">Längd</label>
             <div aria-describedby="education-length">
               <strong>
                 {educationData?.start && educationData?.end ?
@@ -121,11 +117,17 @@ export const Utbildning: React.FC = ({
               <strong>?</strong>
             </div>
           </div>
+          <div>
+            <label id="education-language">Utbildningsform</label>
+            <div aria-describedby="education-form">
+              <strong>{educationData?.level ? `${getFormattedLabelFromValue(educationData?.level)}` : '-'}</strong>
+            </div>
+          </div>
         </div>
       </ContentBlock>
-      <ContentBlock classNameWrapper="!mt-2xl bg-blue-light py-lg">
+      <ContentBlock classNameWrapper="!mt-lg desktop:!mt-2xl bg-blue-light py-lg">
         <div className="flex flex-col gap-lg desktop:flex-row justify-between items-center">
-          <div className="text-sm grid grid-cols-2 gap-lg desktop:flex desktop:gap-[75px]">
+          <div className="text-[1.3rem] small-device:text-sm grid grid-cols-2 gap-lg desktop:flex desktop:gap-[75px]">
             <div>
               <label id="education-startdate">Nästa utbildningsstart</label>
               <div aria-describedby="education-startdate">
@@ -151,7 +153,7 @@ export const Utbildning: React.FC = ({
           </a>
         </div>
       </ContentBlock>
-      <ContentBlock classNameWrapper="!mt-[8rem]">
+      <ContentBlock classNameWrapper="!mt-lg desktop:!mt-[8rem]">
         <h2>Om utbildningen</h2>
         <p dangerouslySetInnerHTML={{ __html: getSanitizedInformation(educationData.information) }} />
       </ContentBlock>
@@ -171,7 +173,7 @@ export const Utbildning: React.FC = ({
         </a>
       </ContentBlock>
 
-      <FAQBlock classNameWrapper="pt-80" faqBlock={pageData.faqBlock?.pop()} />
+      <FAQBlock classNameWrapper="pt-80" faqBlock={getBlockData(pageData.faqBlock)} />
 
       <EducationsRelatedBlock
         show={pageData.showEducationsRelatedBlock}

@@ -6,6 +6,20 @@ import { merge } from 'lodash';
 export async function getStandardPageProps(context) {
   const layoutProps = await getLayout(context.res);
   const location = new URL(appURL(context.resolvedUrl));
-  const pageProps = await getPage(location.pathname, context.res);
+
+  let pathname = '';
+  if (context.params) {
+    const lastSlashIndex = location.pathname.lastIndexOf('/');
+    const [path] = [location.pathname.slice(0, lastSlashIndex), location.pathname.slice(lastSlashIndex + 1)];
+    pathname = `${path}/[${Object.keys(context.params)[0]}]`;
+  } else {
+    pathname = location.pathname;
+  }
+
+  const pageProps = await getPage(pathname, context.res);
   return merge(layoutProps, pageProps);
+}
+
+export function getBlockData(block) {
+  return block ? block[0] : undefined;
 }

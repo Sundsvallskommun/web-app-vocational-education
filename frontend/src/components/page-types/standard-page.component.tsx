@@ -14,6 +14,7 @@ import Wysiwyg from '@components/wysiwyg/wysiwyg';
 import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import { Breadcrumb } from '@sk-web-gui/react';
+import { getBlockData } from '@utils/page-types';
 import NextLink from 'next/link';
 
 export default function StandardPage({ layoutData, pageData }: PageProps) {
@@ -60,13 +61,13 @@ export default function StandardPage({ layoutData, pageData }: PageProps) {
 
       {pageData.tableBlock ?
         <ContentBlock>
-          <TableBlock tableBlock={pageData?.tableBlock?.pop()} />
+          <TableBlock tableBlock={getBlockData(pageData?.tableBlock)} />
         </ContentBlock>
       : <></>}
 
-      <PromotionsBlock promotionsBlock={pageData.promotionsBlock?.pop()} />
+      <PromotionsBlock promotionsBlock={getBlockData(pageData?.promotionsBlock)} />
 
-      <MapBlock mapBlock={pageData.mapBlock?.pop()} />
+      <MapBlock mapBlock={getBlockData(pageData?.mapBlock)} />
 
       <EmployerPromotionsBlock employerPromotionsBlock={pageData.employerPromotionsBlock} />
 
@@ -81,17 +82,17 @@ export default function StandardPage({ layoutData, pageData }: PageProps) {
         }))}
       />
 
-      <ImportantDatesBlock importantDatesBlock={pageData.importantDatesBlock?.pop()} />
+      <ImportantDatesBlock importantDatesBlock={getBlockData(pageData?.importantDatesBlock)} />
 
-      <FAQBlock faqBlock={pageData.faqBlock?.pop()} />
+      <FAQBlock faqBlock={getBlockData(pageData?.faqBlock)} />
 
-      {pageData.contactFormBlock ?
-        <ContactFormBlock contactFormBlock={pageData.contactFormBlock.pop()} />
+      {pageData?.contactFormBlock ?
+        <ContactFormBlock contactFormBlock={getBlockData(pageData?.contactFormBlock)} />
       : <></>}
 
-      <SearchBlock show={pageData.showSearchBlock} />
+      <SearchBlock show={pageData?.showSearchBlock} />
 
-      <LogosBlock logosBlock={pageData.logosBlock?.pop()} />
+      <LogosBlock logosBlock={getBlockData(pageData?.logosBlock)} />
     </DefaultLayout>
   );
 }

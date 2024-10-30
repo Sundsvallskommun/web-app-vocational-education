@@ -8,7 +8,7 @@ import SavedSearches from '@components/saved-searches/saved-searches.component';
 import { Search } from '@components/search/search.component';
 import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
-import { getStandardPageProps } from '@utils/page-types';
+import { getBlockData, getStandardPageProps } from '@utils/page-types';
 
 export async function getServerSideProps(context) {
   return getStandardPageProps(context);
@@ -41,7 +41,7 @@ export const Utbildningsanordnare: React.FC = ({ pageData, layoutData }: PagePro
         </div>
       </ContentBlock>
 
-      <FAQBlock faqBlock={pageData.faqBlock?.pop()} />
+      <FAQBlock faqBlock={getBlockData(pageData?.faqBlock)} />
     </DefaultLayout>
   );
 };

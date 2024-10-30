@@ -9,7 +9,7 @@ import PromotionsBlock from '@components/promotions-block/promotions-block';
 import { Search } from '@components/search/search.component';
 import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
-import { getStandardPageProps } from '@utils/page-types';
+import { getBlockData, getStandardPageProps } from '@utils/page-types';
 
 export async function getServerSideProps(context) {
   return getStandardPageProps(context);
@@ -25,17 +25,17 @@ export const Start: React.FC = ({ pageData, layoutData }: PageProps) => {
           <Search />
         </BigDropHeader>
       </ContentBlock>
-      <PromotionsBlock promotionsBlock={pageData.promotionsBlock?.pop()} />
+      <PromotionsBlock promotionsBlock={getBlockData(pageData?.promotionsBlock)} />
 
-      <MapBlock mapBlock={pageData.mapBlock?.pop()} />
+      <MapBlock mapBlock={getBlockData(pageData?.mapBlock)} />
 
-      <EmployerPromotionsBlock employerPromotionsBlock={pageData.employerPromotionsBlock} />
+      <EmployerPromotionsBlock employerPromotionsBlock={pageData?.employerPromotionsBlock} />
 
-      <ImportantDatesBlock importantDatesBlock={pageData.importantDatesBlock?.pop()} />
+      <ImportantDatesBlock importantDatesBlock={getBlockData(pageData?.importantDatesBlock)} />
 
-      <FAQBlock faqBlock={pageData.faqBlock?.pop()} />
+      <FAQBlock faqBlock={getBlockData(pageData?.faqBlock)} />
 
-      <LogosBlock logosBlock={pageData.logosBlock?.pop()} />
+      <LogosBlock logosBlock={getBlockData(pageData?.logosBlock)} />
     </DefaultLayout>
   );
 };

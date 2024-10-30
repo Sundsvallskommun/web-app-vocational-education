@@ -4,7 +4,7 @@ import TableBlock from '@components/table-block/table-block.component';
 import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import { Breadcrumb } from '@sk-web-gui/react';
-import { getStandardPageProps } from '@utils/page-types';
+import { getBlockData, getStandardPageProps } from '@utils/page-types';
 import NextLink from 'next/link';
 
 export async function getServerSideProps(context) {
@@ -50,7 +50,7 @@ export const Utbildningsanordnare: React.FC = ({ pageData, layoutData }: PagePro
 
       {pageData.tableBlock ?
         <ContentBlock>
-          <TableBlock tableBlock={pageData?.tableBlock?.pop()} />
+          <TableBlock tableBlock={getBlockData(pageData?.tableBlock)} />
         </ContentBlock>
       : <></>}
     </DefaultLayout>

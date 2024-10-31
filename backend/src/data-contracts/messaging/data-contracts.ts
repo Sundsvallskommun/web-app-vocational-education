@@ -642,6 +642,106 @@ export interface Violation {
   message?: string;
 }
 
+/** Message attachment model */
+export interface MessageAttachment {
+  /**
+   * The attachment content type
+   * @example "application/pdf"
+   */
+  contentType?: string;
+  /**
+   * The attachment file name
+   * @example "attachment.pdf"
+   */
+  fileName?: string;
+}
+
+/** PagingMetaData model */
+export interface PagingMetaData {
+  /**
+   * Current page
+   * @format int32
+   * @example 5
+   */
+  page?: number;
+  /**
+   * Displayed objects per page
+   * @format int32
+   * @example 20
+   */
+  limit?: number;
+  /**
+   * Displayed objects on current page
+   * @format int32
+   * @example 13
+   */
+  count?: number;
+  /**
+   * Total amount of hits based on provided search parameters
+   * @format int64
+   * @example 98
+   */
+  totalRecords?: number;
+  /**
+   * Total amount of pages based on provided search parameters
+   * @format int32
+   * @example 23
+   */
+  totalPages?: number;
+}
+
+/** Recipient model */
+export interface Recipient {
+  /**
+   * The person identifier
+   * @example "199001011234"
+   */
+  personId?: string;
+  /**
+   * The message type
+   * @example "SNAIL_MAIL"
+   */
+  messageType?: string;
+  /**
+   * The message status
+   * @example "SENT"
+   */
+  status?: string;
+}
+
+/** User message model */
+export interface UserMessage {
+  /**
+   * The message id
+   * @example "b971e0f8-2942-4b45-9fa3-bd2cc22ed76b"
+   */
+  messageId?: string;
+  /**
+   * The message issuer
+   * @example "and06sod"
+   */
+  issuer?: string;
+  /**
+   * The system that the message originated from
+   * @example "CASEDATA"
+   */
+  origin?: string;
+  /**
+   * When the message was sent
+   * @format date-time
+   */
+  sent?: string;
+  recipients?: Recipient[];
+  attachments?: MessageAttachment[];
+}
+
+/** User messages model */
+export interface UserMessages {
+  messages?: UserMessage[];
+  /** PagingMetaData model */
+  _meta?: PagingMetaData;
+}
+
 export interface LetterStatistics {
   SNAIL_MAIL?: StatisticsCounter;
   DIGITAL_MAIL?: StatisticsCounter;

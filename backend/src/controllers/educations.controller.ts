@@ -104,7 +104,7 @@ export class EducationsController {
 
   getFilter = async (filter: GetEducationFilter) => {
     try {
-      const url = `/education-finder/2.0/${MUNICIPALITY_ID}/courses/filters/${filter}/values`;
+      const url = `/education-finder/3.0/${MUNICIPALITY_ID}/courses/filters/${filter}/values`;
       const res = await this.apiService.get<string[]>({ url });
 
       if (Array.isArray(res.data) && res.data.length < 1) {
@@ -120,14 +120,14 @@ export class EducationsController {
   @Get('/education-events')
   @OpenAPI({ summary: 'Return education events' })
   async getEducationEvents(@QueryParam('filter') filter?: EducationFilterOptions): Promise<DataResponse<Course[]>> {
-    const url = `/education-finder/2.0/${MUNICIPALITY_ID}/courses`;
+    const url = `/education-finder/3.0/${MUNICIPALITY_ID}/courses`;
 
     const today = new Date();
     const todayFormatted = today.toISOString().split('T')[0];
     const params = {
       // Pagination parameters
-      page: filter?.page !== undefined ? parseInt(filter.page) - 1 : undefined,
-      size: filter?.size ?? undefined,
+      page: filter?.page !== undefined ? parseInt(filter.page) : undefined,
+      limit: filter?.size ?? undefined,
       sort: filter?.sortFunction ? filter?.sortFunction.split(';') : undefined,
 
       // Filter parameters
@@ -157,7 +157,7 @@ export class EducationsController {
   @Get('/education-events/event/:id')
   @OpenAPI({ summary: 'Return education events' })
   async getEducationEvent(@Param('id') id: string): Promise<DataResponse<Course>> {
-    const url = `/education-finder/2.0/${MUNICIPALITY_ID}/courses/${id}`;
+    const url = `/education-finder/3.0/${MUNICIPALITY_ID}/courses/${id}`;
 
     const res = await this.apiService.get<Course>({ url });
 
@@ -211,7 +211,7 @@ export class EducationsController {
   @Get('/education-events/statistics')
   @OpenAPI({ summary: 'Return education events' })
   async getEducationEventsStatistics(@QueryParam('filter') filter?: EducationStatisticsFilterOptions): Promise<DataResponse<Statistics>> {
-    const url = `/education-finder/2.0/${MUNICIPALITY_ID}/statistics`;
+    const url = `/education-finder/3.0/${MUNICIPALITY_ID}/statistics`;
 
     const params = {
       // Filter parameters

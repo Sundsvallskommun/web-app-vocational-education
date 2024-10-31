@@ -36,8 +36,8 @@ export const defaultEducationFilterOptions = {
   level: [],
   studyLocation: [],
   distance: '',
-  latestApplicationDate: '',
-  startDate: dayjs(new Date()).format('YYYY-MM-DD'),
+  latestApplicationDate: dayjs(new Date()).format('YYYY-MM-DD'),
+  startDate: '',
   scope: [],
 };
 

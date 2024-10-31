@@ -1,4 +1,5 @@
 import ContentBlock from '@components/block/content-block.component';
+import Breadcrumbs from '@components/breadcrumbs/breadcrumbs.component';
 import EducationsStartingBlock from '@components/educations-starting-block/educations-starting-block';
 import EmployerPromotionsBlock from '@components/employer-promotions-block/employer-promotions-block';
 import FAQBlock from '@components/faq-block/faq-block';
@@ -7,9 +8,8 @@ import PromotionsBlock from '@components/promotions-block/promotions-block';
 import { Search } from '@components/search/search.component';
 import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
-import { Breadcrumb } from '@sk-web-gui/react';
+import { cx } from '@sk-web-gui/react';
 import { getBlockData, getStandardPageProps } from '@utils/page-types';
-import NextLink from 'next/link';
 
 export async function getServerSideProps(context) {
   return getStandardPageProps(context);
@@ -22,27 +22,16 @@ export const Utbildningar: React.FC = ({ layoutData, pageData }: PageProps) => {
         <BigDropHeader
           imageSrc={pageData?.imgSrc}
           imageAlt={pageData?.imgAlt}
-          imageDivClassName="hidden desktop:block"
-          breadcrumbs={
-            <Breadcrumb className="" separator={<span className="mx-1">|</span>}>
-              <Breadcrumb.Item>
-                <NextLink href="/" passHref legacyBehavior>
-                  <Breadcrumb.Link href="/">Start</Breadcrumb.Link>
-                </NextLink>
-              </Breadcrumb.Item>
-
-              <Breadcrumb.Item>
-                <NextLink href="/utbildningar" passHref legacyBehavior>
-                  <Breadcrumb.Link currentPage href="/utbildningar">
-                    För dig som söker utbildning
-                  </Breadcrumb.Link>
-                </NextLink>
-              </Breadcrumb.Item>
-            </Breadcrumb>
-          }
+          imageDivClassName={cx(
+            pageData?.showImgInMobile ? 'block' : 'hidden',
+            pageData?.showImgInDesktop ? 'desktop:block' : 'desktop:hidden'
+          )}
+          breadcrumbs={<Breadcrumbs />}
         >
           <h1>{pageData.title}</h1>
-          <p className="ingress">{pageData.description}</p>
+          {pageData.description ?
+            <p className="ingress">{pageData.description}</p>
+          : <></>}
           <Search />
         </BigDropHeader>
       </ContentBlock>

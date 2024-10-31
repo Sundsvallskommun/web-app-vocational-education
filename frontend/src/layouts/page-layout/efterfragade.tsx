@@ -1,21 +1,22 @@
 import ContentBlock from '@components/block/content-block.component';
+import Breadcrumbs from '@components/breadcrumbs/breadcrumbs.component';
 import Button from '@components/button/button.component';
 import { BigDropHeader } from '@components/header/big-drop-header.component';
 import Wysiwyg from '@components/wysiwyg/wysiwyg';
-import { EmployerPromotionsBlock, EmployerPromotionsBlockPromotions, LayoutProps } from '@interfaces/admin-data';
+import { EmployerPromotionsBlock, EmployerPromotionsBlockPromotions, PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Breadcrumb } from '@sk-web-gui/react';
+import { Breadcrumb, cx } from '@sk-web-gui/react';
 import { routeDynamicSlugFormatExtract } from '@utils/app-url';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-export interface EfterfragadeProps extends LayoutProps {
+export interface EfterfragadeProps extends PageProps {
   employerPromotionsBlock: EmployerPromotionsBlock | null;
 }
 
-export const Efterfragade: React.FC<EfterfragadeProps> = ({ layoutData, employerPromotionsBlock }) => {
+export const Efterfragade: React.FC<EfterfragadeProps> = ({ layoutData, employerPromotionsBlock, pageData }) => {
   const router = useRouter();
   const [educationData, setEducationData] = useState<EmployerPromotionsBlockPromotions>();
 
@@ -48,34 +49,18 @@ export const Efterfragade: React.FC<EfterfragadeProps> = ({ layoutData, employer
     >
       <ContentBlock>
         <BigDropHeader
-          imageSrc={`/YM_puff1.jpg`}
-          imageAlt="Två studenter skrattar"
-          breadcrumbs={
-            <Breadcrumb className="" separator={<span className="mx-1">|</span>}>
-              <Breadcrumb.Item>
-                <NextLink href="/" passHref legacyBehavior>
-                  <Breadcrumb.Link href="/">Start</Breadcrumb.Link>
-                </NextLink>
-              </Breadcrumb.Item>
-
-              <Breadcrumb.Item>
-                <NextLink href="/utbildningar" passHref legacyBehavior>
-                  <Breadcrumb.Link href="/utbildningar">Utbildningar</Breadcrumb.Link>
-                </NextLink>
-              </Breadcrumb.Item>
-
-              <Breadcrumb.Item>
-                <NextLink href="/utbildningar/efterfragade" passHref legacyBehavior>
-                  <Breadcrumb.Link currentPage href="/utbildningar/efterfragade">
-                    {educationData.title}
-                  </Breadcrumb.Link>
-                </NextLink>
-              </Breadcrumb.Item>
-            </Breadcrumb>
-          }
+          imageSrc={pageData?.imgSrc}
+          imageAlt={pageData?.imgAlt}
+          imageDivClassName={cx(
+            pageData?.showImgInMobile ? 'block' : 'hidden',
+            pageData?.showImgInDesktop ? 'desktop:block' : 'desktop:hidden'
+          )}
+          breadcrumbs={<Breadcrumbs />}
         >
           <h1>{educationData.title}</h1>
-          <p className="ingress">{educationData.ingress}</p>
+          {educationData.ingress ?
+            <p className="ingress">{educationData.ingress}</p>
+          : <></>}
         </BigDropHeader>
 
         <div className="mt-lg">

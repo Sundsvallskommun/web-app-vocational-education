@@ -1,4 +1,5 @@
 import ContentBlock from '@components/block/content-block.component';
+import Breadcrumbs from '@components/breadcrumbs/breadcrumbs.component';
 import FAQBlock from '@components/faq-block/faq-block';
 import { BigDropHeader } from '@components/header/big-drop-header.component';
 import SavedInterestsFormLogic from '@components/saved-interests/saved-interests-form-logic.component';
@@ -8,6 +9,7 @@ import SavedSearches from '@components/saved-searches/saved-searches.component';
 import { Search } from '@components/search/search.component';
 import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
+import { cx } from '@sk-web-gui/react';
 import { getBlockData, getStandardPageProps } from '@utils/page-types';
 
 export async function getServerSideProps(context) {
@@ -18,9 +20,19 @@ export const Utbildningsanordnare: React.FC = ({ pageData, layoutData }: PagePro
   return (
     <DefaultLayout title={`Yrkesutbildning - Utbildningsanordnare`} layoutData={layoutData}>
       <ContentBlock>
-        <BigDropHeader imageSrc={pageData?.imgSrc} imageAlt={pageData?.imgAlt}>
+        <BigDropHeader
+          imageSrc={pageData?.imgSrc}
+          imageAlt={pageData?.imgAlt}
+          imageDivClassName={cx(
+            pageData?.showImgInMobile ? 'block' : 'hidden',
+            pageData?.showImgInDesktop ? 'desktop:block' : 'desktop:hidden'
+          )}
+          breadcrumbs={<Breadcrumbs />}
+        >
           <h1>{pageData.title}</h1>
-          <p className="ingress">{pageData.description}</p>
+          {pageData.description ?
+            <p className="ingress">{pageData.description}</p>
+          : <></>}
           <Search />
         </BigDropHeader>
       </ContentBlock>

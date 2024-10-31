@@ -1,4 +1,5 @@
 import {
+  BooleanInput,
   Edit,
   ReferenceManyField,
   SelectArrayInput,
@@ -17,6 +18,7 @@ import useRoutePermissions from '../../utils/use-route-permissions.hook';
 import { userRolesChoices } from '../user/constants';
 import { UserRoleOnUser, UserRoles } from '../../interfaces/user';
 import { GalleryInput } from '../components/gallery/gallery-input.component';
+import { WithFormContext } from '../components/with-form-context/with-form-context.component';
 
 export const PageEdit = (props: any) => {
   const { isSuperAdmin, isAdmin } = useRoutePermissions();
@@ -58,12 +60,25 @@ export const PageEdit = (props: any) => {
                       sx: { width: '576px', fontFamily: 'Montserrat', minHeight: '3em' },
                     }}
                   />
-                  <GalleryInput />
                 </>
               )}
             </>
           )}
         />
+
+        <GalleryInput />
+        <WithFormContext>
+          {({ watch }) => {
+            if (watch('imgSrc')) {
+              return (
+                <>
+                  <BooleanInput source="showImgInDesktop" />
+                  <BooleanInput source="showImgInMobile" />
+                </>
+              );
+            }
+          }}
+        </WithFormContext>
 
         <WithRecord
           label="pageName"

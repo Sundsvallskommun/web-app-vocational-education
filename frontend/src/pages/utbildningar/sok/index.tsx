@@ -1,4 +1,5 @@
 import ContentBlock from '@components/block/content-block.component';
+import Breadcrumbs from '@components/breadcrumbs/breadcrumbs.component';
 import Button from '@components/button/button.component';
 import Drop from '@components/drop/drop.component';
 import { BigDropHeader } from '@components/header/big-drop-header.component';
@@ -16,7 +17,7 @@ import {
   emptyEducationFilterOptions,
   getEducationEvents,
 } from '@services/education-service/education-service';
-import { Breadcrumb, cx, Link, omit, Spinner } from '@sk-web-gui/react';
+import { cx, Link, omit, Spinner } from '@sk-web-gui/react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getStandardPageProps } from '@utils/page-types';
 import { addToQueryString, createObjectFromQueryString, deserializeURL, serializeURL } from '@utils/url';
@@ -221,33 +222,16 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
         <BigDropHeader
           imageSrc={pageData?.imgSrc}
           imageAlt={pageData?.imgAlt}
-          imageDivClassName="hidden desktop:block"
-          breadcrumbs={
-            <Breadcrumb className="text-[13px]" separator={<span className="mx-1">|</span>}>
-              <Breadcrumb.Item>
-                <NextLink href="/" passHref legacyBehavior>
-                  <Breadcrumb.Link href="/">Start</Breadcrumb.Link>
-                </NextLink>
-              </Breadcrumb.Item>
-
-              <Breadcrumb.Item>
-                <NextLink href="/utbildningar" passHref legacyBehavior>
-                  <Breadcrumb.Link href="/utbildningar">För dig som söker utbildning</Breadcrumb.Link>
-                </NextLink>
-              </Breadcrumb.Item>
-
-              <Breadcrumb.Item>
-                <NextLink href="/utbildningar/sok" passHref legacyBehavior>
-                  <Breadcrumb.Link currentPage href="/utbildningar/sok">
-                    {searchQuery ? 'Sökresultat: ' + searchQuery : 'Sök'}
-                  </Breadcrumb.Link>
-                </NextLink>
-              </Breadcrumb.Item>
-            </Breadcrumb>
-          }
+          imageDivClassName={cx(
+            pageData?.showImgInMobile ? 'block' : 'hidden',
+            pageData?.showImgInDesktop ? 'desktop:block' : 'desktop:hidden'
+          )}
+          breadcrumbs={<Breadcrumbs lastItemTitle={searchQuery ? 'Sökresultat: ' + searchQuery : 'Sök'} />}
         >
           <h1>{pageData?.title}</h1>
-          {pageData.description && <p className="ingress">{pageData.description}</p>}
+          {pageData.description ?
+            <p className="ingress">{pageData.description}</p>
+          : <></>}
 
           <Search className="phone:mt-[25px] mt-2xl" keepParams />
           {isFiltersTouched && (

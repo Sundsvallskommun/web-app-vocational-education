@@ -81,9 +81,12 @@ model Page {
   pageName        String @unique
   title           String? @default("")
   description     String? @db.Text @default("")
+  
   imgSrc          String? @default("")
   imgAlt          String? @default("")
   imgTitle        String? @default("")
+  showImgInDesktop Boolean  @default(true)
+  showImgInMobile Boolean @default(true)
 
   // permissions by role
   editRoles       EditRolesOnPage[]

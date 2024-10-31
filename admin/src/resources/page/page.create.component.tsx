@@ -1,4 +1,5 @@
 import {
+  BooleanInput,
   Create,
   Identifier,
   ReferenceManyField,
@@ -14,6 +15,7 @@ import { CustomToolbar } from '../components/custom-toolbar.component';
 import { UserRoleOnUser, UserRoles } from '../../interfaces/user';
 import { userRolesChoices } from '../user/constants';
 import { GalleryInput } from '../components/gallery/gallery-input.component';
+import { WithFormContext } from '../components/with-form-context/with-form-context.component';
 
 export const PageCreate = (props: any) => {
   const { isSuperAdmin, isAdmin } = useRoutePermissions();
@@ -41,6 +43,18 @@ export const PageCreate = (props: any) => {
           }}
         />
         <GalleryInput />
+        <WithFormContext>
+          {({ watch }) => {
+            if (watch('imgSrc')) {
+              return (
+                <>
+                  <BooleanInput source="showImgInDesktop" defaultValue={true} />
+                  <BooleanInput source="showImgInMobile" defaultValue={true} />
+                </>
+              );
+            }
+          }}
+        </WithFormContext>
 
         <WithRecord
           label="pageName"

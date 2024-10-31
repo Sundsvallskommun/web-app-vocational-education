@@ -9,9 +9,14 @@ export async function getStandardPageProps(context) {
 
   let pathname = '';
   if (context.params) {
-    const lastSlashIndex = location.pathname.lastIndexOf('/');
-    const [path] = [location.pathname.slice(0, lastSlashIndex), location.pathname.slice(lastSlashIndex + 1)];
-    pathname = `${path}/[${Object.keys(context.params)[0]}]`;
+    const dynamicKey = Object.keys(context.params)[0];
+    if (dynamicKey === 'url') {
+      pathname = location.pathname;
+    } else {
+      const lastSlashIndex = location.pathname.lastIndexOf('/');
+      const [path] = [location.pathname.slice(0, lastSlashIndex), location.pathname.slice(lastSlashIndex + 1)];
+      pathname = `${path}/[${dynamicKey}]`;
+    }
   } else {
     pathname = location.pathname;
   }

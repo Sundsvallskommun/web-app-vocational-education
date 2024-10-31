@@ -1,4 +1,5 @@
 import ContentBlock from '@components/block/content-block.component';
+import Breadcrumbs from '@components/breadcrumbs/breadcrumbs.component';
 import ContactFormBlock from '@components/contact-form-block/contact-form-block.component';
 import EducationsRelatedBlock from '@components/educations-related-block/educations-related-block';
 import EmployerPromotionsBlock from '@components/employer-promotions-block/employer-promotions-block';
@@ -13,9 +14,8 @@ import TableBlock from '@components/table-block/table-block.component';
 import Wysiwyg from '@components/wysiwyg/wysiwyg';
 import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
-import { Breadcrumb } from '@sk-web-gui/react';
+import { cx } from '@sk-web-gui/react';
 import { getBlockData } from '@utils/page-types';
-import NextLink from 'next/link';
 
 export default function StandardPage({ layoutData, pageData }: PageProps) {
   return (
@@ -24,32 +24,16 @@ export default function StandardPage({ layoutData, pageData }: PageProps) {
         <BigDropHeader
           imageSrc={pageData?.imgSrc}
           imageAlt={pageData?.imgAlt}
-          breadcrumbs={
-            <Breadcrumb className="" separator={<span className="mx-1">|</span>}>
-              <Breadcrumb.Item>
-                <NextLink href="/" passHref legacyBehavior>
-                  <Breadcrumb.Link href="/">Start</Breadcrumb.Link>
-                </NextLink>
-              </Breadcrumb.Item>
-
-              <Breadcrumb.Item>
-                <NextLink href="/utbildningar" passHref legacyBehavior>
-                  <Breadcrumb.Link href="/utbildningar">Utbildningar</Breadcrumb.Link>
-                </NextLink>
-              </Breadcrumb.Item>
-
-              <Breadcrumb.Item>
-                <NextLink href="/utbildningar/behorighet" passHref legacyBehavior>
-                  <Breadcrumb.Link currentPage href="/utbildningar/behorighet">
-                    Behörighet, betyg och meritvärden
-                  </Breadcrumb.Link>
-                </NextLink>
-              </Breadcrumb.Item>
-            </Breadcrumb>
-          }
+          imageDivClassName={cx(
+            pageData?.showImgInMobile ? 'block' : 'hidden',
+            pageData?.showImgInDesktop ? 'desktop:block' : 'desktop:hidden'
+          )}
+          breadcrumbs={<Breadcrumbs />}
         >
           <h1>{pageData.title}</h1>
-          <p className="ingress">{pageData.description}</p>
+          {pageData.description ?
+            <p className="ingress">{pageData.description}</p>
+          : <></>}
         </BigDropHeader>
       </ContentBlock>
 

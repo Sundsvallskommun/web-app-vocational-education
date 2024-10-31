@@ -149,6 +149,8 @@ export interface PageData {
   imgSrc?: string;
   imgAlt?: string;
   imgTitle?: string;
+  showImgInMobile: boolean;
+  showImgInDesktop: boolean;
   description?: string;
   promotionsBlock?: PromotionsBlock[];
   mapBlock?: MapBlock[];

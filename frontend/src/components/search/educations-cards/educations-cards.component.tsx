@@ -40,7 +40,7 @@ export const EducationsCards: React.FC<{
               dropIcon={<SchoolIcon className="material-icon desktop:!text-2xl" />}
               footer={
                 <div className="flex flex-col gap-y-20">
-                  <div className="text-[1.3rem] medium-device:text-sm flex flex-row-reverse desktop:flex-row flex-wrap gap-x-20 desktop:gap-x-[6.9em] desktop:gap-y-20">
+                  <div className="text-[1.3rem] medium-device:text-sm flex flex-row-reverse desktop:flex-row flex-wrap gap-x-4 phone:gap-x-20 desktop:gap-x-[6.9em] desktop:gap-y-20">
                     <div className="hidden desktop:block">
                       <div className="label">Längd</div>
                       <div className="flex items-center">
@@ -50,14 +50,14 @@ export const EducationsCards: React.FC<{
                       </div>
                     </div>
                     <div>
-                      <div className="hidden desktop:block label">Plats</div>
+                      <div className="hidden desktop:block">Plats</div>
                       <div className="flex items-center">
                         <LocationOnIcon className={cardIconClasses} />
                         <span className={cardDataClasses}>{edu?.studyLocation?.split(',')}</span>
                       </div>
                     </div>
                     <div>
-                      <div className="hidden desktop:block label">Start</div>
+                      <div className="hidden desktop:block">Start</div>
                       <div className="flex items-center">
                         <DateRangeIcon className={cardIconClasses} />
                         <span className={cardDataClasses}>{edu?.start ?? '-'}</span>
@@ -93,7 +93,7 @@ export const EducationsCards: React.FC<{
             >
               <h3 className="mb-10">{edu?.name ? edu?.name : ''}</h3>
               {informationSanitized && (
-                <div className="text" dangerouslySetInnerHTML={{ __html: informationSanitized }} />
+                <div className="text max-h-[4em]" dangerouslySetInnerHTML={{ __html: informationSanitized }} />
               )}
             </DropCard>
             <div className="mt-sm flex justify-end">

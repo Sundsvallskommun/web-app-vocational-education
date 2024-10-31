@@ -1,5 +1,5 @@
 import LoginGuard from '@components/login-guard/login-guard';
-import { GuiProvider, defaultTheme } from '@sk-web-gui/react';
+import { ColorSchemeMode, GuiProvider, defaultTheme } from '@sk-web-gui/react';
 import '@styles/tailwind.scss';
 import dayjs from 'dayjs';
 import 'dayjs/locale/sv';
@@ -35,7 +35,7 @@ dayjs.updateLocale('sv', {
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <GuiProvider theme={defaultTheme}>
+    <GuiProvider theme={defaultTheme} colorScheme={ColorSchemeMode.Light}>
       <QueryClientProvider client={queryClient}>
         <AppWrapper>
           <LoginGuard>

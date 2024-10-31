@@ -58,7 +58,7 @@
     font-feature-settings:
       'clig' off,
       'liga' off;
-    @apply font-normal mb-0;
+    @apply font-normal mb-0 hyphens-auto whitespace-pre-line;
 
     & + .btn {
       @apply mt-md;

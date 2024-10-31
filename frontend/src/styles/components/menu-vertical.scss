@@ -1,7 +1,7 @@
 @layer components {
   .sk-menu-vertical-nav {
     ul li {
-      @apply leading-[2.6rem];
+      @apply leading-[2.6rem] text-base;
     }
     .sk-menu-vertical {
       @apply gap-0 relative;

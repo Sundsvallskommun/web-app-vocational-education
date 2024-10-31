@@ -38,7 +38,7 @@ export const Utbildningsanordnare: React.FC = ({ pageData, layoutData }: PagePro
       </ContentBlock>
 
       <ContentBlock>
-        <div className="grid desktop:grid-cols-[auto_50rem] gap-[5.6rem]">
+        <div className="grid desktop:grid-cols-[auto_50rem] gap-y-lg gap-x-[5.6rem]">
           <div className="flex flex-col">
             <h2>Lägg till intresseområden</h2>
             <SavedInterestsFormLogic>
@@ -47,7 +47,6 @@ export const Utbildningsanordnare: React.FC = ({ pageData, layoutData }: PagePro
             <SavedInterests />
           </div>
           <div className="flex flex-col">
-            <h2>Mina sparade sökningar</h2>
             <SavedSearches />
           </div>
         </div>

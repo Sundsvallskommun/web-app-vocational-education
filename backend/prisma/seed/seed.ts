@@ -515,6 +515,39 @@ async function main() {
   });
 
   await prisma.page.upsert({
+    where: { pageName: 'login' },
+    update: {},
+    create: {
+      url: '/login',
+      pageName: 'login',
+      title: 'Dags att logga in',
+      description:
+        'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Exercitation veniam consequat sunt nostrud amet.',
+      editRoles: {
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
+        })),
+      },
+    },
+  });
+
+  await prisma.page.upsert({
+    where: { pageName: 'utbildningar_efterfragade_efterfragad' },
+    update: {},
+    create: {
+      url: '/utbildningar/efterfragade/[efterfragad]',
+      pageName: 'utbildningar_efterfragade_efterfragad',
+      title: '',
+      description: '',
+      editRoles: {
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
+        })),
+      },
+    },
+  });
+
+  await prisma.page.upsert({
     where: { pageName: 'personuppgifter' },
     update: {},
     create: {

@@ -48,7 +48,13 @@ export default function TwoFactorModal({ show, setShow, checkError }) {
           <FormLabel>Engångskod</FormLabel>
           <Input {...register('code')} />
         </FormControl>
-        <Button className="mt-md px-[8rem]" rounded color="primary" type="submit" data-cy="verifyTwoFactorButton">
+        <Button
+          className="w-full desktop:w-fit mt-md px-[8rem]"
+          rounded
+          color="primary"
+          type="submit"
+          data-cy="verifyTwoFactorButton"
+        >
           Verifiera
         </Button>
       </form>

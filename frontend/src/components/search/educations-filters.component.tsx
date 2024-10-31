@@ -225,7 +225,7 @@ export const EducationsFilters: React.FC<{
                     aria-expanded={!!filterIsOpen}
                     rightIcon={filterIsOpen ? <RemoveOutlinedIcon /> : <AddOutlinedIcon />}
                   >
-                    <span>{filterIsOpen ? 'Mindre' : 'Fler'} filtreringar</span>
+                    <span>{filterIsOpen ? 'Färre' : 'Fler'} filter</span>
                   </Button>
                 </div>
                 <div className={cx('filter-items-desktop', filterIsOpen === false && 'invisible h-0')}>

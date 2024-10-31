@@ -1,6 +1,6 @@
 @layer components {
   .sk-breadcrumb {
-    @apply mb-lg text-[13px] phone:hidden;
+    @apply mb-lg text-[13px] hidden desktop:block;
 
     &-item {
       @apply text-[13px];

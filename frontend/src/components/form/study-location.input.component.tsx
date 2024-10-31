@@ -5,9 +5,13 @@ import { useFiltersContext } from '@contexts/filters.context';
 import { getFormattedLabelFromValue } from '@utils/labels';
 import { defaultUseFormSetValueOptions } from '@utils/forms';
 
-export const studyLocationFilterPlaceholder = 'Kommun(er)';
+export const studyLocationFilterPlaceholder = (count: number): string => (count > 1 ? 'Kommun(er)' : 'Kommun');
 
-export default function StudyLocationInput({ showLabel = false, label = studyLocationFilterPlaceholder, size = 'sm' }) {
+export default function StudyLocationInput({
+  showLabel = false,
+  label = studyLocationFilterPlaceholder(2),
+  size = 'sm',
+}) {
   const { register, watch, setValue } = useFormContext();
   const { isPhone } = useThemeQueries();
   const { filters } = useFiltersContext();

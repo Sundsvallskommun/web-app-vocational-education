@@ -21,11 +21,11 @@ export default function SavedInterestsForm({ mode = 'new' }: SavedInterestsFormP
     <div className="saved-interests-form mt-md grid desktop:grid-cols-2 items-end gap-y-[2rem] gap-x-[4.7rem]">
       <div>
         <FormControl className="w-full" required>
-          <FormLabel>{`Välj ${categoryFilterPlaceholder}`}</FormLabel>
+          <FormLabel>{`Välj ${categoryFilterPlaceholder(1)}`}</FormLabel>
           {filters?.category && (
             <Select {...register('category', { required: true })}>
               <Select.Option key={`-`} value={''}>
-                {`Välj ${categoryFilterPlaceholder}`}
+                {`Välj ${categoryFilterPlaceholder(1)}`}
               </Select.Option>
               {filters?.category?.map((value) => (
                 <Select.Option key={`${value}`} value={value}>
@@ -37,15 +37,15 @@ export default function SavedInterestsForm({ mode = 'new' }: SavedInterestsFormP
         </FormControl>
       </div>
       <div>
-        <StudyLocationInput showLabel label={`Välj ${studyLocationFilterPlaceholder}`} />
+        <StudyLocationInput showLabel label={`Välj ${studyLocationFilterPlaceholder(2)}`} />
       </div>
       <div>
         <FormControl className="w-full">
-          <FormLabel>{`Välj ${levelFilterPlaceholder}`}</FormLabel>
+          <FormLabel>{`Välj ${levelFilterPlaceholder(1)}`}</FormLabel>
           {filters?.level && (
             <Select {...register('level')}>
               <Select.Option key={`-`} value={''}>
-                {`Välj ${levelFilterPlaceholder}`}
+                {`Välj ${levelFilterPlaceholder(1)}`}
               </Select.Option>
               {filters?.level?.map((value) => (
                 <Select.Option key={`${value}`} value={value}>

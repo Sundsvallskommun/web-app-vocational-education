@@ -48,7 +48,7 @@ export const educationFilterTagLabels = {
   studyLocation: 'Plats',
   distance: 'Distansutbildning',
   latestApplicationDate: 'Sista ansökningsdatum',
-  startDate: 'Startdatum',
+  startDate: 'Start från',
   scope: 'Studietakt',
 };
 

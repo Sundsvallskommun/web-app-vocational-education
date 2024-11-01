@@ -175,6 +175,17 @@ export class EducationsController {
       filters.map(async filter => {
         if (filter === 'studyLocation') {
           data[filter] = defaultStudyLocations;
+        } else if (filter === 'level') {
+          data[filter] = [
+            'AUB',
+            'grundläggande vuxenutbildning',
+            'gymnasial vuxenutbildning',
+            'gymnasieskola',
+            'högskoleutbildning',
+            'Kommunal vuxenutbildning som anpassad utbildning på grundläggande nivå',
+            'Kommunal vuxenutbildning som anpassad utbildning på gymnasial nivå',
+            'yrkeshögskoleutbildning',
+          ];
         } else if (filter === 'category') {
           data[filter] = [
             'BYGG OCH ANLÄGGNING',

@@ -167,8 +167,14 @@ export interface PageData {
   showEducationsRelatedBlock: boolean;
 }
 
+export type PagesData = { url: string; title: string };
+
 export interface PageDataResponse {
   pageData: PageData;
+}
+
+export interface PagesDataResponse {
+  pagesData: PagesData[];
 }
 
 export interface LayoutProps {

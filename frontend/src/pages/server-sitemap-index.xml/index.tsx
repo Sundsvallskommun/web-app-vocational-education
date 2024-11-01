@@ -6,19 +6,29 @@ import {
   GetEducationEvents,
 } from '@services/education-service/education-service';
 import { appURL, routeDynamicSlugFormat } from '@utils/app-url';
+import { getPages } from '@utils/file-tree';
 import dayjs from 'dayjs';
 import { GetServerSideProps } from 'next';
 import { getServerSideSitemapLegacy, ISitemapField } from 'next-sitemap';
+import path from 'path';
 
 interface GenerateSiteMapProps {
+  pages: string[];
   dynamic: {
     '/utbildningar/[utbildning]': GetEducationEvents['courses'];
     '/utbildningar/efterfragade/[efterfragad]': EmployerPromotionsBlockPromotions[];
   };
 }
 
-async function generateSiteMapFields({ dynamic }: GenerateSiteMapProps): Promise<ISitemapField[]> {
+async function generateSiteMapFields({ pages, dynamic }: GenerateSiteMapProps): Promise<ISitemapField[]> {
   return [
+    ...pages.map((page) => {
+      return {
+        loc: appURL(page),
+        changefreq: 'daily' as ISitemapField['changefreq'],
+        priority: 0.7,
+      };
+    }),
     ...dynamic['/utbildningar/[utbildning]'].map((utbildning) => {
       return {
         loc: appURL(
@@ -43,6 +53,7 @@ async function generateSiteMapFields({ dynamic }: GenerateSiteMapProps): Promise
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const pages = (await getPages(path.join('src', 'pages'))).filter((x) => !x.includes('sitemap') && !x.includes('['));
   const dynamic: GenerateSiteMapProps['dynamic'] = {
     '/utbildningar/[utbildning]':
       (
@@ -59,7 +70,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         ?.employerPromotions ?? [],
   };
 
-  const sitemapFields: ISitemapField[] = await generateSiteMapFields({ dynamic });
+  const sitemapFields: ISitemapField[] = await generateSiteMapFields({ pages, dynamic });
 
   return getServerSideSitemapLegacy(ctx, sitemapFields);
 };

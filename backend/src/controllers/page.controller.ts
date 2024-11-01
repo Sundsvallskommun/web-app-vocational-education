@@ -63,4 +63,19 @@ export class PageController {
 
     return { data: page, message: 'success' };
   }
+
+  @Get('/pages')
+  @OpenAPI({ summary: 'Return pages' })
+  async getPages(): Promise<any> {
+    const pages = await prisma.page.findMany();
+
+    const data = pages.map(page => {
+      return {
+        url: page.url,
+        title: page.title,
+      };
+    });
+
+    return { data: data, message: 'success' };
+  }
 }

@@ -3,43 +3,17 @@ import Breadcrumbs from '@components/breadcrumbs/breadcrumbs.component';
 import Button from '@components/button/button.component';
 import { BigDropHeader } from '@components/header/big-drop-header.component';
 import Wysiwyg from '@components/wysiwyg/wysiwyg';
-import { EmployerPromotionsBlock, EmployerPromotionsBlockPromotions, PageProps } from '@interfaces/admin-data';
+import { EmployerPromotionsBlockPromotions, PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Breadcrumb, cx } from '@sk-web-gui/react';
-import { routeDynamicSlugFormatExtract } from '@utils/app-url';
+import { cx } from '@sk-web-gui/react';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 
 export interface EfterfragadeProps extends PageProps {
-  employerPromotionsBlock: EmployerPromotionsBlock | null;
+  educationData: EmployerPromotionsBlockPromotions | null;
 }
 
-export const Efterfragade: React.FC<EfterfragadeProps> = ({ layoutData, employerPromotionsBlock, pageData }) => {
-  const router = useRouter();
-  const [educationData, setEducationData] = useState<EmployerPromotionsBlockPromotions>();
-
-  useEffect(() => {
-    const loadEducation = async () => {
-      const educationTitle = routeDynamicSlugFormatExtract({
-        slug: '/utbildningar/efterfragade/[efterfragad]',
-        formattedString: router.query['efterfragad'] as string,
-      }).title;
-      const data = employerPromotionsBlock?.employerPromotions.find((x) => x.title === educationTitle);
-      setEducationData(data);
-    };
-
-    if (router.isReady) {
-      loadEducation();
-    }
-
-    router.events.on('routeChangeComplete', loadEducation);
-    return () => {
-      router.events.off('routeChangeComplete', loadEducation);
-    };
-  }, [router.query, router.isReady, router.events, employerPromotionsBlock]);
-
+export const Efterfragade: React.FC<EfterfragadeProps> = ({ layoutData, pageData, educationData }) => {
   if (!educationData) return <></>;
 
   return (

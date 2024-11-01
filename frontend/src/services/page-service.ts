@@ -1,6 +1,6 @@
-import { ApiResponse, apiService } from './api-service';
-import { PageData, PageDataResponse } from '@interfaces/admin-data';
+import { PageData, PageDataResponse, PagesData } from '@interfaces/admin-data';
 import { NextApiResponse } from 'next';
+import { ApiResponse, apiService } from './api-service';
 
 interface PageResponse {
   props?: PageDataResponse;
@@ -18,4 +18,11 @@ export const getPage: (url: string, res: NextApiResponse) => Promise<PageRespons
         destination: '/',
       },
     }));
+};
+
+export const getAdminPages: () => Promise<PagesData[]> = () => {
+  return apiService
+    .get<ApiResponse<PagesData[]>>(`pages`)
+    .then((res) => res.data.data)
+    .catch(() => []);
 };

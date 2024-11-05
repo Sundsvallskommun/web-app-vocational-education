@@ -28,9 +28,9 @@ export const Start: React.FC = ({ pageData, layoutData }: PageProps) => {
             pageData?.showImgInDesktop ? 'desktop:block' : 'desktop:hidden'
           )}
         >
-          <h1>{pageData.title}</h1>
+          <h1>{pageData?.title}</h1>
           {pageData?.description ?
-            <p className="ingress">{pageData.description}</p>
+            <p className="ingress">{pageData?.description}</p>
           : <></>}
           <Search />
         </BigDropHeader>

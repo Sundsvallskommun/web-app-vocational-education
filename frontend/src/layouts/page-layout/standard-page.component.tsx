@@ -19,7 +19,7 @@ import { getBlockData } from '@utils/page-types';
 
 export default function StandardPage({ layoutData, pageData }: PageProps) {
   return (
-    <DefaultLayout title={`Yrkesutbildning - ${pageData.title}`} layoutData={layoutData}>
+    <DefaultLayout title={`Yrkesutbildning - ${pageData?.title}`} layoutData={layoutData}>
       <ContentBlock>
         <BigDropHeader
           imageSrc={pageData?.imgSrc}
@@ -30,20 +30,20 @@ export default function StandardPage({ layoutData, pageData }: PageProps) {
           )}
           breadcrumbs={<Breadcrumbs />}
         >
-          <h1>{pageData.title}</h1>
-          {pageData.description ?
-            <p className="ingress">{pageData.description}</p>
+          <h1>{pageData?.title}</h1>
+          {pageData?.description ?
+            <p className="ingress">{pageData?.description}</p>
           : <></>}
         </BigDropHeader>
       </ContentBlock>
 
-      {pageData.wysiwyg_content ?
+      {pageData?.wysiwyg_content ?
         <ContentBlock classNameWrapper="!mt-0">
-          <Wysiwyg content={pageData.wysiwyg_content} />
+          <Wysiwyg content={pageData?.wysiwyg_content} />
         </ContentBlock>
       : <></>}
 
-      {pageData.tableBlock ?
+      {pageData?.tableBlock ?
         <ContentBlock>
           <TableBlock tableBlock={getBlockData(pageData?.tableBlock)} />
         </ContentBlock>
@@ -53,12 +53,12 @@ export default function StandardPage({ layoutData, pageData }: PageProps) {
 
       <MapBlock mapBlock={getBlockData(pageData?.mapBlock)} />
 
-      <EmployerPromotionsBlock employerPromotionsBlock={pageData.employerPromotionsBlock} />
+      <EmployerPromotionsBlock employerPromotionsBlock={pageData?.employerPromotionsBlock} />
 
       <EducationsRelatedBlock
-        show={pageData.showEducationsRelatedBlock}
+        show={pageData?.showEducationsRelatedBlock}
         educations={Array.from({ length: 3 }, (_, i) => ({
-          title: `${pageData.title}-related-${i}`,
+          title: `${pageData?.title}-related-${i}`,
           text: 'Amet minimimi mollot non deseret ullamco est sit alique dolor do sint. Velit officia consequat duis enim.',
           courseCode: `${i}`,
           date: new Date(),

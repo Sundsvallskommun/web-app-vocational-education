@@ -16,10 +16,9 @@ export default function ImportantDatesBlock({ importantDatesBlock }: ImportantDa
         {importantDatesBlock.dateCards.map((dateCard, i) => (
           <DropCard
             key={`${dateCard.title}-${i}`}
-            classNameCard="max-h-[232px] min-h-[232px] desktop:max-h-[270px]"
+            classNameCard="h-[232px] desktop:h-[270px]"
             href={dateCard.url}
             dropDate={dayjs(dateCard.date)}
-            textFade
           >
             <h3>{dateCard.title}</h3>
             <p className="text">{dateCard.text}</p>

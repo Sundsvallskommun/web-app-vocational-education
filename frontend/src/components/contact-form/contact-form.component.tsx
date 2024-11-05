@@ -13,7 +13,7 @@ export default function ContactForm() {
   return (
     <div>
       <div>
-        <div className="flex flex-col gap-[3.2rem] w-[51.5rem]">
+        <div className="flex flex-col gap-[3.2rem] w-full max-w-[51.5rem]">
           <h3 className="text-[2.6rem] leading-[3.6rem] medium-device:-tracking-[.01rem]">Kontaktformulär</h3>
           <FormControl className="w-full" required>
             <FormLabel>{`Välj ${studyLocationFilterPlaceholder}`}</FormLabel>

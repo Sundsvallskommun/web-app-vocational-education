@@ -134,7 +134,7 @@ export const Behorighet: React.FC = ({ layoutData, pageData }: PageProps) => {
         <h2>Relaterade utbildningar</h2>
         <div className="mt-2xl flex flex-col medium-device:grid medium-device:grid-cols-2 desktop:grid-cols-3 gap-lg gap-y-2xl">
           <DropCard
-            classNameCard="max-h-[270px]"
+            classNameCard="h-[232px] desktop:h-[270px]"
             href="/"
             dropIcon={<SchoolIcon className="material-icon !text-2xl" />}
             footer={
@@ -155,7 +155,7 @@ export const Behorighet: React.FC = ({ layoutData, pageData }: PageProps) => {
             </p>
           </DropCard>
           <DropCard
-            classNameCard="max-h-[270px]"
+            classNameCard="h-[232px] desktop:h-[270px]"
             href="/"
             dropIcon={<SchoolIcon className="material-icon !text-2xl" />}
             footer={
@@ -176,7 +176,7 @@ export const Behorighet: React.FC = ({ layoutData, pageData }: PageProps) => {
             </p>
           </DropCard>
           <DropCard
-            classNameCard="max-h-[270px]"
+            classNameCard="h-[232px] desktop:h-[270px]"
             href="/"
             dropIcon={<SchoolIcon className="material-icon !text-2xl" />}
             footer={

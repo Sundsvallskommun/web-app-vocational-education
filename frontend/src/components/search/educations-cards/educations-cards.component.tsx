@@ -8,7 +8,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import { getEducationLengthString, getSanitizedInformation } from '@services/education-service/education-service';
 import { Checkbox } from '@sk-web-gui/react';
 
-const cardIconClasses = 'desktop:!hidden !text-2xl mr-10';
+const cardIconClasses = 'desktop:!hidden !text-2xl mr-2 medium-device-min:mr-10';
 const cardDataClasses = 'desktop:font-bold capitalize';
 
 export const EducationsCards: React.FC<{
@@ -91,10 +91,9 @@ export const EducationsCards: React.FC<{
               }
             >
               <h3 className="mb-10">{edu?.name ? edu?.name : ''}</h3>
-              <div
-                className="text h-[9em] desktop:h-[11em]"
-                dangerouslySetInnerHTML={{ __html: informationSanitized }}
-              />
+              {informationSanitized && (
+                <div className="text" dangerouslySetInnerHTML={{ __html: informationSanitized }} />
+              )}
             </DropCard>
             <div className="mt-sm flex justify-end">
               <Checkbox

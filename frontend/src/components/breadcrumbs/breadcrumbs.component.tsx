@@ -1,4 +1,5 @@
 import { Breadcrumb } from '@sk-web-gui/react';
+import { appURL } from '@utils/app-url';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -12,7 +13,9 @@ const getLastString = (segment) => {
 
 const Breadcrumbs = ({ lastItemTitle }: { lastItemTitle?: string }) => {
   const router = useRouter();
-  const pathSegments = Array.isArray(router.query.url) ? router.query.url?.filter(Boolean) : [router.query.url || ''];
+  const location = new URL(appURL(router.asPath));
+  const pathWithoutBasePath = location.pathname.replace(new RegExp(`^${process.env.NEXT_PUBLIC_BASE_PATH}`), '') || '/';
+  const pathSegments = pathWithoutBasePath.split('/').filter(Boolean);
 
   return (
     <Breadcrumb className="" separator={<span className="mx-1">|</span>}>

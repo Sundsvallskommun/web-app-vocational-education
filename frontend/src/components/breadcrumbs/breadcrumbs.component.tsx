@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 
 const getLastString = (segment) => {
   segment = segment.toLowerCase();
-  console.log('getLastString segment', segment);
   if (segment === 'arbetsgivare') return 'För arbetsgivare';
   if (segment === 'utbildningar') return 'För dig som söker utbildning';
   if (segment === 'utbildningsanordnare') return 'För dig som är utbildningsanordnare';
@@ -13,7 +12,7 @@ const getLastString = (segment) => {
 
 const Breadcrumbs = ({ lastItemTitle }: { lastItemTitle?: string }) => {
   const router = useRouter();
-  const pathSegments = router.asPath.split('/').filter(Boolean);
+  const pathSegments = Array.isArray(router.query.url) ? router.query.url?.filter(Boolean) : [router.query.url || ''];
 
   return (
     <Breadcrumb className="" separator={<span className="mx-1">|</span>}>

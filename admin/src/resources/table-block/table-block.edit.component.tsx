@@ -33,7 +33,7 @@ const transform = (data: FieldValues) => {
 };
 
 export const TableBlockEdit = () => {
-  const { isSuperAdmin } = useRoutePermissions();
+  const { isAdmin } = useRoutePermissions();
   const translate = useTranslate();
   const { tableId: paramsTableId } = useParams();
   const tableId = paramsTableId ? parseInt(paramsTableId) : null;
@@ -77,7 +77,7 @@ export const TableBlockEdit = () => {
           </Box>
           <BooleanInput source="showBlock" />
           <SaveButton />
-          {isSuperAdmin && (
+          {isAdmin && (
             <DeleteButton
               record={table}
               mutationMode="optimistic"

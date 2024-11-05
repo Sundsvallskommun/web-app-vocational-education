@@ -32,7 +32,7 @@ export const UserEdit = (props: any) => {
               validate={required()}
               optionValue="role"
               optionText="role"
-              readOnly={!isAdmin || (data.username === 'admin' && !isSuperAdmin)}
+              readOnly={!isAdmin}
               choices={userRolesChoices}
             />
           )}

@@ -1,15 +1,15 @@
 import prisma from '@/utils/prisma';
-import { Prisma, UserRoleEnum } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { createHandler, defaultHandler, getListHandler, getManyHandler, getOneHandler, updateHandler } from 'ra-data-simple-prisma';
 import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
-import { hasRolesForMethods, checkPageRoles } from './utils';
+import { checkPageRoles } from './utils';
 
 @Controller()
 export class AdminImportantDatesBlockDateCardsController {
   @All('/admin/importantDatesBlockDateCards')
   @OpenAPI({ summary: 'Handle ImportantDatesBlockDateCards' })
-  @UseBefore(hasRolesForMethods([UserRoleEnum.ADMIN], ['delete', 'create']), checkPageRoles())
+  @UseBefore(checkPageRoles())
   async importantDatesBlockDateCards(@Req() req): Promise<any> {
     switch (req.body.method) {
       case 'getOne':

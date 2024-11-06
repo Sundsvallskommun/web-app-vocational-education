@@ -17,6 +17,61 @@ export const PageSwitch = () => {
   const { isAdmin } = useRoutePermissions();
 
   switch (url) {
+    case '/login':
+    case '/utbildningar/sok':
+    case '/utbildningar/sok/jamfor':
+      return <></>;
+    case '/utbildningsanordnare':
+      return (
+        <>
+          {(isAdmin || record.faqBlock?.length) && (
+            <>
+              <br />
+              <h2>{translate('resources.faqBlock.name', { smart_count: 2 })}</h2>
+              <EditFAQBlock />
+            </>
+          )}
+        </>
+      );
+    case '/utbildningar/[utbildning]':
+      return (
+        <>
+          {(isAdmin || record.faqBlock?.length) && (
+            <>
+              <br />
+              <h2>{translate('resources.faqBlock.name', { smart_count: 2 })}</h2>
+              <EditFAQBlock />
+            </>
+          )}
+          {isAdmin && (
+            <>
+              <br />
+              <h2>{translate('resources.educationsRelatedBlock.name')}</h2>
+              <BooleanInput
+                source="showEducationsRelatedBlock"
+                label={translate('resources.educationsRelatedBlock.fields.showBlock')}
+              />
+            </>
+          )}
+          {isAdmin && (
+            <>
+              <br />
+              <h2>{translate('resources.searchBlock.name')}</h2>
+              <BooleanInput source="showSearchBlock" label={translate('resources.searchBlock.fields.showBlock')} />
+            </>
+          )}
+        </>
+      );
+    case '/utbildningar/efterfragade/[efterfragad]':
+      return (
+        <>
+          {(isAdmin || record.wysiwyg_content?.length) && (
+            <>
+              <Wysiwyg />
+            </>
+          )}
+        </>
+      );
     default:
       // StandardPage
       return (

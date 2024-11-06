@@ -3,7 +3,7 @@ import { appURL } from '@utils/app-url';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 
-const getLastString = (segment) => {
+const getSegmentString = (segment) => {
   segment = segment.toLowerCase();
   if (segment === 'arbetsgivare') return 'För arbetsgivare';
   if (segment === 'utbildningar') return 'För dig som söker utbildning';
@@ -32,9 +32,7 @@ const Breadcrumbs = ({ lastItemTitle }: { lastItemTitle?: string }) => {
           <Breadcrumb.Item key={href}>
             <NextLink href={href} passHref legacyBehavior>
               <Breadcrumb.Link href={href} currentPage={isLast}>
-                {isLast ?
-                  (lastItemTitle ?? getLastString(segment))
-                : segment.charAt(0).toUpperCase() + segment.slice(1)}
+                {isLast ? (lastItemTitle ?? getSegmentString(segment)) : getSegmentString(segment)}
               </Breadcrumb.Link>
             </NextLink>
           </Breadcrumb.Item>

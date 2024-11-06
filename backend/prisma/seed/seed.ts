@@ -88,23 +88,6 @@ async function main() {
     },
   });
 
-  const vagledning = await prisma.page.upsert({
-    where: { pageName: 'vagledning' },
-    update: {},
-    create: {
-      url: '/vagledning',
-      pageName: 'vagledning',
-      title: 'Här finns jobben',
-      description:
-        'Ta reda på vilka branscher som ger jobb nu och x år framåt. Regionen växer och behovet av arbetskraft är stort. Vi behöver dina kompetenser! Utbildning är och kommer att bli en allt viktigare faktor för att få ett jobb',
-      editRoles: {
-        create: [UserRoleEnum.EDITOR].map(role => ({
-          role: role,
-        })),
-      },
-    },
-  });
-
   const arbetsgivare = await prisma.page.upsert({
     where: { pageName: 'arbetsgivare' },
     update: {},
@@ -118,6 +101,22 @@ async function main() {
         create: [UserRoleEnum.EDITOR].map(role => ({
           role: role,
         })),
+      },
+      contactFormBlock: {
+        create: [
+          {
+            title: 'Kontaktformulär',
+            showBlock: true,
+            emails: {
+              create: [
+                {
+                  label: 'Sundsvall',
+                  email: 'info@sundsvall.se',
+                },
+              ],
+            },
+          },
+        ],
       },
     },
   });
@@ -456,55 +455,28 @@ async function main() {
   });
 
   await prisma.page.upsert({
-    where: { pageName: 'arbetsgivare_kontaktautbildningsanordnare' },
-    update: {},
-    create: {
-      url: '/arbetsgivare/kontaktautbildningsanordnare',
-      pageName: 'arbetsgivare_kontaktautbildningsanordnare',
-      title: 'Utbildningsanordnare',
-      description:
-        'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Exercitation veniam consequat sunt nostrud amet.',
-      editRoles: {
-        create: [UserRoleEnum.EDITOR].map(role => ({
-          role: role,
-        })),
-      },
-      tableBlock: {
-        create: [
-          {
-            showBlock: true,
-            headers: {
-              create: [
-                {
-                  name: 'Namn',
-                },
-                {
-                  name: 'Kommun',
-                },
-                {
-                  name: 'Ansvarsområde',
-                },
-                {
-                  name: 'Telefon',
-                },
-                {
-                  name: 'Email',
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  });
-
-  await prisma.page.upsert({
     where: { pageName: 'utbildningar_sok' },
     update: {},
     create: {
       url: '/utbildningar/sok',
       pageName: 'utbildningar_sok',
       title: 'Sugen på att börja studera?',
+      description: '',
+      editRoles: {
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
+        })),
+      },
+    },
+  });
+
+  await prisma.page.upsert({
+    where: { pageName: 'utbildningar_sok_jamfor' },
+    update: {},
+    create: {
+      url: '/utbildningar/sok/jamfor',
+      pageName: 'utbildningar_sok_jamfor',
+      title: 'Jämför utbildningar',
       description: '',
       editRoles: {
         create: [UserRoleEnum.EDITOR].map(role => ({
@@ -607,6 +579,38 @@ async function main() {
         create: [UserRoleEnum.EDITOR].map(role => ({
           role: role,
         })),
+      },
+    },
+  });
+
+  await prisma.page.upsert({
+    where: { pageName: 'kontakta-oss' },
+    update: {},
+    create: {
+      url: '/kontakta-oss',
+      pageName: 'kontakta-oss',
+      title: 'Kontakta oss',
+      description: '',
+      editRoles: {
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
+        })),
+      },
+      contactFormBlock: {
+        create: [
+          {
+            title: 'Kontaktformulär',
+            showBlock: true,
+            emails: {
+              create: [
+                {
+                  label: 'Sundsvall',
+                  email: 'info@sundsvall.se',
+                },
+              ],
+            },
+          },
+        ],
       },
     },
   });

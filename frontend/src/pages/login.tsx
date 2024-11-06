@@ -14,7 +14,7 @@ export async function getServerSideProps(context) {
 
 export const Login: React.FC = ({ layoutData, pageData }: PageProps) => {
   return (
-    <DefaultLayout title={`Yrkesutbildning - Login`} layoutData={layoutData}>
+    <DefaultLayout title={`Yrkesutbildning - Logga in`} layoutData={layoutData}>
       <ContentBlock>
         <BigDropHeader
           imageSrc={pageData?.imgSrc}

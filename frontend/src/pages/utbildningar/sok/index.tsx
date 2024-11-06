@@ -215,7 +215,7 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
 
   return (
     <DefaultLayout
-      title={`Yrkesutbildning - Sok${searchQuery ? ` - Sökord:${searchQuery}` : ''}`}
+      title={`Yrkesutbildning - ${searchQuery ? 'Sökresultat: ' + searchQuery : 'Sök'}`}
       layoutData={layoutData}
     >
       <ContentBlock>

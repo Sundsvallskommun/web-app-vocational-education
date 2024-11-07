@@ -97,6 +97,16 @@ type GetEducationFiltersResponseData = {
 };
 
 const defaultStudyLocations = ['Härnösand', 'Kramfors', 'Sollefteå', 'Sundsvall', 'Timrå', 'Ånge', 'Örnsköldsvik'];
+const defaultLevels = [
+  'AUB',
+  'grundläggande vuxenutbildning',
+  'gymnasial vuxenutbildning',
+  'gymnasieskola',
+  'högskoleutbildning',
+  'Kommunal vuxenutbildning som anpassad utbildning på grundläggande nivå',
+  'Kommunal vuxenutbildning som anpassad utbildning på gymnasial nivå',
+  'yrkeshögskoleutbildning',
+];
 
 @Controller()
 export class EducationsController {
@@ -117,32 +127,36 @@ export class EducationsController {
     }
   };
 
+  getSortProperties(input: string): string[] {
+    return input.split(';')?.map(pair => pair.split(',')[0]);
+  }
+
+  getSortDirection(input: string): string {
+    const [firstPair] = input.split(';');
+    const [, direction] = firstPair.split(',');
+    return direction?.toUpperCase() ?? 'ASC';
+  }
+
   @Get('/education-events')
   @OpenAPI({ summary: 'Return education events' })
   async getEducationEvents(@QueryParam('filter') filter?: EducationFilterOptions): Promise<DataResponse<Course[]>> {
     const url = `/education-finder/3.0/${MUNICIPALITY_ID}/courses`;
-
-    const today = new Date();
-    const todayFormatted = today.toISOString().split('T')[0];
     const params = {
       // Pagination parameters
       page: filter?.page !== undefined ? parseInt(filter.page) : undefined,
       limit: filter?.size ?? undefined,
-      sort: filter?.sortFunction ? filter?.sortFunction.split(';') : undefined,
+      sortBy: filter?.sortFunction ? this.getSortProperties(filter?.sortFunction) : undefined,
+      sortDirection: this.getSortDirection(filter?.sortFunction),
 
       // Filter parameters
       searchString: filter?.q ?? undefined,
-      // FIXME: level should have preset defaults if unset as studyLocation
-      level: filter?.level ?? undefined,
-      scope: filter?.scope ?? undefined,
-      studyLocation: filter?.studyLocation ?? defaultStudyLocations,
-
-      latestApplicationBefore: filter?.latestApplicationDate ?? undefined,
-      latestApplicationAfter: filter?.latestApplicationDate ? todayFormatted : undefined,
-      startAfter: filter?.startDate ?? filter?.latestApplicationDate ? todayFormatted : undefined,
-
-      category: filter?.category ?? undefined,
+      categories: filter?.category ?? undefined,
+      levels: filter?.level ?? defaultLevels,
+      studyLocations: filter?.studyLocation ?? defaultStudyLocations,
       distance: filter?.distance ?? undefined,
+      latestApplicationAfter: filter?.latestApplicationDate ?? undefined,
+      startAfter: filter?.startDate ?? undefined,
+      scopes: filter?.scope ?? undefined,
     };
 
     const res = await this.apiService.get<Course[]>({ url, params });
@@ -176,40 +190,7 @@ export class EducationsController {
         if (filter === 'studyLocation') {
           data[filter] = defaultStudyLocations;
         } else if (filter === 'level') {
-          data[filter] = [
-            'AUB',
-            'grundläggande vuxenutbildning',
-            'gymnasial vuxenutbildning',
-            'gymnasieskola',
-            'högskoleutbildning',
-            'Kommunal vuxenutbildning som anpassad utbildning på grundläggande nivå',
-            'Kommunal vuxenutbildning som anpassad utbildning på gymnasial nivå',
-            'yrkeshögskoleutbildning',
-          ];
-        } else if (filter === 'category') {
-          data[filter] = [
-            'BYGG OCH ANLÄGGNING',
-            'DATA OCH IT',
-            'EKONOMI, MARKNADSFÖRING OCH ADMINISTRATION',
-            'FRISK- OCH SKÖNHETSVÅRD',
-            'FÖRBEREDANDE UTBILDNINGAR',
-            'HANTVERK',
-            'HOTELL, RESTAURANG OCH TURISM',
-            'INFORMATION OCH MEDIA',
-            'KONSTNÄRLIGA UTBILDNINGAR',
-            'KULTUR OCH HUMANISTISKA ÄMNEN',
-            'MEDICIN OCH VÅRD',
-            'NATURBRUK',
-            'NATURVETENSKAP',
-            'SAMHÄLLSVETENSKAP OCH JURIDIK',
-            'SPRÅK',
-            'SÄKERHET, FÖRSVAR OCH RÄDDNINGSTJÄNST',
-            'TEKNIK',
-            'TILLVERKNING OCH UNDERHÅLL',
-            'TRANSPORT',
-            'UNDERVISNING OCH IDROTT',
-            'ÖVRIGA KURSER OCH TVÄRVETENSKAP',
-          ];
+          data[filter] = defaultLevels;
         } else {
           data[filter] = await this.getFilter(filter);
         }

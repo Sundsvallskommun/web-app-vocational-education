@@ -27,6 +27,18 @@ export const emptyEducationFilterOptions: EducationFilterOptions = {
   scope: [],
 };
 
+export const typeReferenceEducationFilterOptions: EducationFilterOptions = {
+  q: '',
+  sortFunction: sortFilter[0].value,
+  category: [''],
+  level: [''],
+  studyLocation: [''],
+  distance: '',
+  latestApplicationDate: '',
+  startDate: '',
+  scope: [''],
+};
+
 export const defaultEducationFilterOptions = {
   page: 1,
   size: 10,

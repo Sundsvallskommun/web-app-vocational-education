@@ -4,7 +4,7 @@ import FilterPopup from './filter-popup.component';
 
 const sortListPlaceholder = 'Sortera efter';
 export const sortFilter = [
-  { label: 'Sista ansökningsdatum', value: 'latestApplication;name' },
+  { label: 'Sista ansökningsdatum', value: 'latestApplication,asc;name,asc' },
   { label: 'A -> Ö', value: 'name,asc' },
   { label: 'Ö -> A', value: 'name,desc' },
 ];

@@ -16,12 +16,12 @@ import {
   defaultEducationFilterOptions,
   emptyEducationFilterOptions,
   getEducationEvents,
+  typeReferenceEducationFilterOptions,
 } from '@services/education-service/education-service';
 import { cx, Link, omit, Spinner } from '@sk-web-gui/react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getStandardPageProps } from '@utils/page-types';
 import { addToQueryString, createObjectFromQueryString, deserializeURL, serializeURL } from '@utils/url';
-import _ from 'lodash';
 import NextLink from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
@@ -55,7 +55,7 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
     isPending: isPending,
     isFetching,
   } = useQuery({
-    queryKey: ['searchResults', searchFilters],
+    queryKey: ['searchResults', JSON.stringify(searchFilters)],
     queryFn: async () => {
       const res = await getEducationEvents({ ...searchFilters });
       if (!res.error) {
@@ -131,10 +131,10 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
 
   const handleOnSubmitCallback = (filterData: EducationFilterOptions) => {
     const filters = createObjectFromQueryString(window.location.search, {
-      objectReference: emptyEducationFilterOptions,
+      objectReference: typeReferenceEducationFilterOptions,
       objectReferenceAsBase: true,
     });
-    if (!_.isEqual(filters, filterData)) {
+    if (JSON.stringify(filters) !== JSON.stringify(filterData)) {
       updateParams(serializeURL({ ...filterData }));
     }
   };
@@ -160,27 +160,26 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
 
   useEffect(() => {
     const filters = createObjectFromQueryString(searchCurrent || window.location.search, {
-      objectReference: defaultEducationFilterOptions,
+      objectReference: typeReferenceEducationFilterOptions,
       objectReferenceOnly: true,
     });
 
     const updatedQuery = filters.q || '';
     const isQueryChanged = updatedQuery !== searchQuery;
 
-    const filtersWithBaseDefaults = Object.assign(
-      {},
-      emptyEducationFilterOptions,
-      (Object.keys(filters).length === 1 && updatedQuery) || isQueryChanged ?
+    const filtersWithBaseDefaults = {
+      ...emptyEducationFilterOptions,
+      ...((Object.keys(filters).length === 1 && updatedQuery) || isQueryChanged ?
         { ...defaultEducationFilterOptions, q: updatedQuery }
       : {
           page: page,
           size: pageSize,
           ...filters,
-        }
-    );
+        }),
+    };
 
     const updatedFilters = filtersWithBaseDefaults;
-    const isFiltersChanged = !_.isEqual(updatedFilters, searchFilters);
+    const isFiltersChanged = JSON.stringify(updatedFilters) !== JSON.stringify(searchFilters);
 
     const isChanged = isQueryChanged || isFiltersChanged;
 

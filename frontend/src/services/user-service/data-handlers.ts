@@ -1,8 +1,8 @@
 import { User, UserSavedInterest, UserSavedSearch, UserSavedSearchResponse } from '@interfaces/user';
 import { ApiResponse } from '@services/api-service';
-import { emptyEducationFilterOptions } from '@services/education-service/education-service';
-import { createObjectFromQueryString } from '@utils/url';
+import { typeReferenceEducationFilterOptions } from '@services/education-service/education-service';
 import { omit } from '@sk-web-gui/react';
+import { createObjectFromQueryString } from '@utils/url';
 
 export const handleSetUserResponse: (res: ApiResponse<User>) => User = (res) => ({
   id: res.data.id,
@@ -17,7 +17,7 @@ export const handleGetUserSavedSearchResponse: (data: UserSavedSearchResponse) =
   searchTerm: data.searchTerm,
   parameters: data.parameters,
   educationFilterOptions: createObjectFromQueryString(data.parameters, {
-    objectReference: omit(emptyEducationFilterOptions, ['q']),
+    objectReference: omit(typeReferenceEducationFilterOptions, ['q']),
     objectReferenceOnly: true,
   }),
 });

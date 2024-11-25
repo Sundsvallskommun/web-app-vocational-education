@@ -8,7 +8,7 @@ import { hasPermissions } from '@/middlewares/permissions.middleware';
 import { getClientUser } from '@/services/user.service';
 import prisma from '@/utils/prisma';
 import authMiddleware from '@middlewares/auth.middleware';
-import { User_SavedInterest } from '@prisma/client';
+import { User_SavedInterest, User_SavedSearch } from '@prisma/client';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Res, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 
@@ -59,6 +59,14 @@ export class UserController {
     return statisticsData;
   };
 
+  returnStatisticsData = (statisticsData: UserSavedInterestStatistics[]) => {
+    return statisticsData.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  };
+
+  returnSavedSearches = (savedSearches: User_SavedSearch[]) => {
+    return savedSearches.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  };
+
   @Get('/me')
   @OpenAPI({ summary: 'Return current user' })
   @UseBefore(authMiddleware)
@@ -75,7 +83,7 @@ export class UserController {
   @Get('/user/saved-searches')
   @OpenAPI({ summary: 'Return saved searches for user' })
   @UseBefore(authMiddleware, hasPermissions(['userSaveSearches']))
-  async getSavedSearches(@Req() req: RequestWithUser, @Res() response: any): Promise<any> {
+  async getSavedSearches(@Req() req: RequestWithUser, @Res() response: any): Promise<User_SavedSearch> {
     if (!req.user.username) {
       throw new HttpException(400, 'Bad Request');
     }
@@ -86,13 +94,13 @@ export class UserController {
       },
     });
 
-    return response.send({ data: searches, message: 'success' });
+    return response.send({ data: this.returnSavedSearches(searches), message: 'success' });
   }
 
   @Post('/user/saved-searches')
   @OpenAPI({ summary: 'Create saved search for user' })
   @UseBefore(authMiddleware, hasPermissions(['userSaveSearches']))
-  async newSavedSearch(@Req() req: RequestWithUser, @Res() response: any, @Body() body: SavedSearchDto): Promise<any> {
+  async newSavedSearch(@Req() req: RequestWithUser, @Res() response: any, @Body() body: SavedSearchDto): Promise<User_SavedSearch> {
     if (!req.user.username) {
       throw new HttpException(400, 'Bad Request');
     }
@@ -104,13 +112,13 @@ export class UserController {
       },
     });
 
-    return response.send({ data: search, message: 'success' });
+    return response.send({ data: [search], message: 'success' });
   }
 
   @Delete('/user/saved-searches/:id')
   @OpenAPI({ summary: 'Delete saved search for user' })
   @UseBefore(authMiddleware, hasPermissions(['userSaveSearches']))
-  async deleteSavedSearch(@Req() req: RequestWithUser, @Res() response: any, @Param('id') id: number): Promise<any> {
+  async deleteSavedSearch(@Req() req: RequestWithUser, @Res() response: any, @Param('id') id: number): Promise<User_SavedSearch> {
     if (!req.user.username) {
       throw new HttpException(400, 'Bad Request');
     }
@@ -122,7 +130,7 @@ export class UserController {
       },
     });
 
-    return response.send({ data: search, message: 'success' });
+    return response.send({ data: [search], message: 'success' });
   }
 
   @Get('/user/saved-interests')
@@ -144,7 +152,10 @@ export class UserController {
       throw new HttpException(400, 'Missing statistics data');
     }
 
-    return response.send({ data: statisticsData, message: 'success' });
+    return response.send({
+      data: this.returnStatisticsData(statisticsData),
+      message: 'success',
+    });
   }
 
   @Post('/user/saved-interests')
@@ -163,13 +174,13 @@ export class UserController {
       },
     });
 
-    const statisticsData = this.getStatisticsData([interest]);
+    const statisticsData = await this.getStatisticsData([interest]);
 
     if (!statisticsData) {
       throw new HttpException(400, 'Missing statistics data');
     }
 
-    return response.send({ data: statisticsData, message: 'success' });
+    return response.send({ data: this.returnStatisticsData(statisticsData), message: 'success' });
   }
 
   @Patch('/user/saved-interests/:id')
@@ -191,13 +202,13 @@ export class UserController {
       },
     });
 
-    const statisticsData = this.getStatisticsData([interest]);
+    const statisticsData = await this.getStatisticsData([interest]);
 
     if (!statisticsData) {
       throw new HttpException(400, 'Missing statistics data');
     }
 
-    return response.send({ data: statisticsData, message: 'success' });
+    return response.send({ data: this.returnStatisticsData(statisticsData), message: 'success' });
   }
 
   @Delete('/user/saved-interests/:id')

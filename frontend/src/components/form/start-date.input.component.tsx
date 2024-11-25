@@ -2,7 +2,7 @@ import { DatePicker, FormControl, FormLabel, useThemeQueries } from '@sk-web-gui
 import { useFormContext } from 'react-hook-form';
 import FilterPopup from './filter-popup.component';
 
-const startDatePlaceholder = 'Startdatum';
+const startDatePlaceholder = 'Start från';
 
 export default function StartDateInput({ label = startDatePlaceholder, showLabel = false, size = 'sm' }) {
   const { register } = useFormContext();

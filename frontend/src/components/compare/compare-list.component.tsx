@@ -4,6 +4,7 @@ import { getPageListSlice } from '@utils/pagination';
 import NextLink from 'next/link';
 import { useState } from 'react';
 import { tableCellTextClasses } from '../search/educations-table/educations-table.component';
+import { routeDynamicSlugFormat } from '@utils/app-url';
 
 export const CompareList: React.FC<{ compareList: Course[]; onRemove? }> = ({ compareList, onRemove }) => {
   const handleOnRemove = (item: Course) => () => {
@@ -47,7 +48,7 @@ export const CompareList: React.FC<{ compareList: Course[]; onRemove? }> = ({ co
                 <Table.Column>
                   <span className="inline-block">
                     <NextLink
-                      href={`/utbildningar/${edu.code}-${edu.id}`} /* This should be built and point to dynamic page */
+                      href={`/utbildningar/${routeDynamicSlugFormat({ slug: '/utbildningar/[utbildning]', data: edu })}`}
                     >
                       <Link as="span" className="line-clamp-2 text-base mb-6 leading-[1.5]">
                         {edu.name ?? '-'}

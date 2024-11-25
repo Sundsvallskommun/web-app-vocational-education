@@ -27,6 +27,18 @@ export const emptyEducationFilterOptions: EducationFilterOptions = {
   scope: [],
 };
 
+export const typeReferenceEducationFilterOptions: EducationFilterOptions = {
+  q: '',
+  sortFunction: sortFilter[0].value,
+  category: [''],
+  level: [''],
+  studyLocation: [''],
+  distance: '',
+  latestApplicationDate: '',
+  startDate: '',
+  scope: [''],
+};
+
 export const defaultEducationFilterOptions = {
   page: 1,
   size: 10,
@@ -36,8 +48,8 @@ export const defaultEducationFilterOptions = {
   level: [],
   studyLocation: [],
   distance: '',
-  latestApplicationDate: '',
-  startDate: dayjs(new Date()).format('YYYY-MM-DD'),
+  latestApplicationDate: dayjs(new Date()).format('YYYY-MM-DD'),
+  startDate: '',
   scope: [],
 };
 
@@ -48,7 +60,7 @@ export const educationFilterTagLabels = {
   studyLocation: 'Plats',
   distance: 'Distansutbildning',
   latestApplicationDate: 'Sista ansökningsdatum',
-  startDate: 'Startdatum',
+  startDate: 'Start från',
   scope: 'Studietakt',
 };
 

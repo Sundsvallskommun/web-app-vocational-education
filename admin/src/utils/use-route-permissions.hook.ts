@@ -14,11 +14,11 @@ export default function useRoutePermissions() {
   } catch (err) {}
 
   // exports
-  const isSuperAdmin = user?.username === 'admin';
   const isAdmin = user?.roles.includes('ADMIN');
+  const isSuperAdmin = user?.username === 'admin' && isAdmin;
   const editedUserIsUser = user?.id == parseInt(recordId as string);
 
-  const canCreate = isSuperAdmin;
+  let canCreate = isAdmin;
 
   useEffect(() => {
     if (mounted) {
@@ -31,7 +31,7 @@ export default function useRoutePermissions() {
           }
         }
         if (route.includes('page/create')) {
-          if (canCreate) {
+          if (isSuperAdmin) {
             return true;
           } else {
             return false;

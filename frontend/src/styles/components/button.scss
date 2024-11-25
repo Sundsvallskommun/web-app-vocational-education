@@ -16,13 +16,17 @@
     }
 
     &-secondary[data-color='primary'] {
-      @apply border-primary bg-transparent text-primary;
+      @apply border-primary bg-white text-primary;
+
+      &:hover {
+        @apply underline shadow-md;
+      }
     }
   }
 
   .override {
     &.sk-btn {
-      @apply flex max-w-full pl-xl pr-xl text-base font-medium;
+      @apply flex max-w-full min-h-[5rem] pl-xl pr-xl text-base font-medium;
 
       &.btn-left-icon,
       &.btn-right-icon {
@@ -48,7 +52,7 @@
       }
 
       &.dense {
-        @apply pl-[4rem] pr-[3rem] min-h-[5rem] gap-sm;
+        @apply pl-[4rem] pr-[3rem] gap-sm;
 
         &.btn-right-icon svg,
         &.btn-left-icon svg {

@@ -10,7 +10,7 @@ export default function ContactFormBlock({ contactFormBlock }: { contactFormBloc
     <ContentBlock>
       <ContactFormLogic>
         <ContactFormWrapper>
-          <ContactForm municipalityEmails={contactFormBlock.emails} />
+          <ContactForm contactFormBlock={contactFormBlock} />
         </ContactFormWrapper>
       </ContactFormLogic>
     </ContentBlock>

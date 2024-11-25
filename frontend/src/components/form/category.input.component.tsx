@@ -5,9 +5,15 @@ import { useFormContext } from 'react-hook-form';
 import FilterPopup from './filter-popup.component';
 import { defaultUseFormSetValueOptions } from '@utils/forms';
 
-export const categoryFilterPlaceholder = 'Utbildningskategori(er)';
+export const categoryFilterPlaceholder = (count: number): string =>
+  count > 1 ? 'Utbildningskategori(er)' : 'Utbildningskategori';
 
-export default function CategoryInput({ showLabel = false, label = categoryFilterPlaceholder, size = 'sm', ...rest }) {
+export default function CategoryInput({
+  showLabel = false,
+  label = categoryFilterPlaceholder(2),
+  size = 'sm',
+  ...rest
+}) {
   const { register, watch, setValue } = useFormContext();
   const { isPhone } = useThemeQueries();
   const { filters } = useFiltersContext();

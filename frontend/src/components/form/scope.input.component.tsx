@@ -4,9 +4,9 @@ import FilterPopup from './filter-popup.component';
 import { useFiltersContext } from '@contexts/filters.context';
 import { getFormattedLabelFromValue } from '@utils/labels';
 
-const scopeFilterPlaceholder = 'Studietakt';
+const scopeFilterPlaceholder = (count: number): string => (count > 1 ? 'Studietakt(er)' : 'Studietakt');
 
-export default function ScopeInput({ label = scopeFilterPlaceholder, showLabel = false, size = 'sm' }) {
+export default function ScopeInput({ label = scopeFilterPlaceholder(2), showLabel = false, size = 'sm' }) {
   const { register } = useFormContext();
   const { isPhone } = useThemeQueries();
   const { filters } = useFiltersContext();

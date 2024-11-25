@@ -58,7 +58,7 @@
     font-feature-settings:
       'clig' off,
       'liga' off;
-    @apply font-normal mb-0;
+    @apply font-normal mb-0 hyphens-auto whitespace-pre-line;
 
     & + .btn {
       @apply mt-md;
@@ -150,6 +150,6 @@
   label,
   legend,
   .legend {
-    @apply text-label text-[1.4rem] font-normal flex leading-[1.31];
+    @apply text-label text-[1.3rem] small-device:text-sm font-normal flex leading-[1.31];
   }
 }

@@ -8,6 +8,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Course } from '@interfaces/education';
 import { getEducationLengthString } from '@services/education-service/education-service';
 import 'swiper/css';
+import { routeDynamicSlugFormat } from '@utils/app-url';
 
 export const CompareCards: React.FC<{ compareList: Course[]; onRemove? }> = ({ compareList, onRemove }) => {
   const compareSwiperRef = useRef(null);
@@ -41,16 +42,18 @@ export const CompareCards: React.FC<{ compareList: Course[]; onRemove? }> = ({ c
             centeredSlides: false,
           },
         }}
-        className="compareSwiper"
+        className="compareSwiper items-stretch"
       >
         {compareList.map((edu) => {
           return (
-            <SwiperSlide key={`${edu.id}`}>
-              <div className="inline-block w-[270px] medium-device:w-[300px] desktop:w-full">
+            <SwiperSlide key={`${edu.id}`} className="!h-auto">
+              <div className="flex flex-col h-full w-[270px] medium-device:w-[300px] desktop:w-full">
                 <DropCard
+                  className="grow"
                   classNameCard="min-h-[492px] w-[270px] medium-device:w-[300px] desktop:w-full"
-                  href="/"
+                  href={`/utbildningar/${routeDynamicSlugFormat({ slug: '/utbildningar/[utbildning]', data: edu })}`}
                   dropIcon={<SchoolIcon className="material-icon !text-2xl" />}
+                  footer={<></>}
                 >
                   <h3>{edu.name}</h3>
                   <div className="text-sm grid grid-cols-1 gap-sm mt-[12px]">

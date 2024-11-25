@@ -149,6 +149,8 @@ export interface PageData {
   imgSrc?: string;
   imgAlt?: string;
   imgTitle?: string;
+  showImgInMobile: boolean;
+  showImgInDesktop: boolean;
   description?: string;
   promotionsBlock?: PromotionsBlock[];
   mapBlock?: MapBlock[];
@@ -165,8 +167,14 @@ export interface PageData {
   showEducationsRelatedBlock: boolean;
 }
 
+export type PagesData = { url: string; title: string };
+
 export interface PageDataResponse {
   pageData: PageData;
+}
+
+export interface PagesDataResponse {
+  pagesData: PagesData[];
 }
 
 export interface LayoutProps {

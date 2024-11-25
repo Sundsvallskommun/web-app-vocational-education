@@ -1,26 +1,27 @@
 import ContentBlock from '@components/block/content-block.component';
+import Breadcrumbs from '@components/breadcrumbs/breadcrumbs.component';
 import ButtonStackedIcon from '@components/button/button-stacked-icon.component';
 import Button from '@components/button/button.component';
 import CompareCards from '@components/compare/compare-cards.component';
 import CompareList from '@components/compare/compare-list.component';
+import { BigDropHeader } from '@components/header/big-drop-header.component';
 import { useAppContext } from '@contexts/app.context';
-import { LayoutProps } from '@interfaces/admin-data';
+import { PageProps } from '@interfaces/admin-data';
 import { Course } from '@interfaces/education';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 import CropPortraitOutlinedIcon from '@mui/icons-material/CropPortraitOutlined';
 import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
-import { getLayout } from '@services/layout-service';
-import { Breadcrumb, Link } from '@sk-web-gui/react';
-import NextLink from 'next/link';
+import { cx, Link } from '@sk-web-gui/react';
+import { getStandardPageProps } from '@utils/page-types';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-export async function getServerSideProps({ res }) {
-  return await getLayout(res);
+export async function getServerSideProps(context) {
+  return getStandardPageProps(context);
 }
 
-export const Compare: React.FC = ({ layoutData }: LayoutProps) => {
+export const Compare: React.FC = ({ layoutData, pageData }: PageProps) => {
   const { searchCompareList, setSearchCompareList } = useAppContext();
   const [activeListing, setActiveListing] = useState(1);
   const router = useRouter();
@@ -38,47 +39,22 @@ export const Compare: React.FC = ({ layoutData }: LayoutProps) => {
   };
 
   return (
-    <DefaultLayout title={`Yrkesutbildning - Jämför`} layoutData={layoutData}>
+    <DefaultLayout title={`Yrkesutbildning - ${pageData?.title}`} layoutData={layoutData}>
       <ContentBlock>
-        <div className="desktop:flex">
-          <div className="flex-grow flex flex-col desktop:mt-lg desktop:pr-xl">
-            <div>
-              <Breadcrumb className="text-[13px]" separator={<span className="mx-1">|</span>}>
-                <Breadcrumb.Item>
-                  <NextLink href="/" passHref legacyBehavior>
-                    <Breadcrumb.Link href="/">Start</Breadcrumb.Link>
-                  </NextLink>
-                </Breadcrumb.Item>
-
-                <Breadcrumb.Item>
-                  <NextLink href="/utbildningar" passHref legacyBehavior>
-                    <Breadcrumb.Link href="/utbildningar">För dig som söker utbildning</Breadcrumb.Link>
-                  </NextLink>
-                </Breadcrumb.Item>
-
-                <Breadcrumb.Item>
-                  <NextLink href="/utbildningar/sok" passHref legacyBehavior>
-                    <Breadcrumb.Link href="/utbildningar/sok">Sökresultat</Breadcrumb.Link>
-                  </NextLink>
-                </Breadcrumb.Item>
-
-                <Breadcrumb.Item>
-                  <NextLink href="/utbildningar/sok/jamfor" passHref legacyBehavior>
-                    <Breadcrumb.Link currentPage href="/utbildningar/sok/jamfor">
-                      Jämför utbildningar
-                    </Breadcrumb.Link>
-                  </NextLink>
-                </Breadcrumb.Item>
-              </Breadcrumb>
-            </div>
-
-            <div className="h-full flex-grow flex flex-col justify-center max-w-[720px]">
-              <div className="flex justify-between medium-device:justify-start items-center">
-                <h1 className="m-0">Jämför utbildningar</h1>
-              </div>
-            </div>
-          </div>
-        </div>
+        <BigDropHeader
+          imageSrc={pageData?.imgSrc}
+          imageAlt={pageData?.imgAlt}
+          imageDivClassName={cx(
+            pageData?.showImgInMobile ? 'block' : 'hidden',
+            pageData?.showImgInDesktop ? 'desktop:block' : 'desktop:hidden'
+          )}
+          breadcrumbs={<Breadcrumbs />}
+        >
+          <h1>{pageData?.title}</h1>
+          {pageData.description ?
+            <p className="ingress">{pageData.description}</p>
+          : <></>}
+        </BigDropHeader>
         <div className="w-full flex justify-between">
           <Button variant="ghost" className="inline-block justify-start mt-md" onClick={handleBackLink}>
             <Link as="span" className="text-sm">

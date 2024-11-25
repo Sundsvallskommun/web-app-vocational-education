@@ -1,9 +1,9 @@
 import prisma from '@/utils/prisma';
-import { UserRoleEnum } from '@prisma/client';
 import { defaultHandler } from 'ra-data-simple-prisma';
 import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 import { checkPageRoles, hasRolesForMethods } from './utils';
+import { UserRoleEnum } from '@prisma/client';
 
 @Controller()
 export class AdminContactFormBlockController {

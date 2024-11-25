@@ -16,20 +16,25 @@ export default function ModalCustom(props: ModalCustom) {
     <Modal
       disableCloseOutside={disableCloseOutside}
       show={show}
-      className={cx('medium-device-min:px-[8rem] medium-device-min:pb-[8rem] medium-device-min:pt-[7.5rem]', className)}
+      className={cx(
+        'w-[calc(100%-4rem)] desktop:w-auto mx-md desktop:max-w-[88rem] medium-device-min:px-[8rem] medium-device-min:pb-[8rem] pt-[8rem]',
+        className
+      )}
       hideLabel
       hideClosebutton
       onClose={onClose}
     >
-      <div className="[&_h1]:text-h2-lg [&_h1]:mb-[2rem] [&_h1]:leading-[3.6rem]">
-        <Button
-          className="text-green p-sm absolute top-[1.3rem] right-[1.3rem]"
-          variant="ghost"
-          rightIcon={<CloseOutlinedIcon className="material-icon !text-[3rem]" />}
-          onClick={onClose}
-        >
-          Stäng
-        </Button>
+      <div className="">
+        <div className="flex justify-end absolute top-sm right-[.5rem] desktop:right-sm">
+          <Button
+            className="text-green p-sm"
+            variant="ghost"
+            rightIcon={<CloseOutlinedIcon className="material-icon !text-[3rem]" />}
+            onClick={onClose}
+          >
+            Stäng
+          </Button>
+        </div>
         {children}
       </div>
     </Modal>

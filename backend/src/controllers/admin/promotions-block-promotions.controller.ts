@@ -1,15 +1,14 @@
 import prisma from '@/utils/prisma';
-import { UserRoleEnum } from '@prisma/client';
 import { defaultHandler } from 'ra-data-simple-prisma';
 import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
-import { checkPageRoles, hasRolesForMethods } from './utils';
+import { checkPageRoles } from './utils';
 
 @Controller()
 export class AdminPromotionsBlockPromotionsController {
   @All('/admin/promotionsBlockPromotions')
   @OpenAPI({ summary: 'Handle PromotionsBlockPromotions' })
-  @UseBefore(hasRolesForMethods([UserRoleEnum.ADMIN], ['delete', 'create']), checkPageRoles())
+  @UseBefore(checkPageRoles())
   async promotionsBlockPromotions(@Req() req): Promise<any> {
     switch (req.body.method) {
       case 'deleteMany':

@@ -108,6 +108,8 @@ const sv: TranslationMessagesExtended = {
         pageName: 'Sidreferensnamn',
         title: 'Rubrik',
         description: 'Ingress',
+        showImgInDesktop: 'Visa bild i desktop',
+        showImgInMobile: 'Visa bild i mobil',
       },
     },
     promotionsBlock: {

@@ -1,5 +1,9 @@
 @layer components {
   .sk-popup-menu {
+    fieldset {
+      @apply pr-10 max-h-[50rem] overflow-y-auto overflow-x-hidden;
+    }
+
     .sk-form-checkbox-label-left,
     .sk-form-checkbox-label-right {
       .sk-icon {

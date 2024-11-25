@@ -98,6 +98,26 @@ function convertValue<TReference = string | string[] | number>(
   } else if (typeof referenceValue === 'number') {
     // If the referenceValue is a number, parse the value as a number
     return hasValue(value) ? (parseInt(value as string) as TReference) : (0 as TReference);
+  } else if (Array.isArray(referenceValue)) {
+    // If the referenceValue is a number, parse the value as a number
+    if (!hasValue(value)) return [] as TReference;
+    if (Array.isArray(value)) {
+      if (typeof referenceValue[0] === 'number') {
+        return value?.map((v) => parseInt(v)) as TReference;
+      }
+      if (typeof referenceValue[0] === 'string') {
+        return value?.map((v) => v.toString()) as TReference;
+      }
+    } else {
+      // The referenceValue is not an array, convert the value to an array
+      if (typeof referenceValue[0] === 'number') {
+        return [parseInt(value?.toString() || '')] as TReference;
+      }
+      if (typeof referenceValue[0] === 'string') {
+        return [value?.toString()] as TReference;
+      }
+    }
+    return [] as TReference;
   } else {
     // For other types, return the value as is
     return hasValue(value) ? (value as TReference) : ('' as TReference);

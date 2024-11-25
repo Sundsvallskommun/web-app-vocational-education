@@ -1,3 +1,7 @@
 export default function SavedContentBlockEmpty({ children }) {
-  return <div className="text-[2.1rem] leading-[3rem] px-[5rem] grow text-center flex items-center">{children}</div>;
+  return (
+    <div className="text-[1.7rem] leading-[2.5rem] desktop:text-[2.1rem] desktop:leading-[3rem] p-md grow text-center flex items-center">
+      {children}
+    </div>
+  );
 }

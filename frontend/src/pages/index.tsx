@@ -9,7 +9,8 @@ import PromotionsBlock from '@components/promotions-block/promotions-block';
 import { Search } from '@components/search/search.component';
 import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
-import { getStandardPageProps } from '@utils/page-types';
+import { cx } from '@sk-web-gui/react';
+import { getBlockData, getStandardPageProps } from '@utils/page-types';
 
 export async function getServerSideProps(context) {
   return getStandardPageProps(context);
@@ -19,23 +20,32 @@ export const Start: React.FC = ({ pageData, layoutData }: PageProps) => {
   return (
     <DefaultLayout title={`Yrkesutbildning - Startsida`} layoutData={layoutData}>
       <ContentBlock>
-        <BigDropHeader imageSrc={pageData?.imgSrc} imageAlt={pageData?.imgAlt} imageDivClassName="hidden desktop:block">
-          <h1>{pageData.title}</h1>
-          <p className="ingress">{pageData.description}</p>
+        <BigDropHeader
+          imageSrc={pageData?.imgSrc}
+          imageAlt={pageData?.imgAlt}
+          imageDivClassName={cx(
+            pageData?.showImgInMobile ? 'block' : 'hidden',
+            pageData?.showImgInDesktop ? 'desktop:block' : 'desktop:hidden'
+          )}
+        >
+          <h1>{pageData?.title}</h1>
+          {pageData?.description ?
+            <p className="ingress">{pageData?.description}</p>
+          : <></>}
           <Search />
         </BigDropHeader>
       </ContentBlock>
-      <PromotionsBlock promotionsBlock={pageData.promotionsBlock?.pop()} />
+      <PromotionsBlock promotionsBlock={getBlockData(pageData?.promotionsBlock)} />
 
-      <MapBlock mapBlock={pageData.mapBlock?.pop()} />
+      <MapBlock mapBlock={getBlockData(pageData?.mapBlock)} />
 
-      <EmployerPromotionsBlock employerPromotionsBlock={pageData.employerPromotionsBlock} />
+      <EmployerPromotionsBlock employerPromotionsBlock={pageData?.employerPromotionsBlock} />
 
-      <ImportantDatesBlock importantDatesBlock={pageData.importantDatesBlock?.pop()} />
+      <ImportantDatesBlock importantDatesBlock={getBlockData(pageData?.importantDatesBlock)} />
 
-      <FAQBlock faqBlock={pageData.faqBlock?.pop()} />
+      <FAQBlock faqBlock={getBlockData(pageData?.faqBlock)} />
 
-      <LogosBlock logosBlock={pageData.logosBlock?.pop()} />
+      <LogosBlock logosBlock={getBlockData(pageData?.logosBlock)} />
     </DefaultLayout>
   );
 };

@@ -5,7 +5,8 @@ import { useFiltersContext } from '@contexts/filters.context';
 import { getFormattedLabelFromValue } from '@utils/labels';
 import { defaultUseFormSetValueOptions } from '@utils/forms';
 
-export const levelFilterPlaceholder = 'Utbildningsform';
+export const levelFilterPlaceholder = (count: number): string =>
+  count > 1 ? 'Utbildningsform(er)' : 'Utbildningsform';
 export const levelFilter = [
   { label: 'Folkhögskola', value: 'Folkhögskola' },
   { label: 'Högskola och universitet', value: 'Högskola och universitet' },
@@ -16,7 +17,7 @@ export const levelFilter = [
   { label: 'Gymnasial utbildning', value: 'Gymnasial utbildning' },
 ];
 
-export default function LevelInput({ showLabel = false, label = levelFilterPlaceholder, size = 'sm' }) {
+export default function LevelInput({ showLabel = false, label = levelFilterPlaceholder(2), size = 'sm' }) {
   const { register, watch, setValue } = useFormContext();
   const { isPhone } = useThemeQueries();
   const { filters } = useFiltersContext();

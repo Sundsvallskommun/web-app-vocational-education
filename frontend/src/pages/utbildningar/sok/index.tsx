@@ -1,4 +1,5 @@
 import ContentBlock from '@components/block/content-block.component';
+import Breadcrumbs from '@components/breadcrumbs/breadcrumbs.component';
 import Button from '@components/button/button.component';
 import Drop from '@components/drop/drop.component';
 import { BigDropHeader } from '@components/header/big-drop-header.component';
@@ -15,12 +16,12 @@ import {
   defaultEducationFilterOptions,
   emptyEducationFilterOptions,
   getEducationEvents,
+  typeReferenceEducationFilterOptions,
 } from '@services/education-service/education-service';
-import { Breadcrumb, cx, Link, omit, Spinner } from '@sk-web-gui/react';
+import { cx, Link, omit, Spinner } from '@sk-web-gui/react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getStandardPageProps } from '@utils/page-types';
 import { addToQueryString, createObjectFromQueryString, deserializeURL, serializeURL } from '@utils/url';
-import _ from 'lodash';
 import NextLink from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
@@ -54,7 +55,7 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
     isPending: isPending,
     isFetching,
   } = useQuery({
-    queryKey: ['searchResults', searchFilters],
+    queryKey: ['searchResults', JSON.stringify(searchFilters)],
     queryFn: async () => {
       const res = await getEducationEvents({ ...searchFilters });
       if (!res.error) {
@@ -130,10 +131,10 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
 
   const handleOnSubmitCallback = (filterData: EducationFilterOptions) => {
     const filters = createObjectFromQueryString(window.location.search, {
-      objectReference: emptyEducationFilterOptions,
+      objectReference: typeReferenceEducationFilterOptions,
       objectReferenceAsBase: true,
     });
-    if (!_.isEqual(filters, filterData)) {
+    if (JSON.stringify(filters) !== JSON.stringify(filterData)) {
       updateParams(serializeURL({ ...filterData }));
     }
   };
@@ -159,27 +160,26 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
 
   useEffect(() => {
     const filters = createObjectFromQueryString(searchCurrent || window.location.search, {
-      objectReference: defaultEducationFilterOptions,
+      objectReference: typeReferenceEducationFilterOptions,
       objectReferenceOnly: true,
     });
 
     const updatedQuery = filters.q || '';
     const isQueryChanged = updatedQuery !== searchQuery;
 
-    const filtersWithBaseDefaults = Object.assign(
-      {},
-      emptyEducationFilterOptions,
-      (Object.keys(filters).length === 1 && updatedQuery) || isQueryChanged ?
+    const filtersWithBaseDefaults = {
+      ...emptyEducationFilterOptions,
+      ...((Object.keys(filters).length === 1 && updatedQuery) || isQueryChanged ?
         { ...defaultEducationFilterOptions, q: updatedQuery }
       : {
           page: page,
           size: pageSize,
           ...filters,
-        }
-    );
+        }),
+    };
 
     const updatedFilters = filtersWithBaseDefaults;
-    const isFiltersChanged = !_.isEqual(updatedFilters, searchFilters);
+    const isFiltersChanged = JSON.stringify(updatedFilters) !== JSON.stringify(searchFilters);
 
     const isChanged = isQueryChanged || isFiltersChanged;
 
@@ -214,40 +214,23 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
 
   return (
     <DefaultLayout
-      title={`Yrkesutbildning - Sok${searchQuery ? ` - Sökord:${searchQuery}` : ''}`}
+      title={`Yrkesutbildning - ${searchQuery ? 'Sökresultat: ' + searchQuery : 'Sök'}`}
       layoutData={layoutData}
     >
       <ContentBlock>
         <BigDropHeader
           imageSrc={pageData?.imgSrc}
           imageAlt={pageData?.imgAlt}
-          imageDivClassName="hidden desktop:block"
-          breadcrumbs={
-            <Breadcrumb className="text-[13px]" separator={<span className="mx-1">|</span>}>
-              <Breadcrumb.Item>
-                <NextLink href="/" passHref legacyBehavior>
-                  <Breadcrumb.Link href="/">Start</Breadcrumb.Link>
-                </NextLink>
-              </Breadcrumb.Item>
-
-              <Breadcrumb.Item>
-                <NextLink href="/utbildningar" passHref legacyBehavior>
-                  <Breadcrumb.Link href="/utbildningar">För dig som söker utbildning</Breadcrumb.Link>
-                </NextLink>
-              </Breadcrumb.Item>
-
-              <Breadcrumb.Item>
-                <NextLink href="/utbildningar/sok" passHref legacyBehavior>
-                  <Breadcrumb.Link currentPage href="/utbildningar/sok">
-                    {searchQuery ? 'Sökresultat: ' + searchQuery : 'Sök'}
-                  </Breadcrumb.Link>
-                </NextLink>
-              </Breadcrumb.Item>
-            </Breadcrumb>
-          }
+          imageDivClassName={cx(
+            pageData?.showImgInMobile ? 'block' : 'hidden',
+            pageData?.showImgInDesktop ? 'desktop:block' : 'desktop:hidden'
+          )}
+          breadcrumbs={<Breadcrumbs lastItemTitle={searchQuery ? 'Sökresultat: ' + searchQuery : 'Sök'} />}
         >
           <h1>{pageData?.title}</h1>
-          {pageData.description && <p className="ingress">{pageData.description}</p>}
+          {pageData.description ?
+            <p className="ingress">{pageData.description}</p>
+          : <></>}
 
           <Search className="phone:mt-[25px] mt-2xl" keepParams />
           {isFiltersTouched && (

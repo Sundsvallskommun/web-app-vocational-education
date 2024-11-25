@@ -54,19 +54,7 @@ export const Menu: React.FC = () => {
                   <NextLink href="/utbildningar">För dig som söker utbildning</NextLink>
                 </MenuVertical.Item>
                 <MenuVertical.Item menuIndex="/arbetsgivare">
-                  <MenuVertical>
-                    <MenuVertical.SubmenuButton>
-                      <NextLink href="/arbetsgivare">För arbetsgivare</NextLink>
-                    </MenuVertical.SubmenuButton>
-                    <MenuVertical.Item menuIndex="/arbetsgivare/kontaktautbildningsanordnare">
-                      <NextLink href="/arbetsgivare/kontaktautbildningsanordnare">
-                        Listning utbildningsanordnare
-                      </NextLink>
-                    </MenuVertical.Item>
-                    <MenuVertical.Item menuIndex="/arbetsgivare/kontakta-oss">
-                      <NextLink href="/arbetsgivare/kontakta-oss">Kontakta oss</NextLink>
-                    </MenuVertical.Item>
-                  </MenuVertical>
+                  <NextLink href="/arbetsgivare">För arbetsgivare</NextLink>
                 </MenuVertical.Item>
                 <MenuVertical.Item menuIndex="/utbildningsanordnare">
                   <NextLink href="/utbildningsanordnare">För utbildningsanordnare</NextLink>

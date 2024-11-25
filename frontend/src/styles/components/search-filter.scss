@@ -65,7 +65,6 @@
         &:hover {
           @apply font-bold cursor-pointer;
           @apply ring-0 ring-offset-0 ring-transparent;
-          //   @apply focus:ring-border-color focus:ring-offset-0;
           @apply outline-0;
         }
       }

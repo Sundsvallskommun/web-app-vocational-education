@@ -2,7 +2,7 @@
 
 @layer components {
   .container {
-    @apply m-auto px-[1.6rem] small-device-min:px-[2.4rem] medium-device:px-xl desktop:px-0;
+    @apply m-auto px-[1.6rem] phone-min:px-[2.4rem] medium-device:px-xl desktop:px-0;
   }
 
   .form-error-message {

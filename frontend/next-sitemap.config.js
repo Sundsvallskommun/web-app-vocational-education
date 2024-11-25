@@ -12,7 +12,7 @@ const config = {
   priority: 0.7,
   sitemapSize: 5000,
   generateRobotsTxt: true,
-  exclude: ['/server-sitemap-index.xml'],
+  exclude: ['*'],
   robotsTxtOptions: {
     policies: [
       {

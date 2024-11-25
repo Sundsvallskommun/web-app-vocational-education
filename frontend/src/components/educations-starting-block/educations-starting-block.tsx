@@ -31,6 +31,7 @@ export default function EducationsStartingBlock({ educationsStartingBlock }: edu
   if (!tmp?.showBlock) return <></>;
   return (
     <CardsBlock<EducationsStartingBlockType['educations']>
+      className="!pt-0"
       title={tmp.title || ''}
       cards={tmp.educations}
       cardRender={(card, index) => (

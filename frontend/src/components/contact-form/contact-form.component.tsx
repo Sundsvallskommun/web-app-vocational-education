@@ -1,14 +1,13 @@
 import ErrorMessage from '@components/error-message/error-message.component';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Button, FormControl, FormLabel, Input, Select, Textarea } from '@sk-web-gui/react';
+import { getFormattedLabelFromValue } from '@utils/labels';
 import { useFormContext } from 'react-hook-form';
 import { studyLocationFilterPlaceholder } from '../form/study-location.input.component';
-import { useFiltersContext } from '@contexts/filters.context';
-import { getFormattedLabelFromValue } from '@utils/labels';
+import { ContactFormBlockEmails } from '@interfaces/admin-data';
 
-export default function ContactForm() {
+export default function ContactForm({ municipalityEmails }: { municipalityEmails: ContactFormBlockEmails[] }) {
   const { register, formState } = useFormContext();
-  const { filters } = useFiltersContext();
 
   return (
     <div>
@@ -17,13 +16,13 @@ export default function ContactForm() {
           <h3 className="text-[2.6rem] leading-[3.6rem] medium-device:-tracking-[.01rem]">Kontaktformulär</h3>
           <FormControl className="w-full" required>
             <FormLabel>{`Välj ${studyLocationFilterPlaceholder}`}</FormLabel>
-            <Select {...register('municipality', { required: true })}>
+            <Select {...register('municipalityEmail', { required: true })}>
               <Select.Option key={`-`} value={''}>
                 {`Välj ${studyLocationFilterPlaceholder}`}
               </Select.Option>
-              {filters?.studyLocation?.map((value) => (
-                <Select.Option key={`${value}`} value={value}>
-                  {getFormattedLabelFromValue(value)}
+              {municipalityEmails?.map((emailObject) => (
+                <Select.Option key={`${emailObject.id}`} value={emailObject.email}>
+                  {getFormattedLabelFromValue(emailObject.label)}
                 </Select.Option>
               ))}
             </Select>

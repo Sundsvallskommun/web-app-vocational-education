@@ -2,7 +2,7 @@ import { IsString } from 'class-validator';
 
 export class ContactFormDto {
   @IsString()
-  municipality: string;
+  municipalityEmail: string;
   @IsString()
   name: string;
   @IsString()

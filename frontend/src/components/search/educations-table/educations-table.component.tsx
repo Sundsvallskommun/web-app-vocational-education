@@ -1,6 +1,7 @@
 import { useAppContext } from '@contexts/app.context';
 import { Course, PagingMetaData } from '@interfaces/education';
 import { Checkbox, Link, Pagination, Table } from '@sk-web-gui/react';
+import { routeDynamicSlugFormat } from '@utils/app-url';
 import NextLink from 'next/link';
 
 export const tableCellTextClasses = 'text-base leading-[2.9rem] capitalize';
@@ -46,7 +47,7 @@ export const EducationsTable: React.FC<{
                   <span className="inline-block">
                     <NextLink
                       onClick={() => handleOnClickResult(edu?.id)}
-                      href={`/utbildningar/${edu?.id}`} /* This should be built and point to dynamic page */
+                      href={routeDynamicSlugFormat({ slug: '/utbildningar/[utbildning]', data: edu })}
                     >
                       <Link as="span" className="line-clamp-2 text-base mb-6 leading-[1.5]">
                         {edu?.name ?? '-'}

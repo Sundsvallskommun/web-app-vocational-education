@@ -8,25 +8,17 @@ import SavedSearches from '@components/saved-searches/saved-searches.component';
 import { Search } from '@components/search/search.component';
 import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
-import { getLayout } from '@services/layout-service';
-import { getPage } from '@services/page-service';
-import _ from 'lodash';
+import { getStandardPageProps } from '@utils/page-types';
 
-export async function getServerSideProps({ res }) {
-  const layoutProps = await getLayout(res);
-  const pageProps = await getPage('/utbildningsanordnare', res);
-  return await _.merge(layoutProps, pageProps);
+export async function getServerSideProps(context) {
+  return getStandardPageProps(context);
 }
 
 export const Utbildningsanordnare: React.FC = ({ pageData, layoutData }: PageProps) => {
   return (
     <DefaultLayout title={`Yrkesutbildning - Utbildningsanordnare`} layoutData={layoutData}>
       <ContentBlock>
-        <BigDropHeader
-          imageSrc="/drop-person-holding-thing.png"
-          imageAlt="Två studenter skrattar"
-          imageDivClassName="hidden desktop:block"
-        >
+        <BigDropHeader imageSrc={pageData?.imgSrc} imageAlt={pageData?.imgAlt} imageDivClassName="hidden desktop:block">
           <h1>{pageData.title}</h1>
           <p className="ingress">{pageData.description}</p>
           <Search />

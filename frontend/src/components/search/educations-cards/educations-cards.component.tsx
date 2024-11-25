@@ -7,6 +7,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import SchoolIcon from '@mui/icons-material/School';
 import { getEducationLengthString, getSanitizedInformation } from '@services/education-service/education-service';
 import { Checkbox } from '@sk-web-gui/react';
+import { routeDynamicSlugFormat } from '@utils/app-url';
 
 const cardIconClasses = 'desktop:!hidden !text-2xl mr-2 medium-device-min:mr-10';
 const cardDataClasses = 'desktop:font-bold capitalize';
@@ -34,7 +35,7 @@ export const EducationsCards: React.FC<{
           <div key={`${index}-${edu?.id}`} className="w-full flex flex-col">
             <DropCard
               data-id={edu?.id}
-              href={`/utbildningar/${edu?.id}`}
+              href={routeDynamicSlugFormat({ slug: '/utbildningar/[utbildning]', data: edu })}
               onClick={() => handleOnClickResult(edu?.id)}
               dropIcon={<SchoolIcon className="material-icon desktop:!text-2xl" />}
               footer={

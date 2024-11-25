@@ -23,17 +23,13 @@ export const EmployerPromotionsBlockPromotionsEdit = (props: any) => {
             <h1>{`${translate('ra.action.edit')} ${translate('resources.employerPromotionsBlockPromotions.name', {
               smart_count: 1,
             })}`}</h1>
-            <ReferenceInput
-              source="employerPromotionsBlock"
-              reference="employerPromotionsBlock"
-              filter={{ pageName: 'utbildningar' }}
-            >
+            <ReferenceInput source="employerPromotionsBlock" reference="employerPromotionsBlock">
               <SelectInput
                 source="employerPromotionsBlock"
-                optionText="pageName"
+                optionText="id"
                 readOnly
-                value={data.blockId}
-                defaultValue={data.blockId}
+                value={data.employerPromotionsBlock}
+                defaultValue={data.employerPromotionsBlock}
               />
             </ReferenceInput>
             <TextInput source="title" />

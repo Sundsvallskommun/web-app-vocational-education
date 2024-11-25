@@ -23,6 +23,7 @@ export const EditTableBlockHeaders = ({ table, refetch }: TableBlockHeadersProps
   const onCreate = async (data: FieldValues) => {
     await dataProvider.create('tableBlockHeader', {
       data: {
+        pageId: table.pageId,
         name: data.name,
         tableBlock: {
           connect: {

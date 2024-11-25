@@ -5,6 +5,7 @@ import {
   Button,
   DeleteButton,
   Form,
+  Link,
   SaveButton,
   TextInput,
   useDataProvider,
@@ -91,8 +92,11 @@ export const TableBlockEdit = () => {
       <Box sx={{ mt: '2rem', display: 'flex', flexDirection: 'column', gap: '2rem', mb: '5rem' }}>
         <EditTableBlockHeaders table={table} refetch={refetch} />
         <EditTableBlockRows table={table} refetch={refetch} />
+
+        <Link as={Button} to={`/page/${table.pageId}`}>
+          <span>{translate('ra.action.back')}</span>
+        </Link>
       </Box>
-      <Button onClick={() => history.back()} label={`${translate('ra.action.back')}`} />
     </>
   );
 };

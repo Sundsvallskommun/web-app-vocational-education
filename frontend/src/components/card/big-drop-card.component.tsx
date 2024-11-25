@@ -27,7 +27,7 @@ export const BigDropCard: React.FC<DropCard> = ({ className = '', children, href
                 fill={true}
                 sizes="(max-width: 768px) 100vw"
                 src={`${imageSrc}`}
-                alt="Bild på behörigheter"
+                alt={''}
                 aria-hidden="true"
               />
             </div>

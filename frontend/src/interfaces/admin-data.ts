@@ -122,19 +122,47 @@ export interface TableBlock {
   cells: TableBlockCell[];
 }
 
+export interface ContactFormBlockEmails {
+  id: number;
+  contactFormBlock: ContactFormBlock;
+  pageId: number;
+  formId: number;
+  label: string;
+  email: string;
+}
+
+export interface ContactFormBlock {
+  id: number;
+  page: number;
+  pageName: number;
+  pageId: number;
+  title?: string;
+  description?: string;
+  showBlock: boolean;
+  emails: ContactFormBlockEmails[];
+}
+
 export interface PageData {
   url: string;
   pageName: string;
   title: string;
-  description: string;
+  imgSrc?: string;
+  imgAlt?: string;
+  imgTitle?: string;
+  description?: string;
   promotionsBlock?: PromotionsBlock[];
   mapBlock?: MapBlock[];
-  employerPromotionsBlock?: EmployerPromotionsBlock[];
+  employerPromotionsBlock?: EmployerPromotionsBlock;
+  showEmployerPromotionsBlock: boolean;
   importantDatesBlock?: ImportantDatesBlock[];
   faqBlock?: FAQBlock[];
   educationsStartingBlock?: EducationsStartingBlock[];
   logosBlock?: LogosBlock[];
   tableBlock?: TableBlock[];
+  contactFormBlock?: ContactFormBlock[];
+  wysiwyg_content?: string;
+  showSearchBlock: boolean;
+  showEducationsRelatedBlock: boolean;
 }
 
 export interface PageDataResponse {

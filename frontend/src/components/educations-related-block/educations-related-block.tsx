@@ -8,9 +8,11 @@ import dayjs from 'dayjs';
 
 interface EducationsRelatedBlockProps {
   educations?: EducationsRelated['educations'];
+  show: boolean;
 }
 
-export default function EducationsRelatedBlock({ educations }: EducationsRelatedBlockProps) {
+export default function EducationsRelatedBlock({ educations, show }: EducationsRelatedBlockProps) {
+  if (!show || !educations?.length) return null;
   return (
     <CardsBlock<EducationsRelated['educations']>
       title={`Relaterade utbildningar`}

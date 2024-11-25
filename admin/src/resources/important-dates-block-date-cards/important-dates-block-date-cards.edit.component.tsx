@@ -32,7 +32,11 @@ export const ImportantDatesBlockDateCardsEdit = (props: any) => {
             <h1>{`${translate('ra.action.edit')} ${translate('resources.importantDatesBlockDateCards.name', {
               smart_count: 1,
             }).toLowerCase()}`}</h1>
-            <ReferenceInput source="importantDatesBlock" reference="importantDatesBlock" filter={{ id: data.blockId }}>
+            <ReferenceInput
+              source="importantDatesBlock"
+              reference="importantDatesBlock"
+              filter={{ id: data.blockId, pageId: data.pageId }}
+            >
               <SelectInput
                 source="importantDatesBlock"
                 optionText="pageName"

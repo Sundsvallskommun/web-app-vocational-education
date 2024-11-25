@@ -48,5 +48,22 @@
         }
       }
     }
+
+    img {
+      @apply my-50;
+    }
+
+    // custom blocks
+    [data-type='factblock'] {
+      @apply block relative text blocked-blue my-2xl max-w-[90rem];
+    }
+
+    [data-type='sitenavigationbutton'] {
+      @apply my-lg;
+
+      &:last-child {
+        @apply mt-2xl;
+      }
+    }
   }
 }

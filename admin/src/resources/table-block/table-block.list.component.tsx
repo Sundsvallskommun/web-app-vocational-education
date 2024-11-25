@@ -5,7 +5,7 @@ import { ListCreateButton } from '../components/list-create-button.component';
 export const TableBlockList = (props: any) => {
   const { canCreate } = useRoutePermissions();
   return (
-    <List {...props} exporter={false} hasCreate={canCreate} actions={<ListCreateButton />}>
+    <List {...props} exporter={false} hasCreate={canCreate} empty={<ListCreateButton />}>
       <Datagrid rowClick="edit" bulkActionButtons={false}>
         <TextField source="title" />
       </Datagrid>

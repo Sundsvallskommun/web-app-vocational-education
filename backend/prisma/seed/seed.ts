@@ -58,10 +58,18 @@ async function main() {
             },
           },
           create: {
-            role: role,
+            userRole: {
+              connect: {
+                name: role,
+              },
+            },
           },
           update: {
-            role: role,
+            userRole: {
+              connect: {
+                name: role,
+              },
+            },
           },
         })),
       },
@@ -69,36 +77,29 @@ async function main() {
     create: {
       ...hashedUser,
       roles: {
-        connect: hashedUser.roles.map(role => ({
-          username_role: {
-            role: role,
-            username: hashedUser.username,
+        create: hashedUser.roles.map(role => ({
+          userRole: {
+            connect: {
+              name: role,
+            },
           },
         })),
       },
     },
   });
 
-  const jobb = await prisma.page.upsert({
-    where: { pageName: 'jobb' },
+  const vagledning = await prisma.page.upsert({
+    where: { pageName: 'vagledning' },
     update: {},
     create: {
-      url: '/jobb',
-      pageName: 'jobb',
+      url: '/vagledning',
+      pageName: 'vagledning',
       title: 'Här finns jobben',
       description:
         'Ta reda på vilka branscher som ger jobb nu och x år framåt. Regionen växer och behovet av arbetskraft är stort. Vi behöver dina kompetenser! Utbildning är och kommer att bli en allt viktigare faktor för att få ett jobb',
       editRoles: {
-        connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
-          where: {
-            pageName_role: {
-              pageName: 'jobb',
-              role: role,
-            },
-          },
-          create: {
-            role: role,
-          },
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
         })),
       },
     },
@@ -114,16 +115,8 @@ async function main() {
       description:
         'Här hittar du kandidater som är redo att börja jobba hos dig. Vi utbildar framtidens arbetskraft. Branscherna har en nyckelroll i regionens tillväxt och du som arbetsgivare kan göra skillnad!',
       editRoles: {
-        connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
-          where: {
-            pageName_role: {
-              pageName: 'arbetsgivare',
-              role: role,
-            },
-          },
-          create: {
-            role: role,
-          },
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
         })),
       },
     },
@@ -139,16 +132,8 @@ async function main() {
       description:
         'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet',
       editRoles: {
-        connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
-          where: {
-            pageName_role: {
-              pageName: 'utbildningar_behorighet',
-              role: role,
-            },
-          },
-          create: {
-            role: role,
-          },
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
         })),
       },
     },
@@ -164,16 +149,8 @@ async function main() {
       description:
         'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet',
       editRoles: {
-        connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
-          where: {
-            pageName_role: {
-              pageName: 'utbildningar_vagledning',
-              role: role,
-            },
-          },
-          create: {
-            role: role,
-          },
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
         })),
       },
     },
@@ -189,16 +166,8 @@ async function main() {
       description:
         'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet',
       editRoles: {
-        connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
-          where: {
-            pageName_role: {
-              pageName: 'utbildningar_brancher',
-              role: role,
-            },
-          },
-          create: {
-            role: role,
-          },
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
         })),
       },
     },
@@ -213,16 +182,8 @@ async function main() {
       title: '',
       description: '',
       editRoles: {
-        connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
-          where: {
-            pageName_role: {
-              pageName: 'utbildningar_utbildning',
-              role: role,
-            },
-          },
-          create: {
-            role: role,
-          },
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
         })),
       },
       faqBlock: {
@@ -251,6 +212,8 @@ async function main() {
           },
         ],
       },
+      showEducationsRelatedBlock: true,
+      showSearchBlock: true,
     },
   });
 
@@ -264,16 +227,8 @@ async function main() {
       description:
         'Vill du öka dina chanser att snabbt få jobb? Här hittar du yrkesutbildningar med stora möjligheter till jobb i Västernorrland. Utbildningarna är korta och finns för dig som vill komma in på arbetsmarknaden eller karriärväxla',
       editRoles: {
-        connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
-          where: {
-            pageName_role: {
-              pageName: 'utbildningar',
-              role: role,
-            },
-          },
-          create: {
-            role: role,
-          },
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
         })),
       },
       promotionsBlock: {
@@ -282,60 +237,17 @@ async function main() {
           promotions: {
             create: [
               {
-                promotedPageName: utbildningar_behorighet.pageName,
+                promotedPage: { connect: utbildningar_behorighet },
               },
               {
-                promotedPageName: utbildningar_vagledning.pageName,
+                promotedPage: { connect: utbildningar_vagledning },
               },
               {
-                promotedPageName: utbildningar_brancher.pageName,
+                promotedPage: { connect: utbildningar_brancher },
               },
             ],
           },
         },
-      },
-      employerPromotionsBlock: {
-        create: [
-          {
-            pageName: 'utbildningar',
-            title: 'Utbildningarna som arbetsgivarna efterfrågar',
-            showBlock: true,
-            employerPromotions: {
-              create: [
-                {
-                  title: 'utbildningar_arbetsgivarnautbildningar_title1',
-                  ingress: 'utbildningar_arbetsgivarnautbildningar_text1',
-                  searchPhrase: 'utbildningar_arbetsgivarnautbildningar_searchPhrase1',
-                },
-                {
-                  title: 'utbildningar_arbetsgivarnautbildningar_title2',
-                  ingress: 'utbildningar_arbetsgivarnautbildningar_text2',
-                  searchPhrase: 'utbildningar_arbetsgivarnautbildningar_searchPhrase2',
-                },
-                {
-                  title: 'utbildningar_arbetsgivarnautbildningar_title3',
-                  ingress: 'utbildningar_arbetsgivarnautbildningar_text3',
-                  searchPhrase: 'utbildningar_arbetsgivarnautbildningar_searchPhrase3',
-                },
-                {
-                  title: 'utbildningar_arbetsgivarnautbildningar_title4',
-                  ingress: 'utbildningar_arbetsgivarnautbildningar_text4',
-                  searchPhrase: 'utbildningar_arbetsgivarnautbildningar_searchPhrase4',
-                },
-                {
-                  title: 'utbildningar_arbetsgivarnautbildningar_title5',
-                  ingress: 'utbildningar_arbetsgivarnautbildningar_text5',
-                  searchPhrase: 'utbildningar_arbetsgivarnautbildningar_searchPhrase5',
-                },
-                {
-                  title: 'utbildningar_arbetsgivarnautbildningar_title6',
-                  ingress: 'utbildningar_arbetsgivarnautbildningar_text6',
-                  searchPhrase: 'utbildningar_arbetsgivarnautbildningar_searchPhrase6',
-                },
-              ],
-            },
-          },
-        ],
       },
       faqBlock: {
         create: [
@@ -369,7 +281,7 @@ async function main() {
     },
   });
 
-  await prisma.page.upsert({
+  const startsida = await prisma.page.upsert({
     where: { pageName: 'startsida' },
     update: {},
     create: {
@@ -379,16 +291,8 @@ async function main() {
       description:
         'Västernorrland växer och du behövs! Här har vi samlat alla yrkesutbildningar som matchar arbetsmarknadens behov. Yrkesutbildning Mitt underlättar för dig som vill studera eller hitta rätt kompetens till din verksamhet',
       editRoles: {
-        connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
-          where: {
-            pageName_role: {
-              pageName: 'startsida',
-              role: role,
-            },
-          },
-          create: {
-            role: role,
-          },
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
         })),
       },
       promotionsBlock: {
@@ -397,13 +301,13 @@ async function main() {
           promotions: {
             create: [
               {
-                promotedPageName: utbildningar.pageName,
+                promotedPage: { connect: utbildningar },
               },
               {
-                promotedPageName: jobb.pageName,
+                promotedPage: { connect: utbildningar_vagledning },
               },
               {
-                promotedPageName: arbetsgivare.pageName,
+                promotedPage: { connect: arbetsgivare },
               },
             ],
           },
@@ -418,9 +322,6 @@ async function main() {
             buttonText: 'Vilka är vi?',
           },
         ],
-      },
-      employerPromotionsBlock: {
-        connect: utbildningar.employerPromotionsBlock,
       },
       importantDatesBlock: {
         create: [
@@ -491,6 +392,52 @@ async function main() {
     },
   });
 
+  await prisma.employerPromotionsBlock.upsert({
+    where: { id: 1 },
+    update: {
+      page: { connect: [{ id: utbildningar.id }, { id: startsida.id }] },
+    },
+    create: {
+      page: { connect: [{ id: utbildningar.id }, { id: startsida.id }] },
+      title: 'Utbildningarna som arbetsgivarna efterfrågar',
+      showBlock: true,
+      employerPromotions: {
+        create: [
+          {
+            title: 'utbildningar_arbetsgivarnautbildningar_title1',
+            ingress: 'utbildningar_arbetsgivarnautbildningar_text1',
+            searchPhrase: 'utbildningar_arbetsgivarnautbildningar_searchPhrase1',
+          },
+          {
+            title: 'utbildningar_arbetsgivarnautbildningar_title2',
+            ingress: 'utbildningar_arbetsgivarnautbildningar_text2',
+            searchPhrase: 'utbildningar_arbetsgivarnautbildningar_searchPhrase2',
+          },
+          {
+            title: 'utbildningar_arbetsgivarnautbildningar_title3',
+            ingress: 'utbildningar_arbetsgivarnautbildningar_text3',
+            searchPhrase: 'utbildningar_arbetsgivarnautbildningar_searchPhrase3',
+          },
+          {
+            title: 'utbildningar_arbetsgivarnautbildningar_title4',
+            ingress: 'utbildningar_arbetsgivarnautbildningar_text4',
+            searchPhrase: 'utbildningar_arbetsgivarnautbildningar_searchPhrase4',
+          },
+          {
+            title: 'utbildningar_arbetsgivarnautbildningar_title5',
+            ingress: 'utbildningar_arbetsgivarnautbildningar_text5',
+            searchPhrase: 'utbildningar_arbetsgivarnautbildningar_searchPhrase5',
+          },
+          {
+            title: 'utbildningar_arbetsgivarnautbildningar_title6',
+            ingress: 'utbildningar_arbetsgivarnautbildningar_text6',
+            searchPhrase: 'utbildningar_arbetsgivarnautbildningar_searchPhrase6',
+          },
+        ],
+      },
+    },
+  });
+
   await prisma.page.upsert({
     where: { pageName: 'utbildningsanordnare' },
     update: {},
@@ -501,16 +448,8 @@ async function main() {
       description:
         'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Exercitation veniam consequat sunt nostrud amet.',
       editRoles: {
-        connectOrCreate: [UserRoleEnum.EDITOR, UserRoleEnum.EDUCATIONCOORDINATOR].map(role => ({
-          where: {
-            pageName_role: {
-              pageName: 'utbildningsanordnare',
-              role: role,
-            },
-          },
-          create: {
-            role: role,
-          },
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
         })),
       },
     },
@@ -526,16 +465,8 @@ async function main() {
       description:
         'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Exercitation veniam consequat sunt nostrud amet.',
       editRoles: {
-        connectOrCreate: [UserRoleEnum.EDITOR].map(role => ({
-          where: {
-            pageName_role: {
-              pageName: 'arbetsgivare_kontaktautbildningsanordnare',
-              role: role,
-            },
-          },
-          create: {
-            role: role,
-          },
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
         })),
       },
       tableBlock: {
@@ -563,6 +494,86 @@ async function main() {
             },
           },
         ],
+      },
+    },
+  });
+
+  await prisma.page.upsert({
+    where: { pageName: 'utbildningar_sok' },
+    update: {},
+    create: {
+      url: '/utbildningar/sok',
+      pageName: 'utbildningar_sok',
+      title: 'Sugen på att börja studera?',
+      description: '',
+      editRoles: {
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
+        })),
+      },
+    },
+  });
+
+  await prisma.page.upsert({
+    where: { pageName: 'personuppgifter' },
+    update: {},
+    create: {
+      url: '/personuppgifter',
+      pageName: 'personuppgifter',
+      title: 'Personuppgifter',
+      description: '',
+      editRoles: {
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
+        })),
+      },
+    },
+  });
+
+  await prisma.page.upsert({
+    where: { pageName: 'tillganglighetsredogorelse' },
+    update: {},
+    create: {
+      url: '/tillganglighetsredogorelse',
+      pageName: 'tillganglighetsredogorelse',
+      title: 'Tillgänglighetsredogörelse',
+      description: '',
+      editRoles: {
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
+        })),
+      },
+    },
+  });
+
+  await prisma.page.upsert({
+    where: { pageName: 'om-webbplatsen' },
+    update: {},
+    create: {
+      url: '/om-webbplatsen',
+      pageName: 'om-webbplatsen',
+      title: 'Om webbplatsen',
+      description: '',
+      editRoles: {
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
+        })),
+      },
+    },
+  });
+
+  await prisma.page.upsert({
+    where: { pageName: 'kakor' },
+    update: {},
+    create: {
+      url: '/kakor',
+      pageName: 'kakor',
+      title: 'Kakor',
+      description: '',
+      editRoles: {
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
+        })),
       },
     },
   });

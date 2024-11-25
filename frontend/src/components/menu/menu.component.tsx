@@ -1,4 +1,4 @@
-import { Button, Link, MenuVertical } from '@sk-web-gui/react';
+import { Button, Link, MenuVertical, MenuVerticalProps } from '@sk-web-gui/react';
 import { useEffect, useState } from 'react';
 import MenuModal from '@components/modal/menu-modal.component';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
@@ -9,7 +9,8 @@ import { useUserStore } from '@services/user-service/user-service';
 
 export const Menu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeUrl, setActiveUrl] = useState('/');
+  const [activeUrl, setActiveUrl] =
+    useState<React.ComponentPropsWithoutRef<MenuVerticalProps['Provider']>['current']>('/');
   const user = useUserStore((s) => s.user);
 
   const router = useRouter();
@@ -23,9 +24,16 @@ export const Menu: React.FC = () => {
   };
 
   useEffect(() => {
-    setActiveUrl(router.pathname);
-    setIsOpen(false);
-  }, [router.pathname]);
+    const handleRouteChange = () => {
+      setActiveUrl(router.pathname); // Or use `asPath` if needed
+      setIsOpen(false);
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events, router.pathname]);
 
   return (
     <div className="menu">
@@ -65,9 +73,6 @@ export const Menu: React.FC = () => {
                 </MenuVertical.Item>
                 <MenuVertical.Item menuIndex="/kontakta-oss">
                   <NextLink href="/kontakta-oss">Kontakta oss</NextLink>
-                </MenuVertical.Item>
-                <MenuVertical.Item menuIndex="/siteguide">
-                  <NextLink href="/siteguide">Siteguide (Development)</NextLink>
                 </MenuVertical.Item>
               </MenuVertical>
             </MenuVertical.Nav>

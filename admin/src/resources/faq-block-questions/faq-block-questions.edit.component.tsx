@@ -24,7 +24,7 @@ export const FAQBlockQuestionsEdit = (props: any) => {
             <h1>{`${translate('ra.action.edit')} ${translate('resources.faqBlockQuestions.name', {
               smart_count: 1,
             })}`}</h1>
-            <ReferenceInput source="faqBlock" reference="faqBlock" filter={{ id: data.blockId }}>
+            <ReferenceInput source="faqBlock" reference="faqBlock" filter={{ id: data.blockId, pageId: data.pageId }}>
               <SelectInput
                 source="faqBlock"
                 optionText="pageName"

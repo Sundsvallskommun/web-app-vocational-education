@@ -1,7 +1,7 @@
 import _sv from '@kolben/ra-language-swedish';
-import { TranslationMessages } from 'react-admin';
+import { TranslationMessagesExtended } from './type';
 
-const sv: TranslationMessages = {
+const sv: TranslationMessagesExtended = {
   ..._sv,
   ra: {
     ..._sv.ra,
@@ -68,6 +68,11 @@ const sv: TranslationMessages = {
         tertiaryText: 'string',
       },
     },
+    tiptap: {
+      select_level: 'Välj nivå',
+      list_bulleted: 'Punktlista',
+      list_numbered: 'Numrerad lista',
+    },
   },
   validation: {
     required: 'Fältet måste ifyllas',
@@ -79,6 +84,16 @@ const sv: TranslationMessages = {
       minNumbers: `Lösenordet måste innehålla minst antal siffror: %{minNumbers}`,
       minSpecialCharacters: `Lösenordet måste innehålla minst antal specialtecken: %{minSpecialCharacters}`,
     },
+  },
+  gallery: {
+    title: 'Bildgalleri',
+    description: 'Välj en bild bland de som finns uppladdade eller ladda upp en ny bild.',
+    uploadNew: 'Ladda upp ny bild',
+    addImage: 'Lägg till bild',
+    editImage: 'Ändra bild',
+    removeImage: 'Ta bort bild',
+    imageUploading: 'Laddar upp bild...',
+    useImage: 'Använd bild',
   },
   resources: {
     components: {
@@ -122,13 +137,26 @@ const sv: TranslationMessages = {
         showBlock: 'Visa Kartblock',
       },
     },
+    searchBlock: {
+      name: 'Sökblock',
+      fields: {
+        showBlock: 'Visa Sökblock',
+      },
+    },
+    educationsRelatedBlock: {
+      name: 'Relaterad utbildningar-block',
+      fields: {
+        showBlock: 'Visa relaterade utbildningar-block',
+      },
+    },
     employerPromotionsBlock: {
-      name: 'Arbetsgivarvalda utbildningar-block (samma över alla sidor) |||| Arbetsgivarvalda utbildningar-block (samma över alla sidor)',
+      name: 'Arbetsgivarvalda utbildningar-block',
+      editButton: 'Redigera arbetsgivarvalda utbildningar-block',
       fields: {
         pageName: 'Sidreferensnamn',
         title: 'Rubrik',
         description: 'Beskrivning',
-        showBlock: 'Visa Arbetsgivarvalda utbildningar-block (samma över alla sidor)',
+        showBlock: 'Visa Arbetsgivarvalda utbildningar-block',
       },
     },
     employerPromotionsBlockPromotions: {
@@ -177,6 +205,23 @@ const sv: TranslationMessages = {
         faqBlock: 'FAQ-block',
       },
     },
+    contactFormBlock: {
+      name: 'Kontaktformulär-block',
+      fields: {
+        pageName: 'Sidreferensnamn',
+        title: 'Rubrik',
+        description: 'Beskrivning',
+        showBlock: 'Visa Kontaktformulär-block',
+      },
+    },
+    contactFormBlockEmails: {
+      name: 'Kontaktformulär-email',
+      fields: {
+        label: 'Kommun',
+        email: 'Email',
+        contactFormBlock: 'Kontaktformulär-block',
+      },
+    },
     logosBlock: {
       name: 'Logos-block |||| Logos-block',
       fields: {
@@ -207,16 +252,16 @@ const sv: TranslationMessages = {
         cell_label: 'Innehåll',
         add_row: 'Lägg till',
       },
-      headersHeading: 'Tabellens kolumnnamn',
-      rowsHeading: 'Tabellens rader',
-      new_header: 'Nytt kolumnnamn',
+      headersHeading: 'Kolumner',
+      rowsHeading: 'Rader',
+      new_header: 'Ny kolumn',
       missing_rows: 'Inga rader hittades',
     },
     tableBlockHeader: {
-      name: 'Tabellens kolumnnamn',
+      name: 'Kolumner',
     },
     tableBlockRow: {
-      name: 'Tabellens rader',
+      name: 'Rader',
     },
     footer: {
       name: 'Sidfot',
@@ -233,6 +278,24 @@ const sv: TranslationMessages = {
         password: 'Lösenord',
       },
       generatePassword: 'Generera nytt lösenord',
+    },
+    wysiwyg: {
+      customimage: {
+        toolbarText: 'Bild',
+      },
+      youtube: {
+        toolbarText: 'Lägg till Youtube-video',
+      },
+      factblock: {
+        toolbarText: 'Faktablock',
+      },
+      sitenavigationbutton: {
+        toolbarText: 'Sidnavigationsknapp',
+        form: {
+          buttonText: 'Knapptext',
+          href: 'Sida att gå till',
+        },
+      },
     },
   },
 };

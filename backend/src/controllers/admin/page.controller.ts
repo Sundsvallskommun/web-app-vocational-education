@@ -6,6 +6,7 @@ import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 import { RequestWithUser } from '../../interfaces/auth.interface';
 import { filterByDataRoles, hasRolesForMethods } from './utils';
+import { omit } from '@/utils/object';
 
 @Controller()
 export class AdminPageController {
@@ -34,6 +35,7 @@ export class AdminPageController {
               where: {
                 OR: rolesToDisconnect.map(role => ({
                   pageName: req.body.params.data.pageName,
+                  pageId: req.body.params.data.id,
                   role: role.role,
                 })),
               },
@@ -45,16 +47,28 @@ export class AdminPageController {
               .filter(newRole => !req.body.params.previousData.editRoles.some(oldRole => oldRole.role === newRole.role))
               .map(role => ({
                 pageName: req.body.params.data.pageName,
+                pageId: req.body.params.data.id,
                 role: role.role,
               })),
           });
         }
 
         return filterByDataRoles(
-          await updateHandler<Prisma.PageUpdateArgs>(req.body, prisma.page, {
-            skipFields: includes,
-            include: includes,
-          }),
+          await updateHandler<Prisma.PageUpdateArgs>(
+            {
+              method: req.body.method,
+              params: {
+                ...req.body.params,
+                data: omit(req.body.params.data, ['id']),
+              },
+              resource: req.body.resource,
+            },
+            prisma.page,
+            {
+              skipFields: includes,
+              include: includes,
+            },
+          ),
           req,
           'editRoles',
         );

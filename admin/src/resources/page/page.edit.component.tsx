@@ -16,6 +16,7 @@ import { useEffect } from 'react';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
 import { userRolesChoices } from '../user/constants';
 import { UserRoleOnUser, UserRoles } from '../../interfaces/user';
+import { GalleryInput } from '../components/gallery/gallery-input.component';
 
 export const PageEdit = (props: any) => {
   const { isSuperAdmin, isAdmin } = useRoutePermissions();
@@ -29,13 +30,13 @@ export const PageEdit = (props: any) => {
 
   return (
     <Edit {...props} redirect={false} mutationMode="pessimistic">
-      <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete={!isSuperAdmin} />} sx={{ maxWidth: '600px' }}>
+      <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete={!isSuperAdmin} />} sx={{ maxWidth: '900px' }}>
         <h1>
           {`${translate('ra.action.edit')} `}
           <WithRecord label="pageName" render={(record) => <span>{record.url}</span>} />
         </h1>
-        <TextInput source="url" validate={[required()]} readOnly />
-        <TextInput source="pageName" validate={[required()]} readOnly />
+        <TextInput source="url" validate={[required()]} readOnly={!isSuperAdmin} />
+        <TextInput source="pageName" validate={[required()]} readOnly={!isSuperAdmin} />
         <WithRecord
           label="pageName"
           render={(record) => (
@@ -44,7 +45,6 @@ export const PageEdit = (props: any) => {
                 <>
                   <TextInput
                     source="title"
-                    validate={[required()]}
                     multiline
                     inputProps={{
                       sx: { width: '222px', fontFamily: 'Montserrat', letterSpacing: '-0.0111em' },
@@ -52,13 +52,13 @@ export const PageEdit = (props: any) => {
                   />
                   <TextInput
                     source="description"
-                    validate={[required()]}
                     multiline
                     sx={{ hyphens: 'auto' }}
                     inputProps={{
                       sx: { width: '576px', fontFamily: 'Montserrat', minHeight: '3em' },
                     }}
                   />
+                  <GalleryInput />
                 </>
               )}
             </>

@@ -13,6 +13,7 @@ import useRoutePermissions from '../../utils/use-route-permissions.hook';
 import { CustomToolbar } from '../components/custom-toolbar.component';
 import { UserRoleOnUser, UserRoles } from '../../interfaces/user';
 import { userRolesChoices } from '../user/constants';
+import { GalleryInput } from '../components/gallery/gallery-input.component';
 
 export const PageCreate = (props: any) => {
   const { isSuperAdmin, isAdmin } = useRoutePermissions();
@@ -26,7 +27,6 @@ export const PageCreate = (props: any) => {
         <TextInput source="pageName" validate={[required()]} />
         <TextInput
           source="title"
-          validate={[required()]}
           multiline
           inputProps={{
             sx: { width: '222px', fontFamily: 'Montserrat', letterSpacing: '-0.0111em' },
@@ -34,13 +34,13 @@ export const PageCreate = (props: any) => {
         />
         <TextInput
           source="description"
-          validate={[required()]}
           multiline
           sx={{ hyphens: 'auto' }}
           inputProps={{
             sx: { width: '576px', fontFamily: 'Montserrat', minHeight: '3em' },
           }}
         />
+        <GalleryInput />
 
         <WithRecord
           label="pageName"

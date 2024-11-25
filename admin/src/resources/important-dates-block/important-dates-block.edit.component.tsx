@@ -7,14 +7,23 @@ import useRoutePermissions from '../../utils/use-route-permissions.hook';
 export const ImportantDatesBlockEdit = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
-  const [, setValue] = useStore('activeBlockIdEdit', '');
+  const [activePageIdEdit, setValue] = useStore('activeBlockIdEdit', '');
   const recordId = useGetRecordId();
   useEffect(() => {
     setValue(recordId.toString());
   }, [recordId]);
   return (
     <Edit {...props} redirect={() => history.back()} mutationMode="pessimistic">
-      <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete />}>
+      <SimpleForm
+        margin="none"
+        toolbar={
+          <CustomToolbar
+            deleteProps={{
+              redirect: () => `page/${activePageIdEdit}`,
+            }}
+          />
+        }
+      >
         <h1>{`${translate('ra.action.edit')} ${translate('resources.importantDatesBlock.name', {
           smart_count: 1,
         }).toLowerCase()}`}</h1>

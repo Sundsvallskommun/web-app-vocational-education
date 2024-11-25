@@ -48,6 +48,7 @@ export const EditTableBlockRows = ({ table, refetch }: TableBlockRowsProps) => {
   const onCreate = async (fields: FieldValues) => {
     await dataProvider.create('tableBlockRow', {
       data: {
+        pageId: table.pageId,
         tableBlock: {
           connect: {
             id: table.id,

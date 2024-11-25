@@ -138,13 +138,13 @@ export default function DefaultLayout({ layoutData, title, children }: DefaultLa
             <div className="max-w-[215px] text-[12px]">
               <h2 className="text-large mb-sm">Meny</h2>
               <div className="flex flex-col gap-[1rem]">
-                <Link href="#">
+                <Link href="/utbildningar">
                   <span>För dig som söker utbildning</span> <ArrowForwardIcon className="material-icon !text-xl" />
                 </Link>
-                <Link href="#">
-                  <span>För utbildningsannordnare</span> <ArrowForwardIcon className="material-icon !text-xl" />
+                <Link href="/utbildningsanordnare">
+                  <span>För utbildningsanordnare</span> <ArrowForwardIcon className="material-icon !text-xl" />
                 </Link>
-                <Link href="#">
+                <Link href="/arbetsgivare">
                   <span>För arbetsgivare</span> <ArrowForwardIcon className="material-icon !text-xl" />
                 </Link>
               </div>
@@ -152,16 +152,16 @@ export default function DefaultLayout({ layoutData, title, children }: DefaultLa
             <div className="max-w-[215px] text-[12px]">
               <h2 className="text-large mb-sm">Om sidan</h2>
               <div className="flex flex-col gap-[1rem]">
-                <Link href="#">
+                <Link href="/personuppgifter">
                   <span>Behandling av personuppgifter</span> <ArrowForwardIcon className="material-icon !text-xl" />
                 </Link>
-                <Link href="#">
+                <Link href="/tillganglighetsredogorelse">
                   <span>Tillgänglighetsredogörelse</span> <ArrowForwardIcon className="material-icon !text-xl" />
                 </Link>
-                <Link href="#">
+                <Link href="/om-webbplatsen">
                   <span>Om webbplatsen</span> <ArrowForwardIcon className="material-icon !text-xl" />
                 </Link>
-                <Link href="#">
+                <Link href="/kakor">
                   <span>Cookies</span> <ArrowForwardIcon className="material-icon !text-xl" />
                 </Link>
               </div>

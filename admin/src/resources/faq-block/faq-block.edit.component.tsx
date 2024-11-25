@@ -7,6 +7,7 @@ import useRoutePermissions from '../../utils/use-route-permissions.hook';
 export const FAQBlockEdit = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
+  const [activePageIdEdit] = useStore('activePageIdEdit');
   const [, setValue] = useStore('activeBlockIdEdit', '');
   const recordId = useGetRecordId();
   useEffect(() => {
@@ -14,7 +15,16 @@ export const FAQBlockEdit = (props: any) => {
   }, [recordId]);
   return (
     <Edit {...props} redirect={() => history.back()} mutationMode="pessimistic">
-      <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete />}>
+      <SimpleForm
+        margin="none"
+        toolbar={
+          <CustomToolbar
+            deleteProps={{
+              redirect: () => `page/${activePageIdEdit}`,
+            }}
+          />
+        }
+      >
         <h1>{`${translate('ra.action.edit')} ${translate('resources.faqBlock.name', { smart_count: 1 })}`}</h1>
         <TextInput source="pageName" readOnly />
         <BooleanInput source="showBlock" />

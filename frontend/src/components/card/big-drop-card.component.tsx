@@ -4,11 +4,12 @@ import NextLink from 'next/link';
 import DropCard from './drop-card.component';
 import { useEffect, useState } from 'react';
 import { usePlaceholderImg } from '@utils/use-placeholder-image.hook';
-import { cx } from '@sk-web-gui/react';
+import { cx, useThemeQueries } from '@sk-web-gui/react';
 
 export const BigDropCard: React.FC<DropCard> = ({ className = '', children, href = '#', dropImageSrc, ...rest }) => {
   const [mounted, setMounted] = useState(false);
   const imageSrc = usePlaceholderImg(dropImageSrc);
+  const { isMinMediumDevice, isMinDesktop } = useThemeQueries();
 
   useEffect(() => {
     setMounted(true);
@@ -18,14 +19,14 @@ export const BigDropCard: React.FC<DropCard> = ({ className = '', children, href
 
   return (
     <>
-      <div className="hidden medium-device:block desktop:hidden">
+      {isMinMediumDevice && !isMinDesktop ?
         <NextLink href={href} className="flex">
           <div className={`${className} flex w-full max-h-[124px]  overflow-hidden`}>
             <div className="min-w-[124px] w-[124px] overflow-hidden relative rounded-bl-half border-[2px] border-r-0 border-border-color">
               <Image
                 className="next-img drop-left !w-[120px]"
                 fill={true}
-                sizes="(max-width: 768px) 100vw"
+                sizes="33vw"
                 src={`${imageSrc}`}
                 alt={''}
                 aria-hidden="true"
@@ -44,9 +45,7 @@ export const BigDropCard: React.FC<DropCard> = ({ className = '', children, href
             </div>
           </div>
         </NextLink>
-      </div>
-      <div className="medium-device:hidden desktop:block">
-        <DropCard
+      : <DropCard
           className={cx(`h-[210px] desktop:h-[323px]`, className)}
           dropClassName="!border-0"
           dropImageSrc={`${imageSrc}`}
@@ -55,7 +54,7 @@ export const BigDropCard: React.FC<DropCard> = ({ className = '', children, href
         >
           {children}
         </DropCard>
-      </div>
+      }
     </>
   );
 };

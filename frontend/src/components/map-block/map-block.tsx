@@ -1,6 +1,4 @@
-import Button from '@components/button/button.component';
 import { MapBlock as MapBlockType } from '@interfaces/admin-data';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Image from 'next/image';
 
 interface MapBlockProps {
@@ -27,9 +25,6 @@ export default function MapBlock({ mapBlock }: MapBlockProps) {
           <div className="container bg-green p-sm medium-device-min:p-lg desktop:p-0 desktop:col-span-2">
             <h2>{mapBlock.title}</h2>
             <p className="text !text-inverted-body mt-[2rem]">{mapBlock.text}</p>
-            <Button className="override sk-btn-white mx-auto desktop:mx-0 mt-lg mb-md" rightIcon={<ArrowForwardIcon />}>
-              <span>{mapBlock.buttonText}</span>
-            </Button>
           </div>
         </div>
       </div>

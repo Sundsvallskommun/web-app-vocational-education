@@ -242,7 +242,7 @@ model MapBlock {
   showBlock  Boolean @default(true)
   title      String
   text       String  @db.Text
-  buttonText String
+  buttonText String? @default("")
 }
 
 model ImportantDatesBlock {

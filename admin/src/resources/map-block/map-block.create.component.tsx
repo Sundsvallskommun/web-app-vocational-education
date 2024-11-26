@@ -21,7 +21,6 @@ export const MapBlockCreate = (props: any) => {
         <BooleanInput source="showBlock" defaultValue={true} />
         <TextInput source="title" />
         <TextInput source="text" />
-        <TextInput source="buttonText" />
       </SimpleForm>
     </Create>
   );

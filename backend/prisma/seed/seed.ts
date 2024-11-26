@@ -189,8 +189,7 @@ async function main() {
         create: [
           {
             title: 'Vanliga frågor om yrkesutbildning',
-            description:
-              'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
+            description: '',
             showBlock: true,
             questions: {
               create: [
@@ -252,8 +251,7 @@ async function main() {
         create: [
           {
             title: 'Vanliga frågor',
-            description:
-              'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
+            description: '',
             showBlock: true,
             questions: {
               create: [
@@ -356,8 +354,7 @@ async function main() {
         create: [
           {
             title: 'Vanliga frågor',
-            description:
-              'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
+            description: '',
             showBlock: true,
             questions: {
               create: [

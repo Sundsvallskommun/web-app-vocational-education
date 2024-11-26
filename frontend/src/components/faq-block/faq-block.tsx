@@ -14,7 +14,9 @@ export default function FAQBlock(props: FAQBlockProps) {
     <ContentBlock {...rest}>
       <div className="flex flex-col desktop:flex-row desktop:justify-between">
         <h2 className="mb-md">{faqBlock.title}</h2>
-        <p className="text !max-w-[600px] leading-[1.8] m-0">{faqBlock.description}</p>
+        {faqBlock.description ?
+          <p className="text !max-w-[600px] leading-[1.8] m-0">{faqBlock.description}</p>
+        : null}
       </div>
       <Accordion className="mt-2xl flex flex-col override border-y border-divider">
         {faqBlock.questions.map((question, i) => (

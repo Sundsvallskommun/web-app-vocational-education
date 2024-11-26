@@ -276,7 +276,7 @@ model FaqBlock {
   pageId      Int
   showBlock   Boolean             @default(true)
   title       String
-  description String              @db.Text
+  description String?              @db.Text @default("")
   questions   FaqBlockQuestions[] @relation("FaqBlockQuestions")
 
   @@unique([id, pageName, pageId])

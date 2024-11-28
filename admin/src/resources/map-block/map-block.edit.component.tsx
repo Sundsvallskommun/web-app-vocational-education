@@ -26,7 +26,6 @@ export const MapBlockEdit = (props: any) => {
         <BooleanInput source="showBlock" />
         <TextInput source="title" />
         <TextInput source="text" />
-        <TextInput source="buttonText" />
       </SimpleForm>
     </Edit>
   );

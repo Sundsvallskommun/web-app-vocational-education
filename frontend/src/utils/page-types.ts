@@ -11,6 +11,6 @@ export async function getStandardPageProps(context, options?: { pathname: string
   return merge(layoutProps, pageProps);
 }
 
-export function getBlockData(block) {
+export function getBlockData<TBlock = unknown>(block?: TBlock[]): TBlock | undefined {
   return block ? block[0] : undefined;
 }

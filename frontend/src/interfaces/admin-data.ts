@@ -1,3 +1,5 @@
+import { GetEducationEvents } from '@services/education-service/education-service';
+
 interface PromotionsBlockPromotions extends PageData {
   promotedPage: PageData;
 }
@@ -50,17 +52,7 @@ export interface FAQBlock extends Block {
   questions: FAQBlockQuestions[];
 }
 
-interface EducationsStartingBlockEducations {
-  title: string;
-  text: string;
-  date: Date;
-  studyLocation: string;
-  courseCode: string;
-}
-
-export interface EducationsStartingBlock extends Block {
-  educations: EducationsStartingBlockEducations[];
-}
+export type EducationsStartingBlock = GetEducationEvents;
 
 interface LogosBlockLogos {
   filename: string;
@@ -151,6 +143,7 @@ export interface PageData {
   imgTitle?: string;
   showImgInMobile: boolean;
   showImgInDesktop: boolean;
+  showSearchBar: boolean;
   description?: string;
   promotionsBlock?: PromotionsBlock[];
   mapBlock?: MapBlock[];
@@ -158,19 +151,20 @@ export interface PageData {
   showEmployerPromotionsBlock: boolean;
   importantDatesBlock?: ImportantDatesBlock[];
   faqBlock?: FAQBlock[];
-  educationsStartingBlock?: EducationsStartingBlock[];
   logosBlock?: LogosBlock[];
   tableBlock?: TableBlock[];
   contactFormBlock?: ContactFormBlock[];
   wysiwyg_content?: string;
   showSearchBlock: boolean;
   showEducationsRelatedBlock: boolean;
+  showEducationsStartingBlock: boolean;
+  educationsStartingBlock?: EducationsStartingBlock;
 }
 
 export type PagesData = { url: string; title: string };
 
 export interface PageDataResponse {
-  pageData: PageData;
+  pageData?: PageData;
 }
 
 export interface PagesDataResponse {

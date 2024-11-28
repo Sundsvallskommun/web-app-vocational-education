@@ -1,5 +1,5 @@
 import { MUNICIPALITY_ID } from '@/config';
-import { Course, Statistics } from '@/data-contracts/education-finder/data-contracts';
+import { Course, PagedCoursesResponse, Statistics } from '@/data-contracts/education-finder/data-contracts';
 import { HttpException } from '@/exceptions/HttpException';
 import DataResponse from '@/interfaces/dataResponse.interface';
 import ApiService from '@/services/api.service';
@@ -31,7 +31,7 @@ class EducationFilterOptions {
   @IsNullable()
   @IsArray()
   @IsString({ each: true }) // https://github.com/typestack/routing-controllers/issues/123
-  category?: string;
+  category?: string[];
   @IsOptional()
   @IsNullable()
   @IsArray()
@@ -53,11 +53,11 @@ class EducationFilterOptions {
   @IsOptional()
   @IsNullable()
   @IsString()
-  latestApplicationDate?: Date;
+  latestApplicationDate?: string;
   @IsOptional()
   @IsNullable()
   @IsString()
-  startDate?: Date;
+  startDate?: string;
   @IsOptional()
   @IsNullable()
   @IsArray()
@@ -132,6 +132,7 @@ export class EducationsController {
   }
 
   getSortDirection(input: string): string {
+    if (!input) return 'ASC';
     const [firstPair] = input.split(';');
     const [, direction] = firstPair.split(',');
     return direction?.toUpperCase() ?? 'ASC';
@@ -139,7 +140,7 @@ export class EducationsController {
 
   @Get('/education-events')
   @OpenAPI({ summary: 'Return education events' })
-  async getEducationEvents(@QueryParam('filter') filter?: EducationFilterOptions): Promise<DataResponse<Course[]>> {
+  async getEducationEvents(@QueryParam('filter') filter?: EducationFilterOptions): Promise<DataResponse<PagedCoursesResponse>> {
     const url = `/education-finder/3.0/${MUNICIPALITY_ID}/courses`;
     const params = {
       // Pagination parameters
@@ -159,7 +160,7 @@ export class EducationsController {
       scopes: filter?.scope ?? undefined,
     };
 
-    const res = await this.apiService.get<Course[]>({ url, params });
+    const res = await this.apiService.get<PagedCoursesResponse>({ url, params });
 
     if (Array.isArray(res.data) && res.data.length < 1) {
       throw new HttpException(404, 'Not Found');

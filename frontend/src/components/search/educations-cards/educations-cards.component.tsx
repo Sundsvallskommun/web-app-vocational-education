@@ -35,7 +35,7 @@ export const EducationsCards: React.FC<{
           <div key={`${index}-${edu?.id}`} className="w-full flex flex-col">
             <DropCard
               data-id={edu?.id}
-              href={routeDynamicSlugFormat({ slug: '/utbildningar/[utbildning]', data: edu })}
+              href={`/utbildningar/${routeDynamicSlugFormat({ slug: '/utbildningar/[utbildning]', data: edu })}`}
               onClick={() => handleOnClickResult(edu?.id)}
               dropIcon={<SchoolIcon className="material-icon desktop:!text-2xl" />}
               footer={

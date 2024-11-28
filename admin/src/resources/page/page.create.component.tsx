@@ -56,6 +56,8 @@ export const PageCreate = (props: any) => {
           }}
         </WithFormContext>
 
+        <BooleanInput source="showSearchBar" />
+
         <WithRecord
           label="pageName"
           render={(record) => (

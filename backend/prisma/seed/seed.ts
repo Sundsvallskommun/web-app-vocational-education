@@ -225,6 +225,7 @@ async function main() {
       title: 'Hitta en yrkesutbildning som leder till jobb',
       description:
         'Vill du öka dina chanser att snabbt få jobb? Här hittar du yrkesutbildningar med stora möjligheter till jobb i Västernorrland. Utbildningarna är korta och finns för dig som vill komma in på arbetsmarknaden eller karriärväxla',
+      showSearchBar: true,
       editRoles: {
         create: [UserRoleEnum.EDITOR].map(role => ({
           role: role,
@@ -289,6 +290,7 @@ async function main() {
       title: 'Hitta rätt yrke och utbildning i Västernorrland',
       description:
         'Västernorrland växer och du behövs! Här har vi samlat alla yrkesutbildningar som matchar arbetsmarknadens behov. Yrkesutbildning Mitt underlättar för dig som vill studera eller hitta rätt kompetens till din verksamhet',
+      showSearchBar: true,
       editRoles: {
         create: [UserRoleEnum.EDITOR].map(role => ({
           role: role,

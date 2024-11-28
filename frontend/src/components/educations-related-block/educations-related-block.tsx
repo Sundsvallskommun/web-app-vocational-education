@@ -7,8 +7,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import dayjs from 'dayjs';
 
 interface EducationsRelatedBlockProps {
-  educations?: EducationsRelated['educations'];
   show: boolean;
+  educations?: EducationsRelated['educations'];
 }
 
 export default function EducationsRelatedBlock({ educations, show }: EducationsRelatedBlockProps) {
@@ -16,6 +16,7 @@ export default function EducationsRelatedBlock({ educations, show }: EducationsR
   return (
     <CardsBlock<EducationsRelated['educations']>
       title={`Relaterade utbildningar`}
+      padded
       backgroundClass="bg-blue-light"
       loadMoreColorClass="text-blue-light"
       cards={educations || []}

@@ -111,10 +111,10 @@ export const PageSwitch = () => {
           {isAdmin && (
             <>
               <br />
-              <h2>{translate('resources.educationsRelatedBlock.name')}</h2>
+              <h2>{translate('resources.educationsStartingBlock.name')}</h2>
               <BooleanInput
-                source="showEducationsRelatedBlock"
-                label={translate('resources.educationsRelatedBlock.fields.showBlock')}
+                source="showEducationsStartingBlock"
+                label={translate('resources.educationsStartingBlock.fields.showBlock')}
               />
             </>
           )}

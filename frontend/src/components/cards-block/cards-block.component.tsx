@@ -9,6 +9,8 @@ interface CardsBlockProps<T extends unknown[] = unknown[]> {
   title: string;
   cards: T;
   cardRender: (card: ValuesOf<T>, index: number) => React.ReactElement;
+  /** @default true */
+  padded?: boolean;
   className?: string;
   backgroundClass?: string;
   loadMoreColorClass?: string;
@@ -22,6 +24,7 @@ export const CardsBlock = <T extends unknown[] = unknown[]>({
   cards,
   cardRender,
   className,
+  padded = false,
   backgroundClass = 'bg-white',
   loadMoreColorClass = 'text-white',
   mobileDefaultAmount = 3,
@@ -52,7 +55,7 @@ export const CardsBlock = <T extends unknown[] = unknown[]>({
   }, [isMinDesktop, isMinMediumDevice]);
 
   return (
-    <ContentBlock classNameWrapper={cx(className, backgroundClass)} padded>
+    <ContentBlock classNameWrapper={cx(className, backgroundClass)} padded={padded}>
       <div>
         <h2>{title}</h2>
         <div className="mt-2xl flex flex-col medium-device:grid medium-device:grid-cols-2 desktop:grid-cols-3 gap-lg gap-y-2xl">

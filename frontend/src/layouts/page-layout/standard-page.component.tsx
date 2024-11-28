@@ -1,7 +1,7 @@
 import ContentBlock from '@components/block/content-block.component';
 import Breadcrumbs from '@components/breadcrumbs/breadcrumbs.component';
 import ContactFormBlock from '@components/contact-form-block/contact-form-block.component';
-import EducationsRelatedBlock from '@components/educations-related-block/educations-related-block';
+import EducationsStartingBlock from '@components/educations-starting-block/educations-starting-block';
 import EmployerPromotionsBlock from '@components/employer-promotions-block/employer-promotions-block';
 import FAQBlock from '@components/faq-block/faq-block';
 import { BigDropHeader } from '@components/header/big-drop-header.component';
@@ -10,6 +10,7 @@ import LogosBlock from '@components/logos-block/logos-block';
 import MapBlock from '@components/map-block/map-block';
 import PromotionsBlock from '@components/promotions-block/promotions-block';
 import SearchBlock from '@components/search-block/search-block.component';
+import Search from '@components/search/search.component';
 import TableBlock from '@components/table-block/table-block.component';
 import Wysiwyg from '@components/wysiwyg/wysiwyg';
 import { PageProps } from '@interfaces/admin-data';
@@ -34,6 +35,9 @@ export default function StandardPage({ layoutData, pageData }: PageProps) {
           {pageData?.description ?
             <p className="ingress">{pageData?.description}</p>
           : <></>}
+          {pageData?.showSearchBar ?
+            <Search />
+          : null}
         </BigDropHeader>
       </ContentBlock>
 
@@ -58,16 +62,7 @@ export default function StandardPage({ layoutData, pageData }: PageProps) {
         showBlock={pageData?.showEmployerPromotionsBlock}
       />
 
-      <EducationsRelatedBlock
-        show={pageData?.showEducationsRelatedBlock}
-        educations={Array.from({ length: 3 }, (_, i) => ({
-          title: `${pageData?.title}-related-${i}`,
-          text: 'Amet minimimi mollot non deseret ullamco est sit alique dolor do sint. Velit officia consequat duis enim.',
-          courseCode: `${i}`,
-          date: new Date(),
-          studyLocation: `Location-${i}`,
-        }))}
-      />
+      <EducationsStartingBlock educationsStartingBlock={pageData?.educationsStartingBlock} />
 
       <ImportantDatesBlock importantDatesBlock={getBlockData(pageData?.importantDatesBlock)} />
 

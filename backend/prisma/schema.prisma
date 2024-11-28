@@ -87,6 +87,9 @@ model Page {
   imgTitle        String? @default("")
   showImgInDesktop Boolean  @default(true)
   showImgInMobile Boolean @default(true)
+  
+  // SearchBar
+  showSearchBar Boolean @default(false)
 
   // permissions by role
   editRoles       EditRolesOnPage[]

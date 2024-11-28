@@ -1,61 +1,50 @@
 import DropCard from '@components/card/drop-card.component';
 import { CardsBlock } from '@components/cards-block/cards-block.component';
 import { EducationsStartingBlock as EducationsStartingBlockType } from '@interfaces/admin-data';
-import SchoolIcon from '@mui/icons-material/School';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import SchoolIcon from '@mui/icons-material/School';
+import { GetEducationEvents, getSanitizedInformation } from '@services/education-service/education-service';
+import { routeDynamicSlugFormat } from '@utils/app-url';
 import dayjs from 'dayjs';
 
-interface educationsStartingBlockProps {
+interface EducationsStartingBlockProps {
   educationsStartingBlock?: EducationsStartingBlockType;
 }
 
-export default function EducationsStartingBlock({ educationsStartingBlock }: educationsStartingBlockProps) {
-  console.log('educationsStartingBlock', educationsStartingBlock);
-  // if (!educationsStartingBlock?.showBlock) return <></>;
-
-  const tmp: EducationsStartingBlockType = {
-    showBlock: true,
-    pageName: 'utbildningar',
-    title: 'Utbildningar som snart börjar',
-    educations: [
-      ...Array.from(Array(6), (_, i) => ({
-        title: `mock_title${i}`,
-        text: `mock_text${i}`,
-        date: new Date(),
-        studyLocation: `mock_studyLocation${i}`,
-        courseCode: `mock_XCODE${i}`,
-      })),
-    ],
-  };
-  if (!tmp?.showBlock) return <></>;
+export default function EducationsStartingBlock({ educationsStartingBlock }: EducationsStartingBlockProps) {
+  if (!educationsStartingBlock) return null;
   return (
-    <CardsBlock<EducationsStartingBlockType['educations']>
-      className="!pt-0"
-      title={tmp.title || ''}
-      cards={tmp.educations}
-      cardRender={(card, index) => (
-        <DropCard
-          key={`${index}`}
-          classNameCard="h-[232px] desktop:h-[270px]"
-          href={`/utbildningar/${encodeURIComponent(`${card.courseCode}-${card.title}`)}`}
-          dropIcon={<SchoolIcon className="!text-2xl" />}
-          footer={
-            <>
-              <div className="flex items-center">
-                <DateRangeIcon className="!text-2xl mr-sm" />{' '}
-                <span className="min-w-[10rem]">{dayjs(card.date).format('DD MMM YYYY')}</span>
-              </div>
-              <div className="flex items-center">
-                <LocationOnIcon className="!text-2xl mr-sm" /> <span>{card.studyLocation}</span>
-              </div>
-            </>
-          }
-        >
-          <h3>{card.title}</h3>
-          <p className="text">{card.text}</p>
-        </DropCard>
-      )}
+    <CardsBlock<GetEducationEvents['courses']>
+      title={'Utbildningar som snart börjar'}
+      cards={educationsStartingBlock?.courses ?? []}
+      cardRender={(course, index) => {
+        const informationSanitized = getSanitizedInformation(course?.information);
+        return (
+          <DropCard
+            key={`${index}`}
+            classNameCard="h-[232px] desktop:h-[270px]"
+            href={`/utbildningar/${routeDynamicSlugFormat({ slug: '/utbildningar/[utbildning]', data: course })}`}
+            dropIcon={<SchoolIcon className="!text-2xl" />}
+            footer={
+              <>
+                <div className="flex items-center">
+                  <DateRangeIcon className="!text-2xl mr-sm" />{' '}
+                  <span className="min-w-[10rem]">{dayjs(course.start).format('DD MMM YYYY')}</span>
+                </div>
+                <div className="flex items-center">
+                  <LocationOnIcon className="!text-2xl mr-sm" /> <span>{course.studyLocation}</span>
+                </div>
+              </>
+            }
+          >
+            <h3>{course.name}</h3>
+            {informationSanitized && (
+              <div className="text" dangerouslySetInnerHTML={{ __html: informationSanitized }} />
+            )}
+          </DropCard>
+        );
+      }}
     />
   );
 }

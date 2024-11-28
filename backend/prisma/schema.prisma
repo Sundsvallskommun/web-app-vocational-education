@@ -121,6 +121,9 @@ model Page {
 
   // EducationsRelatedBlock
   showEducationsRelatedBlock Boolean @default(false)
+
+  // EducationsStartingBlock
+  showEducationsStartingBlock Boolean @default(false)
   
   // SearchBlock
   showSearchBlock Boolean @default(false)

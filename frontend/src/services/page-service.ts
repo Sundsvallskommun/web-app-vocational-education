@@ -15,7 +15,7 @@ export const getPage: (url: string, res: NextApiResponse) => Promise<PageRespons
     .catch(() => ({
       redirect: {
         permanent: false,
-        destination: '/',
+        destination: '/404',
       },
     }));
 };

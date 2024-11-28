@@ -151,6 +151,12 @@ const sv: TranslationMessagesExtended = {
         showBlock: 'Visa relaterade utbildningar-block',
       },
     },
+    educationsStartingBlock: {
+      name: 'Utbildningar som snart börjar-block',
+      fields: {
+        showBlock: 'Visa Utbildningar som snart börjar-block',
+      },
+    },
     employerPromotionsBlock: {
       name: 'Arbetsgivarvalda utbildningar-block',
       editButton: 'Redigera arbetsgivarvalda utbildningar-block',

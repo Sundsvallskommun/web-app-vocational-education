@@ -617,6 +617,22 @@ async function main() {
     },
   });
 
+  await prisma.page.upsert({
+    where: { pageName: '404' },
+    update: {},
+    create: {
+      url: '/404',
+      pageName: '404',
+      title: 'Ingen sida hittades',
+      description: '',
+      editRoles: {
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
+        })),
+      },
+    },
+  });
+
   await prisma.footer.upsert({
     where: { id: 1 },
     update: {},

@@ -10,7 +10,7 @@ interface EmployerPromotionsBlockProps {
 }
 
 export default function EmployerPromotionsBlock({ employerPromotionsBlock, showBlock }: EmployerPromotionsBlockProps) {
-  if (!showBlock || !employerPromotionsBlock?.showBlock) return <></>;
+  if (showBlock === false || !employerPromotionsBlock?.showBlock) return <></>;
   return (
     <CardsBlock<EmployerPromotionsBlockType['employerPromotions']>
       title={employerPromotionsBlock.title || ''}

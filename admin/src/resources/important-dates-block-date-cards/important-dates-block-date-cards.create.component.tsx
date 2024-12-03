@@ -49,7 +49,6 @@ export const ImportantDatesBlockDateCardsCreate = (props: any) => {
           }}
           source="text"
         />
-        <TextInput source="url" />
       </SimpleForm>
     </Create>
   );

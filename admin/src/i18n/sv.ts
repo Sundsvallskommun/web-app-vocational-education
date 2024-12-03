@@ -184,6 +184,9 @@ const sv: TranslationMessagesExtended = {
         importantDatesBlock: 'Viktiga datum-block',
         title: 'Rubrik',
         showBlock: 'Visa Viktiga datum-block',
+        showSeeAllButton: 'Visa "Visa alla viktiga datum"-knapp',
+        shownAmount: 'Antal viktiga datum som ska visas',
+        showAll: 'Visa alla viktiga datum',
       },
     },
     importantDatesBlockDateCards: {

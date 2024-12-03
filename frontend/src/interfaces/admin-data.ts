@@ -32,14 +32,16 @@ export interface EmployerPromotionsBlock extends Block {
   employerPromotions: EmployerPromotionsBlockPromotions[];
 }
 
-interface ImportantDatesBlockDateCard {
+export interface ImportantDatesBlockDateCard {
   date: Date;
   title: string;
   text: string;
-  url: string;
 }
 
 export interface ImportantDatesBlock extends Block {
+  showSeeAllButton: boolean;
+  amountShown: number;
+  showAll: boolean;
   dateCards: ImportantDatesBlockDateCard[];
 }
 

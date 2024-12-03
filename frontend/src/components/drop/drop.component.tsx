@@ -13,9 +13,9 @@ export const useDropProps = (dropIcon, dropDate, dropImageSrc) => {
   if (dropDate) {
     dropHeight = 96;
     dropContent = (
-      <div className="text-center justify-center">
-        <div className="text-3xl font-bold">{dayjs(dropDate).format('D')}</div>
-        <div className="text-large uppercase">{dayjs(dropDate).format('MMM')}</div>
+      <div className="drop-date-content text-center justify-center">
+        <div className="drop-date-content-day text-3xl font-bold">{dayjs(dropDate).format('D')}</div>
+        <div className="drop-date-content-month text-large uppercase">{dayjs(dropDate).format('MMM')}</div>
       </div>
     );
   }
@@ -31,7 +31,7 @@ export const Drop: React.FC<{
   dropLeft?: boolean;
   dropRight?: boolean;
   dropIcon?: React.ReactNode;
-  dropDate?: React.ReactNode;
+  dropDate?: Date;
   dropImageSrc?: React.ReactNode;
   setSize?: boolean;
   dropHeight?: number;
@@ -61,7 +61,9 @@ export const Drop: React.FC<{
         setSize ?
           {
             height: dropHeight ? dropHeight + 'px' : _dropHeight + 'px',
+            minHeight: dropHeight ? dropHeight + 'px' : _dropHeight + 'px',
             width: dropHeight ? dropHeight + 'px' : _dropHeight + 'px',
+            minWidth: dropHeight ? dropHeight + 'px' : _dropHeight + 'px',
             top: topStyle ? topStyle + 'px' : 'initial',
           }
         : {}

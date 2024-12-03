@@ -11,7 +11,7 @@ export class PageController {
   @Get('/page')
   @OpenAPI({ summary: 'Return page data' })
   async getPageData(@QueryParam('url') url: string): Promise<DataResponse<PageResponse>> {
-    const page: PageResponse = await prisma.page.findUnique({
+    const page = await prisma.page.findUnique({
       include: {
         promotionsBlock: {
           include: {
@@ -71,7 +71,30 @@ export class PageController {
         sortFunction: 'start,asc',
         startDate: dayjs(new Date()).format('YYYY-MM-DD'),
       });
-      page.educationsStartingBlock = res.data;
+      (page as PageResponse).educationsStartingBlock = res.data;
+    }
+    if (page?.importantDatesBlock) {
+      page.importantDatesBlock = await Promise.all(
+        page.importantDatesBlock.map(async block => {
+          // if Referencing another importantDatesBlockCards
+          let referenceBlock;
+          if (block.referencedImportantDatesBlockPageName) {
+            referenceBlock = await prisma.importantDatesBlock.findFirst({
+              where: {
+                pageName: block.referencedImportantDatesBlockPageName,
+              },
+              include: {
+                dateCards: true,
+              },
+            });
+          }
+
+          return {
+            ...block,
+            dateCards: [...(referenceBlock ?? block).dateCards].sort((a, b) => new Date(a.date).valueOf() - new Date(b.date).valueOf()),
+          };
+        }),
+      );
     }
 
     return { data: page, message: 'success' };

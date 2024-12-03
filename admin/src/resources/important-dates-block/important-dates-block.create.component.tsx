@@ -1,4 +1,13 @@
-import { BooleanInput, Create, SimpleForm, TextInput, useGetOne, useStore, useTranslate } from 'react-admin';
+import {
+  BooleanInput,
+  Create,
+  NumberInput,
+  SimpleForm,
+  TextInput,
+  useGetOne,
+  useStore,
+  useTranslate,
+} from 'react-admin';
 import { transformPageCreate } from '../../utils/data';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
 import { CustomToolbar } from '../components/custom-toolbar.component';
@@ -19,6 +28,9 @@ export const ImportantDatesBlockCreate = (props: any) => {
           smart_count: 1,
         }).toLowerCase()}`}</h1>
         <BooleanInput source="showBlock" defaultValue={true} />
+        <BooleanInput source="showAll" defaultValue={false} />
+        <BooleanInput source="showSeeAllButton" defaultValue={true} />
+        <NumberInput source="amountShown" defaultValue={3} />
         <TextInput source="title" />
       </SimpleForm>
     </Create>

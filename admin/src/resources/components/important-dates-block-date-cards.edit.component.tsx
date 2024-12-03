@@ -1,13 +1,21 @@
-import { ReferenceArrayField, useRecordContext } from 'react-admin';
+import { ReferenceManyField, useRecordContext } from 'react-admin';
 import { ImportantDatesBlockDateCardsList } from '../important-dates-block-date-cards/important-dates-block-date-cards.list.component';
 
-export const EditImportantDatesBlockDateCards = () => {
+interface EditImportantDatesBlockDateCardsProps {
+  filterPageName?: string;
+}
+
+export const EditImportantDatesBlockDateCards = ({ filterPageName }: EditImportantDatesBlockDateCardsProps) => {
   const record = useRecordContext();
   return (
     <div>
-      <ReferenceArrayField source="pageName" reference="importantDatesBlockDateCards">
-        <ImportantDatesBlockDateCardsList filter={{ pageName: record.pageName }} pagination={false} />
-      </ReferenceArrayField>
+      <ReferenceManyField
+        target="blockId"
+        filter={{ pageName: filterPageName ?? record.pageName }}
+        reference="importantDatesBlockDateCards"
+      >
+        <ImportantDatesBlockDateCardsList filter={{ pageName: filterPageName ?? record.pageName }} pagination={false} />
+      </ReferenceManyField>
     </div>
   );
 };

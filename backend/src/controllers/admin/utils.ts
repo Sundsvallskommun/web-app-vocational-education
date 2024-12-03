@@ -1,10 +1,10 @@
 import { HttpException } from '@/exceptions/HttpException';
 import { RequestWithUser } from '@/interfaces/auth.interface';
-import { EditRolesOnPage, UserRoleEnum } from '@prisma/client';
+import { EditRolesOnPage, Page, UserRoleEnum } from '@prisma/client';
 import { NextFunction } from 'express';
 import prisma from '../../utils/prisma';
 
-export const addIncludes = (includes, options) =>
+export const addIncludes = (includes, options = {}) =>
   Object.assign(options, {
     getList: {
       include: includes,
@@ -60,23 +60,19 @@ export const checkPageRoles = () => async (req: RequestWithUser, res: Response, 
   if (['getMany'].includes(req.body.method)) {
     // @ts-expect-error adapter will always return resource
     const resource = await prisma[req.body.resource].findFirst({
-      where: {
-        OR: req.body.params.ids.map(id => ({
-          id,
-        })),
-      },
+      where: req.body.params.ids.map(id => ({ id: id.id ?? id }))[0],
     });
     pageName = resource.pageName;
     pageId = resource.pageId;
   }
-  if (['getList'].includes(req.body.method)) {
-    pageId = req.body.params.filter.pageId;
-    pageName = req.body.params.filter.pageName;
+  if (['getList', 'getManyReference'].includes(req.body.method)) {
+    pageId = req.body.params.filter?.pageId || req.body.params.meta?.pageId;
+    pageName = req.body.params.filter?.pageName || req.body.params.meta?.pageName;
   }
 
   if (['create'].includes(req.body.method) && req.body.resource !== 'page') {
-    pageId = req.body.params.data.pageId;
-    delete req.body.params.data.pageId;
+    pageId = req.body.params.data?.pageId || req.body.params.meta?.pageId;
+    delete req.body.params.data?.pageId || req.body.params.meta?.pageName;
   }
 
   if (['employerPromotionsBlock', 'employerPromotionsBlockPromotions'].includes(req.body.resource)) {
@@ -114,3 +110,52 @@ export const checkPageRoles = () => async (req: RequestWithUser, res: Response, 
     next(new HttpException(403, 'MISSING_PERMISSIONS'));
   }
 };
+
+const toIdList = (blocks: { id: string }[]) => (blocks ? [...blocks].map(block => block.id) : []);
+
+const transformPageDataBlocksToIds = page => ({
+  ...page,
+  // PromotionsBlock
+  promotionsBlock: toIdList(page.promotionsBlock),
+  promotedBy: toIdList(page.promotedBy),
+
+  // MapBlock
+  mapBlock: toIdList(page.mapBlock),
+
+  // EmployerPromotionsBlock
+  employerPromotionsBlock: page.promotionsBlock.id,
+
+  // ImportantDatesBlock
+  importantDatesBlock: toIdList(page.importantDatesBlock),
+
+  // FAQBlock
+  faqBlock: toIdList(page.faqBlock),
+
+  // LogosBlock
+  logosBlock: toIdList(page.logosBlock),
+
+  // TableBlock
+  tableBlock: toIdList(page.tableBlock),
+
+  // ContactFormBlock
+  contactFormBlock: toIdList(page.contactFormBlock),
+});
+
+export function transformPageResultBlocksToIds(pageResult: { data: Page | Page[] }): {
+  data: any;
+} {
+  // console.log('pageResult', pageResult);
+  if (Array.isArray(pageResult.data)) {
+    return {
+      ...pageResult,
+      data: pageResult.data.map(transformPageDataBlocksToIds),
+    };
+  } else {
+    return {
+      ...pageResult,
+      data: {
+        ...transformPageDataBlocksToIds(pageResult.data),
+      },
+    };
+  }
+}

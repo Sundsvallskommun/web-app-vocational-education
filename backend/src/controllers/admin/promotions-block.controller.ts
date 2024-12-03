@@ -3,7 +3,7 @@ import { UserRoleEnum } from '@prisma/client';
 import { defaultHandler } from 'ra-data-simple-prisma';
 import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
-import { checkPageRoles, hasRolesForMethods } from './utils';
+import { addIncludes, checkPageRoles, hasRolesForMethods } from './utils';
 
 @Controller()
 export class AdminPromotionsBlockController {
@@ -16,7 +16,13 @@ export class AdminPromotionsBlockController {
         // Dont allow these
         return;
       default:
-        return await defaultHandler(req.body, prisma);
+        return await defaultHandler(
+          req.body,
+          prisma,
+          addIncludes({
+            promotions: true,
+          }),
+        );
     }
   }
 }

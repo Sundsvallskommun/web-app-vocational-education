@@ -1,13 +1,13 @@
-import { ReferenceArrayField, useRecordContext } from 'react-admin';
+import { ReferenceManyField, useRecordContext } from 'react-admin';
 import { LogosBlockLogosList } from '../logos-block-logos/logos-block-logos.list.component';
 
 export const EditLogosBlockLogos = () => {
   const record = useRecordContext();
   return (
     <div>
-      <ReferenceArrayField source="pageName" reference="logosBlockLogos">
+      <ReferenceManyField target="blockId" filter={{ pageName: record.pageName }} reference="logosBlockLogos">
         <LogosBlockLogosList filter={{ pageName: record.pageName }} pagination={false} />
-      </ReferenceArrayField>
+      </ReferenceManyField>
     </div>
   );
 };

@@ -396,7 +396,7 @@ async function main() {
     create: {
       page: { connect: [{ id: utbildningar.id }, { id: startsida.id }] },
       title: 'Utbildningarna som arbetsgivarna efterfrågar',
-      showBlock: true,
+      showBlock: false,
       employerPromotions: {
         create: [
           {

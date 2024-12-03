@@ -17,7 +17,7 @@ export const EditEmployerPromotionsBlock = () => {
       />
 
       <BooleanInput
-        source="employerPromotionsBlock"
+        source="showEmployerPromotionsBlock"
         label={translate('resources.employerPromotionsBlock.fields.showBlock')}
       />
       <Link to="/employerPromotionsBlock/1">{translate('resources.employerPromotionsBlock.editButton')}</Link>

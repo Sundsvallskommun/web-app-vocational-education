@@ -39,7 +39,10 @@ export const Start: React.FC = ({ pageData, layoutData }: PageProps) => {
 
       <MapBlock mapBlock={getBlockData(pageData?.mapBlock)} />
 
-      <EmployerPromotionsBlock employerPromotionsBlock={pageData?.employerPromotionsBlock} />
+      <EmployerPromotionsBlock
+        employerPromotionsBlock={pageData?.employerPromotionsBlock}
+        showBlock={pageData?.showEmployerPromotionsBlock}
+      />
 
       <ImportantDatesBlock importantDatesBlock={getBlockData(pageData?.importantDatesBlock)} />
 

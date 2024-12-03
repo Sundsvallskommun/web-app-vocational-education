@@ -5,11 +5,12 @@ import SchoolIcon from '@mui/icons-material/School';
 import { routeDynamicSlugFormat } from '@utils/app-url';
 
 interface EmployerPromotionsBlockProps {
+  showBlock?: boolean;
   employerPromotionsBlock?: EmployerPromotionsBlockType;
 }
 
-export default function EmployerPromotionsBlock({ employerPromotionsBlock }: EmployerPromotionsBlockProps) {
-  if (!employerPromotionsBlock?.showBlock) return <></>;
+export default function EmployerPromotionsBlock({ employerPromotionsBlock, showBlock }: EmployerPromotionsBlockProps) {
+  if (showBlock === false || !employerPromotionsBlock?.showBlock) return <></>;
   return (
     <CardsBlock<EmployerPromotionsBlockType['employerPromotions']>
       title={employerPromotionsBlock.title || ''}

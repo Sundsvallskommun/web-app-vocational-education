@@ -53,7 +53,10 @@ export default function StandardPage({ layoutData, pageData }: PageProps) {
 
       <MapBlock mapBlock={getBlockData(pageData?.mapBlock)} />
 
-      <EmployerPromotionsBlock employerPromotionsBlock={pageData?.employerPromotionsBlock} />
+      <EmployerPromotionsBlock
+        employerPromotionsBlock={pageData?.employerPromotionsBlock}
+        showBlock={pageData?.showEmployerPromotionsBlock}
+      />
 
       <EducationsRelatedBlock
         show={pageData?.showEducationsRelatedBlock}

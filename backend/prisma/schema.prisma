@@ -131,8 +131,12 @@ model Page {
   // SearchBlock
   showSearchBlock Boolean @default(false)
 
+  // Comma-concatenated-list of block types
+  blockOrder String @default("wysiwyg_content,tableBlock,promotionsBlock,mapBlock,employerPromotionsBlock,educationsStartingBlock,importantDatesBlock,faqBlock,contactFormBlock,searchBlock,logosBlock")
+
   @@unique([id, pageName])
 }
+
 
 model TableBlock {
   id         Int                         @id @default(autoincrement())

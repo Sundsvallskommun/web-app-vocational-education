@@ -1,6 +1,6 @@
 import prisma from '@/utils/prisma';
 import { Prisma } from '@prisma/client';
-import { createHandler, defaultHandler, getListHandler, getManyHandler, getOneHandler, updateHandler } from 'ra-data-simple-prisma';
+import { createHandler, defaultHandler, updateHandler } from 'ra-data-simple-prisma';
 import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 import { checkPageRoles } from './utils';
@@ -12,12 +12,6 @@ export class AdminImportantDatesBlockDateCardsController {
   @UseBefore(checkPageRoles())
   async importantDatesBlockDateCards(@Req() req): Promise<any> {
     switch (req.body.method) {
-      case 'getOne':
-        return await getOneHandler<Prisma.ImportantDatesBlockDateCardsFindUniqueArgs>(req.body, prisma.importantDatesBlockDateCards);
-      case 'getMany':
-        return await getManyHandler<Prisma.ImportantDatesBlockDateCardsFindManyArgs>(req.body, prisma.importantDatesBlockDateCards);
-      case 'getList':
-        return await getListHandler<Prisma.ImportantDatesBlockDateCardsFindManyArgs>(req.body, prisma.importantDatesBlockDateCards);
       case 'create':
         return await createHandler<Prisma.ImportantDatesBlockDateCardsCreateArgs>(req.body, prisma.importantDatesBlockDateCards, {
           connect: { importantDatesBlock: 'id' },

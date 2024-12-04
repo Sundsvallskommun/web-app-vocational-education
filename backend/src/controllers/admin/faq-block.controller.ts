@@ -3,7 +3,7 @@ import { UserRoleEnum } from '@prisma/client';
 import { defaultHandler } from 'ra-data-simple-prisma';
 import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
-import { checkPageRoles, hasRolesForMethods, addIncludes } from './utils';
+import { checkPageRoles, hasRolesForMethods, addIncludes, skipFields } from './utils';
 
 @Controller()
 export class AdminFAQBlockController {
@@ -16,7 +16,7 @@ export class AdminFAQBlockController {
         // Dont allow these
         return;
       default:
-        return await defaultHandler(req.body, prisma, addIncludes({ questions: true }));
+        return await defaultHandler(req.body, prisma, { ...addIncludes({ questions: true }), ...skipFields({ questions: true }) });
     }
   }
 }

@@ -20,6 +20,13 @@ export const addIncludes = (includes, options = {}) =>
     },
   });
 
+export const skipFields = (fields, options = {}) =>
+  Object.assign(options, {
+    update: {
+      skipFields: fields,
+    },
+  });
+
 // Middlewares
 export const hasRolesForMethods = (roles: UserRoleEnum[], methods: string[]) => async (req: RequestWithUser, res: Response, next: NextFunction) => {
   if (methods.includes(req.body.method)) {
@@ -66,6 +73,9 @@ export const checkPageRoles = () => async (req: RequestWithUser, res: Response, 
     pageId = resource.pageId;
   }
   if (['getList', 'getManyReference'].includes(req.body.method)) {
+    if (req.body.resource === 'page') {
+      return next();
+    }
     pageId = req.body.params.filter?.pageId || req.body.params.meta?.pageId;
     pageName = req.body.params.filter?.pageName || req.body.params.meta?.pageName;
   }
@@ -144,7 +154,6 @@ const transformPageDataBlocksToIds = page => ({
 export function transformPageResultBlocksToIds(pageResult: { data: Page | Page[] }): {
   data: any;
 } {
-  // console.log('pageResult', pageResult);
   if (Array.isArray(pageResult.data)) {
     return {
       ...pageResult,

@@ -34,3 +34,17 @@ export interface TableBlock {
   rows: TableBlockRow[];
   cells: TableBlockCell[];
 }
+
+export type BlockType =
+  | 'promotionsBlock'
+  | 'mapBlock'
+  | 'employerPromotionsBlock'
+  | 'importantDatesBlock'
+  | 'faqBlock'
+  | 'logosBlock'
+  | 'tableBlock'
+  | 'contactFormBlock'
+  | 'wysiwyg_content'
+  | 'educationsRelatedBlock'
+  | 'educationsStartingBlock'
+  | 'searchBlock';

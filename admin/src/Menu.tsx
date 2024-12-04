@@ -4,7 +4,7 @@ import { Menu, useGetList, usePermissions, useStore, useTranslate } from 'react-
 
 export const CustomMenu = () => {
   const translate = useTranslate();
-  const { data: pages } = useGetList('page');
+  const { data: pages } = useGetList('page', { pagination: { page: 1, perPage: 999 } });
   const [activePageIdEdit] = useStore('activePageIdEdit');
   const { permissions } = usePermissions();
   const onPage = window.location.href.match(/\/page\//) !== null;

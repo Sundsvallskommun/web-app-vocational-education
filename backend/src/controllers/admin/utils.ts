@@ -89,12 +89,8 @@ export const checkPageRoles = () => async (req: RequestWithUser, res: Response, 
     pageName = 'utbildningar'; // there is only one employerPromotionsBlock but it exists on many places
   }
 
-  if (typeof pageId !== 'number' && typeof pageName !== 'string') {
-    throw Error('Neither pageId or pageName present, which is needed for page role right access check.');
-  }
-
   let page;
-  if (pageName) {
+  if (pageName && typeof pageName === 'string') {
     page = await prisma.page.findUnique({
       where: {
         pageName: pageName,
@@ -103,7 +99,7 @@ export const checkPageRoles = () => async (req: RequestWithUser, res: Response, 
         editRoles: true,
       },
     });
-  } else if (pageId) {
+  } else if (pageId && typeof pageId === 'number') {
     page = await prisma.page.findUnique({
       where: {
         id: pageId,
@@ -112,6 +108,8 @@ export const checkPageRoles = () => async (req: RequestWithUser, res: Response, 
         editRoles: true,
       },
     });
+  } else {
+    next(new HttpException(403, 'MISSING_PERMISSIONS'));
   }
 
   if (hasRolesForDataItem(req, 'editRoles')(page)) {

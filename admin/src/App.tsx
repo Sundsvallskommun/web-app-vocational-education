@@ -43,6 +43,7 @@ import { PromotionsBlockPromotionsCreate } from './resources/promotions-block-pr
 import { MapBlockCreate } from './resources/map-block/map-block.create.component';
 import { ImportantDatesBlockCreate } from './resources/important-dates-block/important-dates-block.create.component';
 import { LogosBlockCreate } from './resources/logos-block/logos-block.create.component';
+import { queryClient } from './providers/queryClient';
 
 export const App = () => (
   <Admin
@@ -54,6 +55,7 @@ export const App = () => (
     i18nProvider={i18nProvider}
     disableTelemetry={true}
     theme={theme}
+    queryClient={queryClient}
   >
     <Resource name="user" edit={UserEdit} create={UserCreate} list={UserList} />
 

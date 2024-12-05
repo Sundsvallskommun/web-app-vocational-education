@@ -80,9 +80,7 @@ export class AdminPageController {
         // Dont allow these
         return;
       default:
-        return await transformPageResultBlocksToIds(
-          filterByDataRoles(await defaultHandler(req.body, prisma, addIncludes(includes)), req, 'editRoles'),
-        );
+        return transformPageResultBlocksToIds(filterByDataRoles(await defaultHandler(req.body, prisma, addIncludes(includes)), req, 'editRoles'));
     }
   }
 }

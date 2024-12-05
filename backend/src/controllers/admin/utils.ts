@@ -80,7 +80,10 @@ export const checkPageRoles = () => async (req: RequestWithUser, res: Response, 
     pageName = req.body.params.filter?.pageName || req.body.params.meta?.pageName;
   }
 
-  if (['create'].includes(req.body.method) && req.body.resource !== 'page') {
+  if (['create'].includes(req.body.method)) {
+    if (req.body.resource === 'page') {
+      return next();
+    }
     pageId = req.body.params.data?.pageId || req.body.params.meta?.pageId;
     delete req.body.params.data?.pageId || req.body.params.meta?.pageName;
   }
@@ -131,7 +134,7 @@ const transformPageDataBlocksToIds = page => ({
   mapBlock: toIdList(page.mapBlock),
 
   // EmployerPromotionsBlock
-  employerPromotionsBlock: page.promotionsBlock.id,
+  employerPromotionsBlock: page.promotionsBlock?.id,
 
   // ImportantDatesBlock
   importantDatesBlock: toIdList(page.importantDatesBlock),

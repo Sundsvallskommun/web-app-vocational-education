@@ -13,6 +13,7 @@ export const PromotionsBlockPromotionsCreate = (props: any) => {
     <Create
       {...props}
       mutationMode="pessimistic"
+      redirect={() => history.back()}
       transform={transformPageCreate({
         pageId: parseInt(activePageIdEdit),
         promotionsBlock: { connect: { id: parseInt(activeBlockIdEdit) } },

@@ -23,61 +23,61 @@ const RenderBlock = ({ blockType }: { blockType: BlockType }) => {
     case 'wysiwyg_content':
       return (
         <>
-          {(isAdmin || record.wysiwyg_content?.length) && (
+          {isAdmin || record.wysiwyg_content?.length ? (
             <div>
               <Wysiwyg />
             </div>
-          )}
+          ) : null}
         </>
       );
     case 'tableBlock':
       return (
         <>
-          {(isAdmin || record.tableBlock?.length) && (
+          {isAdmin || record.tableBlock?.length ? (
             <div>
               <h2>{translate('resources.tableBlock.name', { smart_count: 2 })}</h2>
               <EditTableBlock />
             </div>
-          )}
+          ) : null}
         </>
       );
     case 'promotionsBlock':
       return (
         <>
-          {(isAdmin || record.promotionsBlock?.length) && (
+          {isAdmin || record.promotionsBlock?.length ? (
             <div>
               <h2>{translate('resources.promotionsBlock.name', { smart_count: 2 })}</h2>
               <EditPromotionsBlock />
             </div>
-          )}
+          ) : null}
         </>
       );
     case 'mapBlock':
       return (
         <>
-          {(isAdmin || record.mapBlock?.length) && (
+          {isAdmin || record.mapBlock?.length ? (
             <div>
               <h2>{translate('resources.mapBlock.name', { smart_count: 2 })}</h2>
               <EditMapBlock />
             </div>
-          )}
+          ) : null}
         </>
       );
     case 'employerPromotionsBlock':
       return (
         <>
-          {(isAdmin || record.employerPromotionsBlock?.length) && (
+          {isAdmin || record.employerPromotionsBlock?.length ? (
             <div>
               <h2>{translate('resources.employerPromotionsBlock.name')}</h2>
               <EditEmployerPromotionsBlock />
             </div>
-          )}
+          ) : null}
         </>
       );
     case 'educationsStartingBlock':
       return (
         <>
-          {isAdmin && (
+          {isAdmin ? (
             <div>
               <h2>{translate('resources.educationsStartingBlock.name')}</h2>
               <BooleanInput
@@ -85,62 +85,62 @@ const RenderBlock = ({ blockType }: { blockType: BlockType }) => {
                 label={translate('resources.educationsStartingBlock.fields.showBlock')}
               />
             </div>
-          )}
+          ) : null}
         </>
       );
     case 'importantDatesBlock':
       return (
         <>
-          {(isAdmin || record.importantDatesBlock?.length) && (
+          {isAdmin || record.importantDatesBlock?.length ? (
             <div>
               <h2>{translate('resources.importantDatesBlock.name', { smart_count: 2 })}</h2>
               <EditImportantDatesBlock />
             </div>
-          )}
+          ) : null}
         </>
       );
     case 'faqBlock':
       return (
         <>
-          {(isAdmin || record.faqBlock?.length) && (
+          {isAdmin || record.faqBlock?.length ? (
             <div>
               <h2>{translate('resources.faqBlock.name', { smart_count: 2 })}</h2>
               <EditFAQBlock />
             </div>
-          )}
+          ) : null}
         </>
       );
     case 'contactFormBlock':
       return (
         <>
-          {(isAdmin || record.contactFormBlock?.length) && (
+          {isAdmin || record.contactFormBlock?.length ? (
             <div>
               <h2>{translate('resources.contactFormBlock.name')}</h2>
               <EditContactFormBlock />
             </div>
-          )}
+          ) : null}
         </>
       );
     case 'searchBlock':
       return (
         <>
-          {isAdmin && (
+          {isAdmin ? (
             <div>
               <h2>{translate('resources.searchBlock.name')}</h2>
               <BooleanInput source="showSearchBlock" label={translate('resources.searchBlock.fields.showBlock')} />
             </div>
-          )}
+          ) : null}
         </>
       );
     case 'logosBlock':
       return (
         <>
-          {(isAdmin || record.logosBlock?.length) && (
+          {isAdmin || record.logosBlock?.length ? (
             <div>
               <h2>{translate('resources.logosBlock.name', { smart_count: 2 })}</h2>
               <EditLogosBlock />
             </div>
-          )}
+          ) : null}
         </>
       );
     default:
@@ -241,24 +241,24 @@ export const PageSwitch = () => {
     case '/utbildningsanordnare':
       return (
         <>
-          {(isAdmin || record.faqBlock?.length) && (
+          {isAdmin || record.faqBlock?.length ? (
             <div>
               <h2>{translate('resources.faqBlock.name', { smart_count: 2 })}</h2>
               <EditFAQBlock />
             </div>
-          )}
+          ) : null}
         </>
       );
     case '/utbildningar/[utbildning]':
       return (
         <>
-          {(isAdmin || record.faqBlock?.length) && (
+          {isAdmin || record.faqBlock?.length ? (
             <div>
               <h2>{translate('resources.faqBlock.name', { smart_count: 2 })}</h2>
               <EditFAQBlock />
             </div>
-          )}
-          {isAdmin && (
+          ) : null}
+          {isAdmin ? (
             <div>
               <h2>{translate('resources.educationsRelatedBlock.name')}</h2>
               <BooleanInput
@@ -266,23 +266,23 @@ export const PageSwitch = () => {
                 label={translate('resources.educationsRelatedBlock.fields.showBlock')}
               />
             </div>
-          )}
-          {isAdmin && (
+          ) : null}
+          {isAdmin ? (
             <div>
               <h2>{translate('resources.searchBlock.name')}</h2>
               <BooleanInput source="showSearchBlock" label={translate('resources.searchBlock.fields.showBlock')} />
             </div>
-          )}
+          ) : null}
         </>
       );
     case '/utbildningar/efterfragade/[efterfragad]':
       return (
         <>
-          {(isAdmin || record.wysiwyg_content?.length) && (
+          {isAdmin || record.wysiwyg_content?.length ? (
             <div>
               <Wysiwyg />
             </div>
-          )}
+          ) : null}
         </>
       );
     default:

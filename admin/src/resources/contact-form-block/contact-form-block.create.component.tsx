@@ -11,6 +11,7 @@ import {
 } from 'react-admin';
 import { transformPageCreate } from '../../utils/data';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
+import { CustomToolbar } from '../components/custom-toolbar.component';
 
 export const ContactFormBlockCreate = (props: any) => {
   useRoutePermissions();
@@ -23,7 +24,7 @@ export const ContactFormBlockCreate = (props: any) => {
       mutationMode="pessimistic"
       transform={transformPageCreate({ pageId: parseInt(activePageIdEdit), page: { connect: { id: pageData?.id } } })}
     >
-      <SimpleForm margin="none">
+      <SimpleForm margin="none" toolbar={<CustomToolbar />}>
         <h1>{`${translate('ra.action.create')} ${translate('resources.contactFormBlock.name', {
           smart_count: 1,
         })}`}</h1>

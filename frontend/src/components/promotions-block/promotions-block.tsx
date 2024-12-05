@@ -20,8 +20,8 @@ export default function PromotionsBlock({ promotionsBlock }: PromotionsBlockProp
             className={`
               ${
                 wide ?
-                  'desktop:flex-[0_1_calc(50%_-_1.3rem)]' // Adjust for half the gap
-                : 'desktop:flex-[0_1_calc(33.333%_-_2.2rem)]' // Adjust for a third of the gap
+                  'desktop:flex-[0_1_calc(50%_-_1.3rem)] desktop:max-w-[calc(50%_-_1.3rem)]' // Adjust for half the gap
+                : 'desktop:flex-[0_1_calc(33.333%_-_2.2rem)] desktop:max-w-[calc(33.333%_-_2.2rem)]' // Adjust for a third of the gap
               }
             `}
             href={promotion.promotedPage.url}

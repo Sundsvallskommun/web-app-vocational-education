@@ -18,7 +18,7 @@ export const LogosBlockCreate = (props: any) => {
         <h1>{`${translate('ra.action.edit')} ${translate('resources.logosBlock.name', {
           smart_count: 1,
         })}`}</h1>
-        <BooleanInput source="showBlock" />
+        <BooleanInput source="showBlock" defaultValue={true} />
         <TextInput source="title" />
         <TextInput source="description" />
       </SimpleForm>

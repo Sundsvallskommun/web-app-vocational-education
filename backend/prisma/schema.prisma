@@ -316,7 +316,7 @@ model LogosBlock {
   pageName    String
   pageId      Int
   title       String
-  description String            @db.Text
+  description String?            @db.Text @default("")
   showBlock   Boolean           @default(true)
   logos       LogosBlockLogos[] @relation("LogosBlockLogos")
 

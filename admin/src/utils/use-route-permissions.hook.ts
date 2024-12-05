@@ -31,14 +31,9 @@ export default function useRoutePermissions() {
           }
         }
         if (route.includes('page/create')) {
-          if (isSuperAdmin) {
-            return true;
-          } else {
-            return false;
-          }
+          return isAdmin;
         }
 
-        if (route.includes('/create')) isAdmin;
         return true;
       };
       if (!hasRouteAccess(pathname)) {

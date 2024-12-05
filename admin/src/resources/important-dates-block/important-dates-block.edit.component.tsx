@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   BooleanInput,
   Edit,
@@ -7,25 +8,27 @@ import {
   TextInput,
   useGetList,
   useGetRecordId,
+  useRedirect,
   useStore,
   useTranslate,
 } from 'react-admin';
-import { EditImportantDatesBlockDateCards } from '../components/important-dates-block-date-cards.edit.component';
-import { CustomToolbar } from '../components/custom-toolbar.component';
-import { useEffect } from 'react';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
+import { CustomToolbar } from '../components/custom-toolbar.component';
+import { EditImportantDatesBlockDateCards } from '../components/important-dates-block-date-cards.edit.component';
 import { WithFormContext } from '../components/with-form-context/with-form-context.component';
 
 export const ImportantDatesBlockEdit = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
-  const [activePageIdEdit, setValue] = useStore('activeBlockIdEdit', '');
+  const [activePageIdEdit] = useStore('activePageIdEdit', '');
+  const [_, setValue] = useStore('activeBlockIdEdit', '');
   const recordId = useGetRecordId();
+  const redirect = useRedirect();
   useEffect(() => {
     setValue(recordId.toString());
   }, [recordId]);
   return (
-    <Edit {...props} redirect={() => history.back()} mutationMode="pessimistic">
+    <Edit {...props} redirect={false} mutationMode="pessimistic">
       <SimpleForm
         margin="none"
         toolbar={
@@ -33,6 +36,7 @@ export const ImportantDatesBlockEdit = (props: any) => {
             deleteProps={{
               redirect: () => `page/${activePageIdEdit}`,
             }}
+            backProps={{ onClick: () => redirect(`/page/${activePageIdEdit}`) }}
           />
         }
       >

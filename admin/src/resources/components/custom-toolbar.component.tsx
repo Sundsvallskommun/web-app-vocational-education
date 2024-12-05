@@ -15,17 +15,18 @@ interface CustomToolbarProps extends ToolbarProps {
   deleteProps?: DeleteButtonProps;
   hideSave?: boolean;
   hideDelete?: boolean;
+  backProps?: React.ComponentPropsWithRef<typeof Button>;
 }
 
 export const CustomToolbar = (props: CustomToolbarProps) => {
-  const { saveProps, deleteProps, hideSave = false, hideDelete = false, ...rest } = props;
+  const { saveProps, deleteProps, hideSave = false, hideDelete = false, backProps, ...rest } = props;
 
   useSaveShortCut();
 
   return (
     <Toolbar {...rest} sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
       <Box sx={{ display: 'flex', gap: '2rem' }}>
-        <Button onClick={() => history.back()} label="Tillbaka" />
+        <Button onClick={() => history.back()} label="Tillbaka" {...backProps} />
         {!hideSave && <SaveButton alwaysEnable {...saveProps} />}
         {!hideDelete && <DeleteButton {...deleteProps} />}
       </Box>

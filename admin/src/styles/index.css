@@ -15,4 +15,7 @@
   color: white;
   background: rgb(101, 90, 252);
 }
+.RaRichTextInput-editorContent a {
+  color: #208357;
+}
 /*-Wysiwyg */

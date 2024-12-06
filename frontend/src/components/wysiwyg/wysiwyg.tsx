@@ -4,7 +4,7 @@ import parse from 'html-react-parser';
 import React from 'react';
 import NextLink from 'next/link';
 import Button from '@components/button/button.component';
-import { useThemeQueries } from '@sk-web-gui/react';
+import { Link, useThemeQueries } from '@sk-web-gui/react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 interface WysiwygProps {
   content?: string;
@@ -32,6 +32,37 @@ export const SiteNavigationButton = (props) => {
   );
 };
 
+function isExternalLink(url: string): boolean {
+  // If it's a relative path, it's always internal
+  if (!/^https?:\/\//.test(url)) {
+    return false;
+  }
+
+  const currentUrl = new URL(window.location.href);
+  const linkUrl = new URL(url, currentUrl.origin); // Ensures relative URLs are treated properly
+
+  // Compare both the hostname and the protocol (http/https)
+  return linkUrl.hostname !== currentUrl.hostname || linkUrl.protocol !== currentUrl.protocol;
+}
+
+export const SpanLink = (props) => {
+  const isExternal = isExternalLink(props.href);
+  if (isExternal) {
+    return (
+      <Link href={props.href} external={true}>
+        {props.children}
+      </Link>
+    );
+  }
+  return (
+    <NextLink href={props.href}>
+      <Link as="span" external={false}>
+        {props.children}
+      </Link>
+    </NextLink>
+  );
+};
+
 export default function Wysiwyg({ content, children }: WysiwygProps) {
   if (children) {
     return <div className="wysiwyg-content">{children}</div>;
@@ -48,6 +79,7 @@ export default function Wysiwyg({ content, children }: WysiwygProps) {
           replace: replaceWithComponent([
             { tagName: 'factblock', Comp: FactBlock },
             { tagName: 'sitenavigationbutton', Comp: SiteNavigationButton },
+            { tagName: 'a', Comp: SpanLink },
           ]),
         }
       )}

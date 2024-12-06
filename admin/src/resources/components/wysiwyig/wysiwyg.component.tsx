@@ -3,6 +3,7 @@ import {
   ClearButtons,
   DefaultEditorOptions,
   LevelSelect,
+  LinkButtons,
   ListButtons,
   RichTextInput,
   RichTextInputToolbar,
@@ -23,7 +24,7 @@ const MyRichTextInputToolbar = ({ ...props }) => {
       {/* <AlignmentButtons /> */}
       <ListButtons />
 
-      {/* <LinkButtons /> */}
+      <LinkButtons />
       {/* <QuoteButtons /> */}
       <ImageToolbarButton editor={editor} />
       <YoutubeButton editor={editor} />

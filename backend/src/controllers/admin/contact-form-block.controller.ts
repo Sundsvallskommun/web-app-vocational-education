@@ -2,7 +2,7 @@ import prisma from '@/utils/prisma';
 import { defaultHandler } from 'ra-data-simple-prisma';
 import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
-import { checkPageRoles, hasRolesForMethods, addIncludes } from './utils';
+import { checkPageRoles, hasRolesForMethods, addIncludes, skipFields } from './utils';
 import { UserRoleEnum } from '@prisma/client';
 
 @Controller()
@@ -16,13 +16,14 @@ export class AdminContactFormBlockController {
         // Dont allow these
         return;
       default:
-        return await defaultHandler(
-          req.body,
-          prisma,
-          addIncludes({
+        return await defaultHandler(req.body, prisma, {
+          ...addIncludes({
             emails: true,
           }),
-        );
+          ...skipFields({
+            emails: true,
+          }),
+        });
     }
   }
 }

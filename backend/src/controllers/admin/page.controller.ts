@@ -5,14 +5,14 @@ import { defaultHandler, updateHandler } from 'ra-data-simple-prisma';
 import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 import { RequestWithUser } from '../../interfaces/auth.interface';
-import { filterByDataRoles, hasRolesForMethods, transformPageResultBlocksToIds } from './utils';
+import { addIncludes, checkPageRoles, filterByDataRoles, hasRolesForMethods, transformPageResultBlocksToIds } from './utils';
 import { omit } from '@/utils/object';
 
 @Controller()
 export class AdminPageController {
   @All('/admin/page')
   @OpenAPI({ summary: 'Handle Page' })
-  @UseBefore(hasRolesForMethods([UserRoleEnum.ADMIN], ['delete', 'create']))
+  @UseBefore(hasRolesForMethods([UserRoleEnum.ADMIN], ['delete', 'create']), checkPageRoles())
   async page(@Req() req: RequestWithUser): Promise<any> {
     const includes = {
       promotionsBlock: true,
@@ -22,6 +22,7 @@ export class AdminPageController {
       faqBlock: true,
       logosBlock: true,
       tableBlock: true,
+      contactFormBlock: true,
       editRoles: true,
     };
     switch (req.body.method) {
@@ -66,7 +67,7 @@ export class AdminPageController {
               },
               prisma.page,
               {
-                skipFields: includes,
+                skipFields: { ...includes, promotedBy: true },
                 include: includes,
               },
             ),
@@ -79,22 +80,8 @@ export class AdminPageController {
         // Dont allow these
         return;
       default:
-        return transformPageResultBlocksToIds(
-          filterByDataRoles(
-            await defaultHandler(req.body, prisma, {
-              getOne: {
-                include: includes,
-              },
-              getMany: {
-                include: includes,
-              },
-              getList: {
-                include: includes,
-              },
-            }),
-            req,
-            'editRoles',
-          ),
+        return await transformPageResultBlocksToIds(
+          filterByDataRoles(await defaultHandler(req.body, prisma, addIncludes(includes)), req, 'editRoles'),
         );
     }
   }

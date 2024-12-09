@@ -161,6 +161,7 @@ export interface PageData {
   showEducationsRelatedBlock: boolean;
   showEducationsStartingBlock: boolean;
   educationsStartingBlock?: EducationsStartingBlock;
+  blockOrder: string;
 }
 
 export type PagesData = { url: string; title: string };
@@ -180,3 +181,17 @@ export interface LayoutProps {
 export interface PageProps extends LayoutProps {
   pageData: PageData;
 }
+
+export type BlockType =
+  | 'promotionsBlock'
+  | 'mapBlock'
+  | 'employerPromotionsBlock'
+  | 'importantDatesBlock'
+  | 'faqBlock'
+  | 'logosBlock'
+  | 'tableBlock'
+  | 'contactFormBlock'
+  | 'wysiwyg_content'
+  | 'educationsRelatedBlock'
+  | 'educationsStartingBlock'
+  | 'searchBlock';

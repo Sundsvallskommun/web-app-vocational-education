@@ -20,6 +20,13 @@ export const addIncludes = (includes, options = {}) =>
     },
   });
 
+export const skipFields = (fields, options = {}) =>
+  Object.assign(options, {
+    update: {
+      skipFields: fields,
+    },
+  });
+
 // Middlewares
 export const hasRolesForMethods = (roles: UserRoleEnum[], methods: string[]) => async (req: RequestWithUser, res: Response, next: NextFunction) => {
   if (methods.includes(req.body.method)) {
@@ -66,6 +73,9 @@ export const checkPageRoles = () => async (req: RequestWithUser, res: Response, 
     pageId = resource.pageId;
   }
   if (['getList', 'getManyReference'].includes(req.body.method)) {
+    if (req.body.resource === 'page') {
+      return next();
+    }
     pageId = req.body.params.filter?.pageId || req.body.params.meta?.pageId;
     pageName = req.body.params.filter?.pageName || req.body.params.meta?.pageName;
   }
@@ -79,12 +89,8 @@ export const checkPageRoles = () => async (req: RequestWithUser, res: Response, 
     pageName = 'utbildningar'; // there is only one employerPromotionsBlock but it exists on many places
   }
 
-  if (typeof pageId !== 'number' && typeof pageName !== 'string') {
-    throw Error('Neither pageId or pageName present, which is needed for page role right access check.');
-  }
-
   let page;
-  if (pageName) {
+  if (pageName && typeof pageName === 'string') {
     page = await prisma.page.findUnique({
       where: {
         pageName: pageName,
@@ -93,7 +99,7 @@ export const checkPageRoles = () => async (req: RequestWithUser, res: Response, 
         editRoles: true,
       },
     });
-  } else if (pageId) {
+  } else if (pageId && typeof pageId === 'number') {
     page = await prisma.page.findUnique({
       where: {
         id: pageId,
@@ -102,6 +108,8 @@ export const checkPageRoles = () => async (req: RequestWithUser, res: Response, 
         editRoles: true,
       },
     });
+  } else {
+    next(new HttpException(403, 'MISSING_PERMISSIONS'));
   }
 
   if (hasRolesForDataItem(req, 'editRoles')(page)) {
@@ -144,7 +152,6 @@ const transformPageDataBlocksToIds = page => ({
 export function transformPageResultBlocksToIds(pageResult: { data: Page | Page[] }): {
   data: any;
 } {
-  // console.log('pageResult', pageResult);
   if (Array.isArray(pageResult.data)) {
     return {
       ...pageResult,

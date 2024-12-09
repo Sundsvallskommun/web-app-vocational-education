@@ -333,19 +333,16 @@ async function main() {
                   date: '2038-01-19',
                   title: 'startsida_viktigadatum_title1',
                   text: 'startsida_viktigadatum_text1',
-                  url: 'startsida_viktigadatum_url1',
                 },
                 {
                   date: '2038-01-19',
                   title: 'startsida_viktigadatum_title2',
                   text: 'startsida_viktigadatum_text2',
-                  url: 'startsida_viktigadatum_url2',
                 },
                 {
                   date: '2038-01-19',
                   title: 'startsida_viktigadatum_title3',
                   text: 'startsida_viktigadatum_text3',
-                  url: 'startsida_viktigadatum_url3',
                 },
               ],
             },
@@ -610,6 +607,23 @@ async function main() {
             },
           },
         ],
+      },
+    },
+  });
+
+  await prisma.page.upsert({
+    where: { pageName: 'viktiga_datum' },
+    update: {},
+    create: {
+      url: '/viktiga-datum',
+      pageName: 'viktiga_datum',
+      title: 'Viktiga datum',
+      description:
+        'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Exercitation veniam consequat sunt nostrud amet.',
+      editRoles: {
+        create: [UserRoleEnum.EDITOR].map(role => ({
+          role: role,
+        })),
       },
     },
   });

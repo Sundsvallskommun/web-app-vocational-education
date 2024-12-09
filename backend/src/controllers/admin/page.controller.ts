@@ -5,7 +5,7 @@ import { defaultHandler, updateHandler } from 'ra-data-simple-prisma';
 import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 import { RequestWithUser } from '../../interfaces/auth.interface';
-import { filterByDataRoles, hasRolesForMethods } from './utils';
+import { filterByDataRoles, hasRolesForMethods, transformPageResultBlocksToIds } from './utils';
 import { omit } from '@/utils/object';
 
 @Controller()
@@ -53,44 +53,48 @@ export class AdminPageController {
           });
         }
 
-        return filterByDataRoles(
-          await updateHandler<Prisma.PageUpdateArgs>(
-            {
-              method: req.body.method,
-              params: {
-                ...req.body.params,
-                data: omit(req.body.params.data, ['id']),
+        return transformPageResultBlocksToIds(
+          filterByDataRoles(
+            await updateHandler<Prisma.PageUpdateArgs>(
+              {
+                method: req.body.method,
+                params: {
+                  ...req.body.params,
+                  data: omit(req.body.params.data, ['id']),
+                },
+                resource: req.body.resource,
               },
-              resource: req.body.resource,
-            },
-            prisma.page,
-            {
-              skipFields: includes,
-              include: includes,
-            },
+              prisma.page,
+              {
+                skipFields: includes,
+                include: includes,
+              },
+            ),
+            req,
+            'editRoles',
           ),
-          req,
-          'editRoles',
         );
 
       case 'deleteMany':
         // Dont allow these
         return;
       default:
-        return filterByDataRoles(
-          await defaultHandler(req.body, prisma, {
-            getOne: {
-              include: includes,
-            },
-            getMany: {
-              include: includes,
-            },
-            getList: {
-              include: includes,
-            },
-          }),
-          req,
-          'editRoles',
+        return transformPageResultBlocksToIds(
+          filterByDataRoles(
+            await defaultHandler(req.body, prisma, {
+              getOne: {
+                include: includes,
+              },
+              getMany: {
+                include: includes,
+              },
+              getList: {
+                include: includes,
+              },
+            }),
+            req,
+            'editRoles',
+          ),
         );
     }
   }

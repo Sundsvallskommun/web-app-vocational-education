@@ -257,7 +257,16 @@ model ImportantDatesBlock {
   pageName  String
   pageId    Int
   showBlock Boolean                        @default(true)
-  title     String
+  showSeeAllButton Boolean                 @default(true)
+  showAll   Boolean                        @default(false)
+  amountShown   Int                        @default(3)
+  title     String?                        @default("")
+  referencedByImportantDatesBlock          ImportantDatesBlock[]        @relation("ReferencedImportantDatesBlock")
+  referencedImportantDatesBlock            ImportantDatesBlock?         @relation("ReferencedImportantDatesBlock", fields: [referencedImportantDatesBlockId, referencedImportantDatesBlockPageName, referencedImportantDatesBlockPageId], references: [id, pageName, pageId])
+  referencedImportantDatesBlockId          Int?
+  referencedImportantDatesBlockPageName    String?
+  referencedImportantDatesBlockPageId      Int?
+
   dateCards ImportantDatesBlockDateCards[] @relation("ImportantDatesBlockDateCards")
 
   @@unique([id, pageName, pageId])
@@ -272,7 +281,6 @@ model ImportantDatesBlockDateCards {
   date                String
   title               String
   text                String              @db.Text
-  url                 String
 }
 
 model FaqBlock {

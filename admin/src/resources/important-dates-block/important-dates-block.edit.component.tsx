@@ -1,8 +1,20 @@
-import { BooleanInput, Edit, SimpleForm, TextInput, useGetRecordId, useStore, useTranslate } from 'react-admin';
+import {
+  BooleanInput,
+  Edit,
+  NumberInput,
+  SelectInput,
+  SimpleForm,
+  TextInput,
+  useGetList,
+  useGetRecordId,
+  useStore,
+  useTranslate,
+} from 'react-admin';
 import { EditImportantDatesBlockDateCards } from '../components/important-dates-block-date-cards.edit.component';
 import { CustomToolbar } from '../components/custom-toolbar.component';
 import { useEffect } from 'react';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
+import { WithFormContext } from '../components/with-form-context/with-form-context.component';
 
 export const ImportantDatesBlockEdit = (props: any) => {
   useRoutePermissions();
@@ -29,8 +41,31 @@ export const ImportantDatesBlockEdit = (props: any) => {
         }).toLowerCase()}`}</h1>
         <TextInput source="pageName" readOnly />
         <BooleanInput source="showBlock" />
+        <BooleanInput source="showAll" />
+        <BooleanInput source="showSeeAllButton" />
+        <NumberInput source="amountShown" />
         <TextInput source="title" />
-        <EditImportantDatesBlockDateCards />
+        <WithFormContext>
+          {({ watch, setValue }) => {
+            const referencedImportantDatesBlockId = watch('referencedImportantDatesBlockId');
+
+            const { data } = useGetList('importantDatesBlock', { meta: { pageName: watch('pageName') } });
+            const choices = data ? data.map((x) => ({ id: x.pageName, name: x.pageName, data: x })) : [];
+
+            useEffect(() => {
+              setValue('referencedImportantDatesBlock', {
+                connect: { id: choices.find((x) => x.name === referencedImportantDatesBlockId)?.data.id },
+              });
+            }, [referencedImportantDatesBlockId]);
+
+            return (
+              <>
+                <SelectInput source="referencedImportantDatesBlockPageName" choices={choices} />
+                <EditImportantDatesBlockDateCards filterPageName={watch('referencedImportantDatesBlockPageName')} />
+              </>
+            );
+          }}
+        </WithFormContext>
       </SimpleForm>
     </Edit>
   );

@@ -1,80 +1,61 @@
-import React from 'react';
 import { DOMNode } from 'html-react-parser';
+import React from 'react';
 
-// List of self-closing tags in HTML
-const selfClosingTags = new Set([
-  'area',
-  'base',
-  'br',
-  'col',
-  'embed',
-  'hr',
-  'img',
-  'input',
-  'link',
-  'meta',
-  'param',
-  'source',
-  'track',
-  'wbr',
-]);
-
-function convertNodeToJSX(node: DOMNode, index: number = 0): React.ReactNode {
-  // If the node is a text node, return its content
-  if (node.type === 'text') {
-    return node.data;
-  }
-
-  // If the node is an element node, reconstruct its tag, attributes, and children
-  if (node.type === 'tag') {
-    const { name, attribs, children } = node;
-
-    // Recursively handle children and provide keys, unless it's a self-closing tag
-    const childElements =
-      selfClosingTags.has(name) ? null
-      : children ? children.map((childNode: DOMNode, childIndex: number) => convertNodeToJSX(childNode, childIndex))
-      : null;
-
-    // Create a key using index or node data (e.g., tagName or attributes)
-    const key = attribs?.id || `${name}-${index}`;
-
-    // Use React.createElement to create the element dynamically, with a key and no children for self-closing tags
-    return React.createElement(name, { key, ...attribs }, childElements);
-  }
-
-  return null; // Return null for unsupported node types
+// Type guard to check if the node is a tag node
+function isTagNode(node: DOMNode): node is DOMNode & {
+  name: string;
+  attribs: Record<string, string>;
+  children?: DOMNode[];
+} {
+  return node.type === 'tag';
 }
 
+// The main function to replace nodes with components
 export const replaceWithComponent =
-  (
-    componentMappings: { tagName: string; Comp: React.FC<{ children: string | boolean | object | Element | null }> }[]
-  ) =>
+  (componentMappings: { tagName: string; Comp: React.FC<{ children: React.ReactNode }> }[]) =>
+  // eslint-disable-next-line react/display-name
   (node: DOMNode, index: number = 0): string | boolean | object | Element | null => {
-    for (const componentMapping of componentMappings) {
-      if (node.type === 'tag' && node.name === componentMapping.tagName) {
-        const Comp = componentMapping.Comp({
-          ...node.attribs,
-          children:
-            node.children ?
-              node.children.map((childNode: DOMNode, childIndex: number) =>
-                replaceWithComponent(componentMappings)(childNode, childIndex)
-              )
-            : null,
-        });
-        if (Comp !== undefined && typeof Comp !== 'number' && typeof Comp !== 'bigint') {
-          return Comp;
+    if (isTagNode(node)) {
+      for (const { tagName, Comp } of componentMappings) {
+        if (node.name === tagName) {
+          // Map the children recursively
+          const children = node.children?.map((childNode, childIndex) =>
+            replaceWithComponent(componentMappings)(childNode, childIndex)
+          );
+
+          // Return component with children if it's a matching tag
+          return (
+            <Comp key={index} {...node.attribs}>
+              {(children && children.length > 0 ? children : null) as React.ReactNode}
+            </Comp>
+          );
         }
       }
+
+      // Fallback to creating a default element if no component matches
+      const children = node.children?.map((childNode, childIndex) =>
+        replaceWithComponent(componentMappings)(childNode, childIndex)
+      );
+
+      // Special handling for self-closing tags (e.g., <img />)
+      if (node.name === 'img') {
+        // Ensure <img /> is passed through as a valid React element
+        return React.createElement('img', { key: index, ...node.attribs });
+      }
+
+      // Use React.createElement to create the element dynamically for other nodes
+      return React.createElement(
+        node.name,
+        { key: index, ...node.attribs },
+        (children && children.length > 0 ? children : null) as React.ReactNode
+      );
     }
 
-    // Default handling for other nodes: use the existing convertNodeToJSX function
-    const convertedNode = convertNodeToJSX(node, index);
-
-    // Ensure convertedNode matches the expected return type of the replace function
-    if (typeof convertedNode === 'string' || typeof convertedNode === 'object' || convertedNode === null) {
-      return convertedNode;
+    if (node.type === 'text') {
+      // Return text data as a string
+      return node.data || null;
     }
 
-    // Fallback for unsupported types (e.g., number, boolean, etc.)
+    // Return null for unsupported node types
     return null;
   };

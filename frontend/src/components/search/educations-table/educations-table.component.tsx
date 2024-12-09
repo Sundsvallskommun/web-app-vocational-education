@@ -47,7 +47,7 @@ export const EducationsTable: React.FC<{
                   <span className="inline-block">
                     <NextLink
                       onClick={() => handleOnClickResult(edu?.id)}
-                      href={routeDynamicSlugFormat({ slug: '/utbildningar/[utbildning]', data: edu })}
+                      href={`/utbildningar/${routeDynamicSlugFormat({ slug: '/utbildningar/[utbildning]', data: edu })}`}
                     >
                       <Link as="span" className="line-clamp-2 text-base mb-6 leading-[1.5]">
                         {edu?.name ?? '-'}

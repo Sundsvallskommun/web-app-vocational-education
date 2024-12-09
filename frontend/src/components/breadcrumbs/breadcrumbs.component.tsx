@@ -17,6 +17,8 @@ const Breadcrumbs = ({ lastItemTitle }: { lastItemTitle?: string }) => {
   const pathWithoutBasePath = location.pathname.replace(new RegExp(`^${process.env.NEXT_PUBLIC_BASE_PATH}`), '') || '/';
   const pathSegments = pathWithoutBasePath.split('/').filter(Boolean);
 
+  if (pathSegments.length === 0) return null;
+
   return (
     <Breadcrumb className="" separator={<span className="mx-1">|</span>}>
       <Breadcrumb.Item>

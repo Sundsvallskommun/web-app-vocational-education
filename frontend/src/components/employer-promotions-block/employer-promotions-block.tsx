@@ -14,6 +14,7 @@ export default function EmployerPromotionsBlock({ employerPromotionsBlock, showB
   return (
     <CardsBlock<EmployerPromotionsBlockType['employerPromotions']>
       title={employerPromotionsBlock.title || ''}
+      padded
       backgroundClass="bg-blue-light"
       loadMoreColorClass="text-blue-light"
       cards={employerPromotionsBlock.employerPromotions}

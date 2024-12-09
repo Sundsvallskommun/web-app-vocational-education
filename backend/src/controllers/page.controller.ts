@@ -1,4 +1,8 @@
+import { EducationsController } from '@/controllers/educations.controller';
+import DataResponse from '@/interfaces/dataResponse.interface';
+import { PageResponse } from '@/interfaces/educations.interface';
 import prisma from '@/utils/prisma';
+import dayjs from 'dayjs';
 import { Controller, Get, QueryParam } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 
@@ -6,8 +10,8 @@ import { OpenAPI } from 'routing-controllers-openapi';
 export class PageController {
   @Get('/page')
   @OpenAPI({ summary: 'Return page data' })
-  async getPageData(@QueryParam('url') url: string): Promise<any> {
-    const page = await prisma.page.findUnique({
+  async getPageData(@QueryParam('url') url: string): Promise<DataResponse<PageResponse>> {
+    const page: PageResponse = await prisma.page.findUnique({
       include: {
         promotionsBlock: {
           include: {
@@ -60,6 +64,15 @@ export class PageController {
         url: url ? url : '/',
       },
     });
+    if (page?.showEducationsStartingBlock) {
+      const educationApi = new EducationsController();
+      const res = await educationApi.getEducationEvents({
+        size: '6',
+        sortFunction: 'start,asc',
+        startDate: dayjs(new Date()).format('YYYY-MM-DD'),
+      });
+      page.educationsStartingBlock = res.data;
+    }
 
     return { data: page, message: 'success' };
   }

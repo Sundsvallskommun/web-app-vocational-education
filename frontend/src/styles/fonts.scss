@@ -90,13 +90,15 @@
     @apply medium-device:text-[1.8rem];
   }
 
-  p {
+  p,
+  .text {
     @apply my-[.625em] max-w-[90rem] text-ellipsis;
     @apply leading-[2.6rem];
     @apply medium-device:leading-[150%];
     // hyphens: auto;
 
-    p + & {
+    p + &,
+    .text + & {
       @apply mt-[.625em];
     }
   }
@@ -110,7 +112,8 @@
   ol,
   ul,
   .btn,
-  a {
+  a,
+  .text {
     & + h2,
     & + h3,
     & + h4,
@@ -129,6 +132,7 @@
     }
 
     p + &,
+    .text + &,
     h2 + &,
     h3 + &,
     h4 + &,

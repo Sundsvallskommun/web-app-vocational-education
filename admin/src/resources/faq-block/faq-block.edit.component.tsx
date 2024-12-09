@@ -1,8 +1,17 @@
-import { BooleanInput, Edit, SimpleForm, TextInput, useGetRecordId, useStore, useTranslate } from 'react-admin';
-import { EditFAQBlockQuestions } from '../components/faq-block-questions.edit.component';
 import { useEffect } from 'react';
-import { CustomToolbar } from '../components/custom-toolbar.component';
+import {
+  BooleanInput,
+  Edit,
+  SimpleForm,
+  TextInput,
+  useGetRecordId,
+  useRedirect,
+  useStore,
+  useTranslate,
+} from 'react-admin';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
+import { CustomToolbar } from '../components/custom-toolbar.component';
+import { EditFAQBlockQuestions } from '../components/faq-block-questions.edit.component';
 
 export const FAQBlockEdit = (props: any) => {
   useRoutePermissions();
@@ -10,11 +19,12 @@ export const FAQBlockEdit = (props: any) => {
   const [activePageIdEdit] = useStore('activePageIdEdit');
   const [, setValue] = useStore('activeBlockIdEdit', '');
   const recordId = useGetRecordId();
+  const redirect = useRedirect();
   useEffect(() => {
     setValue(recordId.toString());
   }, [recordId]);
   return (
-    <Edit {...props} redirect={() => history.back()} mutationMode="pessimistic">
+    <Edit {...props} redirect={false} mutationMode="pessimistic">
       <SimpleForm
         margin="none"
         toolbar={
@@ -22,6 +32,7 @@ export const FAQBlockEdit = (props: any) => {
             deleteProps={{
               redirect: () => `page/${activePageIdEdit}`,
             }}
+            backProps={{ onClick: () => redirect(`/page/${activePageIdEdit}`) }}
           />
         }
       >

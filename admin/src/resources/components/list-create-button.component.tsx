@@ -1,16 +1,11 @@
-import { CreateButton, useGetIdentity, useRecordContext, useResourceContext, useTranslate } from 'react-admin';
+import { CreateButton, useResourceContext, useTranslate } from 'react-admin';
+import useRoutePermissions from '../../utils/use-route-permissions.hook';
 
-interface ListCreateButtonProps {
-  show?: boolean;
-}
-
-export const ListCreateButton = ({ show = true }: ListCreateButtonProps) => {
-  const { data } = useGetIdentity();
+export const ListCreateButton = () => {
+  const { canCreate } = useRoutePermissions();
   const resource = useResourceContext();
   const t = useTranslate();
   const resourceString = t(`resources.${resource}.name`, { smart_count: 1 });
 
-  return (
-    <>{(data?.username === 'admin' || show) && <CreateButton label={`${t('ra.action.create')} ${resourceString}`} />}</>
-  );
+  return <>{canCreate && <CreateButton label={`${t('ra.action.create')} ${resourceString}`} />}</>;
 };

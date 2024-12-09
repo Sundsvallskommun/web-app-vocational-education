@@ -1,21 +1,31 @@
-import { BooleanInput, Edit, SimpleForm, TextInput, useGetRecordId, useStore, useTranslate } from 'react-admin';
 import { useEffect } from 'react';
-import { CustomToolbar } from '../components/custom-toolbar.component';
-import { EditLogosBlockLogos } from '../components/logos-block-logos.edit.component';
+import {
+  BooleanInput,
+  Edit,
+  SimpleForm,
+  TextInput,
+  useGetRecordId,
+  useRedirect,
+  useStore,
+  useTranslate,
+} from 'react-admin';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
+import { CustomToolbar } from '../components/custom-toolbar.component';
 
 export const LogosBlockEdit = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
-  const [activePageIdEdit, setValue] = useStore('activeBlockIdEdit', '');
+  const [activePageIdEdit] = useStore('activePageIdEdit', '');
+  const [_, setValue] = useStore('activeBlockIdEdit', '');
   const recordId = useGetRecordId();
+  const redirect = useRedirect();
 
   useEffect(() => {
     setValue(recordId.toString());
   }, [recordId]);
 
   return (
-    <Edit {...props} redirect={() => history.back()} mutationMode="pessimistic">
+    <Edit {...props} redirect={false} mutationMode="pessimistic">
       <SimpleForm
         margin="none"
         toolbar={
@@ -23,6 +33,7 @@ export const LogosBlockEdit = (props: any) => {
             deleteProps={{
               redirect: () => `page/${activePageIdEdit}`,
             }}
+            backProps={{ onClick: () => redirect(`/page/${activePageIdEdit}`) }}
           />
         }
       >

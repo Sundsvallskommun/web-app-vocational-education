@@ -42,7 +42,9 @@ export default function LogosBlock({ logosBlock }: LogosBlockProps) {
   return (
     <ContentBlock classNameWrapper="bg-green text-white !mb-0" padded>
       <h2>{logosBlock.title}</h2>
-      <p className="text !text-inverted-body">{logosBlock.description}</p>
+      {logosBlock.description ?
+        <p className="text !text-inverted-body">{logosBlock.description}</p>
+      : null}
       <div className="mt-lg desktop:mt-xl flex flex-col items-center gap-md desktop:flex-row desktop:flex-wrap desktop:justify-center desktop:gap-lg">
         {logos?.map((logo, i) => (
           <Image

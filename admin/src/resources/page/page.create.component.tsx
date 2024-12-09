@@ -18,12 +18,12 @@ import { GalleryInput } from '../components/gallery/gallery-input.component';
 import { WithFormContext } from '../components/with-form-context/with-form-context.component';
 
 export const PageCreate = (props: any) => {
-  const { isSuperAdmin, isAdmin } = useRoutePermissions();
+  const { isAdmin, canCreate } = useRoutePermissions();
   const translate = useTranslate();
 
   return (
     <Create {...props} mutationMode="pessimistic" redirect={(resource: string, id?: Identifier) => `${resource}/${id}`}>
-      <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete={!isSuperAdmin} />} sx={{ maxWidth: '600px' }}>
+      <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete={!canCreate} />} sx={{ maxWidth: '600px' }}>
         <h1>{`${translate('ra.action.create')} ${translate('resources.page.name', 1).toLowerCase()}`}</h1>
         <TextInput source="url" validate={[required()]} />
         <TextInput source="pageName" validate={[required()]} />
@@ -59,13 +59,13 @@ export const PageCreate = (props: any) => {
         <BooleanInput source="showSearchBar" />
 
         <WithRecord
-          label="pageName"
+          label="editRoles"
           render={(record) => (
             <ReferenceManyField
-              source="pageName"
+              source="editRoles"
               record={record.editRoles}
               reference="editRolesOnPage"
-              target="pageName"
+              target="editRoles"
             >
               <SelectArrayInput
                 defaultValue={[]}

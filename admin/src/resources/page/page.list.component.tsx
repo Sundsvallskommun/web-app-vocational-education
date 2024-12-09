@@ -18,7 +18,7 @@ export const PageList = (props: any) => {
       <h1>{`${translate('resources.page.name', { smart_count: 2 })} `}</h1>
       <List
         {...props}
-        actions={<CustomListActions devOnly />}
+        actions={<CustomListActions />}
         sort={{ field: 'url', order: 'ASC' }}
         exporter={false}
         hasCreate={canCreate}

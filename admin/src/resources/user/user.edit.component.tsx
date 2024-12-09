@@ -7,7 +7,7 @@ import { userRolesChoices } from './constants';
 import PasswordField from './password-field.component';
 
 export const UserEdit = (props: any) => {
-  const { isAdmin, editedUserIsUser, isSuperAdmin } = useRoutePermissions();
+  const { isAdmin, editedUserIsUser } = useRoutePermissions();
   const translate = useTranslate();
   const validateEmail = email();
 

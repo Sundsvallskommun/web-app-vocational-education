@@ -1,5 +1,14 @@
 import { useEffect } from 'react';
-import { BooleanInput, Edit, SimpleForm, TextInput, useGetRecordId, useStore, useTranslate } from 'react-admin';
+import {
+  BooleanInput,
+  Edit,
+  SimpleForm,
+  TextInput,
+  useGetRecordId,
+  useRedirect,
+  useStore,
+  useTranslate,
+} from 'react-admin';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
 import { EditContactFormBlockEmails } from '../components/contact-form-block-emails.edit.component';
 import { CustomToolbar } from '../components/custom-toolbar.component';
@@ -10,11 +19,12 @@ export const ContactFormBlockEdit = (props: any) => {
   const [activePageIdEdit] = useStore('activePageIdEdit');
   const [, setValue] = useStore('activeBlockIdEdit', '');
   const recordId = useGetRecordId();
+  const redirect = useRedirect();
   useEffect(() => {
     setValue(recordId.toString());
   }, [recordId]);
   return (
-    <Edit {...props} redirect={() => history.back()} mutationMode="pessimistic">
+    <Edit {...props} redirect={false} mutationMode="pessimistic">
       <SimpleForm
         margin="none"
         toolbar={
@@ -22,6 +32,7 @@ export const ContactFormBlockEdit = (props: any) => {
             deleteProps={{
               redirect: () => `page/${activePageIdEdit}`,
             }}
+            backProps={{ onClick: () => redirect(`/page/${activePageIdEdit}`) }}
           />
         }
       >

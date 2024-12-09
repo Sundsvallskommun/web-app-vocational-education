@@ -21,7 +21,7 @@ import { GalleryInput } from '../components/gallery/gallery-input.component';
 import { WithFormContext } from '../components/with-form-context/with-form-context.component';
 
 export const PageEdit = (props: any) => {
-  const { isSuperAdmin, isAdmin } = useRoutePermissions();
+  const { isAdmin, canCreate } = useRoutePermissions();
   const translate = useTranslate();
   const [, setValue] = useStore('activePageIdEdit', '');
   const recordId = useGetRecordId();
@@ -32,13 +32,13 @@ export const PageEdit = (props: any) => {
 
   return (
     <Edit {...props} redirect={false} mutationMode="pessimistic">
-      <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete={!isSuperAdmin} />} sx={{ maxWidth: '900px' }}>
+      <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete={!canCreate} />} sx={{ maxWidth: '900px' }}>
         <h1>
           {`${translate('ra.action.edit')} `}
           <WithRecord label="pageName" render={(record) => <span>{record.url}</span>} />
         </h1>
-        <TextInput source="url" validate={[required()]} readOnly={!isSuperAdmin} />
-        <TextInput source="pageName" validate={[required()]} readOnly={!isSuperAdmin} />
+        <TextInput source="url" validate={[required()]} readOnly={!canCreate} />
+        <TextInput source="pageName" validate={[required()]} readOnly={!canCreate} />
         <WithRecord
           label="pageName"
           render={(record) => (
@@ -83,13 +83,13 @@ export const PageEdit = (props: any) => {
         <BooleanInput source="showSearchBar" />
 
         <WithRecord
-          label="pageName"
+          label="editRoles"
           render={(record) => (
             <ReferenceManyField
-              source="pageName"
+              source="editRoles"
               record={record.editRoles}
               reference="editRolesOnPage"
-              target="pageName"
+              target="editRoles"
             >
               <SelectArrayInput
                 defaultValue={[]}

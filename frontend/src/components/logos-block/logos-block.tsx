@@ -8,10 +8,6 @@ interface LogosBlockProps {
 
 const logos: LogosBlockType['logos'] = [
   {
-    filename: `${process.env.NEXT_PUBLIC_BASE_PATH}/svg/logos-senders/SK_logo.svg`,
-    alt: 'Sundsvalls Kommun',
-  },
-  {
     filename: `${process.env.NEXT_PUBLIC_BASE_PATH}/svg/logos-senders/Harnosand_logo.svg`,
     alt: 'Härnösands Kommun',
   },
@@ -20,20 +16,24 @@ const logos: LogosBlockType['logos'] = [
     alt: 'Kramfors Kommun',
   },
   {
-    filename: `${process.env.NEXT_PUBLIC_BASE_PATH}/svg/logos-senders/Timra_logo.svg`,
-    alt: 'Timrå Kommun',
-  },
-  {
     filename: `${process.env.NEXT_PUBLIC_BASE_PATH}/svg/logos-senders/Solleftea_logo.svg`,
     alt: 'Sollefteå Kommun',
   },
   {
-    filename: `${process.env.NEXT_PUBLIC_BASE_PATH}/svg/logos-senders/Ornskoldsvik_logo.svg`,
-    alt: 'Örnsköldsvik Kommun',
+    filename: `${process.env.NEXT_PUBLIC_BASE_PATH}/svg/logos-senders/SK_logo.svg`,
+    alt: 'Sundsvalls Kommun',
+  },
+  {
+    filename: `${process.env.NEXT_PUBLIC_BASE_PATH}/svg/logos-senders/Timra_logo.svg`,
+    alt: 'Timrå Kommun',
   },
   {
     filename: `${process.env.NEXT_PUBLIC_BASE_PATH}/svg/logos-senders/Ange_logo.svg`,
     alt: 'Ånge Kommun',
+  },
+  {
+    filename: `${process.env.NEXT_PUBLIC_BASE_PATH}/svg/logos-senders/Ornskoldsvik_logo.svg`,
+    alt: 'Örnsköldsvik Kommun',
   },
 ];
 

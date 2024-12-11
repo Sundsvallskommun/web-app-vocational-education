@@ -91,13 +91,13 @@ export const Utbildning: React.FC = ({
           <div>
             <label id="education-distance">Distans</label>
             <div aria-describedby="education-distance">
-              <strong>?</strong>
+              <strong>Saknas</strong>
             </div>
           </div>
           <div>
             <label id="education-language">Språk</label>
             <div aria-describedby="education-language">
-              <strong>?</strong>
+              <strong>Saknas</strong>
             </div>
           </div>
           <div>

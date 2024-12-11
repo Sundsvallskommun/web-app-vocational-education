@@ -88,15 +88,15 @@ export const CompareCards: React.FC<{ compareList: Course[]; onRemove? }> = ({ c
                       </div>
                     </div>
                     <div>
-                      <div className="label">Distans (?)</div>
+                      <div className="label">Distans</div>
                       <div>
-                        <strong>{'(?)'}</strong>
+                        <strong>Saknas</strong>
                       </div>
                     </div>
                     <div>
-                      <div className="label">Språk (?)</div>
+                      <div className="label">Språk</div>
                       <div>
-                        <strong>{'(?)'}</strong>
+                        <strong>Saknas</strong>
                       </div>
                     </div>
                   </div>

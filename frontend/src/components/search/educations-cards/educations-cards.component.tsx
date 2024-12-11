@@ -76,15 +76,15 @@ export const EducationsCards: React.FC<{
                       </div>
                     </div>
                     <div className="hidden desktop:block">
-                      <div className="label">Distans (?)</div>
+                      <div className="label">Distans</div>
                       <div className="flex items-center">
-                        <span className={cardDataClasses}>{'X'}</span>
+                        <span className={cardDataClasses}>Saknas</span>
                       </div>
                     </div>
                     <div className="hidden desktop:block">
-                      <div className="label">Språk (?)</div>
+                      <div className="label">Språk</div>
                       <div className="flex items-center">
-                        <span className={cardDataClasses}>{'X'}</span>
+                        <span className={cardDataClasses}>Saknas</span>
                       </div>
                     </div>
                   </div>

@@ -61,7 +61,7 @@ export const EducationsTable: React.FC<{
                 </Table.Column>
                 <Table.Column>
                   <span>
-                    <div className={tableCellTextClasses}>{'(?)'}</div>
+                    <div className={tableCellTextClasses}>Saknas</div>
                     <div className={tableCellTextClasses}>{edu?.studyLocation ?? '-'}</div>
                   </span>
                 </Table.Column>
@@ -78,7 +78,7 @@ export const EducationsTable: React.FC<{
                   <span className={tableCellTextClasses}>{edu?.level ?? '-'}</span>
                 </Table.Column>
                 <Table.Column>
-                  <span className={tableCellTextClasses}>(?)</span>
+                  <span className={tableCellTextClasses}>Saknas</span>
                 </Table.Column>
               </Table.Row>
             ))}

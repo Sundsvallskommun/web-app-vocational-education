@@ -23,11 +23,9 @@ const RenderBlock = ({ blockType }: { blockType: BlockType }) => {
     case 'wysiwyg_content':
       return (
         <>
-          {isAdmin || record.wysiwyg_content?.length ? (
-            <div>
-              <Wysiwyg />
-            </div>
-          ) : null}
+          <div>
+            <Wysiwyg />
+          </div>
         </>
       );
     case 'tableBlock':
@@ -152,6 +150,7 @@ const StandardPageBlockOrder = () => {
   const record = useRecordContext();
   const [order, setOrder] = useState<BlockType[]>(record.blockOrder.split(',') ?? []);
   const { field } = useInput({ source: 'blockOrder' });
+  const { isAdmin } = useRoutePermissions();
 
   const handleMove = (index: number, direction: number) => () => {
     setOrder((order) => {
@@ -183,46 +182,57 @@ const StandardPageBlockOrder = () => {
       }}
     >
       <TextInput style={{ display: 'none' }} source="blockOrder" type="hidden" value={order.join(',')} />
-      {order.map((blockType: BlockType, i: number) => (
-        <div
-          key={`${i}`}
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'start',
-            gap: '1rem',
-            width: '100%',
-            padding: '.5rem',
-            backgroundColor: 'rgba(0,0,0,.03)',
-            borderRadius: '1rem',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '1rem',
-            }}
-          >
-            <div>
-              <IconButton onClick={handleMove(i, -1)} aria-label="Flytta upp">
-                <ArrowDropUpIcon />
-              </IconButton>
+      {order.map((blockType: BlockType, i: number) => {
+        const RenderBlockComponent = RenderBlock({ blockType });
+        const showBlock = !!RenderBlockComponent?.props.children;
+        if (showBlock) {
+          return (
+            <div
+              key={`${i}`}
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'start',
+                gap: '1rem',
+                width: '100%',
+                padding: '.75rem .75rem 1.75rem .75rem',
+                backgroundColor: 'rgba(0,0,0,.03)',
+                borderRadius: '1rem',
+              }}
+            >
+              {isAdmin ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '1rem',
+                  }}
+                >
+                  <div>
+                    <IconButton onClick={handleMove(i, -1)} aria-label="Flytta upp">
+                      <ArrowDropUpIcon />
+                    </IconButton>
+                  </div>
+                  <div>
+                    <IconButton onClick={handleMove(i, 1)} aria-label="Flytta ned">
+                      <ArrowDropDownIcon />
+                    </IconButton>
+                  </div>
+                </div>
+              ) : null}
+
+              <div>
+                <RenderBlock blockType={blockType} />
+              </div>
             </div>
-            <div>
-              <IconButton onClick={handleMove(i, 1)} aria-label="Flytta ned">
-                <ArrowDropDownIcon />
-              </IconButton>
-            </div>
-          </div>
-          <div>
-            <RenderBlock blockType={blockType} />
-          </div>
-        </div>
-      ))}
+          );
+        } else {
+          return null;
+        }
+      })}
     </div>
   );
 };

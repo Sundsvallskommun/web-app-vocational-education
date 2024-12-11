@@ -97,6 +97,10 @@ export class PageController {
       );
     }
 
+    if (!page) {
+      return this.getPageData('/404');
+    }
+
     return { data: page, message: 'success' };
   }
 

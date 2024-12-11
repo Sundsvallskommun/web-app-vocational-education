@@ -20,7 +20,7 @@ const RenderBlock = ({ blockType, pageData }: { blockType: BlockType; pageData: 
       return (
         <>
           {pageData?.wysiwyg_content ?
-            <ContentBlock classNameWrapper="!mt-0">
+            <ContentBlock classNameWrapper={!pageData?.showSearchBar ? '!mt-0' : ''}>
               <Wysiwyg content={pageData?.wysiwyg_content} />
             </ContentBlock>
           : <></>}
@@ -73,13 +73,10 @@ const RenderBlock = ({ blockType, pageData }: { blockType: BlockType; pageData: 
 export default function StandardPage(props: PageProps) {
   const { pageData } = props;
   const order: BlockType[] = pageData?.blockOrder?.split(',') as BlockType[];
+  if (!pageData) return null;
   return (
     <Page {...props}>
-      <>
-        {order.map((blockType, i) => (
-          <RenderBlock key={`${i}`} pageData={pageData} blockType={blockType} />
-        ))}
-      </>
+      <>{order?.map((blockType, i) => <RenderBlock key={`${i}`} pageData={pageData} blockType={blockType} />)}</>
     </Page>
   );
 }

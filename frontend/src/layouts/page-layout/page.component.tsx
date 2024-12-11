@@ -5,10 +5,17 @@ import Search from '@components/search/search.component';
 import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import { cx } from '@sk-web-gui/react';
+import Head from 'next/head';
 
 export default function Page({ layoutData, pageData, children }: PageProps & { children: React.ReactElement }) {
   return (
     <DefaultLayout title={`Yrkesutbildning - ${pageData?.title}`} layoutData={layoutData}>
+      {pageData?.pageName === '404' ?
+        <Head>
+          <title>404</title>
+          <meta name="robots" content="noindex,nofollow" />
+        </Head>
+      : <></>}
       <ContentBlock>
         <BigDropHeader
           imageSrc={pageData?.imgSrc}

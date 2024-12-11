@@ -18,8 +18,9 @@ import NextLink from 'next/link';
 export const Utbildning: React.FC = ({
   layoutData,
   educationData,
+  relatedEducationData,
   pageData,
-}: PageProps & { educationData: Course }) => {
+}: PageProps & { educationData: Course; relatedEducationData: Course[] }) => {
   const { isMinDesktop } = useThemeQueries();
   if (!educationData) return <></>;
   return (
@@ -160,16 +161,9 @@ export const Utbildning: React.FC = ({
 
       <FAQBlock classNameWrapper="pt-80" faqBlock={getBlockData(pageData.faqBlock)} />
 
-      <EducationsRelatedBlock
-        show={pageData.showEducationsRelatedBlock}
-        educations={Array.from({ length: 3 }, (_, i) => ({
-          title: `${educationData.name}-related-${i}`,
-          text: 'Amet minimimi mollot non deseret ullamco est sit alique dolor do sint. Velit officia consequat duis enim.',
-          courseCode: `${educationData.id}`,
-          date: new Date(),
-          studyLocation: `Location-${i}`,
-        }))}
-      />
+      {relatedEducationData ?
+        <EducationsRelatedBlock show={pageData.showEducationsRelatedBlock} educations={relatedEducationData} />
+      : <></>}
 
       <SearchBlock show={pageData.showSearchBlock} />
     </DefaultLayout>

@@ -3,9 +3,10 @@ import StandardPage from '@layouts/page-layout/standard-page.component';
 import Efterfragade from '@layouts/page-layout/utbildningar-efterfragade-efterfragad';
 import Utbildning from '@layouts/page-layout/utbildningar-utbildning.component';
 import { getBlock } from '@services/block-service';
-import { getEducationEvent } from '@services/education-service/education-service';
+import { getEducationEvent, getEducationEvents } from '@services/education-service/education-service';
 import { routeDynamicSlugFormatExtract } from '@utils/app-url';
 import { getStandardPageProps } from '@utils/page-types';
+import dayjs from 'dayjs';
 
 export async function getServerSideProps(context) {
   const path = context.resolvedUrl;
@@ -17,11 +18,21 @@ export async function getServerSideProps(context) {
       formattedString: context.params.url[context.params.url.length - 1],
     }).id;
     const educationEventRes = await getEducationEvent(id);
+    const relatedEducationEventRes =
+      educationEventRes.data?.category ?
+        await getEducationEvents({
+          category: [educationEventRes.data?.category],
+          size: 3,
+          latestApplicationDate: dayjs(new Date()).format('YYYY-MM-DD'),
+        })
+      : null;
 
     return {
       props: {
         ...(await getStandardPageProps(context, { pathname: routeSlug })).props,
         educationData: !educationEventRes.error ? educationEventRes.data : null,
+        relatedEducationData:
+          relatedEducationEventRes && !relatedEducationEventRes.error ? relatedEducationEventRes.courses : null,
         routeSlug: routeSlug,
       },
     };

@@ -38,10 +38,13 @@ export default function EducationsStartingBlock({ educationsStartingBlock }: Edu
               </>
             }
           >
-            <h3>{course.name}</h3>
-            {informationSanitized && (
-              <div className="text" dangerouslySetInnerHTML={{ __html: informationSanitized }} />
-            )}
+            <h3>{course?.name ? course?.name : ''}</h3>
+            <div className="text max-h-[4em]">
+              {course?.scope ?
+                <div className="mb-8 text-sm text-label leading-[1.8rem]">{`Studietakt: ${course?.scope}%`}</div>
+              : null}
+              {informationSanitized && <div dangerouslySetInnerHTML={{ __html: informationSanitized }} />}
+            </div>
           </DropCard>
         );
       }}

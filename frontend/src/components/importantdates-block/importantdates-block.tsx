@@ -17,11 +17,8 @@ export function ImportantDatesCard({ dateCard }: ImportantDatesCardProps) {
     <>
       <div className="important-dates-card">
         <Drop topStyle={'-' + 36} setSize dropDate={dateCard.date} dropHeight={72} />
-        <h4 className="important-dates-card-heading">Lorem ipsum dolor sit amet consectuer, est los.</h4>
-        <p className="important-dates-card-text">
-          Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim
-          Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim{' '}
-        </p>
+        <h4 className="important-dates-card-heading">{dateCard.title}</h4>
+        <p className="important-dates-card-text">{dateCard.text}</p>
       </div>
     </>
   );
@@ -39,6 +36,10 @@ export default function ImportantDatesBlock({ importantDatesBlock }: ImportantDa
   let previousCardDate = dayjs(importantDatesBlock?.dateCards[0]?.date).format('YYYY-MM');
 
   if (!importantDatesBlock?.showBlock) return null;
+  const dateCardsToShow =
+    importantDatesBlock.showAll ? importantDatesBlock.dateCards.length : importantDatesBlock.amountShown;
+  if (dateCardsToShow === 0) return null;
+
   return (
     <ContentBlock classNameContent="important-dates-content">
       {importantDatesBlock.title ?
@@ -52,10 +53,7 @@ export default function ImportantDatesBlock({ importantDatesBlock }: ImportantDa
               dayjs(card.date).isAfter(currentDate)
             : true
           )
-          .slice(
-            0,
-            importantDatesBlock.showAll ? importantDatesBlock.dateCards.length - 1 : importantDatesBlock.amountShown
-          )
+          .slice(0, dateCardsToShow)
           .map((dateCard, i) => {
             const isNewDate = dayjs(dayjs(dateCard.date).format('YYYY-MM')).isAfter(previousCardDate);
             if (isNewDate) {

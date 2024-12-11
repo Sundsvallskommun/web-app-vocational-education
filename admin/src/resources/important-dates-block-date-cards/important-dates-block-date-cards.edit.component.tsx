@@ -24,7 +24,7 @@ export const ImportantDatesBlockDateCardsEdit = (props: any) => {
             toolbar={
               <CustomToolbar
                 deleteProps={{
-                  redirect: () => `faqBlock/${data.blockId}`,
+                  redirect: () => `importantDatesBlock/${data.blockId}`,
                 }}
               />
             }

@@ -54,17 +54,32 @@ export const ImportantDatesBlockEdit = (props: any) => {
             const referencedImportantDatesBlockId = watch('referencedImportantDatesBlockId');
 
             const { data } = useGetList('importantDatesBlock', { meta: { pageName: watch('pageName') } });
-            const choices = data ? data.map((x) => ({ id: x.pageName, name: x.pageName, data: x })) : [];
+            const choices = data
+              ? data
+                  .filter((x) => x.id !== parseInt(recordId.toString()))
+                  .map((x) => ({ id: x.pageName, name: x.pageName, data: x }))
+              : [];
 
             useEffect(() => {
-              setValue('referencedImportantDatesBlock', {
-                connect: { id: choices.find((x) => x.name === referencedImportantDatesBlockId)?.data.id },
-              });
+              const block = choices.find((x) => x.name === referencedImportantDatesBlockId);
+              if (block?.data?.id) {
+                setValue('referencedImportantDatesBlock', {
+                  connect: { id: choices.find((x) => x.name === referencedImportantDatesBlockId)?.data?.id },
+                });
+              }
+              setValue('referencedImportantDatesBlock', null);
             }, [referencedImportantDatesBlockId]);
 
             return (
               <>
-                <SelectInput source="referencedImportantDatesBlockPageName" choices={choices} />
+                <SelectInput
+                  source="referencedImportantDatesBlockPageName"
+                  choices={choices}
+                  emptyText={translate(
+                    'resources.importantDatesBlock.fields.referencedImportantDatesBlockPageNameEmptyText'
+                  )}
+                  emptyValue={watch('pageName')}
+                />
                 <EditImportantDatesBlockDateCards filterPageName={watch('referencedImportantDatesBlockPageName')} />
               </>
             );

@@ -28,7 +28,7 @@ const fileFilter = (_request: Request, file: Express.Multer.File, callback: Filt
 const uploadOptions = () => ({
   limits: {
     fieldNameSize: 255,
-    fileSize: 1024 * 1024 * 2, // 2mb
+    fileSize: 1024 * 1024 * 10, // 10mb
   },
   storage,
   fileFilter,

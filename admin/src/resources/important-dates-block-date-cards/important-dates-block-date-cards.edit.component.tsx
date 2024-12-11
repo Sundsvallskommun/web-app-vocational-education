@@ -6,6 +6,7 @@ import {
   SimpleForm,
   TextInput,
   WithRecord,
+  required,
   useTranslate,
 } from 'react-admin';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
@@ -45,8 +46,8 @@ export const ImportantDatesBlockDateCardsEdit = (props: any) => {
                 defaultValue={data.blockId}
               />
             </ReferenceInput>
-            <TextInput source="title" />
-            <DateInput source="date" />
+            <TextInput source="title" validate={[required()]} />
+            <DateInput source="date" validate={[required()]} />
             <TextInput
               multiline
               inputProps={{

@@ -72,7 +72,7 @@ export default function ImportantDatesBlock({ importantDatesBlock }: ImportantDa
       </div>
       {importantDatesBlock.showSeeAllButton ?
         <div className="flex mt-[2.7rem] desktop:justify-end">
-          <NextLink href="/viktiga-datum" className="w-full desktop:w-fit">
+          <NextLink href={importantDatesBlock.referencedImportantDatesBlockPageUrl} className="w-full desktop:w-fit">
             <Button variant="secondary" as="span" rightIcon={<ArrowForwardIcon />}>
               Se alla viktiga datum
             </Button>

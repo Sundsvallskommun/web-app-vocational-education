@@ -77,21 +77,28 @@ export class PageController {
       page.importantDatesBlock = await Promise.all(
         page.importantDatesBlock.map(async block => {
           // if Referencing another importantDatesBlockCards
-          let referenceBlock;
+          let referenceBlockPage;
           if (block.referencedImportantDatesBlockPageName) {
-            referenceBlock = await prisma.importantDatesBlock.findFirst({
+            referenceBlockPage = await prisma.page.findUnique({
+              include: {
+                importantDatesBlock: {
+                  include: {
+                    dateCards: true,
+                  },
+                },
+              },
               where: {
                 pageName: block.referencedImportantDatesBlockPageName,
-              },
-              include: {
-                dateCards: true,
               },
             });
           }
 
           return {
             ...block,
-            dateCards: [...(referenceBlock ?? block).dateCards].sort((a, b) => new Date(a.date).valueOf() - new Date(b.date).valueOf()),
+            referencedImportantDatesBlockPageUrl: referenceBlockPage?.url ?? page.url,
+            dateCards: [...(referenceBlockPage?.importantDatesBlock[0] ?? block).dateCards].sort(
+              (a, b) => new Date(a.date).valueOf() - new Date(b.date).valueOf(),
+            ),
           };
         }),
       );

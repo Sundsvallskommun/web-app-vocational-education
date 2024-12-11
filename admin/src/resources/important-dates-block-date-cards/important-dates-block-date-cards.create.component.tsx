@@ -2,6 +2,7 @@ import {
   Create,
   DateInput,
   ReferenceInput,
+  required,
   SelectInput,
   SimpleForm,
   TextInput,
@@ -40,8 +41,8 @@ export const ImportantDatesBlockDateCardsCreate = (props: any) => {
             defaultValue={parseInt(activeBlockIdEdit)}
           />
         </ReferenceInput>
-        <DateInput source="date" />
-        <TextInput source="title" />
+        <DateInput source="date" validate={[required()]} />
+        <TextInput source="title" validate={[required()]} />
         <TextInput
           multiline
           inputProps={{

@@ -42,6 +42,8 @@ export interface ImportantDatesBlock extends Block {
   showSeeAllButton: boolean;
   amountShown: number;
   showAll: boolean;
+  referencedImportantDatesBlockPageName: string;
+  referencedImportantDatesBlockPageUrl: string;
   dateCards: ImportantDatesBlockDateCard[];
 }
 

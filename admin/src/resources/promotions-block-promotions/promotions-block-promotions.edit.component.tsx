@@ -24,7 +24,7 @@ export const PromotionsBlockPromotionsEdit = (props: any) => {
           {({ watch, setValue }) => {
             const promotedPageName = watch('promotedPageName');
 
-            const { data } = useGetList('page');
+            const { data } = useGetList('page', { pagination: { page: 1, perPage: 999 } });
             const choices = data
               ? data
                   .map((x) => ({ id: x.pageName, name: x.pageName, pageId: x.id, url: x.url }))

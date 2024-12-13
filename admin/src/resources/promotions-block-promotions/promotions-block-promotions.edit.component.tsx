@@ -3,6 +3,7 @@ import { Edit, SelectInput, SimpleForm, TextInput, useGetList, useStore, useTran
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
 import { CustomToolbar } from '../components/custom-toolbar.component';
 import { WithFormContext } from '../components/with-form-context/with-form-context.component';
+import { pageSort } from '../../utils/data';
 
 export const PromotionsBlockPromotionsEdit = (props: any) => {
   useRoutePermissions();
@@ -24,15 +25,16 @@ export const PromotionsBlockPromotionsEdit = (props: any) => {
           {({ watch, setValue }) => {
             const promotedPageName = watch('promotedPageName');
 
-            const { data } = useGetList('page');
+            const { data } = useGetList('page', { pagination: { page: 1, perPage: 999 } });
             const choices = data
               ? data
-                  .map((x) => ({ id: x.pageName, name: x.pageName, pageId: x.id, url: x.url }))
-                  .filter((x) => !x.url.includes('['))
+                  .map((x) => ({ id: x.pageName, name: x.pageName, data: x, url: x.url }))
+                  .filter((x) => !x.data.url.includes('['))
+                  .sort((a, b) => pageSort(a, b))
               : [];
 
             useEffect(() => {
-              setValue('promotedPageId', choices.find((x) => x.name === promotedPageName)?.pageId);
+              setValue('promotedPageId', choices.find((x) => x.name === promotedPageName)?.data.id);
             }, [promotedPageName]);
 
             return (
@@ -41,7 +43,7 @@ export const PromotionsBlockPromotionsEdit = (props: any) => {
                   smart_count: 1,
                 }).toLowerCase()}`}</h1>
                 <TextInput source="pageName" readOnly />
-                <SelectInput source="promotedPageName" choices={choices} />
+                <SelectInput source="promotedPageName" optionText={(choice) => choice.url} choices={choices} />
               </>
             );
           }}

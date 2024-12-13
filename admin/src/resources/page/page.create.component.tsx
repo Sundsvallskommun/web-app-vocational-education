@@ -16,9 +16,11 @@ import { UserRoleOnUser, UserRoles } from '../../interfaces/user';
 import { userRolesChoices } from '../user/constants';
 import { GalleryInput } from '../components/gallery/gallery-input.component';
 import { WithFormContext } from '../components/with-form-context/with-form-context.component';
+import { useEffect, useState } from 'react';
+import { urlToPageName } from '../../utils/data';
 
 export const PageCreate = (props: any) => {
-  const { isAdmin, canCreate } = useRoutePermissions();
+  const { isAdmin, canCreate, isSuperAdmin } = useRoutePermissions();
   const translate = useTranslate();
 
   return (
@@ -26,7 +28,36 @@ export const PageCreate = (props: any) => {
       <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete={!canCreate} />} sx={{ maxWidth: '600px' }}>
         <h1>{`${translate('ra.action.create')} ${translate('resources.page.name', 1).toLowerCase()}`}</h1>
         <TextInput source="url" validate={[required()]} />
-        <TextInput source="pageName" validate={[required()]} />
+        <WithFormContext>
+          {({ watch, setValue }) => {
+            const url = watch('url');
+            const [mounted, setMounted] = useState(false);
+
+            useEffect(() => {
+              const pageName = urlToPageName(url);
+              if (isSuperAdmin && mounted) {
+                setValue('pageName', pageName);
+              }
+              if (!isSuperAdmin) {
+                setValue('pageName', pageName);
+              }
+            }, [url]);
+
+            useEffect(() => {
+              setMounted(true);
+            }, []);
+
+            return (
+              <TextInput
+                type={isSuperAdmin ? 'text' : 'hidden'}
+                hidden={!isSuperAdmin}
+                style={!isSuperAdmin ? { display: 'none' } : undefined}
+                source="pageName"
+                validate={[required()]}
+              />
+            );
+          }}
+        </WithFormContext>
         <TextInput
           source="title"
           multiline

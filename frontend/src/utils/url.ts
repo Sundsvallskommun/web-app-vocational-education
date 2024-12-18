@@ -8,7 +8,12 @@ const hasValue = (value: unknown | unknown[]) => {
 };
 
 export function serializeURL(
-  params: URLSearchParams | Record<string, null | string | number | (string | number)[]>
+  params: URLSearchParams | Record<string, null | string | number | (string | number)[]>,
+  options: { includeEmptyValue: Record<string, boolean> } = {
+    includeEmptyValue: {
+      /** properties that should be included even if they have an empty value */
+    },
+  }
 ): string {
   const result: Record<string, string[]> = {};
 
@@ -16,7 +21,7 @@ export function serializeURL(
   if (params instanceof URLSearchParams) {
     // Convert URLSearchParams to a regular object
     for (const [key, value] of params.entries()) {
-      if (!hasValue(value)) continue;
+      if (!hasValue(value) && !options?.includeEmptyValue[key]) continue;
       if (Array.isArray(value)) {
         // Convert all values in the array to strings
         result[key] = value.map((v) => String(v));
@@ -28,7 +33,7 @@ export function serializeURL(
   } else {
     // Assume params is a regular object
     for (const [key, value] of Object.entries(params)) {
-      if (!hasValue(value)) continue;
+      if (!hasValue(value) && !options?.includeEmptyValue[key]) continue;
       if (Array.isArray(value)) {
         // Convert all values in the array to strings
         result[key] = value.map((v) => String(v));
@@ -41,7 +46,7 @@ export function serializeURL(
 
   // Serialize using "|" as delimiter
   return Object.entries(result)
-    .filter(([, values]) => hasValue(values))
+    .filter(([key, values]) => (!options?.includeEmptyValue[key] ? hasValue(values) : true))
     .sort(([key], [key2]) =>
       key2 === 'q' ? 1
       : key === 'q' ? 0
@@ -126,17 +131,26 @@ function convertValue<TReference = string | string[] | number>(
 
 export function createObjectFromQueryString<T = unknown>(
   queryString: string,
-  options: { objectReference: T; objectReferenceOnly?: boolean; objectReferenceAsBase?: boolean }
+  options: {
+    objectReference: T;
+    objectReferenceOnly?: boolean;
+    objectReferenceAsBase?: boolean;
+    includeEmpty?: boolean;
+  }
 ) {
   const newObject: Partial<T> = {};
-  const _options = Object.assign({}, { objectReferenceOnly: false, objectReferenceAsBase: false }, options);
+  const _options = Object.assign(
+    {},
+    { objectReferenceOnly: false, objectReferenceAsBase: false, includeEmpty: false },
+    options
+  );
   const referenceKeys = Object.keys(_options.objectReference as object);
 
   // Use custom deserialization function
   const deserializedParams = deserializeURL(queryString);
 
   for (const [key, value] of Object.entries(deserializedParams)) {
-    if (value !== null && value !== '') {
+    if (value !== null && (!_options.includeEmpty ? value !== '' : true)) {
       if (referenceKeys.length && referenceKeys.includes(key)) {
         newObject[key as keyof T] = convertValue(value as string, _options.objectReference[key]);
       } else {
@@ -146,5 +160,9 @@ export function createObjectFromQueryString<T = unknown>(
       }
     }
   }
-  return Object.assign({}, _options.objectReferenceAsBase ? _options.objectReference : {}, newObject);
+  const result = {
+    ...(_options.objectReferenceAsBase ? _options.objectReference : {}),
+    ...newObject,
+  };
+  return result;
 }

@@ -28,7 +28,7 @@
         @apply border-b border-green;
 
         & > a,
-        > button {
+        & > button {
           @apply rounded-none flex items-center min-h-[4.4rem];
 
           &:focus-visible {
@@ -92,13 +92,16 @@
 
           &-large {
             button,
-            a {
+            a,
+            button {
               @apply medium-device:text-2xl py-[18px];
             }
-            a[role='menuitem'] {
+            a[role='menuitem'],
+            button[role='menuitem'] {
               @apply font-normal text-green pl-0;
             }
-            &:hover a[role='menuitem'] {
+            &:hover a[role='menuitem'],
+            &:hover button[role='menuitem'] {
               @apply pl-md border-green border-l-[7px];
             }
           }

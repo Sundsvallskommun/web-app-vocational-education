@@ -13,7 +13,6 @@ import { defaultEducationFilterOptions } from '@services/education-service/educa
 import { useUserStore } from '@services/user-service/user-service';
 import { cx, useSnackbar, useThemeQueries } from '@sk-web-gui/react';
 import { serializeURL } from '@utils/url';
-import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import CategoryInput from '../form/category.input.component';
@@ -52,7 +51,8 @@ export const EducationsFilters: React.FC<{
 
   const currentParameters = serializeURL({ ...getValues() });
 
-  const isSavedSearch = userSavedSearches.filter((x) => _.isEqual(x.parameters, currentParameters)).length > 0;
+  const isSavedSearch =
+    userSavedSearches.filter((x) => JSON.stringify(x.parameters) === JSON.stringify(currentParameters)).length > 0;
 
   const handleOnClickListing = (item: number) => {
     setActiveListing(item);
@@ -110,7 +110,7 @@ export const EducationsFilters: React.FC<{
   };
 
   useEffect(() => {
-    if (!_.isEqual(formState.defaultValues, formData)) {
+    if (JSON.stringify(formState.defaultValues) !== JSON.stringify(formData)) {
       reset(formData);
     }
   }, [formData, reset, formState.defaultValues]);

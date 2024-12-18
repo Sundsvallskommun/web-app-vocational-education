@@ -1,9 +1,11 @@
-// import Button from '@components/button/button.component';
 import SearchIcon from '@mui/icons-material/Search';
-import { Button, SearchField } from '@sk-web-gui/react';
+import { Button, Link, SearchField } from '@sk-web-gui/react';
+import { appURL } from '@utils/app-url';
 import { addToQueryString } from '@utils/url';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
 interface SearchSuggestion {
   label: string;
   id: number;
@@ -15,20 +17,26 @@ export const Search: React.FC<{
   defaultValue?: string;
   /** @default false */
   keepParams?: boolean;
-}> = ({ className = '', data = undefined, defaultValue = null, keepParams = false }) => {
+  showLinkToAllEducations?: boolean;
+  onReset?: () => void;
+}> = ({
+  className = '',
+  data = undefined,
+  defaultValue = null,
+  keepParams = false,
+  showLinkToAllEducations = true,
+  onReset,
+}) => {
   const router = useRouter();
   const [query, setQuery] = useState(defaultValue ? defaultValue : '');
 
   const _data: SearchSuggestion[] = data ? data : [];
 
   const pushQuery = (query?: string) => {
-    const previousQuery = new URLSearchParams(window.location.search).get('q');
-    if (previousQuery !== query) {
-      router.push({
-        pathname: '/utbildningar/sok',
-        query: keepParams ? addToQueryString({ q: query }) : { q: query },
-      });
-    }
+    router.push({
+      pathname: '/utbildningar/sok',
+      query: keepParams ? addToQueryString({ q: query }) : { q: query },
+    });
   };
 
   const handleOnChange = (e) => {
@@ -45,6 +53,7 @@ export const Search: React.FC<{
   };
 
   const handleOnReset = () => {
+    onReset && onReset();
     setQuery('');
     if (keepParams) {
       pushQuery('');
@@ -60,23 +69,24 @@ export const Search: React.FC<{
 
   const handleOnSubmit = (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
-    if (query) {
-      pushQuery(query);
-      setQuery('');
-    }
+    pushQuery(query);
+    setQuery('');
   };
+
+  useEffect(() => {
+    setQuery(defaultValue ?? '');
+  }, [defaultValue]);
 
   return (
     <div className={`${className}`}>
       <div className="mb-sm">
         <label className="text-sm text-label">Sök utbildningar</label>
       </div>
-      <form onSubmit={handleOnSubmit} className="flex w-full">
+      <form onSubmit={handleOnSubmit} className="flex w-full mb-sm">
         <div className="searchbar">
           <SearchField.Suggestions autofilter={false} size="md">
             <SearchField.SuggestionsInput
               size="md"
-              placeholder="Sök efter utbildningsområde"
               onChange={handleOnChange}
               onSelect={handleOnSelect}
               onReset={handleOnReset}
@@ -108,6 +118,11 @@ export const Search: React.FC<{
           </Button>
         </div>
       </form>
+      {showLinkToAllEducations ?
+        <NextLink href={appURL('/utbildningar/sok')}>
+          <Link as="span">Se alla utbildningar</Link>
+        </NextLink>
+      : null}
     </div>
   );
 };

@@ -1,18 +1,17 @@
-import { Button, Link, MenuVertical, MenuVerticalProps } from '@sk-web-gui/react';
-import { useEffect, useState } from 'react';
 import MenuModal from '@components/modal/menu-modal.component';
-import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useRouter } from 'next/router';
-import NextLink from 'next/link';
+import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import { useUserStore } from '@services/user-service/user-service';
+import { Button, Link, MenuVertical } from '@sk-web-gui/react';
+import NextLink from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 export const Menu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeUrl, setActiveUrl] =
-    useState<React.ComponentPropsWithoutRef<MenuVerticalProps['Provider']>['current']>('/');
   const user = useUserStore((s) => s.user);
-
+  const pathname = usePathname();
   const router = useRouter();
 
   const handleOpen = () => {
@@ -23,17 +22,12 @@ export const Menu: React.FC = () => {
     setIsOpen(false);
   };
 
-  useEffect(() => {
-    const handleRouteChange = () => {
-      setActiveUrl(router.pathname); // Or use `asPath` if needed
-      setIsOpen(false);
-    };
-
-    router.events.on('routeChangeComplete', handleRouteChange);
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, [router.events, router.pathname]);
+  const handleGoto = (current) => {
+    setIsOpen(false);
+    if (current !== pathname) {
+      router.push(current);
+    }
+  };
 
   return (
     <div className="menu">
@@ -47,20 +41,28 @@ export const Menu: React.FC = () => {
       </Button>
       <MenuModal show={isOpen} onClose={handleClose} className="h-screen">
         <div>
-          <MenuVertical.Provider current={activeUrl} setCurrent={setActiveUrl}>
+          <MenuVertical.Provider current={pathname}>
             <MenuVertical.Nav>
               <MenuVertical>
                 <MenuVertical.Item menuIndex="/utbildningar">
-                  <NextLink href="/utbildningar">För dig som söker utbildning</NextLink>
+                  <MenuVertical>
+                    {/** @ts-expect-error onClick is not yet typed in the component */}
+                    <MenuVertical.SubmenuButton menuIndex="/utbildningar" onClick={() => handleGoto('/utbildningar')}>
+                      För dig som söker utbildning
+                    </MenuVertical.SubmenuButton>
+                    <MenuVertical.Item menuIndex="/utbildningar/sok">
+                      <button onClick={() => handleGoto('/utbildningar/sok')}>Sök utbildning</button>
+                    </MenuVertical.Item>
+                  </MenuVertical>
                 </MenuVertical.Item>
                 <MenuVertical.Item menuIndex="/arbetsgivare">
-                  <NextLink href="/arbetsgivare">För arbetsgivare</NextLink>
+                  <button onClick={() => handleGoto('/arbetsgivare')}>För arbetsgivare</button>
                 </MenuVertical.Item>
                 <MenuVertical.Item menuIndex="/utbildningsanordnare">
-                  <NextLink href="/utbildningsanordnare">För utbildningsanordnare</NextLink>
+                  <button onClick={() => handleGoto('/utbildningsanordnare')}>För utbildningsanordnare</button>
                 </MenuVertical.Item>
                 <MenuVertical.Item menuIndex="/kontakta-oss">
-                  <NextLink href="/kontakta-oss">Kontakta oss</NextLink>
+                  <button onClick={() => handleGoto('/kontakta-oss')}>Kontakta oss</button>
                 </MenuVertical.Item>
               </MenuVertical>
             </MenuVertical.Nav>

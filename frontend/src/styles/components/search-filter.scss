@@ -38,6 +38,9 @@
       &[data-position='under'][data-align='start'] {
         @apply desktop:-left-[2px];
       }
+      fieldset {
+        @apply pl-[.4rem] -ml-[.4rem];
+      }
     }
 
     legend.sk-form-label {

@@ -5,31 +5,8 @@ import IconButton from '@mui/material/IconButton';
 import { useEffect, useState } from 'react';
 import { Menu, useGetList, useStore } from 'react-admin';
 import { ListItemIcon } from './Menu';
-
-const pageSort = (a: NestedPage, b: NestedPage) => {
-  const urlsToPutLast = [
-    '/404',
-    '/login',
-    '/kakor',
-    '/om-webbplatsen',
-    '/personuppgifter',
-    '/tillganglighetsredogorelse',
-    '/kontakta-oss',
-  ];
-
-  const aUrl = a?.url || '';
-  const bUrl = b?.url || '';
-
-  const aIsLast = urlsToPutLast.includes(aUrl);
-  const bIsLast = urlsToPutLast.includes(bUrl);
-
-  if (aIsLast && bIsLast) return 0; // Keep their relative order if both are "last" URLs
-  if (aIsLast) return 1; // Push `a` after `b`
-  if (bIsLast) return -1; // Push `b` after `a`
-
-  // Regular sorting for other URLs
-  return aUrl.localeCompare(bUrl);
-};
+import { NestedPage } from './interfaces/page';
+import { pageSort } from './utils/data';
 
 const findPathToActivePage = (
   pages: { [key: string]: NestedPage },
@@ -45,12 +22,6 @@ const findPathToActivePage = (
     }
   }
   return [];
-};
-
-type NestedPage = {
-  id?: string;
-  url?: string;
-  children?: { [key: string]: NestedPage };
 };
 
 export function NestedMenu({

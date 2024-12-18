@@ -13,15 +13,16 @@ import {
 } from 'react-admin';
 import { PageSwitch } from '../components/PageSwitch.component';
 import { CustomToolbar } from '../components/custom-toolbar.component';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
 import { userRolesChoices } from '../user/constants';
 import { UserRoleOnUser, UserRoles } from '../../interfaces/user';
 import { GalleryInput } from '../components/gallery/gallery-input.component';
 import { WithFormContext } from '../components/with-form-context/with-form-context.component';
+import { urlToPageName } from '../../utils/data';
 
 export const PageEdit = (props: any) => {
-  const { isAdmin, canCreate } = useRoutePermissions();
+  const { isAdmin, canCreate, isSuperAdmin } = useRoutePermissions();
   const translate = useTranslate();
   const [, setValue] = useStore('activePageIdEdit', '');
   const recordId = useGetRecordId();
@@ -38,7 +39,36 @@ export const PageEdit = (props: any) => {
           <WithRecord label="pageName" render={(record) => <span>{record.url}</span>} />
         </h1>
         <TextInput source="url" validate={[required()]} readOnly={!canCreate} />
-        <TextInput source="pageName" validate={[required()]} readOnly={!canCreate} />
+        <WithFormContext>
+          {({ watch, setValue }) => {
+            const url = watch('url');
+            const [mounted, setMounted] = useState(false);
+
+            useEffect(() => {
+              const pageName = urlToPageName(url);
+              if (isSuperAdmin && mounted) {
+                setValue('pageName', pageName);
+              }
+              if (!isSuperAdmin) {
+                setValue('pageName', pageName);
+              }
+            }, [url]);
+
+            useEffect(() => {
+              setMounted(true);
+            }, []);
+
+            return (
+              <TextInput
+                type={isSuperAdmin ? 'text' : 'hidden'}
+                hidden={!isSuperAdmin}
+                style={!isSuperAdmin ? { display: 'none' } : undefined}
+                source="pageName"
+                validate={[required()]}
+              />
+            );
+          }}
+        </WithFormContext>
         <WithRecord
           label="pageName"
           render={(record) => (
@@ -92,7 +122,7 @@ export const PageEdit = (props: any) => {
               target="editRoles"
             >
               <SelectArrayInput
-                defaultValue={[]}
+                defaultValue={[userRolesChoices.find((x) => x.role === 'EDITOR')]}
                 source="editRoles"
                 format={(data) => data?.map((x: UserRoleOnUser) => x.role)}
                 parse={(data: UserRoles[]) =>

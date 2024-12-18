@@ -612,11 +612,11 @@ async function main() {
   });
 
   await prisma.page.upsert({
-    where: { pageName: 'viktiga_datum' },
+    where: { pageName: 'viktiga-datum' },
     update: {},
     create: {
       url: '/viktiga-datum',
-      pageName: 'viktiga_datum',
+      pageName: 'viktiga-datum',
       title: 'Viktiga datum',
       description:
         'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet. Exercitation veniam consequat sunt nostrud amet.',

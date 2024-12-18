@@ -110,6 +110,8 @@ const sv: TranslationMessagesExtended = {
         description: 'Ingress',
         showImgInDesktop: 'Visa bild i desktop',
         showImgInMobile: 'Visa bild i mobil',
+        showSearchBar: 'Visa sökfält',
+        editRoles: 'Behörighet att ändra',
       },
     },
     promotionsBlock: {
@@ -186,7 +188,7 @@ const sv: TranslationMessagesExtended = {
         showBlock: 'Visa Viktiga datum-block',
         showSeeAllButton: 'Visa "Visa alla viktiga datum"-knapp',
         amountShown: 'Antal viktiga datum som ska visas',
-        referencedImportantDatesBlockPageName: 'Visa viktiga datum från annat datum-block',
+        referencedImportantDatesBlockPageName: 'Block att visa viktiga datum ifrån',
         referencedImportantDatesBlockPageNameEmptyText: 'Använd detta blocks frågor',
         showAll: 'Visa alla viktiga datum',
       },

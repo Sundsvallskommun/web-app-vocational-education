@@ -79,14 +79,26 @@ export const Search: React.FC<{
 
   return (
     <div className={`${className}`}>
-      <div className="mb-sm">
-        <label className="text-sm text-label">Sök utbildningar</label>
+      <div className="mb-sm flex items-center text-sm gap-x-[.675em]">
+        <label className="text-label" id="searchbar-label">
+          Sök utbildningar
+        </label>
+        {showLinkToAllEducations ?
+          <>
+            <span>|</span>
+            <NextLink href={appURL('/utbildningar/sok')}>
+              <Link as="span">Se alla utbildningar</Link>
+            </NextLink>
+          </>
+        : null}
       </div>
       <form onSubmit={handleOnSubmit} className="flex w-full mb-sm">
         <div className="searchbar">
           <SearchField.Suggestions autofilter={false} size="md">
             <SearchField.SuggestionsInput
               size="md"
+              id="searchbar"
+              aria-labelledby="searchbar-label"
               onChange={handleOnChange}
               onSelect={handleOnSelect}
               onReset={handleOnReset}
@@ -118,11 +130,6 @@ export const Search: React.FC<{
           </Button>
         </div>
       </form>
-      {showLinkToAllEducations ?
-        <NextLink href={appURL('/utbildningar/sok')}>
-          <Link as="span">Se alla utbildningar</Link>
-        </NextLink>
-      : null}
     </div>
   );
 };

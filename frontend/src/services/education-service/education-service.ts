@@ -14,8 +14,11 @@ import { ApiResponse, apiService } from '../api-service';
 import { getFormattedLabelFromValue } from '@utils/labels';
 import { XMLParser } from 'fast-xml-parser';
 import SanitizeHTML from 'sanitize-html';
+import { getObjectDifference } from '@utils/object';
 
 export const emptyEducationFilterOptions: EducationFilterOptions = {
+  page: 1,
+  size: 10,
   q: '',
   sortFunction: sortFilter[0].value,
   category: [],
@@ -28,6 +31,8 @@ export const emptyEducationFilterOptions: EducationFilterOptions = {
 };
 
 export const typeReferenceEducationFilterOptions: EducationFilterOptions = {
+  page: 1,
+  size: 10,
   q: '',
   sortFunction: sortFilter[0].value,
   category: [''],
@@ -51,6 +56,10 @@ export const defaultEducationFilterOptions = {
   latestApplicationDate: dayjs(new Date()).format('YYYY-MM-DD'),
   startDate: '',
   scope: [],
+};
+
+export const emptyDefaultDiff = () => {
+  return getObjectDifference(emptyEducationFilterOptions, defaultEducationFilterOptions);
 };
 
 export const educationFilterTagLabels = {

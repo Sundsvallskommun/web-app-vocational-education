@@ -2,6 +2,7 @@ import Youtube from '@tiptap/extension-youtube';
 import {
   ClearButtons,
   DefaultEditorOptions,
+  FormatButtons,
   LevelSelect,
   LinkButtons,
   ListButtons,
@@ -20,7 +21,7 @@ const MyRichTextInputToolbar = ({ ...props }) => {
   return (
     <RichTextInputToolbar {...props}>
       <LevelSelect />
-      {/* <FormatButtons /> */}
+      <FormatButtons />
       {/* <AlignmentButtons /> */}
       <ListButtons />
 

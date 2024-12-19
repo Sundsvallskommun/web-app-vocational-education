@@ -32,7 +32,7 @@ export const PageEdit = (props: any) => {
   }, [recordId]);
 
   return (
-    <Edit {...props} redirect={false} mutationMode="pessimistic">
+    <Edit {...props} undoable={false} redirect={false} mutationMode="pessimistic">
       <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete={!canCreate} />} sx={{ maxWidth: '900px' }}>
         <h1>
           {`${translate('ra.action.edit')} `}

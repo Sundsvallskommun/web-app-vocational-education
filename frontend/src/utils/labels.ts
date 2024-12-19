@@ -18,3 +18,7 @@ export const getFormattedLabelFromValue = (value: string) =>
       return formatAbbreviations(x);
     })
     .join(' ');
+
+export const fallbackDataValue = () => {
+  return 'Saknas';
+};

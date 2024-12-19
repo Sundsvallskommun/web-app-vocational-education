@@ -21,13 +21,22 @@ interface CustomToolbarProps extends ToolbarProps {
 export const CustomToolbar = (props: CustomToolbarProps) => {
   const { saveProps, deleteProps, hideSave = false, hideDelete = false, backProps, ...rest } = props;
 
-  useSaveShortCut();
+  const { saveResource } = useSaveShortCut();
 
   return (
     <Toolbar {...rest} sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
       <Box sx={{ display: 'flex', gap: '2rem' }}>
         <Button onClick={() => history.back()} label="Tillbaka" {...backProps} />
-        {!hideSave && <SaveButton alwaysEnable {...saveProps} />}
+        {!hideSave && (
+          <SaveButton
+            alwaysEnable
+            {...saveProps}
+            onClick={(e) => {
+              e.preventDefault();
+              saveResource();
+            }}
+          />
+        )}
         {!hideDelete && <DeleteButton {...deleteProps} />}
       </Box>
     </Toolbar>

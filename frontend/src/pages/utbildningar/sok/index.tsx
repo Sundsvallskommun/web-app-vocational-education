@@ -14,11 +14,12 @@ import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import CompareArrowsOutlinedIcon from '@mui/icons-material/CompareArrowsOutlined';
 import {
   defaultEducationFilterOptions,
+  emptyDefaultDiff,
   emptyEducationFilterOptions,
   getEducationEvents,
   typeReferenceEducationFilterOptions,
 } from '@services/education-service/education-service';
-import { cx, Link, omit, Spinner } from '@sk-web-gui/react';
+import { cx, Link, Spinner } from '@sk-web-gui/react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getStandardPageProps } from '@utils/page-types';
 import { addToQueryString, createObjectFromQueryString, deserializeURL, serializeURL } from '@utils/url';
@@ -35,18 +36,33 @@ export async function getServerSideProps(context) {
 export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
   const { searchCompareList, setSearchCompareList, searchCurrent, setSearchCurrent } = useAppContext();
 
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [activeListing, setActiveListing] = useState(1);
-
-  const [searchQuery, setSearchQuery] = useState<string>(defaultEducationFilterOptions.q);
-  const [searchFilters, setSearchFilters] = useState<EducationFilterOptions>(
-    omit(defaultEducationFilterOptions, ['q'])
-  );
-
   // pagination
   const [pageSize, setPageSize] = useState<number>(defaultEducationFilterOptions.size);
   const [page, setPage] = useState<number>(defaultEducationFilterOptions.page);
+
+  const getCurrentFilters = () => {
+    const filters = createObjectFromQueryString(searchCurrent || window.location.search, {
+      objectReference: typeReferenceEducationFilterOptions,
+      objectReferenceOnly: true,
+      includeEmpty: true,
+    });
+    return {
+      page: page,
+      size: pageSize,
+      ...filters,
+    };
+  };
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [activeListing, setActiveListing] = useState(1);
+  const [isMounted, setIsMounted] = useState(false);
+  const [searchQuery, setSearchQuery] = useState<string>(searchParams.get('q') ?? defaultEducationFilterOptions.q);
+
+  const [searchFilters, setSearchFilters] = useState<EducationFilterOptions>({
+    ...defaultEducationFilterOptions,
+    ...getCurrentFilters(),
+  });
 
   const [isFiltersTouched, setIsFiltersTouched] = useState(false);
 
@@ -64,7 +80,7 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
         return null;
       }
     },
-    enabled: !!searchFilters.q, // only run query if query is not empty
+    enabled: isMounted,
     refetchOnWindowFocus: false, // default: true
     staleTime: 5 * 60 * 1000, // Data is considered fresh for 5 minutes
     placeholderData: keepPreviousData,
@@ -130,12 +146,14 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
   };
 
   const handleOnSubmitCallback = (filterData: EducationFilterOptions) => {
-    const filters = createObjectFromQueryString(window.location.search, {
-      objectReference: typeReferenceEducationFilterOptions,
-      objectReferenceAsBase: true,
-    });
+    const filters = getCurrentFilters();
     if (JSON.stringify(filters) !== JSON.stringify(filterData)) {
-      updateParams(serializeURL({ ...filterData }));
+      const includeEmptyValues = {};
+      Object.keys(emptyDefaultDiff()).forEach((key) => {
+        includeEmptyValues[key] = true;
+      });
+
+      updateParams(serializeURL({ ...filterData }, { includeEmptyValue: includeEmptyValues }));
     }
   };
 
@@ -159,43 +177,31 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
   );
 
   useEffect(() => {
-    const filters = createObjectFromQueryString(searchCurrent || window.location.search, {
-      objectReference: typeReferenceEducationFilterOptions,
-      objectReferenceOnly: true,
-    });
+    if (isMounted) {
+      const filtersWithBaseDefaults = getCurrentFilters();
 
-    const updatedQuery = filters.q || '';
-    const isQueryChanged = updatedQuery !== searchQuery;
+      const updatedQuery = filtersWithBaseDefaults.q || '';
+      const isQueryChanged = updatedQuery !== searchQuery;
 
-    const filtersWithBaseDefaults = {
-      ...emptyEducationFilterOptions,
-      ...((Object.keys(filters).length === 1 && updatedQuery) || isQueryChanged ?
-        { ...defaultEducationFilterOptions, q: updatedQuery }
-      : {
-          page: page,
-          size: pageSize,
-          ...filters,
-        }),
-    };
+      const isFiltersChanged = JSON.stringify(filtersWithBaseDefaults) !== JSON.stringify(searchFilters);
 
-    const updatedFilters = filtersWithBaseDefaults;
-    const isFiltersChanged = JSON.stringify(updatedFilters) !== JSON.stringify(searchFilters);
+      const isChanged = isQueryChanged || isFiltersChanged;
 
-    const isChanged = isQueryChanged || isFiltersChanged;
+      if (isQueryChanged) {
+        setSearchQuery(updatedQuery);
+      }
 
-    if (isQueryChanged) {
-      setSearchQuery(updatedQuery);
-      setPage(defaultEducationFilterOptions.page);
-      setPageSize(defaultEducationFilterOptions.size);
+      if (isFiltersChanged) {
+        setSearchFilters(filtersWithBaseDefaults);
+      }
+
+      if (isChanged) {
+        setIsFiltersTouched(true);
+        setPage(defaultEducationFilterOptions.page);
+        setPageSize(defaultEducationFilterOptions.size);
+      }
     }
 
-    if (isFiltersChanged) {
-      setSearchFilters(updatedFilters);
-    }
-
-    if (isChanged) {
-      setIsFiltersTouched(true);
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
@@ -211,6 +217,13 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchResults]);
+
+  useEffect(() => {
+    if (!isMounted) {
+      setIsMounted(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <DefaultLayout
@@ -232,42 +245,48 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
             <p className="ingress">{pageData.description}</p>
           : <></>}
 
-          <Search className="phone:mt-[25px] mt-2xl" keepParams />
-          {isFiltersTouched && (
-            <>
-              <h2 className="mt-md desktop:mt-[7.25rem] text-large desktop:text-[2.6rem] leading-[3.6rem] mb-0">
-                {isFetching ?
+          <Search
+            className="phone:mt-[25px] mt-2xl"
+            keepParams
+            showLinkToAllEducations={false}
+            defaultValue={searchQuery}
+          />
+          <h2 className="mt-md desktop:mt-[7.25rem] text-large desktop:text-[2.6rem] leading-[3.6rem] mb-0">
+            {isFetching ?
+              <>
+                Sökresultat laddar{' '}
+                {searchQuery ?
                   <>
-                    Sökresultat laddar för <strong>{searchQuery}</strong>
+                    för <strong>{searchQuery}</strong>
                   </>
-                : <>
-                    Din sökning<strong>{` ${searchQuery} `}</strong>gav{' '}
-                    <strong>
-                      {!searchResults?._meta || searchResults?._meta?.totalRecords == 0 ?
-                        <span>Inga träffar</span>
-                      : <>
-                          <span>{searchResults?._meta?.totalRecords}</span>{' '}
-                          {(
-                            (searchResults?._meta?.totalRecords && searchResults?._meta?.totalRecords > 1) ||
-                            searchResults?._meta?.totalRecords == 0
-                          ) ?
-                            'träffar'
-                          : 'träff'}
-                        </>
-                      }
-                    </strong>
-                  </>
-                }
-              </h2>
-            </>
-          )}
+                : null}
+              </>
+            : <>
+                Din sökning<strong>{` ${searchQuery} `}</strong>gav{' '}
+                <strong>
+                  {!searchResults?._meta || searchResults?._meta?.totalRecords == 0 ?
+                    <span>Inga träffar</span>
+                  : <>
+                      <span>{searchResults?._meta?.totalRecords}</span>{' '}
+                      {(
+                        (searchResults?._meta?.totalRecords && searchResults?._meta?.totalRecords > 1) ||
+                        searchResults?._meta?.totalRecords == 0
+                      ) ?
+                        'träffar'
+                      : 'träff'}
+                    </>
+                  }
+                </strong>
+              </>
+            }
+          </h2>
         </BigDropHeader>
 
         <div className="mt-lg">
           <EducationsFilters
             activeListing={activeListing}
             setActiveListing={handleSetActiveListing}
-            formData={searchFilters}
+            formData={{ ...emptyEducationFilterOptions, ...searchFilters }}
             submitCallback={handleOnSubmitCallback}
             searchQuery={searchQuery}
           />
@@ -279,7 +298,7 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
           )}
           {!isPending && searchResults?.courses?.length && searchResults?.courses?.length > 0 ?
             <div className="mt-md desktop:mt-[6.6rem] flex flex-col gap-lg desktop:flex-row">
-              <div className="w-full flex flex-col gap-lg desktop:w-[830px]">
+              <div className="search-results relative w-full flex flex-col gap-lg desktop:w-[830px]">
                 {activeListing === 1 ?
                   <EducationsCards
                     educations={searchResults?.courses}
@@ -296,10 +315,14 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
                     handleOnClickResult={handleOnClickResult}
                   />
                 }
+
                 {isFetching && (
                   <div className="mt-md w-full flex justify-center">
                     <Spinner aria-label="Laddar sökresultat" />
                   </div>
+                )}
+                {isFetching && (
+                  <div className="absolute inset-0 bg-[rgba(252,252,252,.9)] w-full flex items-center justify-center"></div>
                 )}
               </div>
               <div className="max-w-[300px] compareStickyParent">

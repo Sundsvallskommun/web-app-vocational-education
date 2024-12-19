@@ -9,6 +9,8 @@ import { Course } from '@interfaces/education';
 import { getEducationLengthString } from '@services/education-service/education-service';
 import 'swiper/css';
 import { routeDynamicSlugFormat } from '@utils/app-url';
+import { fallbackDataValue } from '@utils/labels';
+import dayjs from 'dayjs';
 
 export const CompareCards: React.FC<{ compareList: Course[]; onRemove? }> = ({ compareList, onRemove }) => {
   const compareSwiperRef = useRef(null);
@@ -60,43 +62,49 @@ export const CompareCards: React.FC<{ compareList: Course[]; onRemove? }> = ({ c
                     <div>
                       <div className="label">Längd</div>
                       <div>
-                        <strong>{edu.start && edu.end ? getEducationLengthString(edu.start, edu.end) : '-'}</strong>
+                        <strong>
+                          {edu.start && edu.end ? getEducationLengthString(edu.start, edu.end) : fallbackDataValue()}
+                        </strong>
                       </div>
                     </div>
                     <div>
                       <div className="label">Plats</div>
                       <div>
-                        <strong>{edu.studyLocation}</strong>
+                        <strong>{edu?.studyLocation ? edu?.studyLocation?.split(',') : fallbackDataValue()}</strong>
                       </div>
                     </div>
                     <div>
                       <div className="label">Start</div>
                       <div>
-                        <strong>{edu.start}</strong>
+                        <strong>{edu?.start ?? fallbackDataValue()}</strong>
                       </div>
                     </div>
                     <div>
                       <div className="label">Studietakt</div>
                       <div>
-                        <strong>{edu.scope ? edu?.scope + '%' : '-'}</strong>
+                        <strong>{edu.scope ? edu?.scope + '%' : fallbackDataValue()}</strong>
                       </div>
                     </div>
                     <div>
                       <div className="label">Utbildningsform</div>
                       <div>
-                        <strong className="capitalize">{edu.level ?? '-'}</strong>
+                        <strong className="capitalize">{edu.level ?? fallbackDataValue()}</strong>
                       </div>
                     </div>
                     <div>
                       <div className="label">Distans</div>
                       <div>
-                        <strong>Saknas</strong>
+                        <strong>{fallbackDataValue()}</strong>
                       </div>
                     </div>
                     <div>
-                      <div className="label">Språk</div>
+                      <div className="label">Sista ansökningsdatum</div>
                       <div>
-                        <strong>Saknas</strong>
+                        <strong>
+                          {edu?.latestApplication ?
+                            dayjs(edu?.latestApplication).format('YYYY-MM-DD')
+                          : fallbackDataValue()}
+                        </strong>
                       </div>
                     </div>
                   </div>

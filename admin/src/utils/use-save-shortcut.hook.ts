@@ -6,13 +6,17 @@ export const useSaveShortCut = () => {
   const { save } = useSaveContext();
   const { getValues } = useFormContext();
 
+  const saveResource = () => {
+    if (save) {
+      save(getValues());
+    }
+  };
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.ctrlKey && event.key === 's') {
         event.preventDefault(); // Prevent the browser's default "Save" dialog
-        if (save) {
-          save(getValues());
-        }
+        saveResource();
       }
     };
 
@@ -25,5 +29,5 @@ export const useSaveShortCut = () => {
     };
   }, [save, getValues]);
 
-  return null;
+  return { saveResource };
 };

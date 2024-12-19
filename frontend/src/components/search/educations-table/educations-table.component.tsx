@@ -2,6 +2,8 @@ import { useAppContext } from '@contexts/app.context';
 import { Course, PagingMetaData } from '@interfaces/education';
 import { Checkbox, Link, Pagination, Table } from '@sk-web-gui/react';
 import { routeDynamicSlugFormat } from '@utils/app-url';
+import { fallbackDataValue } from '@utils/labels';
+import dayjs from 'dayjs';
 import NextLink from 'next/link';
 
 export const tableCellTextClasses = 'text-base leading-[2.9rem] capitalize';
@@ -32,7 +34,7 @@ export const EducationsTable: React.FC<{
             <Table.HeaderColumn>Start / Slut</Table.HeaderColumn>
             <Table.HeaderColumn>Studietakt</Table.HeaderColumn>
             <Table.HeaderColumn>Utbildningsform</Table.HeaderColumn>
-            <Table.HeaderColumn>Språk</Table.HeaderColumn>
+            <Table.HeaderColumn>Sista ansökningsdatum</Table.HeaderColumn>
           </Table.Header>
           <Table.Body>
             {educations.map((edu, index) => (
@@ -50,35 +52,37 @@ export const EducationsTable: React.FC<{
                       href={`/utbildningar/${routeDynamicSlugFormat({ slug: '/utbildningar/[utbildning]', data: edu })}`}
                     >
                       <Link as="span" className="line-clamp-2 text-base mb-6 leading-[1.5]">
-                        {edu?.name ?? '-'}
+                        {edu?.name ?? fallbackDataValue()}
                       </Link>
                     </NextLink>
-                    <div className="text-sm capitalize">{edu?.level ?? '-'}</div>
+                    <div className="text-sm capitalize">{edu?.level ?? fallbackDataValue()}</div>
                   </span>
                 </Table.Column>
                 <Table.Column className="min-w-[11em]">
-                  <span className={tableCellTextClasses}>{edu?.numberOfSeats ?? '-'}</span>
+                  <span className={tableCellTextClasses}>{edu?.numberOfSeats ?? fallbackDataValue()}</span>
                 </Table.Column>
                 <Table.Column>
                   <span>
-                    <div className={tableCellTextClasses}>Saknas</div>
-                    <div className={tableCellTextClasses}>{edu?.studyLocation ?? '-'}</div>
+                    <div className={tableCellTextClasses}>{fallbackDataValue()}</div>
+                    <div className={tableCellTextClasses}>{edu?.studyLocation ?? fallbackDataValue()}</div>
                   </span>
                 </Table.Column>
                 <Table.Column>
                   <span>
-                    <div className={tableCellTextClasses}>{edu?.start ?? '-'}</div>
-                    <div className={tableCellTextClasses}>{edu?.end ?? '-'}</div>
+                    <div className={tableCellTextClasses}>{edu?.start ?? fallbackDataValue()}</div>
+                    <div className={tableCellTextClasses}>{edu?.end ?? fallbackDataValue()}</div>
                   </span>
                 </Table.Column>
                 <Table.Column>
-                  <span className={tableCellTextClasses}>{edu?.scope ? edu?.scope + '%' : '-'}</span>
+                  <span className={tableCellTextClasses}>{edu?.scope ? edu?.scope + '%' : fallbackDataValue()}</span>
                 </Table.Column>
                 <Table.Column>
-                  <span className={tableCellTextClasses}>{edu?.level ?? '-'}</span>
+                  <span className={tableCellTextClasses}>{edu?.level ?? fallbackDataValue()}</span>
                 </Table.Column>
                 <Table.Column>
-                  <span className={tableCellTextClasses}>Saknas</span>
+                  <span className={tableCellTextClasses}>
+                    {edu?.latestApplication ? dayjs(edu?.latestApplication).format('YYYY-MM-DD') : fallbackDataValue()}
+                  </span>
                 </Table.Column>
               </Table.Row>
             ))}

@@ -8,9 +8,11 @@ import SchoolIcon from '@mui/icons-material/School';
 import { getEducationLengthString, getSanitizedInformation } from '@services/education-service/education-service';
 import { Checkbox } from '@sk-web-gui/react';
 import { routeDynamicSlugFormat } from '@utils/app-url';
+import { fallbackDataValue } from '@utils/labels';
+import dayjs from 'dayjs';
 
-const cardIconClasses = 'desktop:!hidden !text-2xl mr-2 medium-device-min:mr-10';
-const cardDataClasses = 'desktop:font-bold capitalize';
+const cardIconClasses = 'medium-device-min:!hidden !text-2xl mr-2 medium-device-min:mr-10';
+const cardDataClasses = 'medium-device-min:font-bold capitalize';
 
 export const EducationsCards: React.FC<{
   educations: Course[];
@@ -40,51 +42,59 @@ export const EducationsCards: React.FC<{
               dropIcon={<SchoolIcon className="material-icon desktop:!text-2xl" />}
               footer={
                 <div className="flex flex-col gap-y-20">
-                  <div className="text-[1.3rem] medium-device:text-sm flex flex-row-reverse desktop:flex-row flex-wrap gap-x-4 phone:gap-x-20 desktop:gap-x-[6.9em] desktop:gap-y-20">
-                    <div className="hidden desktop:block">
+                  <div className="text-[1.3rem] medium-device-min:text-sm flex flex-row-reverse medium-device-min:flex-row flex-wrap gap-x-4 phone:gap-x-20 medium-device-min:gap-x-[6.9em] medium-device-min:gap-y-20">
+                    <div className="hidden medium-device-min:block">
                       <div className="label">Längd</div>
                       <div className="flex items-center">
                         <span className={cardDataClasses}>
-                          {edu?.start && edu?.end ? getEducationLengthString(edu?.start, edu?.end) : '-'}
+                          {edu?.start && edu?.end ?
+                            getEducationLengthString(edu?.start, edu?.end)
+                          : fallbackDataValue()}
                         </span>
                       </div>
                     </div>
                     <div>
-                      <div className="hidden desktop:block">Plats</div>
+                      <div className="hidden medium-device-min:block label">Plats</div>
                       <div className="flex items-center">
                         <LocationOnIcon className={cardIconClasses} />
-                        <span className={cardDataClasses}>{edu?.studyLocation?.split(',')}</span>
+                        <span className={cardDataClasses}>
+                          {edu?.studyLocation ? edu?.studyLocation?.split(',') : fallbackDataValue()}
+                        </span>
                       </div>
                     </div>
                     <div>
-                      <div className="hidden desktop:block">Start</div>
+                      <div className="hidden medium-device-min:block label">Start</div>
                       <div className="flex items-center">
                         <DateRangeIcon className={cardIconClasses} />
-                        <span className={cardDataClasses}>{edu?.start ?? '-'}</span>
+                        <span className={cardDataClasses}>{edu?.start ?? fallbackDataValue()}</span>
                       </div>
                     </div>
-                    <div className="hidden desktop:block">
+                    <div className="hidden medium-device-min:block">
                       <div className="label">Studietakt</div>
                       <div className="flex items-center">
-                        <span className={cardDataClasses}>{edu?.scope ? edu?.scope + '%' : '-'}</span>
+                        <span className={cardDataClasses}>{edu?.scope ? edu?.scope + '%' : fallbackDataValue()}</span>
                       </div>
                     </div>
-                    <div className="hidden desktop:block">
+                    <div className="hidden medium-device-min:block">
                       <div className="label">Utbildningsform</div>
                       <div className="flex items-center">
-                        <span className={cardDataClasses}>{edu?.level ?? '-'}</span>
+                        <span className={cardDataClasses}>{edu?.level ?? fallbackDataValue()}</span>
                       </div>
                     </div>
-                    <div className="hidden desktop:block">
+                    <div className="hidden medium-device-min:block">
                       <div className="label">Distans</div>
                       <div className="flex items-center">
-                        <span className={cardDataClasses}>Saknas</span>
+                        <span className={cardDataClasses}>{fallbackDataValue()}</span>
                       </div>
                     </div>
-                    <div className="hidden desktop:block">
-                      <div className="label">Språk</div>
+                    <div className="hidden medium-device-min:block">
+                      <div className="label">Sista ansökningsdatum</div>
                       <div className="flex items-center">
-                        <span className={cardDataClasses}>Saknas</span>
+                        <span className={cardDataClasses}>
+                          {edu?.latestApplication ?
+                            dayjs(edu?.latestApplication).format('YYYY-MM-DD')
+                          : fallbackDataValue()}
+                        </span>
                       </div>
                     </div>
                   </div>

@@ -11,7 +11,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import SchoolIcon from '@mui/icons-material/School';
 import { getEducationLengthString, getSanitizedInformation } from '@services/education-service/education-service';
 import { Breadcrumb, useThemeQueries } from '@sk-web-gui/react';
-import { getFormattedLabelFromValue } from '@utils/labels';
+import { fallbackDataValue, getFormattedLabelFromValue } from '@utils/labels';
 import { getBlockData } from '@utils/page-types';
 import NextLink from 'next/link';
 
@@ -53,15 +53,15 @@ export const Utbildning: React.FC = ({
             </div>
 
             <div className="h-full flex-grow flex flex-col justify-center max-w-[720px]">
-              <div className="flex justify-between medium-device:justify-start items-center">
+              <div className="flex justify-between medium-device-min:justify-start items-center">
                 <h1 className="m-0">{educationData.name}</h1>
                 <Drop
-                  className="p-sm medium-device:p-md medium-device:ml-lg"
+                  className="self-start p-sm medium-device-min:p-md medium-device-min:ml-lg medium-device-min:min-w-[6.8rem] medium-device-min:min-h-[6.8rem]"
                   dropIcon={<SchoolIcon className="!text-2xl" />}
                 />
               </div>
               <p className="ingress mt-0">
-                {educationData.level ? getFormattedLabelFromValue(educationData.level) : '-'}
+                {educationData.level ? getFormattedLabelFromValue(educationData.level) : fallbackDataValue()}
               </p>
             </div>
           </div>
@@ -73,39 +73,41 @@ export const Utbildning: React.FC = ({
               <strong>
                 {educationData?.start && educationData?.end ?
                   getEducationLengthString(educationData?.start, educationData?.end)
-                : '-'}
+                : fallbackDataValue()}
               </strong>
             </div>
           </div>
           <div>
             <label id="education-studyLocation">Plats</label>
             <div aria-describedby="education-studyLocation">
-              <strong>{educationData?.studyLocation?.split(',')}</strong>
+              <strong>
+                {educationData?.studyLocation ? educationData?.studyLocation?.split(',') : fallbackDataValue()}
+              </strong>
             </div>
           </div>
           <div>
             <label id="education-pace">Studietakt</label>
             <div aria-describedby="education-pace">
-              <strong>{educationData?.scope ? educationData?.scope + '%' : '-'}</strong>
+              <strong>{educationData?.scope ? educationData?.scope + '%' : fallbackDataValue()}</strong>
             </div>
           </div>
           <div>
             <label id="education-distance">Distans</label>
             <div aria-describedby="education-distance">
-              <strong>Saknas</strong>
+              <strong>{fallbackDataValue()}</strong>
             </div>
           </div>
           <div>
             <label id="education-language">Språk</label>
             <div aria-describedby="education-language">
-              <strong>Saknas</strong>
+              <strong>{fallbackDataValue()}</strong>
             </div>
           </div>
           <div>
             <label id="education-language">Utbildningsform</label>
             <div aria-describedby="education-form">
               <strong className="break-all">
-                {educationData?.level ? `${getFormattedLabelFromValue(educationData?.level)}` : '-'}
+                {educationData?.level ? `${getFormattedLabelFromValue(educationData?.level)}` : fallbackDataValue()}
               </strong>
             </div>
           </div>
@@ -117,13 +119,13 @@ export const Utbildning: React.FC = ({
             <div>
               <label id="education-startdate">Nästa utbildningsstart</label>
               <div aria-describedby="education-startdate">
-                <strong>{educationData?.start ?? '-'}</strong>
+                <strong>{educationData?.start ?? fallbackDataValue()}</strong>
               </div>
             </div>
             <div>
               <label id="education-latestapplyday">Sista ansökningsdag</label>
               <div aria-describedby="education-latestapplyday">
-                <strong>{educationData?.latestApplication ?? '-'}</strong>
+                <strong>{educationData?.latestApplication ?? fallbackDataValue()}</strong>
               </div>
             </div>
           </div>

@@ -39,7 +39,7 @@ export interface WebMessageParty {
    * The message party id
    * @format uuid
    */
-  partyId: string;
+  partyId?: string;
   /** External references */
   externalReferences?: ExternalReference[];
 }
@@ -49,6 +49,8 @@ export interface WebMessageRequest {
   party: WebMessageParty;
   /** Message */
   message: string;
+  /** Sender */
+  sender?: WebMessageSender;
   /**
    * Determines if the message should be added to the internal or external OeP instance
    * @example "internal"
@@ -59,6 +61,15 @@ export interface WebMessageRequest {
    * @minItems 0
    */
   attachments?: WebMessageAttachment[];
+}
+
+/** Sender */
+export interface WebMessageSender {
+  /**
+   * The user ID of the sender. I.e. employee ID
+   * @example "joe01doe"
+   */
+  userId?: string;
 }
 
 export interface Problem {
@@ -268,6 +279,50 @@ export interface Sms {
   name: string;
 }
 
+/** Addresses that gets a letter copy */
+export interface Address {
+  /**
+   * The first name of the recipient
+   * @example "John"
+   */
+  firstName?: string;
+  /**
+   * The last name of the recipient
+   * @example "Doe"
+   */
+  lastName?: string;
+  /**
+   * The address
+   * @example "Main Street 1"
+   */
+  address?: string;
+  /**
+   * The apartment number
+   * @example "1101"
+   */
+  apartmentNumber?: string;
+  /**
+   * The care of
+   * @example "c/o John Doe"
+   */
+  careOf?: string;
+  /**
+   * The zip code
+   * @example "12345"
+   */
+  zipCode?: string;
+  /**
+   * The city
+   * @example "Main Street"
+   */
+  city?: string;
+  /**
+   * The country
+   * @example "Sweden"
+   */
+  country?: string;
+}
+
 /** Attachment */
 export interface LetterAttachment {
   /**
@@ -285,8 +340,8 @@ export interface LetterAttachment {
 
 /** Party */
 export interface LetterParty {
-  /** @minItems 1 */
-  partyIds: string[];
+  partyIds?: string[];
+  addresses?: Address[];
   /** External references */
   externalReferences?: ExternalReference[];
 }
@@ -731,15 +786,20 @@ export interface UserMessage {
    * @format date-time
    */
   sent?: string;
+  /**
+   * The message subject
+   * @example "Important message"
+   */
+  subject?: string;
   recipients?: Recipient[];
   attachments?: MessageAttachment[];
 }
 
 /** User messages model */
 export interface UserMessages {
-  messages?: UserMessage[];
   /** PagingMetaData model */
   _meta?: PagingMetaData;
+  messages?: UserMessage[];
 }
 
 export interface LetterStatistics {

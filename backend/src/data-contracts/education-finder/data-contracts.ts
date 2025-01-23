@@ -147,7 +147,7 @@ export interface Statistics {
   /** Study locations used for filtering */
   studyLocations?: string[];
   /** Scopes used for filtering */
-  scopes?: string[];
+  scopes?: number[];
   /** Levels used for filtering */
   levels?: string[];
   /** Categories used for filtering */
@@ -164,17 +164,6 @@ export interface Statistics {
    * @format date
    */
   endDate?: string;
-}
-
-/** Statistics filter model */
-export enum StatisticsFilter {
-  Level = 'level',
-  Scope = 'scope',
-  Category = 'category',
-  Subcategory = 'subcategory',
-  StudyLocation = 'studyLocation',
-  StartDate = 'startDate',
-  EndDate = 'endDate',
 }
 
 export interface CourseParameters {
@@ -201,16 +190,6 @@ export interface CourseParameters {
    * @example "KEMKEM02"
    */
   code?: string;
-  /**
-   * Category
-   * @example "Naturvetenskap"
-   */
-  category?: string;
-  /**
-   * Subcategory
-   * @example "Kemi"
-   */
-  subcategory?: string;
   /**
    * Name of the course
    * @example "Etnicitet och kulturmöten"
@@ -248,11 +227,35 @@ export interface CourseParameters {
    */
   start?: string;
   /**
+   * Start date of the course is after
+   * @format date
+   * @example "2022-12-31"
+   */
+  startAfter?: string;
+  /**
+   * Start date of the course is before
+   * @format date
+   * @example "2022-12-31"
+   */
+  startBefore?: string;
+  /**
    * End date of the course
    * @format date
    * @example "2022-12-31"
    */
   end?: string;
+  /**
+   * End date of the course is after
+   * @format date
+   * @example "2022-12-31"
+   */
+  endAfter?: string;
+  /**
+   * End date of the course is before
+   * @format date
+   * @example "2022-12-31"
+   */
+  endBefore?: string;
   /**
    * Earliest application date
    * @format date
@@ -260,16 +263,40 @@ export interface CourseParameters {
    */
   earliestApplication?: string;
   /**
+   * Earliest application date is after
+   * @format date
+   * @example "2022-12-31"
+   */
+  earliestApplicationAfter?: string;
+  /**
+   * Earliest application date is before
+   * @format date
+   * @example "2022-12-31"
+   */
+  earliestApplicationBefore?: string;
+  /**
    * Latest application date
    * @format date
    * @example "2022-12-31"
    */
   latestApplication?: string;
   /**
+   * Latest application date is after
+   * @format date
+   * @example "2022-12-31"
+   */
+  latestApplicationAfter?: string;
+  /**
+   * Latest application date is before
+   * @format date
+   * @example "2022-12-31"
+   */
+  latestApplicationBefore?: string;
+  /**
    * Scope of the course
    * @example 75
    */
-  scopes?: string[];
+  scopes?: number[];
   /**
    * Study location
    * @example "Sundsvall"
@@ -280,6 +307,16 @@ export interface CourseParameters {
    * @example "gymnasial vuxenutbildning"
    */
   levels?: string[];
+  /**
+   * Category
+   * @example "Naturvetenskap"
+   */
+  categories?: string[];
+  /**
+   * Subcategory
+   * @example "Kemi"
+   */
+  subcategories?: string[];
 }
 
 /**
@@ -442,15 +479,4 @@ export interface PagingMetaData {
    * @example 23
    */
   totalPages?: number;
-}
-
-/** Course filter model */
-export enum CourseFilter {
-  Credits = 'credits',
-  Category = 'category',
-  Subcategory = 'subcategory',
-  Provider = 'provider',
-  Level = 'level',
-  Scope = 'scope',
-  StudyLocation = 'studyLocation',
 }

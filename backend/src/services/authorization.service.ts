@@ -1,5 +1,5 @@
 // import { AUTHORIZED_GROUPS } from '@/config';
-import { MUNICIPALITY_ID } from '@/config';
+import { APP_NAME, MUNICIPALITY_ID } from '@/config';
 import { Permissions } from '@interfaces/users.interface';
 import { UserRoleEnum, UserRolesOnUser } from '@prisma/client';
 import { getRandomValues } from 'node:crypto';
@@ -118,14 +118,14 @@ export const send2FACodeToEmail = async (email: string, twoFactorCode: string) =
   const apiService = new ApiService();
   const sendOTP = {
     sender: {
-      name: 'YrkesutbildningMitt',
+      name: APP_NAME,
       address: 'no-reply@sundsvall.se',
     },
     emailAddress: email,
-    subject: 'OTP - YrkesutbildningMitt',
+    subject: `OTP - ${APP_NAME}`,
     message: twoFactorCode,
     htmlMessage: base64Encode(messageHTML(twoFactorCode)),
   };
-  const url = `messaging/5.0/${MUNICIPALITY_ID}/email`;
-  return await apiService.post({ url, data: sendOTP });
+  const url = `messaging/6.1/${MUNICIPALITY_ID}/email`;
+  return await apiService.post({ url, data: sendOTP, headers: { 'x-issuer': APP_NAME } });
 };

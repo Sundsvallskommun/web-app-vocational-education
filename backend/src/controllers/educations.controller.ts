@@ -153,7 +153,7 @@ export class EducationsController {
       searchString: filter?.q ?? undefined,
       categories: filter?.category ?? undefined,
       levels: filter?.level ?? defaultLevels,
-      studyLocations: filter?.studyLocation ?? defaultStudyLocations,
+      studyLocations: filter?.studyLocation ?? undefined,
       distance: filter?.distance ?? undefined,
       latestApplicationAfter: filter?.latestApplicationDate ?? undefined,
       startAfter: filter?.startDate ?? undefined,

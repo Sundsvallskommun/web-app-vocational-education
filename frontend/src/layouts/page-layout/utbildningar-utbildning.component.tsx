@@ -67,7 +67,7 @@ export const Utbildning = ({
             </div>
           </div>
         </div>
-        <div className="text-[1.3rem] small-device:text-sm mt-lg grid grid-cols-[40%,60%] gap-md desktop:flex">
+        <div className="text-[1.3rem] small-device:text-sm mt-lg grid grid-cols-[40%,60%] gap-md desktop:gap-2xl desktop:flex">
           <div>
             <label id="education-length">Längd</label>
             <div aria-describedby="education-length">
@@ -149,10 +149,15 @@ export const Utbildning = ({
         : null}
       </ContentBlock>
 
-      <ContentBlock classNameWrapper="!mt-60">
-        <h2>Kontaktuppgifter</h2>
-        <p>Sundsvalls kommun (Komunal) Lasarettsvägen 19, 851 85 Sundsvall</p>
-        <a className="inline-block mt-30" href={educationData.url ?? educationData.providerUrl} target="_blank">
+      {educationData.provider ?
+        <ContentBlock classNameWrapper="!mt-xl">
+          <h2>Skola som anordnar utbildningen</h2>
+          <p>{educationData.provider}</p>
+        </ContentBlock>
+      : <></>}
+
+      <ContentBlock classNameWrapper="!mt-xl">
+        <a className="inline-block mb-md" href={educationData.url ?? educationData.providerUrl} target="_blank">
           <Button
             as="span"
             dense={!isMinDesktop}

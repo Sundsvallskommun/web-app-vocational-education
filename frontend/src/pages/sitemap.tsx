@@ -6,9 +6,16 @@ import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import { getLayout } from '@services/layout-service';
 import { merge } from 'lodash';
 import ContentBlock from '@components/block/content-block.component';
+import { LayoutData } from '@interfaces/admin-data';
+import { GetServerSidePropsContext } from 'next';
 
-const generateTOC = (paths) => {
-  const root = {
+interface TOCNode {
+  __path: string;
+  __children: Record<string, TOCNode>;
+}
+
+const generateTOC = (paths: string[]) => {
+  const root: Record<string, TOCNode> = {
     startsida: {
       __path: '/',
       __children: {},
@@ -21,22 +28,23 @@ const generateTOC = (paths) => {
     const segments = path.split('/').filter(Boolean);
     let current = root;
     segments.forEach((segment, index) => {
-      if (!current[segment]) {
-        current[segment] = {
-          __path: index === segments.length - 1 ? path : null,
+      const segmentTyped = segment as keyof typeof current;
+      if (!current[segmentTyped]) {
+        current[segmentTyped] = {
+          __path: index === segments.length - 1 ? path : '',
           __children: {},
         };
       }
       // Ensure all segments get a path for standalone pages
-      if (index === segments.length - 1 || !current[segment].__path) {
-        current[segment].__path = path;
+      if (index === segments.length - 1 || !current[segmentTyped].__path) {
+        current[segmentTyped].__path = path;
       }
-      current = current[segment].__children;
+      current = current[segmentTyped].__children;
     });
   });
 
   // Recursive function to create list elements
-  const createList = (obj) => {
+  const createList = (obj: Record<string, TOCNode>): JSX.Element => {
     return (
       <ul className="ml-md">
         {Object.keys(obj).map((key) => {
@@ -59,7 +67,7 @@ const generateTOC = (paths) => {
   return createList(root);
 };
 
-function SiteMap({ pages, layoutData }) {
+function SiteMap({ pages, layoutData }: { pages: string[]; layoutData: LayoutData }) {
   return (
     <DefaultLayout title={`Yrkesutbildning - Startsida`} layoutData={layoutData}>
       <ContentBlock classNameWrapper="!mt-lg">
@@ -72,9 +80,9 @@ function SiteMap({ pages, layoutData }) {
   );
 }
 
-export async function getServerSideProps({ res }) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const pages: string[] = await getPages(path.join('src', 'pages'));
-  const layoutProps = await getLayout(res);
+  const layoutProps = await getLayout(context.res);
   return merge(
     {
       props: { pages },

@@ -1,7 +1,8 @@
-import { User } from 'src/interfaces/user';
-import { createContext, useContext, useState } from 'react';
-import { emptyUser } from '@services/user-service/defaults';
 import { Course } from '@interfaces/education';
+import { emptyUser } from '@services/user-service/defaults';
+import { useState } from 'react';
+import { User } from 'src/interfaces/user';
+import { AppContext } from './context';
 
 interface AppContextInterfaceStates {
   user: User;
@@ -18,7 +19,7 @@ interface AppContextInterfaceActions {
 
   setLangCode: (langCode: string) => void;
 
-  setSearchCompareList: (searchCompareList: Course[] | ((searchCompareList) => Course[])) => void;
+  setSearchCompareList: React.Dispatch<React.SetStateAction<Course[]>>;
 
   setSearchCurrent: (searchCurrent: null | string) => void;
 
@@ -27,10 +28,7 @@ interface AppContextInterfaceActions {
 
 export type AppContextInterface = AppContextInterfaceStates & AppContextInterfaceActions;
 
-/** @ts-expect-error will be set on mount*/
-const AppContext = createContext<AppContextInterface>(null);
-
-export function AppWrapper({ children }) {
+export function AppWrapper({ children }: { children: React.ReactNode }) {
   const contextDefaults: AppContextInterfaceStates = {
     user: emptyUser,
     isCookieConsentOpen: true,
@@ -64,7 +62,7 @@ export function AppWrapper({ children }) {
         setLangCode: (langCode: string) => setLangCode(langCode),
 
         searchCompareList,
-        setSearchCompareList: (searchCompareList: Course[]) => setSearchCompareList(searchCompareList),
+        setSearchCompareList,
 
         searchCurrent,
         setSearchCurrent,
@@ -75,8 +73,4 @@ export function AppWrapper({ children }) {
       {children}
     </AppContext.Provider>
   );
-}
-
-export function useAppContext() {
-  return useContext(AppContext);
 }

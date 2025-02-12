@@ -1,49 +1,37 @@
-import { FiltersFetcher } from '@contexts/filters.context';
+import { FiltersFetcher } from '@contexts/filters/filters.context';
+import { UserSavedInterestDto } from '@interfaces/user';
 import { emptyUserSavedInterest } from '@services/user-service/defaults';
 import { useUserStore } from '@services/user-service/user-service';
 import { useSnackbar } from '@sk-web-gui/react';
 import { useEffect, useMemo } from 'react';
-import { FormProvider, UseFormReturn, useForm } from 'react-hook-form';
+import { DefaultValues, FieldValues, FormProvider, SubmitHandler, UseFormReturn, useForm } from 'react-hook-form';
 
-interface SavedInterestsForm {
+export interface SavedInterestsFormValues extends UserSavedInterestDto {
   id?: number;
-  studyLocation: string[];
-  category: string;
-  level: string;
-  /** Time interval from now plus 12 or 6
-   * @default 12
-   * Actual radio-picker, choices: 12, 6, 0(using date defined interval)
-   */
-  timeInterval: string;
-  timeIntervalFrom?: string;
-  timeIntervalTo?: string;
 }
 
-interface SavedInterestsFormLogicProps {
+interface SavedInterestsFormLogicProps<
+  TFormValues extends FieldValues & UserSavedInterestDto = SavedInterestsFormValues,
+> {
   children: React.ReactNode | React.ReactNode[];
-  formData?: SavedInterestsForm;
-  onSubmit?: (
-    values: SavedInterestsForm,
-    context: UseFormReturn<Partial<SavedInterestsForm>, unknown, undefined>
-  ) => void;
+  formData?: TFormValues;
+  onSubmit?: (values: TFormValues, context: UseFormReturn<TFormValues, unknown, undefined>) => void;
 }
 
-export default function SavedInterestsFormLogic({
-  children,
-  formData = emptyUserSavedInterest,
-  onSubmit,
-}: SavedInterestsFormLogicProps) {
+export default function SavedInterestsFormLogic<
+  TFormValues extends FieldValues & UserSavedInterestDto = SavedInterestsFormValues,
+>({ children, formData = emptyUserSavedInterest as TFormValues, onSubmit }: SavedInterestsFormLogicProps<TFormValues>) {
   const newSavedInterest = useUserStore((s) => s.newSavedInterest);
   const snackBar = useSnackbar();
 
-  const context = useForm<Partial<SavedInterestsForm>>({
-    defaultValues: useMemo(() => formData, [formData]),
+  const context = useForm<TFormValues>({
+    defaultValues: useMemo(() => formData as DefaultValues<TFormValues>, [formData]),
     mode: 'onChange',
   });
 
   const { handleSubmit, reset } = context;
 
-  const _onSubmit = async (values) => {
+  const _onSubmit: SubmitHandler<TFormValues> = async (values) => {
     if (onSubmit) {
       onSubmit(values, context);
     } else {

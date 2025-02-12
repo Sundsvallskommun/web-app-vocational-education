@@ -1,15 +1,20 @@
 import ModalCustom from '@components/modal/modal-custom.component';
-import { UserSavedInterest, UserSavedInterestDto } from '@interfaces/user';
+import { UserSavedInterestDto } from '@interfaces/user';
 import { useUserStore } from '@services/user-service/user-service';
 import { useSnackbar } from '@sk-web-gui/react';
-import SavedInterestsFormLogic from './saved-interests-form-logic.component';
-import SavedInterestsForm from './saved-interests-form.component';
 import { getFormattedLabelFromValue } from '@utils/labels';
+import { UseFormReturn } from 'react-hook-form';
+import SavedInterestsFormLogic, { SavedInterestsFormValues } from './saved-interests-form-logic.component';
+import SavedInterestsForm from './saved-interests-form.component';
+
+interface SavedInterestsFormEditValues extends Omit<SavedInterestsFormValues, 'id'> {
+  id: number;
+}
 
 interface SavedInterestsFormEditModalProps {
-  interestData: UserSavedInterestDto;
+  interestData: SavedInterestsFormEditValues;
   show: boolean;
-  setShow: React.Dispatch<React.SetStateAction<boolean>>;
+  setShow: (show: boolean) => void;
 }
 
 export default function SavedInterestsFormEditModal({
@@ -20,7 +25,10 @@ export default function SavedInterestsFormEditModal({
   const editSavedInterest = useUserStore((s) => s.editSavedInterest);
   const snackBar = useSnackbar();
 
-  const handleOnSubmit = async (values: UserSavedInterest, context) => {
+  const handleOnSubmit: (
+    values: SavedInterestsFormEditValues,
+    context: UseFormReturn<SavedInterestsFormEditValues, unknown, undefined>
+  ) => void = async (values, context) => {
     const data: UserSavedInterestDto = {
       category: values.category,
       level: values.level,

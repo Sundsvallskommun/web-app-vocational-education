@@ -1,7 +1,7 @@
 import ButtonStackedIcon from '@components/button/button-stacked-icon.component';
 import Button from '@components/button/button.component';
 import MenuModal from '@components/modal/menu-modal.component';
-import { FiltersFetcher } from '@contexts/filters.context';
+import { FiltersFetcher } from '@contexts/filters/filters.context';
 import { EducationFilterOptions } from '@interfaces/education';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import CropPortraitOutlinedIcon from '@mui/icons-material/CropPortraitOutlined';
@@ -28,7 +28,7 @@ import Tags from './educations-filters/tags.component';
 export const EducationsFilters: React.FC<{
   searchQuery: string;
   activeListing: number;
-  setActiveListing: React.Dispatch<React.SetStateAction<number>>;
+  setActiveListing: (active: number) => void;
   submitCallback: (data: EducationFilterOptions) => void;
   formData?: Partial<EducationFilterOptions>;
 }> = ({ searchQuery, activeListing, setActiveListing, submitCallback, formData = defaultEducationFilterOptions }) => {
@@ -76,9 +76,9 @@ export const EducationsFilters: React.FC<{
 
   const handleFilterItems = (open: boolean | null) => {
     const filterItems = document.querySelectorAll('.filter-items-desktop > *');
-    filterItems.forEach((item: HTMLElement) => {
+    filterItems.forEach((item: Element) => {
       const itemWidth = item.getBoundingClientRect().width;
-      item.style.maxWidth = itemWidth + 'px';
+      (item as HTMLElement).style.maxWidth = itemWidth + 'px';
     });
     if (open || open === null) {
       setFilterIsOpen(false);

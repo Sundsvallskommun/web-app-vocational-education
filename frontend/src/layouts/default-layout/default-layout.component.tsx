@@ -1,5 +1,3 @@
-import { CookieConsent, Footer, Header, Link } from '@sk-web-gui/react';
-import { useEffect, useState } from 'react';
 import HeaderLogo from '@components/logo/header-logo.component';
 import Menu from '@components/menu/menu.component';
 import { LayoutData } from '@interfaces/admin-data';
@@ -7,10 +5,12 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import logo_stacked from '@public/svg/logo_stacked.svg';
 import { getLayout } from '@services/layout-service';
 import sanitized from '@services/sanitizer-service';
+import { CookieConsent, Footer, Header, Link } from '@sk-web-gui/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import { IncomingMessage, ServerResponse } from 'node:http';
+import { useEffect, useState } from 'react';
 import Sticky from 'react-sticky-el';
 
 interface DefaultLayoutProps {
@@ -19,14 +19,13 @@ interface DefaultLayoutProps {
   layoutData?: LayoutData;
 }
 
-export async function getServerSideProps({ res }) {
+export async function getServerSideProps({ res }: { res: ServerResponse<IncomingMessage> }) {
   return await getLayout(res);
 }
 
 export default function DefaultLayout({ layoutData, title, children }: DefaultLayoutProps) {
   const [menuShow, setMenuShow] = useState(false);
   let lastScrollTop = 0;
-  const router = useRouter();
 
   const setInitialFocus = () => {
     const contentElement = document.getElementById('content');

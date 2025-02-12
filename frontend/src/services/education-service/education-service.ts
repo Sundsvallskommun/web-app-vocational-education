@@ -1,4 +1,3 @@
-import { sortFilter } from '@components/form/sort-function.input.component';
 import {
   Course,
   EducationFilterOptions,
@@ -13,8 +12,9 @@ import dayjs from 'dayjs';
 import { ApiResponse, apiService } from '../api-service';
 import { getFormattedLabelFromValue } from '@utils/labels';
 import { XMLParser } from 'fast-xml-parser';
-import SanitizeHTML from 'sanitize-html';
+import SanitizeHTML, { Transformer } from 'sanitize-html';
 import { getObjectDifference } from '@utils/object';
+import { sortFilter } from '@components/form/defaults';
 
 export const emptyEducationFilterOptions: EducationFilterOptions = {
   page: 1,
@@ -71,9 +71,13 @@ export const educationFilterTagLabels = {
   latestApplicationDate: 'Sista ansökningsdatum',
   startDate: 'Start från',
   scope: 'Studietakt',
+  q: 'Sökord',
+  size: 'Resultat per sida',
+  page: 'Sida',
+  cost: 'Kostnad',
 };
 
-export const getEducationFilterValueString = (filter, value) => {
+export const getEducationFilterValueString = (filter: keyof EducationFilterOptions, value: unknown) => {
   switch (filter) {
     case 'sortFunction':
       return sortFilter.find((choice) => choice.value === value)?.label;
@@ -91,12 +95,20 @@ export const getEducationFilterValueString = (filter, value) => {
       return value;
     case 'scope':
       return Array.isArray(value) ? value?.map((x) => x.replace('.0', '%')).join(' | ') : value;
+    case 'q':
+      return value;
+    case 'size':
+      return value;
+    case 'page':
+      return value;
+    case 'cost':
+      return value;
     default:
       return '';
   }
 };
 
-export const getFilterOptionString = (filter, value) => {
+export const getFilterOptionString = (filter: keyof EducationFilterOptions, value: unknown) => {
   return value ? `${educationFilterTagLabels[filter]}: ${getEducationFilterValueString(filter, value)}` : '';
 };
 
@@ -104,7 +116,7 @@ export const getValidValue = <TFallback = null>(
   key: string,
   value: null | undefined | string | string[],
   fallback: TFallback
-): Record<string, TFallback> => {
+) => {
   const validValues = {
     sortFunction: sortFilter.map((x) => x.value).includes(value as string) ? value : fallback,
     category: Array.isArray(value) && value[0] ? value : fallback,
@@ -115,7 +127,7 @@ export const getValidValue = <TFallback = null>(
     startDate: value ? value : fallback,
     scope: Array.isArray(value) && value[0] ? value : fallback,
   };
-  return value ? validValues[key] : fallback;
+  return value && key in validValues ? validValues[key as keyof typeof validValues] : fallback;
 };
 
 export const getFilterDataStrings: {
@@ -240,7 +252,7 @@ const cardInformationSanitizeOptions = {
       return {
         tagName: 'span',
       };
-    },
+    } as unknown as Transformer,
     p: function () {
       return {
         tagName: 'p',
@@ -248,7 +260,7 @@ const cardInformationSanitizeOptions = {
           class: 'my-0',
         },
       };
-    },
+    } as unknown as Transformer,
     br: function () {
       return {
         tagName: 'br',
@@ -256,11 +268,11 @@ const cardInformationSanitizeOptions = {
           class: 'block mt-[.4rem]',
         },
       };
-    },
+    } as unknown as Transformer,
   },
 };
 export const getSanitizedInformation = (
-  information: Course['information'],
+  information: NonNullable<Course['information']>,
   informationSanitizeOptions = cardInformationSanitizeOptions
 ) => {
   if (information?.includes('CDATA')) {

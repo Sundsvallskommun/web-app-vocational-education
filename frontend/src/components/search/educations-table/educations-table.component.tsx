@@ -1,16 +1,15 @@
-import { useAppContext } from '@contexts/app.context';
 import { Course, PagingMetaData } from '@interfaces/education';
 import { Checkbox, Link, Pagination, Table } from '@sk-web-gui/react';
 import { routeDynamicSlugFormat } from '@utils/app-url';
 import { fallbackDataValue } from '@utils/labels';
 import dayjs from 'dayjs';
 import NextLink from 'next/link';
-
-export const tableCellTextClasses = 'text-base leading-[2.9rem] capitalize';
+import { tableCellTextClasses } from './defaults';
+import { useAppContext } from '@contexts/app-context/use-app-context';
 
 export const EducationsTable: React.FC<{
   educations: Course[];
-  handleCheckboxClick: (edu: Course) => (e) => void;
+  handleCheckboxClick: (edu: Course) => React.ChangeEventHandler<HTMLInputElement>;
   handleOnClickResult: (id?: number) => void;
   _meta?: PagingMetaData;
   setPage: React.Dispatch<React.SetStateAction<number>>;

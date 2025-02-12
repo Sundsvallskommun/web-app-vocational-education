@@ -2,7 +2,7 @@ import { Button } from '@sk-web-gui/react';
 import { useEffect, useRef, useState } from 'react';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 
-export function FilterToggle({ label, children }) {
+export function FilterToggle({ label, children }: { label: string; children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const filterToggleRef = useRef(null);
 

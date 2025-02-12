@@ -1,4 +1,4 @@
-export const appURL = (path = '') => {
+const appURL = (path = '') => {
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL ?? '';
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 
@@ -23,4 +23,5 @@ const config = {
     additionalSitemaps: [`${appURL()}/server-sitemap-index.xml`],
   },
 };
-export default config;
+
+module.exports = config;

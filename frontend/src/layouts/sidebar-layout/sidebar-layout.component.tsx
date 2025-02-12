@@ -1,9 +1,10 @@
 import { CookieConsent, Footer, Header, Link } from '@sk-web-gui/react';
 import Head from 'next/head';
 import NextLink from 'next/link';
+import React from 'react';
 interface ISidebarLayout {
-  title;
-  children;
+  title: string;
+  children: React.ReactNode | React.ReactNode[];
 }
 
 export default function SidebarLayout({ title, children }: ISidebarLayout) {

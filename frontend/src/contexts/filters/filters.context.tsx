@@ -1,15 +1,8 @@
 import { GetEducationFilters, GetEducationFiltersResponseData } from '@interfaces/education';
 import { getEducationEventsFilters } from '@services/education-service/education-service';
-import React, { useState } from 'react';
-import { createContext, useContext, useEffect } from 'react';
 import _ from 'lodash';
-
-interface FiltersContext {
-  filters: GetEducationFiltersResponseData;
-}
-
-/** @ts-expect-error gets set on mount */
-const FiltersContext = createContext<FiltersContext>(null);
+import React, { useEffect, useState } from 'react';
+import { FiltersContext } from './context';
 
 interface FiltersFetcherProps {
   children: React.ReactNode;
@@ -17,10 +10,10 @@ interface FiltersFetcherProps {
 }
 
 export function FiltersFetcher({ children, filters }: FiltersFetcherProps) {
-  const [fetchedFilters, setFetchedFilters] = useState([]);
+  const [fetchedFilters, setFetchedFilters] = useState<GetEducationFilters>([]);
   const [filtersData, setFiltersData] = useState<GetEducationFiltersResponseData>({});
 
-  const fetchFilters = async (filters) => {
+  const fetchFilters = async (filters: GetEducationFilters) => {
     const res = await getEducationEventsFilters(filters);
     if (!res.error) {
       if (res.data) {
@@ -38,8 +31,4 @@ export function FiltersFetcher({ children, filters }: FiltersFetcherProps) {
   }, []);
 
   return <FiltersContext.Provider value={{ filters: filtersData }}>{children}</FiltersContext.Provider>;
-}
-
-export function useFiltersContext() {
-  return useContext(FiltersContext);
 }

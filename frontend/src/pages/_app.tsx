@@ -6,8 +6,8 @@ import 'dayjs/locale/sv';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import utc from 'dayjs/plugin/utc';
 import type { AppProps /*, AppContext */ } from 'next/app';
-import { AppWrapper } from '../contexts/app.context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AppWrapper } from '@contexts/app-context/app-wrapper';
 
 // Create a client
 const queryClient = new QueryClient();

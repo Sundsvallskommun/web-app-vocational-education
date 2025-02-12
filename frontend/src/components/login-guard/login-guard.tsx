@@ -26,7 +26,9 @@ export const LoginGuard: React.FC<{ children?: React.ReactNode }> = ({ children 
 
   if (
     !mounted ||
-    (protectedRoutes.some((path) => router.pathname.startsWith(path)) && !user.username && router.pathname !== '/login')
+    (protectedRoutes.some((path: string) => router.pathname.startsWith(path)) &&
+      !user.username &&
+      router.pathname !== '/login')
   ) {
     return <LoaderFullScreen />;
   }

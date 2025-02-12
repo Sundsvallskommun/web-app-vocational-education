@@ -1,13 +1,7 @@
 import { FormControl, FormLabel, RadioButton, useThemeQueries } from '@sk-web-gui/react';
 import { useFormContext } from 'react-hook-form';
 import FilterPopup from './filter-popup.component';
-
-const distanceFilterPlaceholder = 'Distansutbildning';
-const booleanFilter = [
-  { label: 'Inget angett', value: '' },
-  { label: 'Ja', value: true },
-  { label: 'Nej', value: false },
-];
+import { booleanFilter, distanceFilterPlaceholder } from './defaults';
 
 export default function DistanceInput({ label = distanceFilterPlaceholder, showLabel = false, size = 'sm' }) {
   const { register } = useFormContext();

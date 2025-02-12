@@ -1,13 +1,7 @@
 import { FormControl, FormLabel, RadioButton, useThemeQueries } from '@sk-web-gui/react';
 import { useFormContext } from 'react-hook-form';
 import FilterPopup from './filter-popup.component';
-
-const sortListPlaceholder = 'Sortera efter';
-export const sortFilter = [
-  { label: 'Sista ansökningsdatum', value: 'latestApplication,asc;name,asc' },
-  { label: 'A -> Ö', value: 'name,asc' },
-  { label: 'Ö -> A', value: 'name,desc' },
-];
+import { sortFilter, sortListPlaceholder } from './defaults';
 
 export default function SortFunctionInput({ label = sortListPlaceholder, showLabel = false, size = 'sm' }) {
   const { register } = useFormContext();

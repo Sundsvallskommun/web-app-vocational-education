@@ -4,7 +4,7 @@ import { getAdminPages } from '@services/page-service';
 import fs from 'fs/promises';
 import path from 'path';
 
-export async function getFilePages(dir) {
+export async function getFilePages(dir: string) {
   let results: string[] = [];
   const list = await fs.readdir(dir, { withFileTypes: true });
 
@@ -14,7 +14,11 @@ export async function getFilePages(dir) {
       results = results.concat(await getFilePages(filePath)); // Recursive call
     } else if (file.isFile() && (file.name.endsWith('.ts') || file.name.endsWith('.tsx'))) {
       // Exclude special Next.js files and dynamic routes, and the sitemap itself
-      if (!file.name.startsWith('_') && !(filePath.includes('/api/') || filePath.includes('\\api\\'))) {
+      if (
+        !file.name.startsWith('_') &&
+        !(filePath.includes('/api/') || filePath.includes('\\api\\')) &&
+        !filePath.includes('[...url]')
+      ) {
         results.push(
           filePath
             .replace(/\\/g, '/')
@@ -30,7 +34,7 @@ export async function getFilePages(dir) {
   return results;
 }
 
-export async function getPages(dir) {
+export async function getPages(dir: string) {
   const filePages = await getFilePages(dir); // string[]
   const adminPages = await getAdminPages(); // { url: string }[]
 

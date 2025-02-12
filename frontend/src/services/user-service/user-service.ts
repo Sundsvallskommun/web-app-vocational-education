@@ -44,7 +44,7 @@ interface Actions {
   ) => Promise<ServiceResponse<UserSavedInterest>>;
   deleteSavedInterest: (id: number) => Promise<ServiceResponse<boolean>>;
   login: (credentials: LoginCredentials) => Promise<ServiceResponse<boolean, string>>;
-  verify2FA: (twoFactorCode: string) => Promise<ServiceResponse<User>>;
+  verify2FA: (twoFactorCode: string) => Promise<ServiceResponse<User, string>>;
   logout: () => Promise<ServiceResponse<boolean>>;
   reset: () => void;
 }

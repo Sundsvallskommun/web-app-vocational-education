@@ -1,8 +1,8 @@
-import { preset } from '@sk-web-gui/core';
-import { defaultTheme } from '@sk-web-gui/react';
+/* eslint-disable @typescript-eslint/no-require-imports */
+const { preset } = require('@sk-web-gui/core');
+const { defaultTheme } = require('@sk-web-gui/theme');
 
-const config = {
-  mode: 'jit',
+module.exports = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx}',
     './src/components/**/*.{js,ts,jsx,tsx}',
@@ -12,8 +12,8 @@ const config = {
   darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {
+      ...defaultTheme,
       screens: {
-        ...defaultTheme,
         'small-phone': '320px',
         'small-phone-min': '320px',
         'small-phone-max': '375px',
@@ -115,5 +115,3 @@ const config = {
   },
   presets: [preset()],
 };
-
-export default config;

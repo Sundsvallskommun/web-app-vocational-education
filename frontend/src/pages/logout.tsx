@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useAppContext } from '@contexts/app.context';
 import { useUserStore } from '@services/user-service/user-service';
+import { useAppContext } from '@contexts/app-context/use-app-context';
 
 export default function Logout() {
   const { setDefaults } = useAppContext();

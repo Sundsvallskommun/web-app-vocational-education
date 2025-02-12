@@ -1,21 +1,10 @@
 import { Checkbox, Divider, FormControl, FormLabel, useThemeQueries } from '@sk-web-gui/react';
 import { useFormContext } from 'react-hook-form';
 import FilterPopup from './filter-popup.component';
-import { useFiltersContext } from '@contexts/filters.context';
 import { getFormattedLabelFromValue } from '@utils/labels';
 import { defaultUseFormSetValueOptions } from '@utils/forms';
-
-export const levelFilterPlaceholder = (count: number): string =>
-  count > 1 ? 'Utbildningsform(er)' : 'Utbildningsform';
-export const levelFilter = [
-  { label: 'Folkhögskola', value: 'Folkhögskola' },
-  { label: 'Högskola och universitet', value: 'Högskola och universitet' },
-  { label: 'Komvux', value: 'Komvux' },
-  { label: 'Konst- och kulturutbildningar', value: 'Konst- och kulturutbildningar' },
-  { label: 'Utbildningar via arbetsförmedlingen', value: 'Utbildningar via arbetsförmedlingen' },
-  { label: 'Yrkeshögskola', value: 'Yrkeshögskola' },
-  { label: 'Gymnasial utbildning', value: 'Gymnasial utbildning' },
-];
+import { levelFilterPlaceholder } from './defaults';
+import { useFiltersContext } from '@contexts/filters/use-filters';
 
 export default function LevelInput({ showLabel = false, label = levelFilterPlaceholder(2), size = 'sm' }) {
   const { register, watch, setValue } = useFormContext();

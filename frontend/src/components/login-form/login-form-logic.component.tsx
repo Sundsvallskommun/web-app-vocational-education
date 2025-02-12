@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import TwoFactorModal from './verify2FA-modal.component';
 
-export default function LoginFormLogic({ children }) {
+export default function LoginFormLogic({ children }: { children: React.ReactNode }) {
   const { login } = useUserStore();
   const [show2FAModal, setShow2FAModal] = useState(false);
   const params = new URLSearchParams(window.location.search);

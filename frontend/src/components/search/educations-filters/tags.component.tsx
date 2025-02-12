@@ -1,3 +1,4 @@
+import { EducationFilterOptions } from '@interfaces/education';
 import {
   defaultEducationFilterOptions,
   emptyEducationFilterOptions,
@@ -9,13 +10,13 @@ import _ from 'lodash';
 import { useRouter } from 'next/router';
 import { useFormContext } from 'react-hook-form';
 interface Tag {
-  formName: string;
+  formName: keyof EducationFilterOptions;
   label: string;
   value: unknown;
 }
 
 export default function Tags() {
-  const { watch, setValue, getValues } = useFormContext();
+  const { watch, setValue, getValues } = useFormContext<EducationFilterOptions>();
   const router = useRouter();
   const values = watch();
 
@@ -27,7 +28,7 @@ export default function Tags() {
         formValue.filter((x) => x !== tag.value)
       );
     } else {
-      setValue(tag.formName, emptyEducationFilterOptions[tag.formName]);
+      setValue(tag.formName, emptyEducationFilterOptions[tag.formName as keyof EducationFilterOptions]);
     }
   };
 
@@ -45,27 +46,28 @@ export default function Tags() {
     );
   };
 
-  const tagList: { formName: string; label: string; value: unknown }[] = [];
+  const tagList: Tag[] = [];
   Object.keys(values)
     .filter((filter) => !['page', 'size', 'q'].includes(filter))
     .forEach((filter) => {
-      const filterValue = values[filter];
-      if (filterValue && !_.isEqual(filterValue, emptyEducationFilterOptions[filter])) {
+      const filterTyped = filter as keyof EducationFilterOptions;
+      const filterValue = values[filterTyped];
+      if (filterValue && !_.isEqual(filterValue, emptyEducationFilterOptions[filterTyped])) {
         if (Array.isArray(filterValue)) {
           filterValue.forEach((value) => {
             if (value) {
               tagList.push({
-                formName: filter,
-                label: getFilterOptionString(filter, [value]),
+                formName: filterTyped,
+                label: getFilterOptionString(filterTyped, [value]),
                 value: value,
               });
             }
           });
         } else {
           tagList.push({
-            formName: filter,
-            label: getFilterOptionString(filter, values[filter]),
-            value: values[filter],
+            formName: filterTyped,
+            label: getFilterOptionString(filterTyped, values[filterTyped]),
+            value: values[filterTyped],
           });
         }
       }

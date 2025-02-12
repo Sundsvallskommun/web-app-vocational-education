@@ -3,6 +3,7 @@ import ButtonStackedIcon from '@components/button/button-stacked-icon.component'
 import DropCard from '@components/card/drop-card.component';
 import SavedContentBlockEmpty from '@components/saved-content-block/saved-content-block-empty.component';
 import SavedContentBlock from '@components/saved-content-block/saved-content-block.component';
+import { EducationFilterOptions } from '@interfaces/education';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import SearchIcon from '@mui/icons-material/Search';
@@ -79,7 +80,12 @@ export default function SavedSearches() {
                   {Object.keys(search.educationFilterOptions).map((filter) => (
                     <li key={`${filter}`}>
                       <FilterListIcon className="!text-2xl mr-sm" />
-                      <span>{getFilterOptionString(filter, search.educationFilterOptions[filter])}</span>
+                      <span>
+                        {getFilterOptionString(
+                          filter as keyof EducationFilterOptions,
+                          search.educationFilterOptions[filter as keyof EducationFilterOptions]
+                        )}
+                      </span>
                     </li>
                   ))}
                 </ul>

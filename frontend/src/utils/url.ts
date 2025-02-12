@@ -129,7 +129,7 @@ function convertValue<TReference = string | string[] | number>(
   }
 }
 
-export function createObjectFromQueryString<T = unknown>(
+export function createObjectFromQueryString<T extends object = object, TNew extends Partial<T> = object>(
   queryString: string,
   options: {
     objectReference: T;
@@ -137,14 +137,14 @@ export function createObjectFromQueryString<T = unknown>(
     objectReferenceAsBase?: boolean;
     includeEmpty?: boolean;
   }
-) {
-  const newObject: Partial<T> = {};
+): Partial<T> {
+  const newObject: TNew = {} as TNew;
   const _options = Object.assign(
     {},
     { objectReferenceOnly: false, objectReferenceAsBase: false, includeEmpty: false },
     options
   );
-  const referenceKeys = Object.keys(_options.objectReference as object);
+  const referenceKeys = Object.keys(_options.objectReference);
 
   // Use custom deserialization function
   const deserializedParams = deserializeURL(queryString);
@@ -152,10 +152,13 @@ export function createObjectFromQueryString<T = unknown>(
   for (const [key, value] of Object.entries(deserializedParams)) {
     if (value !== null && (!_options.includeEmpty ? value !== '' : true)) {
       if (referenceKeys.length && referenceKeys.includes(key)) {
-        newObject[key as keyof T] = convertValue(value as string, _options.objectReference[key]);
+        newObject[key as keyof TNew] = convertValue(
+          value as string,
+          _options.objectReference[key as keyof T]
+        ) as unknown as TNew[keyof TNew];
       } else {
         if (!_options.objectReferenceOnly) {
-          newObject[key] = value;
+          newObject[key as keyof TNew] = value as TNew[keyof TNew];
         }
       }
     }

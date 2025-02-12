@@ -1,13 +1,7 @@
 import { DatePicker, FormControl, FormLabel, RadioButton, useThemeQueries } from '@sk-web-gui/react';
 import { useFormContext } from 'react-hook-form';
 import FilterPopup from './filter-popup.component';
-
-export const timeIntervalFilterPlaceholder = 'Tidsintervall';
-export const timeIntervalFilter = [
-  { label: '12 månader', value: '12' },
-  { label: '6 månader', value: '6' },
-  { label: 'Tidsintervall', value: '0' },
-];
+import { timeIntervalFilter, timeIntervalFilterPlaceholder } from './defaults';
 
 export default function TimeIntervalInput({ label = timeIntervalFilterPlaceholder, showLabel = false, size = 'sm' }) {
   const { register, setValue } = useFormContext();

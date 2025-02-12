@@ -22,7 +22,7 @@ export const Menu: React.FC = () => {
     setIsOpen(false);
   };
 
-  const handleGoto = (current) => {
+  const handleGoto = (current: string) => {
     setIsOpen(false);
     if (current !== pathname) {
       router.push(current);

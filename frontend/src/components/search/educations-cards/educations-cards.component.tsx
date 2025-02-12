@@ -1,6 +1,6 @@
 import LoadMoreBlock from '@components/block/load-more-block.component';
 import DropCard from '@components/card/drop-card.component';
-import { useAppContext } from '@contexts/app.context';
+import { useAppContext } from '@contexts/app-context/use-app-context';
 import { Course, PagingMetaData } from '@interfaces/education';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -16,7 +16,7 @@ const cardDataClasses = 'medium-device-min:font-bold capitalize';
 
 export const EducationsCards: React.FC<{
   educations: Course[];
-  handleCheckboxClick: (edu: Course) => (e) => void;
+  handleCheckboxClick: (edu: Course) => React.ChangeEventHandler<HTMLInputElement>;
   handleOnClickResult: (id?: number) => void;
   _meta?: PagingMetaData;
   setPageSize: React.Dispatch<React.SetStateAction<number>>;
@@ -32,7 +32,7 @@ export const EducationsCards: React.FC<{
   return (
     <>
       {educations?.slice(0, _meta?.limit)?.map((edu, index) => {
-        const informationSanitized = getSanitizedInformation(edu?.information);
+        const informationSanitized = edu?.information ? getSanitizedInformation(edu?.information) : null;
         return (
           <div key={`${index}-${edu?.id}`} className="w-full flex flex-col">
             <DropCard

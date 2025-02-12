@@ -15,14 +15,15 @@ import { fallbackDataValue, getFormattedLabelFromValue } from '@utils/labels';
 import { getBlockData } from '@utils/page-types';
 import NextLink from 'next/link';
 
-export const Utbildning: React.FC = ({
+export const Utbildning = ({
   layoutData,
   educationData,
   relatedEducationData,
   pageData,
-}: PageProps & { educationData: Course; relatedEducationData: Course[] }) => {
+}: PageProps & { educationData: Course; relatedEducationData: Course[] | null }) => {
   const { isMinDesktop } = useThemeQueries();
   if (!educationData) return <></>;
+  const sanitizedInformation = educationData.information ? getSanitizedInformation(educationData.information) : null;
   return (
     <DefaultLayout title={`Yrkesutbildning - ${educationData.name}`} layoutData={layoutData}>
       <ContentBlock>
@@ -129,7 +130,7 @@ export const Utbildning: React.FC = ({
               </div>
             </div>
           </div>
-          <a href={educationData.url} target="_blank">
+          <a href={educationData.url ?? educationData.providerUrl} target="_blank">
             <Button
               as="span"
               dense={!isMinDesktop}
@@ -143,13 +144,15 @@ export const Utbildning: React.FC = ({
       </ContentBlock>
       <ContentBlock classNameWrapper="!mt-lg desktop:!mt-[8rem]">
         <h2>Om utbildningen</h2>
-        <p dangerouslySetInnerHTML={{ __html: getSanitizedInformation(educationData.information) }} />
+        {sanitizedInformation ?
+          <p dangerouslySetInnerHTML={{ __html: sanitizedInformation }} />
+        : null}
       </ContentBlock>
 
       <ContentBlock classNameWrapper="!mt-60">
         <h2>Kontaktuppgifter</h2>
         <p>Sundsvalls kommun (Komunal) Lasarettsvägen 19, 851 85 Sundsvall</p>
-        <a className="inline-block mt-30" href={educationData.url} target="_blank">
+        <a className="inline-block mt-30" href={educationData.url ?? educationData.providerUrl} target="_blank">
           <Button
             as="span"
             dense={!isMinDesktop}

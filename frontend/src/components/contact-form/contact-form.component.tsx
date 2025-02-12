@@ -1,11 +1,11 @@
 import Button from '@components/button/button.component';
 import ErrorMessage from '@components/error-message/error-message.component';
+import { studyLocationFilterPlaceholder } from '@components/form/defaults';
 import { ContactFormBlock } from '@interfaces/admin-data';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { FormControl, FormLabel, Input, Select, Textarea } from '@sk-web-gui/react';
 import { getFormattedLabelFromValue } from '@utils/labels';
 import { useFormContext } from 'react-hook-form';
-import { studyLocationFilterPlaceholder } from '../form/study-location.input.component';
 
 export default function ContactForm({ contactFormBlock }: { contactFormBlock: ContactFormBlock }) {
   const { register, formState } = useFormContext();

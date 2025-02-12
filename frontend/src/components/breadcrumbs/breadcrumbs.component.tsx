@@ -3,7 +3,7 @@ import { appURL } from '@utils/app-url';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 
-const getSegmentString = (segment) => {
+const getSegmentString = (segment: string) => {
   segment = segment.toLowerCase();
   if (segment === 'arbetsgivare') return 'För arbetsgivare';
   if (segment === 'utbildningar') return 'För dig som söker utbildning';

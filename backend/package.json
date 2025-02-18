@@ -7,6 +7,7 @@
   "scripts": {
     "start": "dotenv -e .env.production.local node dist/server.js",
     "dev": "dotenv -e .env.development.local nodemon",
+    "dev:test": "dotenv -e .env.test.local nodemon",
     "prisma": "dotenv -e .env.development.local -- prisma",
     "prisma:prod": "dotenv -e .env.production.local prisma",
     "prisma:migrate": "dotenv -e .env.development.local prisma migrate deploy",

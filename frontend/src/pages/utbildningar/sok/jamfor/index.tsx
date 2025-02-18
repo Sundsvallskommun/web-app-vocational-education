@@ -19,7 +19,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  return getStandardPageProps(context);
+  return getStandardPageProps(context.resolvedUrl);
 }
 
 export const Compare = ({ layoutData, pageData }: PageProps) => {

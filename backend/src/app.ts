@@ -1,8 +1,8 @@
 import prisma from '@/utils/prisma';
-import { BASE_URL_PREFIX, CREDENTIALS, LOG_FORMAT, NODE_ENV, ORIGIN, PORT, SECRET_KEY, SESSION_MEMORY, SWAGGER_ENABLED } from '@config';
+import { BASE_URL_PREFIX, CREDENTIALS, LOG_FORMAT, NODE_ENV, ORIGIN, PORT, SECRET_KEY, SESSION_MEMORY, SWAGGER_ENABLED, TEST } from '@config';
 import errorMiddleware from '@middlewares/error.middleware';
-import { User } from '@prisma/client';
 import { logger, stream } from '@utils/logger';
+import bcrypt from 'bcryptjs';
 import { defaultMetadataStorage } from 'class-transformer/cjs/storage';
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
 import compression from 'compression';
@@ -24,17 +24,19 @@ import { getMetadataArgsStorage, useExpressServer } from 'routing-controllers';
 import { routingControllersToSpec } from 'routing-controllers-openapi';
 import createFileStore from 'session-file-store';
 import swaggerUi from 'swagger-ui-express';
+import { mockClientUser, mockSessionUser } from './controller-mocks/user.mock';
+import { SessionUser } from './interfaces/users.interface';
 import authMiddleware from './middlewares/auth.middleware';
 import { hasRoles } from './middlewares/permissions.middleware';
 import { generate2FACode, getPermissions, getRoles, send2FACodeToEmail } from './services/authorization.service';
 import { getClientUser } from './services/user.service';
+import { additionalConverters } from './utils/custom-validation-classes';
 import { imageUploadSettings } from './utils/files/imageUploadSettings';
 import { omit } from './utils/object';
 import { dataDir } from './utils/util';
-import bcrypt from 'bcryptjs';
-import { additionalConverters } from './utils/custom-validation-classes';
-import { SessionUser } from './interfaces/users.interface';
-import qs from 'qs';
+import cs from './services/controller.service';
+import { postMocksRoute } from './controller-mocks/routes/post.route';
+import { mockMiddleware } from './controller-mocks/middlewares/mock.middleware';
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -196,8 +198,29 @@ class App {
     this.app.use(hpp());
     this.app.use(cookieParser());
 
-    // FIXME: Enable when login-flow is corrected
-    // this.app.use(limiter);
+    if (TEST) {
+      // NOTE: Mock to set user and bypass authentication
+      this.app.use(
+        mockMiddleware(
+          {
+            req: {
+              isAuthenticated: function () {
+                return true;
+              },
+              session: {
+                user: mockSessionUser,
+                twoFactorAuthenticated: true,
+              },
+              user: mockClientUser,
+            },
+          },
+          { cs: cs },
+        ),
+      );
+      this.app.post(`${BASE_URL_PREFIX}/mocks`, postMocksRoute);
+    }
+
+    this.app.use(limiter);
 
     this.app.use(
       session({

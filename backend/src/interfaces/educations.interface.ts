@@ -12,3 +12,8 @@ export interface UserSavedInterestStatistics extends Omit<User_SavedInterest, 'u
 }
 
 export type PageResponse = Page & { educationsStartingBlock?: PagedCoursesResponse };
+
+export type GetEducationFilter = 'level' | 'scope' | 'studyLocation' | 'category';
+export type GetEducationFiltersResponseData = {
+  [key in GetEducationFilter]?: string[];
+};

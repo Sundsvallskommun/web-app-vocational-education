@@ -1,13 +1,12 @@
-import { Link } from '@sk-web-gui/react';
-import { getPages } from '@utils/file-tree';
-import path from 'path';
-import NextLink from 'next/link';
-import DefaultLayout from '@layouts/default-layout/default-layout.component';
-import { getLayout } from '@services/layout-service';
-import { merge } from 'lodash';
 import ContentBlock from '@components/block/content-block.component';
 import { LayoutData } from '@interfaces/admin-data';
-import { GetServerSidePropsContext } from 'next';
+import DefaultLayout from '@layouts/default-layout/default-layout.component';
+import { getLayout } from '@services/layout-service';
+import { Link } from '@sk-web-gui/react';
+import { getPages } from '@utils/file-tree';
+import { merge } from 'lodash';
+import NextLink from 'next/link';
+import path from 'path';
 
 interface TOCNode {
   __path: string;
@@ -80,9 +79,9 @@ function SiteMap({ pages, layoutData }: { pages: string[]; layoutData: LayoutDat
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps() {
   const pages: string[] = await getPages(path.join('src', 'pages'));
-  const layoutProps = await getLayout(context.res);
+  const layoutProps = await getLayout();
   return merge(
     {
       props: { pages },

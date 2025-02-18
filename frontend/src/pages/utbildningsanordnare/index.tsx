@@ -14,7 +14,7 @@ import { getBlockData, getStandardPageProps } from '@utils/page-types';
 import { GetServerSidePropsContext } from 'next';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  return getStandardPageProps(context);
+  return getStandardPageProps(context.resolvedUrl);
 }
 
 export const Utbildningsanordnare = ({ pageData, layoutData }: PageProps) => {

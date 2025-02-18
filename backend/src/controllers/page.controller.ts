@@ -1,17 +1,20 @@
+import { mockControllerMiddleware } from '@/controller-mocks/middlewares/mock.middleware';
+import { pageMocks } from '@/controller-mocks/page.mock';
 import { EducationsController } from '@/controllers/educations.controller';
 import DataResponse from '@/interfaces/dataResponse.interface';
 import { PageResponse } from '@/interfaces/educations.interface';
-import prisma from '@/utils/prisma';
+import cs from '@/services/controller.service';
 import dayjs from 'dayjs';
-import { Controller, Get, QueryParam } from 'routing-controllers';
+import { Controller, Get, QueryParam, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 
 @Controller()
+@UseBefore(mockControllerMiddleware(pageMocks, { cs: cs }))
 export class PageController {
   @Get('/page')
   @OpenAPI({ summary: 'Return page data' })
   async getPageData(@QueryParam('url') url: string): Promise<DataResponse<PageResponse>> {
-    const page = await prisma.page.findUnique({
+    const page = await cs.prisma.page.findUnique({
       include: {
         promotionsBlock: {
           include: {
@@ -79,7 +82,7 @@ export class PageController {
           // if Referencing another importantDatesBlockCards
           let referenceBlockPage;
           if (block.referencedImportantDatesBlockPageName) {
-            referenceBlockPage = await prisma.page.findUnique({
+            referenceBlockPage = await cs.prisma.page.findUnique({
               include: {
                 importantDatesBlock: {
                   include: {
@@ -114,7 +117,7 @@ export class PageController {
   @Get('/pages')
   @OpenAPI({ summary: 'Return pages' })
   async getPages(): Promise<any> {
-    const pages = await prisma.page.findMany();
+    const pages = await cs.prisma.page.findMany();
 
     const data = pages.map(page => {
       return {

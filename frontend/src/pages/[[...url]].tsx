@@ -11,11 +11,19 @@ import Utbildning from '@layouts/page-layout/utbildningar-utbildning.component';
 import { getBlock } from '@services/block-service';
 import { getEducationEvent, getEducationEvents } from '@services/education-service/education-service';
 import { LayoutResponse } from '@services/layout-service';
-import { PageResponse } from '@services/page-service';
+import { getAdminPages, PageResponse } from '@services/page-service';
 import { routeDynamicSlugFormatExtract } from '@utils/app-url';
 import { getStandardPageProps } from '@utils/page-types';
 import dayjs from 'dayjs';
-import { GetServerSidePropsContext } from 'next';
+import { GetStaticPaths, GetStaticPropsContext } from 'next';
+
+export const getStaticPaths = (async () => {
+  const adminPages = (await getAdminPages()).map((x) => x.url);
+  return {
+    paths: adminPages,
+    fallback: true, // false or "blocking"
+  };
+}) satisfies GetStaticPaths;
 
 type UrlProps =
   | (LayoutResponse & PageResponse)
@@ -37,8 +45,9 @@ type UrlProps =
       };
     };
 
-export async function getServerSideProps(context: GetServerSidePropsContext): Promise<UrlProps> {
-  const path = context.resolvedUrl;
+export async function getStaticProps(context: GetStaticPropsContext): Promise<UrlProps> {
+  const paramsUrl = Array.isArray(context.params?.url) ? context.params.url.join('/') : context.params?.url;
+  const path = paramsUrl ? `/${paramsUrl}` : '/';
 
   if (/^\/utbildningar\/\d+-\w+/.test(path)) {
     const routeSlug = '/utbildningar/[utbildning]';
@@ -58,7 +67,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext): Pr
 
     return {
       props: {
-        ...(await getStandardPageProps(context, { pathname: routeSlug })).props,
+        ...(await getStandardPageProps(routeSlug)).props,
         educationData: !educationEventRes.error ? educationEventRes.data : null,
         relatedEducationData:
           relatedEducationEventRes && !relatedEducationEventRes.error ? relatedEducationEventRes.courses : null,
@@ -77,14 +86,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext): Pr
     );
     return {
       props: {
-        ...(await getStandardPageProps(context, { pathname: routeSlug })).props,
+        ...(await getStandardPageProps(routeSlug)).props,
         educationData: educationData,
         routeSlug: routeSlug,
       },
     };
   }
 
-  return await getStandardPageProps(context); // Return standard props if no match
+  return await getStandardPageProps(path); // Return standard props if no match
 }
 
 export const Index = (props: UrlProps['props']) => {

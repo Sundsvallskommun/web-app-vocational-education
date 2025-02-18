@@ -31,7 +31,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Sticky from 'react-sticky-el';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  return getStandardPageProps(context);
+  return getStandardPageProps(context.resolvedUrl);
 }
 
 export const Sok = ({ layoutData, pageData }: PageProps) => {

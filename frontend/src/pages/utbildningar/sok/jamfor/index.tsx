@@ -13,13 +13,14 @@ import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 import CropPortraitOutlinedIcon from '@mui/icons-material/CropPortraitOutlined';
 import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
 import { cx, Link } from '@sk-web-gui/react';
+import { pathnameFromContext } from '@utils/app-url';
 import { getStandardPageProps } from '@utils/page-types';
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  return getStandardPageProps(context.resolvedUrl);
+  return getStandardPageProps(pathnameFromContext(context));
 }
 
 export const Compare = ({ layoutData, pageData }: PageProps) => {

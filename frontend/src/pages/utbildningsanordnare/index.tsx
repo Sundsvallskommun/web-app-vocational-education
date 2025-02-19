@@ -10,11 +10,12 @@ import { Search } from '@components/search/search.component';
 import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import { cx } from '@sk-web-gui/react';
+import { pathnameFromContext } from '@utils/app-url';
 import { getBlockData, getStandardPageProps } from '@utils/page-types';
 import { GetServerSidePropsContext } from 'next';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  return getStandardPageProps(context.resolvedUrl);
+  return getStandardPageProps(pathnameFromContext(context));
 }
 
 export const Utbildningsanordnare = ({ pageData, layoutData }: PageProps) => {

@@ -1,5 +1,6 @@
 import { EmployerPromotionsBlockPromotions } from '@interfaces/admin-data';
 import { Course } from '@interfaces/education';
+import { GetServerSidePropsContext } from 'next';
 
 export const appURL = (path = ''): string => {
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL ?? '';
@@ -61,3 +62,6 @@ export const routeDynamicSlugFormatExtract = <T extends keyof DynamicSlugTypes>(
       throw new Error('Unsupported slug type');
   }
 };
+
+export const pathnameFromContext = (context: GetServerSidePropsContext) =>
+  new URL(`${appURL()}${context.resolvedUrl}`).pathname;

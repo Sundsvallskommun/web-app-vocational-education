@@ -21,6 +21,7 @@ import {
 } from '@services/education-service/education-service';
 import { cx, Link, Spinner } from '@sk-web-gui/react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { pathnameFromContext } from '@utils/app-url';
 import { getStandardPageProps } from '@utils/page-types';
 import { addToQueryString, createObjectFromQueryString, deserializeURL, serializeURL } from '@utils/url';
 import { GetServerSidePropsContext } from 'next';
@@ -31,7 +32,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Sticky from 'react-sticky-el';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  return getStandardPageProps(context.resolvedUrl);
+  return getStandardPageProps(pathnameFromContext(context));
 }
 
 export const Sok = ({ layoutData, pageData }: PageProps) => {

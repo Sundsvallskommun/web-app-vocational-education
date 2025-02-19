@@ -6,11 +6,12 @@ import LoginForm from '@components/login-form/login-form.component';
 import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import { cx } from '@sk-web-gui/react';
+import { pathnameFromContext } from '@utils/app-url';
 import { getStandardPageProps } from '@utils/page-types';
 import { GetServerSidePropsContext } from 'next';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  return getStandardPageProps(context.resolvedUrl);
+  return getStandardPageProps(pathnameFromContext(context));
 }
 
 export const Login = ({ layoutData, pageData }: PageProps) => {

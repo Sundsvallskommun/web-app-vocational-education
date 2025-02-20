@@ -454,6 +454,10 @@ class App {
     if (!existsSync(sessionsDir)) {
       mkdirSync(sessionsDir, { recursive: true });
     }
+    const uploadsDir: string = join(__dirname, '../data/uploads');
+    if (!existsSync(uploadsDir)) {
+      mkdirSync(uploadsDir, { recursive: true });
+    }
   }
 }
 

@@ -270,6 +270,7 @@ model ImportantDatesBlock {
   referencedImportantDatesBlockId          Int?
   referencedImportantDatesBlockPageName    String?
   referencedImportantDatesBlockPageId      Int?
+  referencedImportantDatesBlockPageUrl     String?
 
   dateCards ImportantDatesBlockDateCards[] @relation("ImportantDatesBlockDateCards")
 

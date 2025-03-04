@@ -1,3 +1,5 @@
+'use client';
+
 import ContentBlock from '@components/block/content-block.component';
 import Breadcrumbs from '@components/breadcrumbs/breadcrumbs.component';
 import FAQBlock from '@components/faq-block/faq-block';
@@ -10,17 +12,11 @@ import { Search } from '@components/search/search.component';
 import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import { cx } from '@sk-web-gui/react';
-import { pathnameFromContext } from '@utils/app-url';
-import { getBlockData, getStandardPageProps } from '@utils/page-types';
-import { GetServerSidePropsContext } from 'next';
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  return getStandardPageProps(pathnameFromContext(context));
-}
+import { getBlockData } from '@utils/page-types';
 
 export const Utbildningsanordnare = ({ pageData, layoutData }: PageProps) => {
   return (
-    <DefaultLayout title={`Yrkesutbildning - ${pageData?.title}`} layoutData={layoutData}>
+    <DefaultLayout layoutData={layoutData}>
       <ContentBlock>
         <BigDropHeader
           imageSrc={pageData?.imgSrc}
@@ -31,9 +27,9 @@ export const Utbildningsanordnare = ({ pageData, layoutData }: PageProps) => {
           )}
           breadcrumbs={<Breadcrumbs />}
         >
-          <h1>{pageData.title}</h1>
-          {pageData.description ?
-            <p className="ingress">{pageData.description}</p>
+          <h1>{pageData?.title}</h1>
+          {pageData?.description ?
+            <p className="ingress">{pageData?.description}</p>
           : <></>}
           <Search />
         </BigDropHeader>

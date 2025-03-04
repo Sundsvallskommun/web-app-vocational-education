@@ -1,9 +1,11 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { useUserStore } from '@services/user-service/user-service';
-import { useAppContext } from '@contexts/app-context/use-app-context';
+'use client';
 
-export default function Logout() {
+import { useAppContext } from '@contexts/app-context/use-app-context';
+import { useUserStore } from '@services/user-service/user-service';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
+export const Logout = () => {
   const { setDefaults } = useAppContext();
   const router = useRouter();
   const { reset: resetUser, logout: logoutUser } = useUserStore();
@@ -22,4 +24,4 @@ export default function Logout() {
   }, []);
 
   return <></>;
-}
+};

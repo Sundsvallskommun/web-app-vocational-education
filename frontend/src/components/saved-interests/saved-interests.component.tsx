@@ -1,3 +1,5 @@
+'use client';
+
 import Button from '@components/button/button.component';
 import SavedContentBlockEmpty from '@components/saved-content-block/saved-content-block-empty.component';
 import SavedContentBlock from '@components/saved-content-block/saved-content-block.component';

@@ -1,3 +1,5 @@
+'use client';
+
 import ContentBlock from '@components/block/content-block.component';
 import Breadcrumbs from '@components/breadcrumbs/breadcrumbs.component';
 import ButtonStackedIcon from '@components/button/button-stacked-icon.component';
@@ -13,15 +15,8 @@ import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 import CropPortraitOutlinedIcon from '@mui/icons-material/CropPortraitOutlined';
 import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
 import { cx, Link } from '@sk-web-gui/react';
-import { pathnameFromContext } from '@utils/app-url';
-import { getStandardPageProps } from '@utils/page-types';
-import { GetServerSidePropsContext } from 'next';
-import { useRouter } from 'next/router';
-import React, { useState } from 'react';
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  return getStandardPageProps(pathnameFromContext(context));
-}
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export const Compare = ({ layoutData, pageData }: PageProps) => {
   const { searchCompareList, setSearchCompareList } = useAppContext();
@@ -41,7 +36,7 @@ export const Compare = ({ layoutData, pageData }: PageProps) => {
   };
 
   return (
-    <DefaultLayout title={`Yrkesutbildning - ${pageData?.title}`} layoutData={layoutData}>
+    <DefaultLayout layoutData={layoutData}>
       <ContentBlock>
         <BigDropHeader
           imageSrc={pageData?.imgSrc}
@@ -53,7 +48,7 @@ export const Compare = ({ layoutData, pageData }: PageProps) => {
           breadcrumbs={<Breadcrumbs />}
         >
           <h1>{pageData?.title}</h1>
-          {pageData.description ?
+          {pageData?.description ?
             <p className="ingress">{pageData.description}</p>
           : <></>}
         </BigDropHeader>

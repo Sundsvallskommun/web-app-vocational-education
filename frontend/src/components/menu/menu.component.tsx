@@ -4,8 +4,7 @@ import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import { useUserStore } from '@services/user-service/user-service';
 import { Button, Link, MenuVertical } from '@sk-web-gui/react';
 import NextLink from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/router';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export const Menu: React.FC = () => {
@@ -69,22 +68,22 @@ export const Menu: React.FC = () => {
           </MenuVertical.Provider>
 
           <div className="mt-2xl flex flex-col gap-sm medium-device:gap-md text-[12px] medium-device:text-base">
-            <NextLink href="#">
+            <NextLink href="/personuppgifter">
               <Link as="span">
                 <span>Behandling av personuppgifter</span> <ArrowForwardIcon className="material-icon !text-xl" />
               </Link>
             </NextLink>
-            <NextLink href="#">
+            <NextLink href="/tillganglighetsredogorelse">
               <Link as="span">
                 <span>Tillgänglighetsredogörelse</span> <ArrowForwardIcon className="material-icon !text-xl" />
               </Link>
             </NextLink>
-            <NextLink href="#">
+            <NextLink href="/om-webbplatsen">
               <Link as="span">
                 <span>Om webbplatsen</span> <ArrowForwardIcon className="material-icon !text-xl" />
               </Link>
-            </NextLink>{' '}
-            <NextLink href="#">
+            </NextLink>
+            <NextLink href="/kakor">
               <Link as="span">
                 <span>Cookies</span> <ArrowForwardIcon className="material-icon !text-xl" />
               </Link>

@@ -1,3 +1,5 @@
+'use client';
+
 import LoadMoreBlock from '@components/block/load-more-block.component';
 import ButtonStackedIcon from '@components/button/button-stacked-icon.component';
 import DropCard from '@components/card/drop-card.component';

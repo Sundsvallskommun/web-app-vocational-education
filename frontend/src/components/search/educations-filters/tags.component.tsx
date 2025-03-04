@@ -5,9 +5,10 @@ import {
   getFilterOptionString,
 } from '@services/education-service/education-service';
 import { Chip } from '@sk-web-gui/react';
+import { appURL } from '@utils/app-url';
 import { serializeURL } from '@utils/url';
 import _ from 'lodash';
-import { useRouter } from 'next/router';
+import { usePathname, useRouter } from 'next/navigation';
 import { useFormContext } from 'react-hook-form';
 interface Tag {
   formName: keyof EducationFilterOptions;
@@ -18,6 +19,7 @@ interface Tag {
 export default function Tags() {
   const { watch, setValue, getValues } = useFormContext<EducationFilterOptions>();
   const router = useRouter();
+  const pathname = usePathname();
   const values = watch();
 
   const removeTag = (tag: Tag) => () => {
@@ -34,16 +36,10 @@ export default function Tags() {
 
   const removeAll = () => {
     const queryString = getValues().q;
-    router.replace(
-      {
-        pathname: router.pathname,
-        query: serializeURL({ ...defaultEducationFilterOptions, q: queryString ?? '' }),
-      },
-      undefined,
-      {
-        shallow: true,
-      }
-    );
+    const url = new URL(appURL(pathname));
+    const queries = new URLSearchParams(serializeURL({ ...defaultEducationFilterOptions, q: queryString ?? '' }));
+    url.search = queries.toString();
+    router.replace(url.toString());
   };
 
   const tagList: Tag[] = [];

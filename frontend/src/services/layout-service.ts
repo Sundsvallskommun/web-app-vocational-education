@@ -1,19 +1,9 @@
 import { LayoutData, LayoutDataResponse } from '@interfaces/admin-data';
 import { ApiResponse, apiService } from './api-service';
 
-export interface LayoutResponse {
-  props?: LayoutDataResponse;
-  redirect?: { permanent: boolean; destination: string };
-}
-
-export const getLayout: () => Promise<LayoutResponse> = () => {
+export const getLayout: () => Promise<LayoutDataResponse> = () => {
   return apiService
     .get<ApiResponse<LayoutData>>(`layout`)
-    .then((res) => ({ props: { layoutData: res.data.data } }))
-    .catch(() => ({
-      redirect: {
-        permanent: false,
-        destination: '/',
-      },
-    }));
+    .then((res) => ({ layoutData: res.data.data }))
+    .catch(() => ({ layoutData: undefined }));
 };

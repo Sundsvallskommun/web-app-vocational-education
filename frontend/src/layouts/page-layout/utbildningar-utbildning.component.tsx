@@ -1,3 +1,5 @@
+'use client';
+
 import ContentBlock from '@components/block/content-block.component';
 import Button from '@components/button/button.component';
 import Drop from '@components/drop/drop.component';
@@ -25,7 +27,7 @@ export const Utbildning = ({
   if (!educationData) return <></>;
   const sanitizedInformation = educationData.information ? getSanitizedInformation(educationData.information) : null;
   return (
-    <DefaultLayout title={`Yrkesutbildning - ${educationData.name}`} layoutData={layoutData}>
+    <DefaultLayout layoutData={layoutData}>
       <ContentBlock>
         <div className="desktop:flex">
           <div className="flex-grow flex flex-col desktop:mt-lg desktop:pr-xl">
@@ -46,7 +48,7 @@ export const Utbildning = ({
                 <Breadcrumb.Item>
                   <NextLink href="/utbildningar/utbildning" passHref legacyBehavior>
                     <Breadcrumb.Link currentPage href="/utbildningar/utbildning">
-                      Yrkesförare buss
+                      {educationData?.name}
                     </Breadcrumb.Link>
                   </NextLink>
                 </Breadcrumb.Item>
@@ -169,13 +171,16 @@ export const Utbildning = ({
         </a>
       </ContentBlock>
 
-      <FAQBlock classNameWrapper="pt-80" faqBlock={getBlockData(pageData.faqBlock)} />
+      <FAQBlock classNameWrapper="pt-80" faqBlock={getBlockData(pageData?.faqBlock)} />
 
       {relatedEducationData ?
-        <EducationsRelatedBlock show={pageData.showEducationsRelatedBlock} educations={relatedEducationData} />
+        <EducationsRelatedBlock
+          show={pageData?.showEducationsRelatedBlock ?? false}
+          educations={relatedEducationData}
+        />
       : <></>}
 
-      <SearchBlock show={pageData.showSearchBlock} />
+      <SearchBlock show={pageData?.showSearchBlock ?? false} />
     </DefaultLayout>
   );
 };

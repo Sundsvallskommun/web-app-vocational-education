@@ -1,3 +1,5 @@
+'use client';
+
 import { FiltersFetcher } from '@contexts/filters/filters.context';
 import { UserSavedInterestDto } from '@interfaces/user';
 import { emptyUserSavedInterest } from '@services/user-service/defaults';

@@ -16,16 +16,18 @@ export async function getFilePages(dir: string) {
       // Exclude special Next.js files and dynamic routes, and the sitemap itself
       if (
         !file.name.startsWith('_') &&
+        file.name !== 'layout.tsx' &&
+        file.name !== 'sitemap.ts' &&
         !(filePath.includes('/api/') || filePath.includes('\\api\\')) &&
-        !filePath.includes('[...url]')
+        !filePath.includes('[')
       ) {
         results.push(
           filePath
             .replace(/\\/g, '/')
-            .replace(/(.*)pages/, '')
+            .replace(/(.*)app/, '')
             .replace('.tsx', '')
             .replace('.ts', '')
-            .replace('/index', '')
+            .replace('/page', '')
         );
       }
     }

@@ -5,7 +5,6 @@ import { User } from '@interfaces/user';
 import { useUserStore } from '@services/user-service/user-service';
 import { Button, FormControl, FormLabel, Input } from '@sk-web-gui/react';
 import { appURL } from '@utils/app-url';
-import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
@@ -18,7 +17,6 @@ export default function TwoFactorModal({
   setShow: (show: boolean) => void;
   checkError: (error: NonNullable<ServiceResponse<User, string | null>['error']>) => void;
 }) {
-  const router = useRouter();
   const { verify2FA, setUser } = useUserStore();
 
   const formSchema = yup
@@ -41,8 +39,7 @@ export default function TwoFactorModal({
       if (res.data) {
         setUser(res.data);
       }
-      const path: string =
-        new URLSearchParams(window.location.search).get('path') || router?.query?.path?.toString() || '/';
+      const path: string = new URLSearchParams(window.location.search).get('path') || '/';
       window.location.href = path?.startsWith('http') ? path : appURL(path?.toString());
     } else {
       checkError(res.error);

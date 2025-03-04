@@ -1,13 +1,13 @@
 import LoaderFullScreen from '@components/loader/loader-fullscreen.component';
 import { useUserStore } from '@services/user-service/user-service';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const protectedRoutes = JSON.parse(process.env.NEXT_PUBLIC_PROTECTED_ROUTES as string);
 
 export const LoginGuard: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const { user, setUser, getMe, reset: resetUser } = useUserStore();
-  const router = useRouter();
+  const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -22,13 +22,11 @@ export const LoginGuard: React.FC<{ children?: React.ReactNode }> = ({ children 
         resetUser();
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.pathname]);
+  }, [pathname]);
 
   if (
     !mounted ||
-    (protectedRoutes.some((path: string) => router.pathname.startsWith(path)) &&
-      !user.username &&
-      router.pathname !== '/login')
+    (protectedRoutes.some((path: string) => pathname.startsWith(path)) && !user.username && pathname !== '/login')
   ) {
     return <LoaderFullScreen />;
   }

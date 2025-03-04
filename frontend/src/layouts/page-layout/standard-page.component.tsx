@@ -1,3 +1,5 @@
+'use client';
+
 import ContentBlock from '@components/block/content-block.component';
 import ContactFormBlock from '@components/contact-form-block/contact-form-block.component';
 import EducationsStartingBlock from '@components/educations-starting-block/educations-starting-block';

@@ -1,21 +1,11 @@
 import { PageData, PageDataResponse, PagesData } from '@interfaces/admin-data';
 import { ApiResponse, apiService } from './api-service';
 
-export interface PageResponse {
-  props?: PageDataResponse;
-  redirect?: { permanent: boolean; destination: string };
-}
-
-export const getPage: (url: string) => Promise<PageResponse> = (url) => {
+export const getPage: (url: string) => Promise<PageDataResponse> = (url) => {
   return apiService
     .get<ApiResponse<PageData>>(`page`, { params: { url: url } })
-    .then((res) => ({ props: { pageData: res.data.data } }))
-    .catch(() => ({
-      redirect: {
-        permanent: false,
-        destination: '/404',
-      },
-    }));
+    .then((res) => ({ pageData: res.data.data }))
+    .catch(() => ({ pageData: undefined }));
 };
 
 export const getAdminPages: () => Promise<PagesData[]> = () => {

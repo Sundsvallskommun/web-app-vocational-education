@@ -4,7 +4,7 @@
   "rules": {
     "react-refresh/only-export-components": [
       "error",
-      { "allowExportNames": ["getServerSideProps", "getStaticProps", "getStaticPaths"] }
+      { "allowExportNames": ["generateMetadata", "generateStaticParams"] }
     ],
     "@typescript-eslint/no-explicit-any": "error"
   },

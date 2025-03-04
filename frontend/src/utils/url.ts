@@ -169,3 +169,15 @@ export function createObjectFromQueryString<T extends object = object, TNew exte
   };
   return result;
 }
+
+export const urlSegmentToLabel = (segment: string) => {
+  segment = segment.toLowerCase();
+  if (segment === 'siteguide') return 'Siteguide';
+  if (segment === 'login') return 'Logga in';
+  if (segment === 'sok') return 'Sök';
+  if (segment === 'jamfor') return 'Jämför';
+  if (segment === 'arbetsgivare') return 'För arbetsgivare';
+  if (segment === 'utbildningar') return 'För dig som söker utbildning';
+  if (segment === 'utbildningsanordnare') return 'För dig som är utbildningsanordnare';
+  return segment.charAt(0).toUpperCase() + segment.slice(1);
+};

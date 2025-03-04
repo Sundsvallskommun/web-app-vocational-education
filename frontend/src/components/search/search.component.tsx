@@ -1,9 +1,11 @@
+'use client';
+
 import SearchIcon from '@mui/icons-material/Search';
 import { Button, CustomOnChangeEvent, Link, SearchField } from '@sk-web-gui/react';
 import { appURL } from '@utils/app-url';
 import { addToQueryString } from '@utils/url';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 interface SearchSuggestion {
@@ -33,10 +35,10 @@ export const Search: React.FC<{
   const _data: SearchSuggestion[] = data ? data : [];
 
   const pushQuery = (query?: string) => {
-    router.push({
-      pathname: '/utbildningar/sok',
-      query: keepParams ? addToQueryString({ q: query }) : { q: query },
-    });
+    const url = new URL(appURL('/utbildningar/sok'));
+    const queries = new URLSearchParams(addToQueryString({ q: query }));
+    url.search = queries.toString();
+    router.push(url.toString());
   };
 
   const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {

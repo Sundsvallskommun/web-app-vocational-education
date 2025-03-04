@@ -9,7 +9,7 @@ import Head from 'next/head';
 
 export default function Page({ layoutData, pageData, children }: PageProps & { children: React.ReactElement }) {
   return (
-    <DefaultLayout title={`Yrkesutbildning - ${pageData?.title}`} layoutData={layoutData}>
+    <DefaultLayout layoutData={layoutData}>
       {pageData?.pageName === '404' ?
         <Head>
           <title>404</title>

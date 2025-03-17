@@ -1,10 +1,10 @@
 import { BASE_URL_PREFIX, TEST } from '@/config';
 import ApiService, { ApiResponse } from './api.service';
 import { PrismaClient } from '@prisma/client';
-import { MockService } from '@/controller-mocks/services/mock.service';
-import { MockOptions } from '@/controller-mocks/types';
 import { AxiosRequestConfig } from 'axios';
-import mocks from '@/controllers-mocks';
+import mocks from '@/controller-mocks';
+import { MockOptions } from '@/utils/controller-mocks/types';
+import { MockService } from '@/utils/controller-mocks/services/mock.service';
 
 let apiService: ApiService;
 if (process.env.NODE_ENV === 'production') {

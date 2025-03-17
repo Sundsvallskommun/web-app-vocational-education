@@ -8,8 +8,8 @@ import {
   mockEducationStatistics,
 } from './educations.mock';
 import { getMockedPage, mockedImportantDatesPage, mockedMinimalPage } from './page.mock';
-import { ControllerEndpointMocks } from '../controller-mocks/types';
 import { mockClientUser, mockUserSavedInterestPrisma, mockUserSavedSearchPrisma } from './user.mock';
+import { ControllerEndpointMocks } from '@/utils/controller-mocks/types';
 
 const mocks = {
   // userMocks

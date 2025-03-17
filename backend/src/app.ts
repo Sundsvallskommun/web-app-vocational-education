@@ -24,19 +24,18 @@ import { getMetadataArgsStorage, useExpressServer } from 'routing-controllers';
 import { routingControllersToSpec } from 'routing-controllers-openapi';
 import createFileStore from 'session-file-store';
 import swaggerUi from 'swagger-ui-express';
-import { mockClientUser, mockLoggedInUser, mockSessionUser } from './controllers-mocks/user.mock';
+import { mockLoggedInUser } from './controller-mocks/user.mock';
 import { SessionUser } from './interfaces/users.interface';
 import authMiddleware from './middlewares/auth.middleware';
 import { hasRoles } from './middlewares/permissions.middleware';
 import { generate2FACode, getPermissions, getRoles, send2FACodeToEmail } from './services/authorization.service';
+import cs from './services/controller.service';
 import { getClientUser } from './services/user.service';
+import { mockMiddleware } from './utils/controller-mocks/middlewares/mock.middleware';
 import { additionalConverters } from './utils/custom-validation-classes';
 import { imageUploadSettings } from './utils/files/imageUploadSettings';
 import { omit } from './utils/object';
 import { dataDir } from './utils/util';
-import cs from './services/controller.service';
-import { mockMiddleware } from './controller-mocks/middlewares/mock.middleware';
-import _ from 'lodash';
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes

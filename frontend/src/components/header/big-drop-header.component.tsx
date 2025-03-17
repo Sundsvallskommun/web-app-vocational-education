@@ -1,3 +1,5 @@
+'use client';
+
 import { usePlaceholderImg } from '@utils/use-placeholder-image.hook';
 import Image from 'next/image';
 import React from 'react';

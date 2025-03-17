@@ -327,25 +327,8 @@ async function main() {
           {
             title: 'Viktiga datum',
             showBlock: true,
-            dateCards: {
-              create: [
-                {
-                  date: '2038-01-19',
-                  title: 'startsida_viktigadatum_title1',
-                  text: 'startsida_viktigadatum_text1',
-                },
-                {
-                  date: '2038-01-19',
-                  title: 'startsida_viktigadatum_title2',
-                  text: 'startsida_viktigadatum_text2',
-                },
-                {
-                  date: '2038-01-19',
-                  title: 'startsida_viktigadatum_title3',
-                  text: 'startsida_viktigadatum_text3',
-                },
-              ],
-            },
+            referencedImportantDatesBlockPageUrl: '/viktiga-datum',
+            referencedImportantDatesBlockPageName: 'viktiga-datum',
           },
         ],
       },
@@ -624,6 +607,35 @@ async function main() {
         create: [UserRoleEnum.EDITOR].map(role => ({
           role: role,
         })),
+      },
+      importantDatesBlock: {
+        create: [
+          {
+            title: 'Viktiga datum',
+            showBlock: true,
+            showAll: true,
+            showSeeAllButton: false,
+            dateCards: {
+              create: [
+                {
+                  date: '2038-01-19',
+                  title: 'startsida_viktigadatum_title1',
+                  text: 'startsida_viktigadatum_text1',
+                },
+                {
+                  date: '2038-01-19',
+                  title: 'startsida_viktigadatum_title2',
+                  text: 'startsida_viktigadatum_text2',
+                },
+                {
+                  date: '2038-01-19',
+                  title: 'startsida_viktigadatum_title3',
+                  text: 'startsida_viktigadatum_text3',
+                },
+              ],
+            },
+          },
+        ],
       },
     },
   });

@@ -8,7 +8,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import { getEducationLengthString, getSanitizedInformation } from '@services/education-service/education-service';
 import { Checkbox } from '@sk-web-gui/react';
 import { routeDynamicSlugFormat } from '@utils/app-url';
-import { fallbackDataValue } from '@utils/labels';
+import { orFallbackDataValue } from '@utils/labels';
 import dayjs from 'dayjs';
 
 const cardIconClasses = 'medium-device-min:!hidden !text-2xl mr-2 medium-device-min:mr-10';
@@ -30,11 +30,11 @@ export const EducationsCards: React.FC<{
   };
 
   return (
-    <>
+    <ul aria-label="Sökresultat">
       {educations?.slice(0, _meta?.limit)?.map((edu, index) => {
         const informationSanitized = edu?.information ? getSanitizedInformation(edu?.information) : null;
         return (
-          <div key={`${index}-${edu?.id}`} className="w-full flex flex-col">
+          <li key={`${index}-${edu?.id}`} className="w-full flex flex-col">
             <DropCard
               data-id={edu?.id}
               href={`/utbildningar/${routeDynamicSlugFormat({ slug: '/utbildningar/[utbildning]', data: edu })}`}
@@ -44,56 +44,60 @@ export const EducationsCards: React.FC<{
                 <div className="flex flex-col gap-y-20">
                   <div className="text-[1.3rem] medium-device-min:text-sm flex flex-row-reverse medium-device-min:flex-row flex-wrap gap-x-4 phone:gap-x-20 medium-device-min:gap-x-[6.9em] medium-device-min:gap-y-20">
                     <div className="hidden medium-device-min:block">
-                      <div className="label">Längd</div>
-                      <div className="flex items-center">
+                      <label htmlFor="EducationLength">Längd</label>
+                      <div id="EducationLength" className="flex items-center">
                         <span className={cardDataClasses}>
-                          {edu?.start && edu?.end ?
-                            getEducationLengthString(edu?.start, edu?.end)
-                          : fallbackDataValue()}
+                          {orFallbackDataValue(
+                            edu?.start && edu?.end ? getEducationLengthString(edu?.start, edu?.end) : null
+                          )}
                         </span>
                       </div>
                     </div>
                     <div>
-                      <div className="hidden medium-device-min:block label">Plats</div>
-                      <div className="flex items-center">
+                      <label htmlFor="EducationStudyLocation" className="hidden medium-device-min:block">
+                        Plats
+                      </label>
+                      <div id="EducationStudyLocation" className="flex items-center">
                         <LocationOnIcon className={cardIconClasses} />
-                        <span className={cardDataClasses}>
-                          {edu?.studyLocation ? edu?.studyLocation?.split(',') : fallbackDataValue()}
-                        </span>
+                        <span className={cardDataClasses}>{orFallbackDataValue(edu?.studyLocation)}</span>
                       </div>
                     </div>
                     <div>
-                      <div className="hidden medium-device-min:block label">Start</div>
-                      <div className="flex items-center">
+                      <label htmlFor="EducationStart" className="hidden medium-device-min:block">
+                        Start
+                      </label>
+                      <div id="EducationStart" className="flex items-center">
                         <DateRangeIcon className={cardIconClasses} />
-                        <span className={cardDataClasses}>{edu?.start ?? fallbackDataValue()}</span>
+                        <span className={cardDataClasses}>{orFallbackDataValue(edu?.start)}</span>
                       </div>
                     </div>
                     <div className="hidden medium-device-min:block">
-                      <div className="label">Studietakt</div>
-                      <div className="flex items-center">
-                        <span className={cardDataClasses}>{edu?.scope ? edu?.scope + '%' : fallbackDataValue()}</span>
-                      </div>
-                    </div>
-                    <div className="hidden medium-device-min:block">
-                      <div className="label">Utbildningsform</div>
-                      <div className="flex items-center">
-                        <span className={cardDataClasses}>{edu?.level ?? fallbackDataValue()}</span>
-                      </div>
-                    </div>
-                    <div className="hidden medium-device-min:block">
-                      <div className="label">Distans</div>
-                      <div className="flex items-center">
-                        <span className={cardDataClasses}>{fallbackDataValue()}</span>
-                      </div>
-                    </div>
-                    <div className="hidden medium-device-min:block">
-                      <div className="label">Sista ansökningsdatum</div>
-                      <div className="flex items-center">
+                      <label htmlFor="EducationScope">Studietakt</label>
+                      <div id="EducationScope" className="flex items-center">
                         <span className={cardDataClasses}>
-                          {edu?.latestApplication ?
-                            dayjs(edu?.latestApplication).format('YYYY-MM-DD')
-                          : fallbackDataValue()}
+                          {orFallbackDataValue(edu?.scope ? edu?.scope + '%' : null)}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="hidden medium-device-min:block">
+                      <label htmlFor="EducationLevel">Utbildningsform</label>
+                      <div id="EducationLevel" className="flex items-center">
+                        <span className={cardDataClasses}>{orFallbackDataValue(edu?.level)}</span>
+                      </div>
+                    </div>
+                    <div className="hidden medium-device-min:block">
+                      <label htmlFor="EducationDistance">Distans</label>
+                      <div id="EducationDistance" className="flex items-center">
+                        <span className={cardDataClasses}>{orFallbackDataValue()}</span>
+                      </div>
+                    </div>
+                    <div className="hidden medium-device-min:block">
+                      <label htmlFor="EducationLatestApplication">Sista ansökningsdatum</label>
+                      <div id="EducationLatestApplication" className="flex items-center">
+                        <span className={cardDataClasses}>
+                          {orFallbackDataValue(
+                            edu?.latestApplication ? dayjs(edu?.latestApplication).format('YYYY-MM-DD') : null
+                          )}
                         </span>
                       </div>
                     </div>
@@ -114,13 +118,13 @@ export const EducationsCards: React.FC<{
                 Jämför utbildning
               </Checkbox>
             </div>
-          </div>
+          </li>
         );
       })}
       {_meta.totalRecords && _meta.limit && _meta.totalRecords > _meta.limit && (
         <LoadMoreBlock loadMoreColorClass="text-white" loadMoreCallback={loadMoreCallback} className="desktop:mb-3xl" />
       )}
-    </>
+    </ul>
   );
 };
 export default EducationsCards;

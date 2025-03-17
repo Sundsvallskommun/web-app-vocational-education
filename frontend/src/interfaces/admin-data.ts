@@ -76,7 +76,7 @@ export interface LayoutData {
 }
 
 export interface LayoutDataResponse {
-  layoutData: LayoutData;
+  layoutData?: LayoutData;
 }
 
 export interface TableBlockHeader {
@@ -177,11 +177,11 @@ export interface PagesDataResponse {
 }
 
 export interface LayoutProps {
-  layoutData: LayoutData;
+  layoutData?: LayoutData;
 }
 
 export interface PageProps extends LayoutProps {
-  pageData: PageData;
+  pageData?: PageData;
 }
 
 export type BlockType =

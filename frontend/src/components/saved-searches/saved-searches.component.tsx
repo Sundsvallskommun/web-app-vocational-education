@@ -1,8 +1,10 @@
+'use client';
+
 import LoadMoreBlock from '@components/block/load-more-block.component';
 import ButtonStackedIcon from '@components/button/button-stacked-icon.component';
 import DropCard from '@components/card/drop-card.component';
-import SavedContentBlockEmpty from '@components/saved-content-block/saved-content-block-empty.component';
-import SavedContentBlock from '@components/saved-content-block/saved-content-block.component';
+import SavedContentBlockEmpty from '@components/blocks/saved-content-block/saved-content-block-empty.component';
+import SavedContentBlock from '@components/blocks/saved-content-block/saved-content-block.component';
 import { EducationFilterOptions } from '@interfaces/education';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -55,42 +57,45 @@ export default function SavedSearches() {
       <div className="grow flex flex-col mt-md">
         {userSavedSearches.length > 0 ?
           <SavedContentBlock className="desktop:!px-[3.3rem]">
-            {pagedList.map((search, index) => (
-              <DropCard
-                key={`${index}`}
-                href={`/utbildningar/sok?${search.parameters}`}
-                dropIcon={<SearchIcon className="min-w-[3.2rem] min-h-[3.2rem]" />}
-                footer={<></>}
-                toolbar={
-                  <>
-                    <ButtonStackedIcon
-                      onClick={handleRemoveSearch(search.id)}
-                      className="text-[12px] text-blue"
-                      icon={<DeleteIcon />}
-                    >
-                      Radera
-                    </ButtonStackedIcon>
-                  </>
-                }
-              >
-                <div className="inline-flex">
-                  <h3 className="capitalize">{search.searchTerm}</h3>
-                </div>
-                <ul className="search-filter-list">
-                  {Object.keys(search.educationFilterOptions).map((filter) => (
-                    <li key={`${filter}`}>
-                      <FilterListIcon className="!text-2xl mr-sm" />
-                      <span>
-                        {getFilterOptionString(
-                          filter as keyof EducationFilterOptions,
-                          search.educationFilterOptions[filter as keyof EducationFilterOptions]
-                        )}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </DropCard>
-            ))}
+            <ul id="SavedSearches">
+              {pagedList.map((search, index) => (
+                <li key={`${index}`}>
+                  <DropCard
+                    href={`/utbildningar/sok?${search.parameters}`}
+                    dropIcon={<SearchIcon className="min-w-[3.2rem] min-h-[3.2rem]" />}
+                    footer={<></>}
+                    toolbar={
+                      <>
+                        <ButtonStackedIcon
+                          onClick={handleRemoveSearch(search.id)}
+                          className="text-[12px] text-blue"
+                          icon={<DeleteIcon />}
+                        >
+                          Radera
+                        </ButtonStackedIcon>
+                      </>
+                    }
+                  >
+                    <div className="inline-flex">
+                      <h3 className="capitalize">{search.searchTerm}</h3>
+                    </div>
+                    <ul className="search-filter-list">
+                      {Object.keys(search.educationFilterOptions).map((filter) => (
+                        <li key={`${filter}`}>
+                          <FilterListIcon className="!text-2xl mr-sm" />
+                          <span>
+                            {getFilterOptionString(
+                              filter as keyof EducationFilterOptions,
+                              search.educationFilterOptions[filter as keyof EducationFilterOptions]
+                            )}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </DropCard>
+                </li>
+              ))}
+            </ul>
           </SavedContentBlock>
         : <></>}
         {userSavedSearches.length === 0 && (

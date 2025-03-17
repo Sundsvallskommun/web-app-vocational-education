@@ -1,3 +1,5 @@
+'use client';
+
 import Button from '@components/button/button.component';
 import ErrorMessage from '@components/error-message/error-message.component';
 import { studyLocationFilterPlaceholder } from '@components/form/defaults';
@@ -14,7 +16,11 @@ export default function ContactForm({ contactFormBlock }: { contactFormBlock: Co
     <div>
       <div className="flex flex-col gap-md medium-device:gap-[4.8rem]">
         <div>
-          <h3 className="text-[2.6rem] leading-[3.6rem] medium-device:-tracking-[.01rem]">{contactFormBlock.title}</h3>
+          {contactFormBlock.title ?
+            <h2 className="text-[2.6rem] leading-[3.6rem] medium-device:-tracking-[.01rem]">
+              {contactFormBlock.title}
+            </h2>
+          : <></>}
           {contactFormBlock.description ?
             <p>{contactFormBlock.description}</p>
           : <></>}

@@ -4,6 +4,9 @@ import Drop from '@components/drop/drop.component';
 import { cx } from '@sk-web-gui/react';
 import { useDropProps } from '@components/drop/use-drop.component';
 
+type NextLinkOverride = typeof NextLink &
+  ((props: { href?: React.ComponentProps<typeof NextLink>['href'] | null }) => React.ReactElement | null);
+
 export interface DropCard {
   children?: React.ReactNode;
   toolbar?: React.ReactNode;
@@ -36,12 +39,12 @@ export const DropCard: React.FC<DropCard> = ({
 }) => {
   const { dropContent, dropHeight } = useDropProps(dropIcon, dropDate, dropImageSrc);
 
-  const CardComp = allCardClickable && href ? NextLink : 'div';
-  const ContentComp = !allCardClickable ? NextLink : 'div';
+  const CardComp = allCardClickable && href ? (NextLink as NextLinkOverride) : 'div';
+  const ContentComp = !allCardClickable ? (NextLink as NextLinkOverride) : 'div';
 
   return (
     <CardComp
-      href={allCardClickable && href ? href : ''}
+      href={allCardClickable && href ? href : null}
       onClick={allCardClickable ? onClick : undefined}
       className={`${className} drop-card-wrapper box-content flex flex-col group`}
       style={{ paddingTop: dropHeight / 2 + 'px' }}
@@ -57,7 +60,7 @@ export const DropCard: React.FC<DropCard> = ({
         />
         <div className={cx(`drop-card-container`, toolbar && 'flex-col-reverse')}>
           <ContentComp
-            href={!allCardClickable && href ? href : ''}
+            href={!allCardClickable && href ? href : null}
             className="drop-card-container-inner"
             onClick={!allCardClickable ? onClick : undefined}
           >

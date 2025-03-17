@@ -1,12 +1,12 @@
 import { EducationsController } from '@/controllers/educations.controller';
-import { SavedInterestDto, SavedSearchDto } from '@/dtos/user.dto';
+import { UserSavedInterestDto, UserSavedSearchDto } from '@/dtos/user.dto';
 import { HttpException } from '@/exceptions/HttpException';
 import { RequestWithUser } from '@/interfaces/auth.interface';
 import { UserSavedInterestStatistics } from '@/interfaces/educations.interface';
 import { ClientUser } from '@/interfaces/users.interface';
 import { hasPermissions } from '@/middlewares/permissions.middleware';
+import cs from '@/services/controller.service';
 import { getClientUser } from '@/services/user.service';
-import prisma from '@/utils/prisma';
 import authMiddleware from '@middlewares/auth.middleware';
 import { User_SavedInterest, User_SavedSearch } from '@prisma/client';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Res, UseBefore } from 'routing-controllers';
@@ -18,13 +18,13 @@ export class UserController {
 
   dbInterestToData = dbData => ({ ...dbData, studyLocation: dbData.studyLocation.split(','), userId: undefined });
 
-  getStatisticsData = async (parametersList: User_SavedInterest[]): Promise<UserSavedInterestStatistics[]> => {
+  getStatisticsData = async (req: RequestWithUser, parametersList: User_SavedInterest[]): Promise<UserSavedInterestStatistics[]> => {
     const statisticsData: UserSavedInterestStatistics[] = [];
     const today = new Date();
     const todayFormatted = today.toISOString().split('T')[0];
     for (const parameters of parametersList) {
       try {
-        const res = await this.educationsController.getEducationEventsStatistics({
+        const res = await this.educationsController.getEducationEventsStatistics(req, {
           categories: [parameters.category],
           studyLocations: parameters.studyLocation.split(','),
           levels: [parameters.level],
@@ -88,7 +88,7 @@ export class UserController {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const searches = await prisma.user_SavedSearch.findMany({
+    const searches = await cs.use(req).prisma.user_SavedSearch.findMany({
       where: {
         userId: req.user.id,
       },
@@ -100,12 +100,12 @@ export class UserController {
   @Post('/user/saved-searches')
   @OpenAPI({ summary: 'Create saved search for user' })
   @UseBefore(authMiddleware, hasPermissions(['userSaveSearches']))
-  async newSavedSearch(@Req() req: RequestWithUser, @Res() response: any, @Body() body: SavedSearchDto): Promise<User_SavedSearch> {
+  async newSavedSearch(@Req() req: RequestWithUser, @Res() response: any, @Body() body: UserSavedSearchDto): Promise<User_SavedSearch> {
     if (!req.user.username) {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const search = await prisma.user_SavedSearch.create({
+    const search = await cs.use(req).prisma.user_SavedSearch.create({
       data: {
         ...body,
         userId: req.user.id,
@@ -123,7 +123,7 @@ export class UserController {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const search = await prisma.user_SavedSearch.delete({
+    const search = await cs.use(req).prisma.user_SavedSearch.delete({
       where: {
         userId: req.user.id,
         id: id,
@@ -141,13 +141,13 @@ export class UserController {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const interests = await prisma.user_SavedInterest.findMany({
+    const interests = await cs.use(req).prisma.user_SavedInterest.findMany({
       where: {
         userId: req.user.id,
       },
     });
 
-    const statisticsData = await this.getStatisticsData(interests);
+    const statisticsData = await this.getStatisticsData(req, interests);
     if (!statisticsData) {
       throw new HttpException(400, 'Missing statistics data');
     }
@@ -161,12 +161,12 @@ export class UserController {
   @Post('/user/saved-interests')
   @OpenAPI({ summary: 'Create saved interest for user' })
   @UseBefore(authMiddleware, hasPermissions(['userSaveInterests']))
-  async newSavedInterest(@Req() req: RequestWithUser, @Res() response: any, @Body() body: SavedInterestDto): Promise<any> {
+  async newSavedInterest(@Req() req: RequestWithUser, @Res() response: any, @Body() body: UserSavedInterestDto): Promise<any> {
     if (!req.user.username) {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const interest = await prisma.user_SavedInterest.create({
+    const interest = await cs.use(req).prisma.user_SavedInterest.create({
       data: {
         ...body,
         studyLocation: body.studyLocation.join(','),
@@ -174,7 +174,7 @@ export class UserController {
       },
     });
 
-    const statisticsData = await this.getStatisticsData([interest]);
+    const statisticsData = await this.getStatisticsData(req, [interest]);
 
     if (!statisticsData) {
       throw new HttpException(400, 'Missing statistics data');
@@ -186,12 +186,17 @@ export class UserController {
   @Patch('/user/saved-interests/:id')
   @OpenAPI({ summary: 'Edit saved interest for user' })
   @UseBefore(authMiddleware, hasPermissions(['userSaveInterests']))
-  async editSavedInterest(@Req() req: RequestWithUser, @Res() response: any, @Body() body: SavedInterestDto, @Param('id') id: number): Promise<any> {
+  async editSavedInterest(
+    @Req() req: RequestWithUser,
+    @Res() response: any,
+    @Body() body: UserSavedInterestDto,
+    @Param('id') id: number,
+  ): Promise<any> {
     if (!req.user.username) {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const interest = await prisma.user_SavedInterest.update({
+    const interest = await cs.use(req).prisma.user_SavedInterest.update({
       where: {
         userId: req.user.id,
         id: id,
@@ -202,7 +207,7 @@ export class UserController {
       },
     });
 
-    const statisticsData = await this.getStatisticsData([interest]);
+    const statisticsData = await this.getStatisticsData(req, [interest]);
 
     if (!statisticsData) {
       throw new HttpException(400, 'Missing statistics data');
@@ -219,7 +224,7 @@ export class UserController {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const interest = await prisma.user_SavedInterest.delete({
+    const interest = await cs.use(req).prisma.user_SavedInterest.delete({
       where: {
         userId: req.user.id,
         id: id,

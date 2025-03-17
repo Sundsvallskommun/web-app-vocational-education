@@ -1,3 +1,4 @@
+import { sortFilter } from '@components/form/defaults';
 import {
   Course,
   EducationFilterOptions,
@@ -6,15 +7,13 @@ import {
   PagedCoursesResponse,
   PagingMetaData,
 } from '@interfaces/education';
-import { ValueOf } from '@utils/types';
-import { serializeURL } from '@utils/url';
-import dayjs from 'dayjs';
-import { ApiResponse, apiService } from '../api-service';
 import { getFormattedLabelFromValue } from '@utils/labels';
+import { getObjectDifference } from '@utils/object';
+import { ValueOf } from '@utils/types';
+import dayjs from 'dayjs';
 import { XMLParser } from 'fast-xml-parser';
 import SanitizeHTML, { Transformer } from 'sanitize-html';
-import { getObjectDifference } from '@utils/object';
-import { sortFilter } from '@components/form/defaults';
+import { ApiResponse, apiService } from '../api-service';
 
 export const emptyEducationFilterOptions: EducationFilterOptions = {
   page: 1,
@@ -76,6 +75,11 @@ export const educationFilterTagLabels = {
   page: 'Sida',
   cost: 'Kostnad',
 };
+
+export const hiddenEducationFilterOptions = ['page', 'size', 'q'];
+export const shownTags = Object.keys(defaultEducationFilterOptions).filter(
+  (x) => !hiddenEducationFilterOptions.includes(x)
+) as Array<keyof EducationFilterOptions>;
 
 export const getEducationFilterValueString = (filter: keyof EducationFilterOptions, value: unknown) => {
   switch (filter) {
@@ -149,10 +153,6 @@ export const getFilterDataStrings: {
   return filterDataStrings;
 };
 
-export const getSearchParamsFromEducationSearchFilters = (filterData: EducationFilterOptions): string => {
-  return serializeURL(getFilterDataStrings(filterData, ''));
-};
-
 export interface GetEducationEvents {
   courses: Course[];
   _meta?: PagingMetaData;
@@ -195,15 +195,6 @@ export const getEducationEventsFilters: (
     .catch((e) => ({
       error: e.response?.status ?? 'UNKNOWN ERROR',
     }));
-};
-
-const langCodes = new Map([
-  ['swe', 'Svenska'],
-  ['eng', 'Engelska'],
-]);
-
-export const getLangString: (_langCodes: string[]) => string = (_langCodes) => {
-  return _langCodes.map((code) => langCodes.get(code)).join(', ');
 };
 
 export const getEducationLengthString: (start: string, end: string) => string | null = (start, end) => {

@@ -69,3 +69,5 @@ yarn prisma:generate
 yarn prisma:migrate
 yarn prisma:seed
 ```
+
+- Vid flytt av databas, notera att Page.imgSrc får url med server-url

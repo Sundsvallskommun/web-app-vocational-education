@@ -1,10 +1,12 @@
+import { tableCellTextClasses } from '@components/search/educations-table/defaults';
 import { Course } from '@interfaces/education';
 import { Checkbox, Link, Pagination, Table } from '@sk-web-gui/react';
+import { routeDynamicSlugFormat } from '@utils/app-url';
+import { orFallbackDataValue } from '@utils/labels';
 import { getPageListSlice } from '@utils/pagination';
+import dayjs from 'dayjs';
 import NextLink from 'next/link';
 import { useState } from 'react';
-import { routeDynamicSlugFormat } from '@utils/app-url';
-import { tableCellTextClasses } from '@components/search/educations-table/defaults';
 
 export const CompareList: React.FC<{ compareList: Course[]; onRemove?: (item: Course) => void }> = ({
   compareList,
@@ -36,7 +38,7 @@ export const CompareList: React.FC<{ compareList: Course[]; onRemove?: (item: Co
             <Table.HeaderColumn>Start / Slut</Table.HeaderColumn>
             <Table.HeaderColumn>Studietakt</Table.HeaderColumn>
             <Table.HeaderColumn>Utbildningsform</Table.HeaderColumn>
-            <Table.HeaderColumn>Språk</Table.HeaderColumn>
+            <Table.HeaderColumn>Sista ansökningsdatum</Table.HeaderColumn>
           </Table.Header>
           <Table.Body>
             {pagedList.map((edu, index) => (
@@ -54,35 +56,41 @@ export const CompareList: React.FC<{ compareList: Course[]; onRemove?: (item: Co
                       href={`/utbildningar/${routeDynamicSlugFormat({ slug: '/utbildningar/[utbildning]', data: edu })}`}
                     >
                       <Link as="span" className="line-clamp-2 text-base mb-6 leading-[1.5]">
-                        {edu.name ?? '-'}
+                        {orFallbackDataValue(edu.name)}
                       </Link>
                     </NextLink>
-                    <div className="text-sm capitalize">{edu.level ?? '-'}</div>
+                    <div className="text-sm capitalize">{orFallbackDataValue(edu.level)}</div>
                   </span>
                 </Table.Column>
                 <Table.Column className="min-w-[11em]">
-                  <span className={tableCellTextClasses}>{edu.numberOfSeats ?? '-'}</span>
+                  <span className={tableCellTextClasses}>{orFallbackDataValue(edu.numberOfSeats)}</span>
                 </Table.Column>
                 <Table.Column>
                   <span>
-                    <div className={tableCellTextClasses}>Saknas</div>
-                    <div className={tableCellTextClasses}>{edu.studyLocation ?? '-'}</div>
+                    <div className={tableCellTextClasses}>{orFallbackDataValue()}</div>
+                    <div className={tableCellTextClasses}>{orFallbackDataValue(edu.studyLocation)}</div>
                   </span>
                 </Table.Column>
                 <Table.Column>
                   <span>
-                    <div className={tableCellTextClasses}>{edu.start ?? '-'}</div>
-                    <div className={tableCellTextClasses}>{edu.end ?? '-'}</div>
+                    <div className={tableCellTextClasses}>{orFallbackDataValue(edu.start)}</div>
+                    <div className={tableCellTextClasses}>{orFallbackDataValue(edu.end)}</div>
                   </span>
                 </Table.Column>
                 <Table.Column>
-                  <span className={tableCellTextClasses}>{edu.scope ? edu.scope + '%' : '-'}</span>
+                  <span className={tableCellTextClasses}>
+                    {orFallbackDataValue(edu.scope ? edu.scope + '%' : null)}
+                  </span>
                 </Table.Column>
                 <Table.Column>
-                  <span className={tableCellTextClasses}>{edu.level ?? '-'}</span>
+                  <span className={tableCellTextClasses}>{orFallbackDataValue(edu.level)}</span>
                 </Table.Column>
                 <Table.Column>
-                  <span className={tableCellTextClasses}>Saknas</span>
+                  <span className={tableCellTextClasses}>
+                    {orFallbackDataValue(
+                      edu?.latestApplication ? dayjs(edu?.latestApplication).format('YYYY-MM-DD') : null
+                    )}
+                  </span>
                 </Table.Column>
               </Table.Row>
             ))}

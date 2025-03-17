@@ -1,20 +1,13 @@
-import { Breadcrumb } from '@sk-web-gui/react';
-import { appURL } from '@utils/app-url';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+'use client';
 
-const getSegmentString = (segment: string) => {
-  segment = segment.toLowerCase();
-  if (segment === 'arbetsgivare') return 'För arbetsgivare';
-  if (segment === 'utbildningar') return 'För dig som söker utbildning';
-  if (segment === 'utbildningsanordnare') return 'För dig som är utbildningsanordnare';
-  return segment.charAt(0).toUpperCase() + segment.slice(1);
-};
+import { Breadcrumb } from '@sk-web-gui/react';
+import { urlSegmentToLabel } from '@utils/url';
+import NextLink from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const Breadcrumbs = ({ lastItemTitle }: { lastItemTitle?: string }) => {
-  const router = useRouter();
-  const location = new URL(appURL(router.asPath));
-  const pathWithoutBasePath = location.pathname.replace(new RegExp(`^${process.env.NEXT_PUBLIC_BASE_PATH}`), '') || '/';
+  const pathname = usePathname();
+  const pathWithoutBasePath = pathname.replace(new RegExp(`^${process.env.NEXT_PUBLIC_BASE_PATH}`), '') || '/';
   const pathSegments = pathWithoutBasePath.split('/').filter(Boolean);
 
   if (pathSegments.length === 0) return null;
@@ -34,7 +27,7 @@ const Breadcrumbs = ({ lastItemTitle }: { lastItemTitle?: string }) => {
           <Breadcrumb.Item key={href}>
             <NextLink href={href} passHref legacyBehavior>
               <Breadcrumb.Link href={href} currentPage={isLast}>
-                {isLast ? (lastItemTitle ?? getSegmentString(segment)) : getSegmentString(segment)}
+                {isLast ? (lastItemTitle ?? urlSegmentToLabel(segment)) : urlSegmentToLabel(segment)}
               </Breadcrumb.Link>
             </NextLink>
           </Breadcrumb.Item>

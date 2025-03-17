@@ -1,29 +1,23 @@
+'use client';
+
 import HeaderLogo from '@components/logo/header-logo.component';
 import Menu from '@components/menu/menu.component';
 import { LayoutData } from '@interfaces/admin-data';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import logo_stacked from '@public/svg/logo_stacked.svg';
-import { getLayout } from '@services/layout-service';
 import sanitized from '@services/sanitizer-service';
 import { CookieConsent, Footer, Header, Link } from '@sk-web-gui/react';
-import Head from 'next/head';
 import Image from 'next/image';
 import NextLink from 'next/link';
-import { IncomingMessage, ServerResponse } from 'node:http';
 import { useEffect, useState } from 'react';
 import Sticky from 'react-sticky-el';
 
 interface DefaultLayoutProps {
-  title: string;
   children: React.ReactElement | React.ReactElement[];
   layoutData?: LayoutData;
 }
 
-export async function getServerSideProps({ res }: { res: ServerResponse<IncomingMessage> }) {
-  return await getLayout(res);
-}
-
-export default function DefaultLayout({ layoutData, title, children }: DefaultLayoutProps) {
+export default function DefaultLayout({ layoutData, children }: DefaultLayoutProps) {
   const [menuShow, setMenuShow] = useState(false);
   let lastScrollTop = 0;
 
@@ -54,11 +48,6 @@ export default function DefaultLayout({ layoutData, title, children }: DefaultLa
 
   return (
     <div className="DefaultLayout full-page-layout">
-      <Head>
-        <title>{title}</title>
-        <meta name="description" content="Yrkesutbildningar" />
-      </Head>
-
       <NextLink legacyBehavior={true} href={`#content`} passHref>
         <a onClick={setInitialFocus} accessKey="s" className="next-link-a">
           Hoppa till innehåll
@@ -67,9 +56,7 @@ export default function DefaultLayout({ layoutData, title, children }: DefaultLa
 
       <Sticky
         boundaryElement=".DefaultLayout"
-        // wrapperClassName="shadow"
         stickyStyle={{ top: menuShow ? 0 : '-150px', transition: 'all .3s ease-in-out' }}
-        // !relative desktop:!fixed för desktop only sticky
         stickyClassName={`block z-10 shadow-md ${menuShow ? 'menu-show' : 'menu-hide'}`}
       >
         <Header className="!max-width-content py-0">

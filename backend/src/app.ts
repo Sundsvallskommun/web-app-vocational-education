@@ -1,8 +1,8 @@
 import prisma from '@/utils/prisma';
-import { BASE_URL_PREFIX, CREDENTIALS, LOG_FORMAT, NODE_ENV, ORIGIN, PORT, SECRET_KEY, SESSION_MEMORY, SWAGGER_ENABLED } from '@config';
+import { BASE_URL_PREFIX, CREDENTIALS, LOG_FORMAT, NODE_ENV, ORIGIN, PORT, SECRET_KEY, SESSION_MEMORY, SWAGGER_ENABLED, TEST } from '@config';
 import errorMiddleware from '@middlewares/error.middleware';
-import { User } from '@prisma/client';
 import { logger, stream } from '@utils/logger';
+import bcrypt from 'bcryptjs';
 import { defaultMetadataStorage } from 'class-transformer/cjs/storage';
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
 import compression from 'compression';
@@ -24,21 +24,22 @@ import { getMetadataArgsStorage, useExpressServer } from 'routing-controllers';
 import { routingControllersToSpec } from 'routing-controllers-openapi';
 import createFileStore from 'session-file-store';
 import swaggerUi from 'swagger-ui-express';
+import { mockLoggedInUser } from './controller-mocks/user.mock';
+import { SessionUser } from './interfaces/users.interface';
 import authMiddleware from './middlewares/auth.middleware';
 import { hasRoles } from './middlewares/permissions.middleware';
 import { generate2FACode, getPermissions, getRoles, send2FACodeToEmail } from './services/authorization.service';
+import cs from './services/controller.service';
 import { getClientUser } from './services/user.service';
+import { mockMiddleware } from './utils/controller-mocks/middlewares/mock.middleware';
+import { additionalConverters } from './utils/custom-validation-classes';
 import { imageUploadSettings } from './utils/files/imageUploadSettings';
 import { omit } from './utils/object';
 import { dataDir } from './utils/util';
-import bcrypt from 'bcryptjs';
-import { additionalConverters } from './utils/custom-validation-classes';
-import { SessionUser } from './interfaces/users.interface';
-import qs from 'qs';
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+  limit: 300, // Limit each IP to 300 requests per `window` (here, per 15 minutes).
   standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
 });
@@ -196,8 +197,14 @@ class App {
     this.app.use(hpp());
     this.app.use(cookieParser());
 
-    // FIXME: Enable when login-flow is corrected
-    // this.app.use(limiter);
+    if (TEST) {
+      // NOTE: Mock user in test mode
+      this.app.use(mockMiddleware(mockLoggedInUser, { cs: cs }));
+    }
+
+    if (!TEST) {
+      this.app.use(limiter);
+    }
 
     this.app.use(
       session({
@@ -259,7 +266,7 @@ class App {
           console.log('twoFactorCode', twoFactorCode);
         }
         try {
-          await send2FACodeToEmail(user.email, twoFactorCode); // Implement email sending logic
+          await send2FACodeToEmail(user.email, twoFactorCode);
         } catch (err) {
           //
         }
@@ -430,6 +437,10 @@ class App {
     const sessionsDir: string = join(__dirname, '../data/sessions');
     if (!existsSync(sessionsDir)) {
       mkdirSync(sessionsDir, { recursive: true });
+    }
+    const uploadsDir: string = join(__dirname, '../data/uploads');
+    if (!existsSync(uploadsDir)) {
+      mkdirSync(uploadsDir, { recursive: true });
     }
   }
 }

@@ -9,8 +9,6 @@ import TwoFactorModal from './verify2FA-modal.component';
 export default function LoginFormLogic({ children }: { children: React.ReactNode }) {
   const { login } = useUserStore();
   const [show2FAModal, setShow2FAModal] = useState(false);
-  const params = new URLSearchParams(window.location.search);
-  const failMessage = params.get('failMessage');
 
   const formSchema = yup
     .object({
@@ -55,16 +53,20 @@ export default function LoginFormLogic({ children }: { children: React.ReactNode
   };
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const failMessage = params.get('failMessage');
     checkError(failMessage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [failMessage]);
+  }, []);
 
   return (
     <>
       <FormProvider {...context}>
         <form onSubmit={handleSubmit(onLogin)}>{children}</form>
       </FormProvider>
-      <TwoFactorModal show={show2FAModal} setShow={setShow2FAModal} checkError={checkError} />
+      {show2FAModal ?
+        <TwoFactorModal show={show2FAModal} setShow={setShow2FAModal} checkError={checkError} />
+      : null}
     </>
   );
 }

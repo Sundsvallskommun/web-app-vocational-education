@@ -85,7 +85,7 @@
     @apply rounded-[.8rem];
     @apply min-h-[5rem] max-h-[5rem] w-full border border-border-color justify-start;
 
-    .btn-has-icon-right {
+    .sk-btn-has-icon-right {
       @apply absolute right-sm rotate-90;
     }
 
@@ -98,7 +98,7 @@
     }
 
     &[aria-expanded='true'] {
-      .btn-has-icon-right {
+      .sk-btn-has-icon-right {
         @apply -rotate-90;
       }
     }

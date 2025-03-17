@@ -24,7 +24,7 @@
         @apply border-border-color desktop:border-transparent bg-green-light hover:bg-green-light;
       }
 
-      .btn-has-icon-right {
+      .sk-btn-has-icon-right {
         @apply absolute right-8 desktop:relative desktop:right-[initial];
       }
 
@@ -87,7 +87,7 @@
       .sk-btn.more-button {
         @apply px-lg text-sm ml-auto rounded ring-offset-0 ring-0 border-0;
 
-        .btn-has-icon-right svg {
+        .sk-btn-has-icon-right svg {
           @apply text-black-light ml-sm;
         }
       }

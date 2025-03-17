@@ -23,7 +23,7 @@ export const routeDynamicSlugFormat = (params: DynamicSlugUnion): string => {
 
   switch (slug) {
     case '/utbildningar/[utbildning]':
-      return data.id && data.name ? `${data.id}-${encodeURIComponent(data.name)}` : '';
+      return data.id !== undefined && data.name ? `${data.id}-${encodeURIComponent(data.name)}` : '';
 
     case '/utbildningar/efterfragade/[efterfragad]':
       return encodeURIComponent(data.title);

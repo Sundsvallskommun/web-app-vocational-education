@@ -1,28 +1,31 @@
 import DropCard from '@components/card/drop-card.component';
-import SchoolIcon from '@mui/icons-material/School';
-import { Checkbox, Pagination } from '@sk-web-gui/react';
-import React, { useRef, useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-
-// Import Swiper styles
 import { Course } from '@interfaces/education';
+import SchoolIcon from '@mui/icons-material/School';
 import { getEducationLengthString } from '@services/education-service/education-service';
-import 'swiper/css';
+import { Checkbox, Pagination, useThemeQueries } from '@sk-web-gui/react';
 import { routeDynamicSlugFormat } from '@utils/app-url';
-import { fallbackDataValue } from '@utils/labels';
+import { orFallbackDataValue } from '@utils/labels';
 import dayjs from 'dayjs';
+import React, { useRef, useState } from 'react';
+import 'swiper/css';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 export const CompareCards: React.FC<{ compareList: Course[]; onRemove?: (item: Course) => void }> = ({
   compareList,
   onRemove,
 }) => {
   const compareSwiperRef = useRef(null);
+  const { isMinMediumDevice, isMinLargeDevice } = useThemeQueries();
+  const slidesPerView =
+    isMinLargeDevice ? 4
+    : isMinMediumDevice ? 2.5
+    : 1.2;
 
   const [page, setPage] = useState<number>(1);
 
   const handlePagination = (page: number) => {
-    /** @ts-expect-error Swiper attaches swiper */
-    compareSwiperRef?.current?.swiper.slideTo(page - 1);
+    /** @ts-expect-error Swiper attaches swiper on mount */
+    compareSwiperRef?.current?.swiper.slideTo((page - 1) * slidesPerView);
     setPage(page);
   };
 
@@ -33,16 +36,17 @@ export const CompareCards: React.FC<{ compareList: Course[]; onRemove?: (item: C
   return (
     <div>
       <Swiper
+        aria-label="Jämför utbildningar"
         ref={compareSwiperRef}
-        slidesPerView={1.2}
+        slidesPerView={slidesPerView}
         centeredSlides={true}
         breakpoints={{
           768: {
-            slidesPerView: 2.5,
+            slidesPerView: slidesPerView,
             spaceBetween: 30,
           },
           1024: {
-            slidesPerView: 4,
+            slidesPerView: slidesPerView,
             spaceBetween: 30,
             centeredSlides: false,
           },
@@ -66,47 +70,49 @@ export const CompareCards: React.FC<{ compareList: Course[]; onRemove?: (item: C
                       <div className="label">Längd</div>
                       <div>
                         <strong>
-                          {edu.start && edu.end ? getEducationLengthString(edu.start, edu.end) : fallbackDataValue()}
+                          {orFallbackDataValue(
+                            edu.start && edu.end ? getEducationLengthString(edu.start, edu.end) : null
+                          )}
                         </strong>
                       </div>
                     </div>
                     <div>
                       <div className="label">Plats</div>
                       <div>
-                        <strong>{edu?.studyLocation ? edu?.studyLocation?.split(',') : fallbackDataValue()}</strong>
+                        <strong>{orFallbackDataValue(edu?.studyLocation)}</strong>
                       </div>
                     </div>
                     <div>
                       <div className="label">Start</div>
                       <div>
-                        <strong>{edu?.start ?? fallbackDataValue()}</strong>
+                        <strong>{orFallbackDataValue(edu?.start)}</strong>
                       </div>
                     </div>
                     <div>
                       <div className="label">Studietakt</div>
                       <div>
-                        <strong>{edu.scope ? edu?.scope + '%' : fallbackDataValue()}</strong>
+                        <strong>{orFallbackDataValue(edu.scope ? edu?.scope + '%' : null)}</strong>
                       </div>
                     </div>
                     <div>
                       <div className="label">Utbildningsform</div>
                       <div>
-                        <strong className="capitalize">{edu.level ?? fallbackDataValue()}</strong>
+                        <strong className="capitalize">{orFallbackDataValue(edu.level)}</strong>
                       </div>
                     </div>
                     <div>
                       <div className="label">Distans</div>
                       <div>
-                        <strong>{fallbackDataValue()}</strong>
+                        <strong>{orFallbackDataValue()}</strong>
                       </div>
                     </div>
                     <div>
                       <div className="label">Sista ansökningsdatum</div>
                       <div>
                         <strong>
-                          {edu?.latestApplication ?
-                            dayjs(edu?.latestApplication).format('YYYY-MM-DD')
-                          : fallbackDataValue()}
+                          {orFallbackDataValue(
+                            edu?.latestApplication ? dayjs(edu?.latestApplication).format('YYYY-MM-DD') : null
+                          )}
                         </strong>
                       </div>
                     </div>
@@ -128,7 +134,7 @@ export const CompareCards: React.FC<{ compareList: Course[]; onRemove?: (item: C
             className="pagination override"
             changePage={handlePagination}
             activePage={page}
-            pages={compareList.length}
+            pages={Math.ceil(compareList.length / slidesPerView)}
           />
         </div>
       )}

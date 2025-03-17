@@ -16,7 +16,7 @@ interface CardsBlockProps<T extends unknown[] = unknown[]> {
   loadMoreColorClass?: string;
   mobileDefaultAmount?: number;
   tabletDefaultAmount?: number;
-  DesktopDefaultAmount?: number;
+  desktopDefaultAmount?: number;
 }
 
 export const CardsBlock = <T extends unknown[] = unknown[]>({
@@ -29,23 +29,27 @@ export const CardsBlock = <T extends unknown[] = unknown[]>({
   loadMoreColorClass = 'text-white',
   mobileDefaultAmount = 3,
   tabletDefaultAmount = 4,
-  DesktopDefaultAmount = 6,
+  desktopDefaultAmount = 6,
 }: CardsBlockProps<T>) => {
-  const [showAmount, setShowAmount] = useState(mobileDefaultAmount);
   const { isMinDesktop, isMinMediumDevice } = useThemeQueries();
+  const [showAmount, setShowAmount] = useState(
+    isMinDesktop ? desktopDefaultAmount
+    : isMinMediumDevice ? tabletDefaultAmount
+    : mobileDefaultAmount
+  );
 
   const loadMoreCallback = () => {
     setShowAmount((amount) => {
       if (!isMinDesktop) {
         return amount + mobileDefaultAmount;
       }
-      return amount + DesktopDefaultAmount;
+      return amount + desktopDefaultAmount;
     });
   };
 
   useEffect(() => {
     if (isMinDesktop) {
-      setShowAmount(DesktopDefaultAmount);
+      setShowAmount(desktopDefaultAmount);
     } else if (isMinMediumDevice) {
       setShowAmount(tabletDefaultAmount);
     } else {
@@ -63,13 +67,13 @@ export const CardsBlock = <T extends unknown[] = unknown[]>({
             return cardRender(card, index);
           })}
         </div>
-        {!isMinDesktop && showAmount < cards.length && (
+        {!isMinDesktop && showAmount < cards.length ?
           <LoadMoreBlock
             loadMoreColorClass={loadMoreColorClass}
             loadMoreCallback={loadMoreCallback}
             backgroundClass={backgroundClass}
           />
-        )}
+        : null}
       </div>
     </ContentBlock>
   );

@@ -40,7 +40,7 @@ const logos: LogosBlockType['logos'] = [
 export default function LogosBlock({ logosBlock }: LogosBlockProps) {
   if (!logosBlock?.showBlock) return <></>;
   return (
-    <ContentBlock classNameWrapper="bg-green text-white !mb-0" padded>
+    <ContentBlock classNameWrapper="LogosBlock bg-green text-white !mb-0" padded>
       <h2>{logosBlock.title}</h2>
       {logosBlock.description ?
         <p className="text !text-inverted-body">{logosBlock.description}</p>

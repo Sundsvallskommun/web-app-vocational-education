@@ -10,7 +10,7 @@ export default function PromotionsBlock({ promotionsBlock }: PromotionsBlockProp
   if (!promotionsBlock?.showBlock) return <></>;
   const wide = promotionsBlock.promotions.length % 2 === 0 && promotionsBlock.promotions.length % 6 !== 0;
   return (
-    <ContentBlock classNameWrapper="desktop:mb-[160px]">
+    <ContentBlock classNameWrapper="PromotionsBlock desktop:mb-[160px]">
       <div
         className={`grid desktop:flex flex-wrap mt-2xl desktop:mt-3xl justify-center ${wide ? 'gap-y-[2.6rem] gap-x-[2.6rem]' : 'gap-y-[5rem] gap-x-[3.3rem]'}`}
       >

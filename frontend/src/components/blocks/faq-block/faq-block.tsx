@@ -11,7 +11,7 @@ export default function FAQBlock(props: FAQBlockProps) {
   const { faqBlock, ...rest } = props;
   if (!faqBlock?.showBlock) return <></>;
   return (
-    <ContentBlock {...rest}>
+    <ContentBlock classNameWrapper="FAQBlock" {...rest}>
       <div className="flex flex-col desktop:flex-row desktop:justify-between">
         <h2 className="mb-md">{faqBlock.title}</h2>
         {faqBlock.description ?

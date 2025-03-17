@@ -9,7 +9,7 @@ interface MapBlockProps {
 export default function MapBlock({ mapBlock }: MapBlockProps) {
   if (!mapBlock?.showBlock) return <></>;
   return (
-    <ContentBlock className="!max-w-full !p-0">
+    <ContentBlock classNameWrapper="MapBlock" className="!max-w-full !p-0" fitHeight>
       <div className="bg-green text-white mt-2xl desktop:mt-3xl">
         <div className="desktop:container">
           <div className="grid desktop:grid-cols-3 bg-green-middle desktop:bg-green">

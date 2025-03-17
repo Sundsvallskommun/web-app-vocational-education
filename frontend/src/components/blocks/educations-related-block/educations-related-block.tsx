@@ -1,5 +1,5 @@
 import DropCard from '@components/card/drop-card.component';
-import { CardsBlock } from '@components/cards-block/cards-block.component';
+import { CardsBlock } from '@components/blocks/cards-block/cards-block.component';
 import { Course } from '@interfaces/education';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import LocationOnIcon from '@mui/icons-material/LocationOn';

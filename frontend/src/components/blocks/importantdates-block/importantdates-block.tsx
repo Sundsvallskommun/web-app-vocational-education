@@ -41,7 +41,7 @@ export default function ImportantDatesBlock({ importantDatesBlock }: ImportantDa
   if (dateCardsToShow === 0) return null;
 
   return (
-    <ContentBlock classNameContent="important-dates-content">
+    <ContentBlock classNameWrapper="ImportantDatesBlock" classNameContent="important-dates-content">
       {importantDatesBlock.title ?
         <h2>{importantDatesBlock.title}</h2>
       : null}

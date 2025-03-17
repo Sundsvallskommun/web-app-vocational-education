@@ -24,7 +24,7 @@ import { getMetadataArgsStorage, useExpressServer } from 'routing-controllers';
 import { routingControllersToSpec } from 'routing-controllers-openapi';
 import createFileStore from 'session-file-store';
 import swaggerUi from 'swagger-ui-express';
-import { mockClientUser, mockSessionUser } from './controller-mocks/user.mock';
+import { mockClientUser, mockLoggedInUser, mockSessionUser } from './controllers-mocks/user.mock';
 import { SessionUser } from './interfaces/users.interface';
 import authMiddleware from './middlewares/auth.middleware';
 import { hasRoles } from './middlewares/permissions.middleware';
@@ -35,8 +35,8 @@ import { imageUploadSettings } from './utils/files/imageUploadSettings';
 import { omit } from './utils/object';
 import { dataDir } from './utils/util';
 import cs from './services/controller.service';
-import { postMocksRoute } from './controller-mocks/routes/post.route';
 import { mockMiddleware } from './controller-mocks/middlewares/mock.middleware';
+import _ from 'lodash';
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -199,28 +199,13 @@ class App {
     this.app.use(cookieParser());
 
     if (TEST) {
-      // NOTE: Mock to set user and bypass authentication
-      this.app.use(
-        mockMiddleware(
-          {
-            req: {
-              isAuthenticated: function () {
-                return true;
-              },
-              session: {
-                user: mockSessionUser,
-                twoFactorAuthenticated: true,
-              },
-              user: mockClientUser,
-            },
-          },
-          { cs: cs },
-        ),
-      );
-      this.app.post(`${BASE_URL_PREFIX}/mocks`, postMocksRoute);
+      // NOTE: Mock user in test mode
+      this.app.use(mockMiddleware(mockLoggedInUser, { cs: cs }));
     }
 
-    this.app.use(limiter);
+    if (!TEST) {
+      this.app.use(limiter);
+    }
 
     this.app.use(
       session({
@@ -282,7 +267,7 @@ class App {
           console.log('twoFactorCode', twoFactorCode);
         }
         try {
-          await send2FACodeToEmail(user.email, twoFactorCode); // Implement email sending logic
+          await send2FACodeToEmail(user.email, twoFactorCode);
         } catch (err) {
           //
         }

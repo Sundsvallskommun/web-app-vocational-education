@@ -1,20 +1,18 @@
-import { mockControllerMiddleware } from '@/controller-mocks/middlewares/mock.middleware';
-import { pageMocks } from '@/controller-mocks/page.mock';
 import { EducationsController } from '@/controllers/educations.controller';
+import { RequestWithUser } from '@/interfaces/auth.interface';
 import DataResponse from '@/interfaces/dataResponse.interface';
 import { PageResponse } from '@/interfaces/educations.interface';
 import cs from '@/services/controller.service';
 import dayjs from 'dayjs';
-import { Controller, Get, QueryParam, UseBefore } from 'routing-controllers';
+import { Controller, Get, QueryParam, Req } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 
 @Controller()
-@UseBefore(mockControllerMiddleware(pageMocks, { cs: cs }))
 export class PageController {
   @Get('/page')
   @OpenAPI({ summary: 'Return page data' })
-  async getPageData(@QueryParam('url') url: string): Promise<DataResponse<PageResponse>> {
-    const page = await cs.prisma.page.findUnique({
+  async getPageData(@QueryParam('url') url: string, @Req() req: RequestWithUser): Promise<DataResponse<PageResponse>> {
+    const page = await cs.use(req).prisma.page.findUnique({
       include: {
         promotionsBlock: {
           include: {
@@ -69,7 +67,7 @@ export class PageController {
     });
     if (page?.showEducationsStartingBlock) {
       const educationApi = new EducationsController();
-      const res = await educationApi.getEducationEvents({
+      const res = await educationApi.getEducationEvents(req, {
         size: '6',
         sortFunction: 'start,asc',
         startDate: dayjs(new Date()).format('YYYY-MM-DD'),
@@ -82,7 +80,7 @@ export class PageController {
           // if Referencing another importantDatesBlockCards
           let referenceBlockPage;
           if (block.referencedImportantDatesBlockPageName) {
-            referenceBlockPage = await cs.prisma.page.findUnique({
+            referenceBlockPage = await cs.use(req).prisma.page.findUnique({
               include: {
                 importantDatesBlock: {
                   include: {
@@ -108,7 +106,7 @@ export class PageController {
     }
 
     if (!page) {
-      return this.getPageData('/404');
+      return this.getPageData('/404', req);
     }
 
     return { data: page, message: 'success' };
@@ -116,8 +114,8 @@ export class PageController {
 
   @Get('/pages')
   @OpenAPI({ summary: 'Return pages' })
-  async getPages(): Promise<any> {
-    const pages = await cs.prisma.page.findMany();
+  async getPages(@Req() req: RequestWithUser): Promise<any> {
+    const pages = await cs.use(req).prisma.page.findMany();
 
     const data = pages.map(page => {
       return {

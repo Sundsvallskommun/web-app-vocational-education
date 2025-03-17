@@ -1,19 +1,17 @@
 import { MUNICIPALITY_ID } from '@/config';
-import { educationsMocks } from '@/controller-mocks/educations.mock';
-import { mockControllerMiddleware } from '@/controller-mocks/middlewares/mock.middleware';
 import { Course, PagedCoursesResponse, Statistics } from '@/data-contracts/education-finder/data-contracts';
 import { HttpException } from '@/exceptions/HttpException';
+import { RequestWithUser } from '@/interfaces/auth.interface';
 import DataResponse from '@/interfaces/dataResponse.interface';
 import { GetEducationFilter, GetEducationFiltersResponseData } from '@/interfaces/educations.interface';
-import authMiddleware from '@/middlewares/auth.middleware';
 import cs from '@/services/controller.service';
 import { IsNullable } from '@/utils/custom-validation-classes';
 import { IsArray, IsBooleanString, IsOptional, IsString } from 'class-validator';
 import hpp from 'hpp';
-import { Controller, Get, Param, QueryParam, UseBefore } from 'routing-controllers';
+import { Controller, Get, Param, QueryParam, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 
-class EducationFilterOptions {
+export class EducationFilterOptions {
   // Pagination-parameters
   @IsOptional()
   @IsString()
@@ -108,12 +106,11 @@ export const defaultLevels = [
 ];
 
 @Controller()
-@UseBefore(mockControllerMiddleware(educationsMocks, { cs: cs }))
 export class EducationsController {
-  getFilter = async (filter: GetEducationFilter) => {
+  getFilter = async (req: RequestWithUser, filter: GetEducationFilter) => {
     try {
       const url = `/education-finder/3.0/${MUNICIPALITY_ID}/courses/filters/${filter}/values`;
-      const res = await cs.apiService.get<string[]>({ url });
+      const res = await cs.use(req).apiService.get<string[]>({ url });
 
       if (Array.isArray(res.data) && res.data.length < 1) {
         throw new HttpException(404, 'Not Found');
@@ -138,7 +135,10 @@ export class EducationsController {
 
   @Get('/education-events')
   @OpenAPI({ summary: 'Return education events' })
-  async getEducationEvents(@QueryParam('filter') filter?: EducationFilterOptions): Promise<DataResponse<PagedCoursesResponse>> {
+  async getEducationEvents(
+    @Req() req: RequestWithUser,
+    @QueryParam('filter') filter?: EducationFilterOptions,
+  ): Promise<DataResponse<PagedCoursesResponse>> {
     const url = `/education-finder/3.0/${MUNICIPALITY_ID}/courses`;
     const params = {
       // Pagination parameters
@@ -158,7 +158,7 @@ export class EducationsController {
       scopes: filter?.scope ?? undefined,
     };
 
-    const res = await cs.apiService.get<PagedCoursesResponse>({ url, params });
+    const res = await cs.use(req).apiService.get<PagedCoursesResponse>({ url, params });
 
     if (Array.isArray(res.data) && res.data.length < 1) {
       throw new HttpException(404, 'Not Found');
@@ -169,10 +169,10 @@ export class EducationsController {
 
   @Get('/education-events/event/:id')
   @OpenAPI({ summary: 'Return education events' })
-  async getEducationEvent(@Param('id') id: string): Promise<DataResponse<Course>> {
+  async getEducationEvent(@Param('id') id: string, @Req() req: RequestWithUser): Promise<DataResponse<Course>> {
     const url = `/education-finder/3.0/${MUNICIPALITY_ID}/courses/${id}`;
 
-    const res = await cs.apiService.get<Course>({ url });
+    const res = await cs.use(req).apiService.get<Course>({ url });
 
     return { data: res.data, message: 'success' };
   }
@@ -182,6 +182,7 @@ export class EducationsController {
   @UseBefore(hpp({ whitelist: ['filters'] }))
   async getEducationEventsFilters(
     @QueryParam('filters', { isArray: true }) filters: GetEducationFilter[],
+    @Req() req: RequestWithUser,
   ): Promise<DataResponse<GetEducationFiltersResponseData>> {
     let data: GetEducationFiltersResponseData = {};
     await Promise.all(
@@ -191,7 +192,7 @@ export class EducationsController {
         } else if (filter === 'level') {
           data[filter] = defaultLevels;
         } else {
-          data[filter] = await this.getFilter(filter);
+          data[filter] = await this.getFilter(req, filter);
         }
       }),
     );
@@ -201,7 +202,10 @@ export class EducationsController {
 
   @Get('/education-events/statistics')
   @OpenAPI({ summary: 'Return education events' })
-  async getEducationEventsStatistics(@QueryParam('filter') filter?: EducationStatisticsFilterOptions): Promise<DataResponse<Statistics>> {
+  async getEducationEventsStatistics(
+    @Req() req: RequestWithUser,
+    @QueryParam('filter') filter?: EducationStatisticsFilterOptions,
+  ): Promise<DataResponse<Statistics>> {
     const url = `/education-finder/3.0/${MUNICIPALITY_ID}/statistics`;
 
     const params = {
@@ -213,7 +217,7 @@ export class EducationsController {
       endDate: filter?.endDate ?? undefined,
     };
 
-    const res = await cs.apiService.get<Statistics>({ url, params });
+    const res = await cs.use(req).apiService.get<Statistics>({ url, params });
 
     if (Array.isArray(res.data) && res.data.length < 1) {
       throw new HttpException(404, 'Not Found');

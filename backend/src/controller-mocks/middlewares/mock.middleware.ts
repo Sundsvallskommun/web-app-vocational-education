@@ -15,7 +15,7 @@ export const mockMiddleware =
       console.log(`Mocking ${req.route?.path ? `${req.route.path}` : `global`} (${Object.keys(mockOptions).toString()})`);
 
       Object.keys(_mockOptions).forEach(key => {
-        if (_mockOptions?.req) {
+        if (key === 'req') {
           _.merge(req, _mockOptions.req);
         } else {
           _cs.setService(key, _mockOptions?.[key]);
@@ -32,7 +32,7 @@ export const mockMiddleware =
 export const mockCleanupMiddleware = (options?: { cs?: MockService }) => async (req: Request, res: Response, next: NextFunction) => {
   const _cs = options.cs ?? cs;
   if (_cs.options.enable) {
-    (options?.cs ?? cs).reset();
+    _cs.reset();
   }
   next();
 };
@@ -42,24 +42,22 @@ export const mockControllerMiddleware =
     const _cs = options.cs ?? cs;
     if (_cs.options.enable) {
       const path = `${_cs.options.prefixToAdd ?? ''}${req.route?.path}`.replace(_cs.options.prefixToRemove, '');
-      if (path) {
-        if (path in mocks) {
-          const mockOptions: MockOptionsOrFunction = mocks[path][req.method.toLowerCase()];
-          const _mockOptions = typeof mockOptions === 'function' ? mockOptions({ req, res }) : mockOptions;
-          console.log(`Mocking ${path} (${Object.keys(_mockOptions).toString()})`);
+      if (path && mocks?.[path]) {
+        const mockOptions: MockOptionsOrFunction = mocks[path][req.method.toLowerCase()];
+        const _mockOptions = typeof mockOptions === 'function' ? mockOptions({ req, res }) : mockOptions;
+        console.log(`Mocking ${path} (${Object.keys(_mockOptions).toString()})`);
 
-          Object.keys(_mockOptions).forEach(key => {
-            if (_mockOptions?.req) {
-              _.merge(req, _mockOptions.req);
-            } else {
-              _cs.setService(key, _mockOptions?.[key]);
-            }
-          });
+        Object.keys(_mockOptions).forEach(key => {
+          if (key === 'req') {
+            _.merge(req, _mockOptions.req);
+          } else {
+            _cs.setService(key, _mockOptions?.[key]);
+          }
+        });
 
-          res.on('finish', () => {
-            _cs.reset();
-          });
-        }
+        res.on('finish', () => {
+          _cs.reset();
+        });
       }
     }
     next();

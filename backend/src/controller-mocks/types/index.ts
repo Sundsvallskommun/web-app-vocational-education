@@ -10,7 +10,7 @@ export interface MockOptions {
   [key: string]: unknown;
 }
 
-export type MockOptionFunction<TMockOptions extends MockOptions = MockOptions> = (options: { req: Request; res: Response }) => TMockOptions;
+export type MockOptionFunction<TMockOptions extends MockOptions = MockOptions> = (options: { req?: Request; res?: Response }) => TMockOptions;
 export type MockOptionsOrFunction<TMockOptions extends MockOptions = MockOptions> = TMockOptions | MockOptionFunction<TMockOptions>;
 export type ControllerEndpointMock<TMockOptions extends MockOptions = MockOptions> = Partial<
   Record<'get' | 'post' | 'put' | 'patch' | 'delete', MockOptionsOrFunction<TMockOptions>>

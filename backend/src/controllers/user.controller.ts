@@ -1,5 +1,3 @@
-import { mockControllerMiddleware } from '@/controller-mocks/middlewares/mock.middleware';
-import { userMocks } from '@/controller-mocks/user.mock';
 import { EducationsController } from '@/controllers/educations.controller';
 import { UserSavedInterestDto, UserSavedSearchDto } from '@/dtos/user.dto';
 import { HttpException } from '@/exceptions/HttpException';
@@ -15,19 +13,18 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Res, UseBefore 
 import { OpenAPI } from 'routing-controllers-openapi';
 
 @Controller()
-@UseBefore(mockControllerMiddleware(userMocks, { cs: cs }))
 export class UserController {
   private educationsController = new EducationsController();
 
   dbInterestToData = dbData => ({ ...dbData, studyLocation: dbData.studyLocation.split(','), userId: undefined });
 
-  getStatisticsData = async (parametersList: User_SavedInterest[]): Promise<UserSavedInterestStatistics[]> => {
+  getStatisticsData = async (req: RequestWithUser, parametersList: User_SavedInterest[]): Promise<UserSavedInterestStatistics[]> => {
     const statisticsData: UserSavedInterestStatistics[] = [];
     const today = new Date();
     const todayFormatted = today.toISOString().split('T')[0];
     for (const parameters of parametersList) {
       try {
-        const res = await this.educationsController.getEducationEventsStatistics({
+        const res = await this.educationsController.getEducationEventsStatistics(req, {
           categories: [parameters.category],
           studyLocations: parameters.studyLocation.split(','),
           levels: [parameters.level],
@@ -91,7 +88,7 @@ export class UserController {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const searches = await cs.prisma.user_SavedSearch.findMany({
+    const searches = await cs.use(req).prisma.user_SavedSearch.findMany({
       where: {
         userId: req.user.id,
       },
@@ -108,7 +105,7 @@ export class UserController {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const search = await cs.prisma.user_SavedSearch.create({
+    const search = await cs.use(req).prisma.user_SavedSearch.create({
       data: {
         ...body,
         userId: req.user.id,
@@ -126,7 +123,7 @@ export class UserController {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const search = await cs.prisma.user_SavedSearch.delete({
+    const search = await cs.use(req).prisma.user_SavedSearch.delete({
       where: {
         userId: req.user.id,
         id: id,
@@ -144,13 +141,13 @@ export class UserController {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const interests = await cs.prisma.user_SavedInterest.findMany({
+    const interests = await cs.use(req).prisma.user_SavedInterest.findMany({
       where: {
         userId: req.user.id,
       },
     });
 
-    const statisticsData = await this.getStatisticsData(interests);
+    const statisticsData = await this.getStatisticsData(req, interests);
     if (!statisticsData) {
       throw new HttpException(400, 'Missing statistics data');
     }
@@ -169,7 +166,7 @@ export class UserController {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const interest = await cs.prisma.user_SavedInterest.create({
+    const interest = await cs.use(req).prisma.user_SavedInterest.create({
       data: {
         ...body,
         studyLocation: body.studyLocation.join(','),
@@ -177,7 +174,7 @@ export class UserController {
       },
     });
 
-    const statisticsData = await this.getStatisticsData([interest]);
+    const statisticsData = await this.getStatisticsData(req, [interest]);
 
     if (!statisticsData) {
       throw new HttpException(400, 'Missing statistics data');
@@ -199,7 +196,7 @@ export class UserController {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const interest = await cs.prisma.user_SavedInterest.update({
+    const interest = await cs.use(req).prisma.user_SavedInterest.update({
       where: {
         userId: req.user.id,
         id: id,
@@ -210,7 +207,7 @@ export class UserController {
       },
     });
 
-    const statisticsData = await this.getStatisticsData([interest]);
+    const statisticsData = await this.getStatisticsData(req, [interest]);
 
     if (!statisticsData) {
       throw new HttpException(400, 'Missing statistics data');
@@ -227,7 +224,7 @@ export class UserController {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const interest = await cs.prisma.user_SavedInterest.delete({
+    const interest = await cs.use(req).prisma.user_SavedInterest.delete({
       where: {
         userId: req.user.id,
         id: id,

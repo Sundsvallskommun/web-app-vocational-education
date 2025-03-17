@@ -121,6 +121,7 @@
               @apply pl-md border-green border-l-[7px];
             }
             &[aria-current='page']:not(:hover),
+            &[aria-current='page']:not(:hover) ~ a:not(:hover),
             &[aria-current='page']:not(:hover) ~ button:not(:hover) {
               @apply bg-transparent text-green;
             }
@@ -132,6 +133,7 @@
               }
 
               &:not(:hover, [aria-current='page'], [aria-disabled='true']),
+              &:not(:hover, [aria-current='page'], [aria-disabled='true']) ~ a:not(:hover),
               &:not(:hover, [aria-current='page'], [aria-disabled='true']) ~ button:not(:hover) {
                 @apply bg-transparent;
               }

@@ -1,11 +1,13 @@
-import { replaceWithComponent } from '@components/wysiwyg/utils';
-import sanitized from '@services/sanitizer-service';
-import parse from 'html-react-parser';
-import React from 'react';
-import NextLink from 'next/link';
+'use client';
+
 import Button from '@components/button/button.component';
-import { Link, useThemeQueries } from '@sk-web-gui/react';
+import { replaceWithComponent } from '@components/wysiwyg/utils';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import sanitized from '@services/sanitizer-service';
+import { Link, useThemeQueries } from '@sk-web-gui/react';
+import parse from 'html-react-parser';
+import NextLink from 'next/link';
+import React from 'react';
 interface WysiwygProps {
   content?: string;
   children?: React.ReactNode | React.ReactNode[];
@@ -32,7 +34,7 @@ export const SiteNavigationButton = (props: SiteNavigationButtonProps) => {
       <Button
         as="span"
         dense={!isMinDesktop}
-        className="override !text-sm small-device-min:!text-base"
+        className="!text-sm small-device-min:!text-base"
         rightIcon={<ArrowForwardIcon />}
       >
         <span>{props.children}</span>

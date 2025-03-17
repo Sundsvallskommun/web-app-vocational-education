@@ -1,3 +1,5 @@
+'use client';
+
 import ContentBlock from '@components/block/content-block.component';
 import Breadcrumbs from '@components/breadcrumbs/breadcrumbs.component';
 import Button from '@components/button/button.component';
@@ -17,11 +19,8 @@ export const Efterfragade: React.FC<EfterfragadeProps> = ({ layoutData, pageData
   if (!educationData) return <></>;
 
   return (
-    <DefaultLayout
-      title={`Yrkesutbildning - Efterfrågade av arbetsgivare - ${educationData.title}`}
-      layoutData={layoutData}
-    >
-      <ContentBlock>
+    <DefaultLayout layoutData={layoutData}>
+      <ContentBlock classNameWrapper="HeaderBlock">
         <BigDropHeader
           imageSrc={pageData?.imgSrc}
           imageAlt={pageData?.imgAlt}

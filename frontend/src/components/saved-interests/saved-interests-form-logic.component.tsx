@@ -1,3 +1,5 @@
+'use client';
+
 import { FiltersFetcher } from '@contexts/filters/filters.context';
 import { UserSavedInterestDto } from '@interfaces/user';
 import { emptyUserSavedInterest } from '@services/user-service/defaults';
@@ -58,7 +60,9 @@ export default function SavedInterestsFormLogic<
   return (
     <FormProvider {...context}>
       <FiltersFetcher filters={['category', 'level', 'studyLocation']}>
-        <form onSubmit={handleSubmit(_onSubmit)}>{children}</form>
+        <form id="SavedInterestsForm" onSubmit={handleSubmit(_onSubmit)}>
+          {children}
+        </form>
       </FiltersFetcher>
     </FormProvider>
   );

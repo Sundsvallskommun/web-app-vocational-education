@@ -17,36 +17,21 @@ export function serializeURL(
 ): string {
   const result: Record<string, string[]> = {};
 
-  // Check if params is URLSearchParams or a regular object
-  if (params instanceof URLSearchParams) {
-    // Convert URLSearchParams to a regular object
-    for (const [key, value] of params.entries()) {
-      if (!hasValue(value) && !options?.includeEmptyValue[key]) continue;
-      if (Array.isArray(value)) {
-        // Convert all values in the array to strings
-        result[key] = value.map((v) => String(v));
-      } else {
-        // Convert single value to string
-        result[key] = [String(value)];
-      }
-    }
-  } else {
-    // Assume params is a regular object
-    for (const [key, value] of Object.entries(params)) {
-      if (!hasValue(value) && !options?.includeEmptyValue[key]) continue;
-      if (Array.isArray(value)) {
-        // Convert all values in the array to strings
-        result[key] = value.map((v) => String(v));
-      } else {
-        // Convert single value to string
-        result[key] = [String(value)];
-      }
+  const items = params instanceof URLSearchParams ? params.entries() : Object.entries(params);
+  for (const [key, value] of items) {
+    if (!hasValue(value) && !options?.includeEmptyValue[key]) continue;
+    if (Array.isArray(value)) {
+      // Convert all values in the array to strings
+      result[key] = value.map((v) => String(v));
+    } else {
+      // Convert single value to string
+      result[key] = [String(value)];
     }
   }
 
   // Serialize using "|" as delimiter
   return Object.entries(result)
-    .filter(([key, values]) => (!options?.includeEmptyValue[key] ? hasValue(values) : true))
+    .filter(([key, values]) => (options?.includeEmptyValue[key] ? true : hasValue(values)))
     .sort(([key], [key2]) =>
       key2 === 'q' ? 1
       : key === 'q' ? 0
@@ -169,3 +154,15 @@ export function createObjectFromQueryString<T extends object = object, TNew exte
   };
   return result;
 }
+
+export const urlSegmentToLabel = (segment: string) => {
+  segment = segment.toLowerCase();
+  if (segment === 'siteguide') return 'Siteguide';
+  if (segment === 'login') return 'Logga in';
+  if (segment === 'sok') return 'Sök';
+  if (segment === 'jamfor') return 'Jämför';
+  if (segment === 'arbetsgivare') return 'För arbetsgivare';
+  if (segment === 'utbildningar') return 'För dig som söker utbildning';
+  if (segment === 'utbildningsanordnare') return 'För dig som är utbildningsanordnare';
+  return segment.charAt(0).toUpperCase() + segment.slice(1);
+};

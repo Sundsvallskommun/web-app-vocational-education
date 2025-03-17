@@ -137,7 +137,10 @@ database.db
 database.db-journal
 
 # data folder
-data/
+data/*
+!data/uploads/
+data/uploads/*
+!data/uploads/test.jpg
 
 # certs
 cert/

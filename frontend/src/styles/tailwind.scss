@@ -1,13 +1,13 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
+@use 'tailwindcss/base';
+@use 'tailwindcss/components';
 
 // components layer
-@import './fonts.scss';
-@import './utilities.scss';
-@import './base.scss';
-@import './layouts/sidebar-layout.scss';
-@import './layouts/default-layout.scss';
-@import './components.scss';
-@import './wysiwyg.scss';
+@use './fonts.scss';
+@use './app-utilities.scss';
+@use './global.scss';
+@use './layouts/sidebar-layout.scss';
+@use './layouts/default-layout.scss';
+@use './app-components.scss';
+@use './wysiwyg.scss';
 
-@import 'tailwindcss/utilities';
+@use 'tailwindcss/utilities';

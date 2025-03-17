@@ -6,7 +6,7 @@ import { apiURL } from '@/utils/util';
 import qs from 'qs';
 import ApiTokenService from './api-token.service';
 
-class ApiResponse<T> {
+export class ApiResponse<T = unknown> {
   data: T;
   message: string;
 }

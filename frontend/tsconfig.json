@@ -28,13 +28,18 @@
       "@layouts/*": ["src/layouts/*"],
       "@styles/*": ["src/styles/*"],
       "@utils/*": ["src/utils/*"],
-      "@pages/*": ["src/pages/*"],
+      "@pages/*": ["src/app/*"],
       "@middlewares/*": ["src/utils/middlewares/*"],
       "@public/*": ["public/*"],
       "@jestRoot/*": [".jest/*"]
     },
-    "types": ["cypress"]
+    "types": ["cypress"],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["next-env.d.ts", "node_modules/dayjs/plugin/utc.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "node_modules/dayjs/plugin/utc.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }

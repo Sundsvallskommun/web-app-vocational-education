@@ -10,7 +10,7 @@ describe('Page > Login', () => {
   });
 
   it('Form is is rendered and works correctly', () => {
-    cy.get('h1:visible').should('contain.text', '/login');
+    cy.get('h1:visible', { timeout: 10000 }).should('contain.text', '/login');
     cy.get('form:visible').should('be.visible');
     cy.get('form:visible').find('input[name="username"]').should('exist');
     cy.get('form:visible').find('input[name="password"]').should('exist');
@@ -25,7 +25,7 @@ describe('Page > Login', () => {
 
     // verify modal should popup
     cy.get('[role="dialog"]:visible').should('be.visible');
-    cy.contains('[role="dialog"]:visible h1', 'Verifiera engångskod').should('be.visible', { timeout: 10000 });
+    cy.contains('[role="dialog"]:visible h1', 'Verifiera engångskod', { timeout: 10000 }).should('be.visible');
     // enter code
     cy.get('[role="dialog"]:visible form input[name="code"]').should('be.visible').type('123456', { timeout: 10000 });
 
@@ -34,7 +34,9 @@ describe('Page > Login', () => {
     cy.get('[role="dialog"]:visible form').contains('button[type="submit"]', 'Verifiera').should('be.visible').click();
     cy.wait('@postVerify').its('response.statusCode').should('eq', 200);
 
-    cy.get('h1:visible').should('contain.text', '/', { timeout: 10000 });
+    cy.get('[role="dialog"] form').should('not.exist');
+
+    cy.get('h1:visible', { timeout: 10000 }).should('contain.text', '/');
 
     // redirect to home page
     cy.url().should('contain', '/');

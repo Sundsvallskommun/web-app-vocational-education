@@ -64,7 +64,9 @@ export default function LoginFormLogic({ children }: { children: React.ReactNode
       <FormProvider {...context}>
         <form onSubmit={handleSubmit(onLogin)}>{children}</form>
       </FormProvider>
-      <TwoFactorModal show={show2FAModal} setShow={setShow2FAModal} checkError={checkError} />
+      {show2FAModal ?
+        <TwoFactorModal show={show2FAModal} setShow={setShow2FAModal} checkError={checkError} />
+      : null}
     </>
   );
 }

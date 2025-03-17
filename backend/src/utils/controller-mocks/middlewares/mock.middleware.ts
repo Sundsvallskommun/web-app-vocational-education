@@ -12,7 +12,7 @@ export const mockMiddleware =
     const _cs = options.cs ?? cs;
     if (_cs.options.enable) {
       const _mockOptions = typeof mockOptions === 'function' ? (mockOptions as MockOptionFunction)({ req, res }) : mockOptions;
-      console.log(`Mocking ${req.route?.path ? `${req.route.path}` : `global`} (${Object.keys(mockOptions).toString()})`);
+      console.log(`Mocking ${req.route?.path ? `${req.route.path}` : `global`} (${Object.keys(_mockOptions).toString()})`);
 
       Object.keys(_mockOptions).forEach(key => {
         if (key === 'req') {

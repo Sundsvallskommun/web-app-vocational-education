@@ -1,21 +1,13 @@
-import Image from 'next/image';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { cx, useThemeQueries } from '@sk-web-gui/react';
+import { usePlaceholderImg } from '@utils/use-placeholder-image.hook';
+import Image from 'next/image';
 import NextLink from 'next/link';
 import DropCard from './drop-card.component';
-import { useEffect, useState } from 'react';
-import { usePlaceholderImg } from '@utils/use-placeholder-image.hook';
-import { cx, useThemeQueries } from '@sk-web-gui/react';
 
 export const BigDropCard: React.FC<DropCard> = ({ className = '', children, href = '#', dropImageSrc, ...rest }) => {
-  const [mounted, setMounted] = useState(false);
   const imageSrc = usePlaceholderImg(dropImageSrc);
   const { isMinMediumDevice, isMinDesktop } = useThemeQueries();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return;
 
   return (
     <>

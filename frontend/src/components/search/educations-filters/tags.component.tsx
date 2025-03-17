@@ -1,8 +1,8 @@
 import { EducationFilterOptions } from '@interfaces/education';
 import {
-  defaultEducationFilterOptions,
   emptyEducationFilterOptions,
   getFilterOptionString,
+  shownTags,
 } from '@services/education-service/education-service';
 import { Chip } from '@sk-web-gui/react';
 import { appURL } from '@utils/app-url';
@@ -37,14 +37,24 @@ export default function Tags() {
   const removeAll = () => {
     const queryString = getValues().q;
     const url = new URL(appURL(pathname));
-    const queries = new URLSearchParams(serializeURL({ ...defaultEducationFilterOptions, q: queryString ?? '' }));
+    const emptyFilters: Record<string, unknown> = {};
+    shownTags.forEach((tag) => {
+      emptyFilters[tag] = emptyEducationFilterOptions[tag];
+    });
+    const shownEmptyFilters: Record<string, boolean> = {};
+    shownTags.forEach((tag) => {
+      shownEmptyFilters[tag] = true;
+    });
+    const queries = new URLSearchParams(
+      serializeURL({ ...emptyFilters, q: queryString ?? '' }, { includeEmptyValue: shownEmptyFilters })
+    );
     url.search = queries.toString();
     router.replace(url.toString());
   };
 
   const tagList: Tag[] = [];
   Object.keys(values)
-    .filter((filter) => !['page', 'size', 'q'].includes(filter))
+    .filter((filter) => shownTags.includes(filter as keyof EducationFilterOptions))
     .forEach((filter) => {
       const filterTyped = filter as keyof EducationFilterOptions;
       const filterValue = values[filterTyped];

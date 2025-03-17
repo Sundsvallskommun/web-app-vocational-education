@@ -52,7 +52,10 @@ async function generateSiteMapFields({ pages, dynamic }: GenerateSiteMapProps): 
 }
 
 export default async function Sitemap(): Promise<MetadataRoute.Sitemap> {
-  const pages = (await getPages(path.join('src', 'app'))).filter((x) => !x.includes('sitemap') && !x.includes('['));
+  const excludedPages = ['admin', 'sitemap', 'logout', '['];
+  const pages = (await getPages(path.join('src', 'app'))).filter(
+    (x) => !excludedPages.some((exclusion) => x.includes(exclusion))
+  );
   const dynamic: GenerateSiteMapProps['dynamic'] = {
     '/utbildningar/[utbildning]':
       (

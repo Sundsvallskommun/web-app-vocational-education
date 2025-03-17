@@ -2,7 +2,7 @@
 
 import ContentBlock from '@components/block/content-block.component';
 import Breadcrumbs from '@components/breadcrumbs/breadcrumbs.component';
-import FAQBlock from '@components/faq-block/faq-block';
+import FAQBlock from '@components/blocks/faq-block/faq-block';
 import { BigDropHeader } from '@components/header/big-drop-header.component';
 import SavedInterestsFormLogic from '@components/saved-interests/saved-interests-form-logic.component';
 import SavedInterestsForm from '@components/saved-interests/saved-interests-form.component';
@@ -17,7 +17,7 @@ import { getBlockData } from '@utils/page-types';
 export const Utbildningsanordnare = ({ pageData, layoutData }: PageProps) => {
   return (
     <DefaultLayout layoutData={layoutData}>
-      <ContentBlock>
+      <ContentBlock classNameWrapper="HeaderBlock">
         <BigDropHeader
           imageSrc={pageData?.imgSrc}
           imageAlt={pageData?.imgAlt}

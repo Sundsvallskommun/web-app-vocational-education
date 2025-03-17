@@ -16,7 +16,7 @@ export default function Page({ layoutData, pageData, children }: PageProps & { c
           <meta name="robots" content="noindex,nofollow" />
         </Head>
       : <></>}
-      <ContentBlock>
+      <ContentBlock classNameWrapper="HeaderBlock">
         <BigDropHeader
           imageSrc={pageData?.imgSrc}
           imageAlt={pageData?.imgAlt}

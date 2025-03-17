@@ -5,6 +5,7 @@ import { LayoutProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import { Link } from '@sk-web-gui/react';
 import NextLink from 'next/link';
+import React from 'react';
 
 interface TOCNode {
   __path: string;
@@ -41,7 +42,7 @@ const generateTOC = (paths: string[]) => {
   });
 
   // Recursive function to create list elements
-  const createList = (obj: Record<string, TOCNode>): JSX.Element => {
+  const createList = (obj: Record<string, TOCNode>): React.JSX.Element => {
     return (
       <ul className="ml-md">
         {Object.keys(obj).map((key) => {

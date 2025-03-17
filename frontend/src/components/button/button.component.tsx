@@ -11,10 +11,12 @@ export const Button: React.FC<ButtonCompProps> = ({ children, dense = false, ...
       rounded
       className={cx(
         `override`,
-        rest.leftIcon !== undefined && 'btn-left-icon',
-        rest.className,
-        rest.rightIcon !== undefined && 'btn-right-icon',
-        dense && 'dense'
+        {
+          'btn-left-icon': rest.leftIcon !== undefined,
+          'btn-right-icon': rest.rightIcon !== undefined,
+          dense: dense,
+        },
+        rest.className
       )}
     >
       {children}

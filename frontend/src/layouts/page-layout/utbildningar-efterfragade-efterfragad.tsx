@@ -20,7 +20,7 @@ export const Efterfragade: React.FC<EfterfragadeProps> = ({ layoutData, pageData
 
   return (
     <DefaultLayout layoutData={layoutData}>
-      <ContentBlock>
+      <ContentBlock classNameWrapper="HeaderBlock">
         <BigDropHeader
           imageSrc={pageData?.imgSrc}
           imageAlt={pageData?.imgAlt}

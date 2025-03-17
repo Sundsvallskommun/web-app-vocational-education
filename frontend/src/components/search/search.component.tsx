@@ -82,7 +82,7 @@ export const Search: React.FC<{
   return (
     <div className={`${className}`}>
       <div className="mb-sm flex items-center text-sm gap-x-[.675em]">
-        <label className="text-label" id="searchbar-label">
+        <label className="text-label" htmlFor="searchbar">
           Sök utbildningar
         </label>
         {showLinkToAllEducations ?
@@ -100,7 +100,6 @@ export const Search: React.FC<{
             <SearchField.SuggestionsInput
               size="md"
               id="searchbar"
-              aria-labelledby="searchbar-label"
               onChange={handleOnChange}
               onSelect={handleOnSelect}
               onReset={handleOnReset}

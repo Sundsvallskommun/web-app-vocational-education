@@ -6,6 +6,7 @@ export interface ContentBlockProps {
   classNameWrapper?: string;
   classNameContent?: string;
   padded?: boolean;
+  fitHeight?: boolean;
 }
 
 export const ContentBlock: React.FC<ContentBlockProps> = ({
@@ -14,9 +15,13 @@ export const ContentBlock: React.FC<ContentBlockProps> = ({
   classNameWrapper = '',
   classNameContent = '',
   padded = false,
+  fitHeight = false,
 }) => {
   return (
-    <div className={cx('content-block', classNameWrapper, { padded: padded })}>
+    <div
+      className={cx('content-block', classNameWrapper, { padded: padded })}
+      data-fitheight={padded || fitHeight ? 'true' : undefined}
+    >
       <div className={cx('content-block-container', className)}>
         <div className={cx('content-block-content', classNameContent)}>{children}</div>
       </div>

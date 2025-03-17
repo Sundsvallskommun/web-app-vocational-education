@@ -1,11 +1,11 @@
 'use client';
 
 import ContentBlock from '@components/block/content-block.component';
+import EducationsRelatedBlock from '@components/blocks/educations-related-block/educations-related-block';
+import FAQBlock from '@components/blocks/faq-block/faq-block';
+import SearchBlock from '@components/blocks/search-block/search-block.component';
 import Button from '@components/button/button.component';
 import Drop from '@components/drop/drop.component';
-import EducationsRelatedBlock from '@components/educations-related-block/educations-related-block';
-import FAQBlock from '@components/faq-block/faq-block';
-import SearchBlock from '@components/search-block/search-block.component';
 import { PageProps } from '@interfaces/admin-data';
 import { Course } from '@interfaces/education';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
@@ -13,7 +13,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import SchoolIcon from '@mui/icons-material/School';
 import { getEducationLengthString, getSanitizedInformation } from '@services/education-service/education-service';
 import { Breadcrumb, useThemeQueries } from '@sk-web-gui/react';
-import { fallbackDataValue, getFormattedLabelFromValue } from '@utils/labels';
+import { getFormattedLabelFromValue, orFallbackDataValue } from '@utils/labels';
 import { getBlockData } from '@utils/page-types';
 import NextLink from 'next/link';
 
@@ -28,7 +28,7 @@ export const Utbildning = ({
   const sanitizedInformation = educationData.information ? getSanitizedInformation(educationData.information) : null;
   return (
     <DefaultLayout layoutData={layoutData}>
-      <ContentBlock>
+      <ContentBlock classNameWrapper="HeaderBlock">
         <div className="desktop:flex">
           <div className="flex-grow flex flex-col desktop:mt-lg desktop:pr-xl">
             <div>
@@ -64,7 +64,7 @@ export const Utbildning = ({
                 />
               </div>
               <p className="ingress mt-0">
-                {educationData.level ? getFormattedLabelFromValue(educationData.level) : fallbackDataValue()}
+                {orFallbackDataValue(educationData.level ? getFormattedLabelFromValue(educationData.level) : null)}
               </p>
             </div>
           </div>
@@ -74,43 +74,45 @@ export const Utbildning = ({
             <label id="education-length">Längd</label>
             <div aria-describedby="education-length">
               <strong>
-                {educationData?.start && educationData?.end ?
-                  getEducationLengthString(educationData?.start, educationData?.end)
-                : fallbackDataValue()}
+                {orFallbackDataValue(
+                  educationData?.start && educationData?.end ?
+                    getEducationLengthString(educationData?.start, educationData?.end)
+                  : null
+                )}
               </strong>
             </div>
           </div>
           <div>
             <label id="education-studyLocation">Plats</label>
             <div aria-describedby="education-studyLocation">
-              <strong>
-                {educationData?.studyLocation ? educationData?.studyLocation?.split(',') : fallbackDataValue()}
-              </strong>
+              <strong>{orFallbackDataValue(educationData?.studyLocation)}</strong>
             </div>
           </div>
           <div>
             <label id="education-pace">Studietakt</label>
             <div aria-describedby="education-pace">
-              <strong>{educationData?.scope ? educationData?.scope + '%' : fallbackDataValue()}</strong>
+              <strong>{orFallbackDataValue(educationData?.scope ? educationData?.scope + '%' : null)}</strong>
             </div>
           </div>
           <div>
             <label id="education-distance">Distans</label>
             <div aria-describedby="education-distance">
-              <strong>{fallbackDataValue()}</strong>
+              <strong>{orFallbackDataValue()}</strong>
             </div>
           </div>
           <div>
             <label id="education-language">Språk</label>
             <div aria-describedby="education-language">
-              <strong>{fallbackDataValue()}</strong>
+              <strong>{orFallbackDataValue()}</strong>
             </div>
           </div>
           <div>
             <label id="education-language">Utbildningsform</label>
             <div aria-describedby="education-form">
               <strong className="break-all">
-                {educationData?.level ? `${getFormattedLabelFromValue(educationData?.level)}` : fallbackDataValue()}
+                {orFallbackDataValue(
+                  educationData?.level ? `${getFormattedLabelFromValue(educationData?.level)}` : null
+                )}
               </strong>
             </div>
           </div>
@@ -122,13 +124,13 @@ export const Utbildning = ({
             <div>
               <label id="education-startdate">Nästa utbildningsstart</label>
               <div aria-describedby="education-startdate">
-                <strong>{educationData?.start ?? fallbackDataValue()}</strong>
+                <strong>{orFallbackDataValue(educationData?.start)}</strong>
               </div>
             </div>
             <div>
               <label id="education-latestapplyday">Sista ansökningsdag</label>
               <div aria-describedby="education-latestapplyday">
-                <strong>{educationData?.latestApplication ?? fallbackDataValue()}</strong>
+                <strong>{orFallbackDataValue(educationData?.latestApplication)}</strong>
               </div>
             </div>
           </div>

@@ -12,7 +12,7 @@ import { cx } from '@sk-web-gui/react';
 export const Login = ({ layoutData, pageData }: PageProps) => {
   return (
     <DefaultLayout layoutData={layoutData}>
-      <ContentBlock>
+      <ContentBlock classNameWrapper="HeaderBlock">
         <BigDropHeader
           imageSrc={pageData?.imgSrc}
           imageAlt={pageData?.imgAlt}

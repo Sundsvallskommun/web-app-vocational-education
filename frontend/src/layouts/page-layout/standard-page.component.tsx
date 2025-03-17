@@ -1,19 +1,20 @@
 'use client';
 
 import ContentBlock from '@components/block/content-block.component';
-import ContactFormBlock from '@components/contact-form-block/contact-form-block.component';
-import EducationsStartingBlock from '@components/educations-starting-block/educations-starting-block';
-import EmployerPromotionsBlock from '@components/employer-promotions-block/employer-promotions-block';
-import FAQBlock from '@components/faq-block/faq-block';
-import ImportantDatesBlock from '@components/importantdates-block/importantdates-block';
-import LogosBlock from '@components/logos-block/logos-block';
-import MapBlock from '@components/map-block/map-block';
-import PromotionsBlock from '@components/promotions-block/promotions-block';
-import SearchBlock from '@components/search-block/search-block.component';
-import TableBlock from '@components/table-block/table-block.component';
+import ContactFormBlock from '@components/blocks/contact-form-block/contact-form-block.component';
+import EducationsStartingBlock from '@components/blocks/educations-starting-block/educations-starting-block';
+import EmployerPromotionsBlock from '@components/blocks/employer-promotions-block/employer-promotions-block';
+import FAQBlock from '@components/blocks/faq-block/faq-block';
+import ImportantDatesBlock from '@components/blocks/importantdates-block/importantdates-block';
+import LogosBlock from '@components/blocks/logos-block/logos-block';
+import MapBlock from '@components/blocks/map-block/map-block';
+import PromotionsBlock from '@components/blocks/promotions-block/promotions-block';
+import SearchBlock from '@components/blocks/search-block/search-block.component';
+import TableBlock from '@components/blocks/table-block/table-block.component';
 import Wysiwyg from '@components/wysiwyg/wysiwyg';
 import { BlockType, PageData, PageProps } from '@interfaces/admin-data';
 import Page from '@layouts/page-layout/page.component';
+import { cx } from '@sk-web-gui/react';
 import { getBlockData } from '@utils/page-types';
 
 const RenderBlock = ({ blockType, pageData }: { blockType: BlockType; pageData: PageData }) => {
@@ -22,7 +23,7 @@ const RenderBlock = ({ blockType, pageData }: { blockType: BlockType; pageData: 
       return (
         <>
           {pageData?.wysiwyg_content ?
-            <ContentBlock classNameWrapper={!pageData?.showSearchBar ? '!mt-0' : ''}>
+            <ContentBlock classNameWrapper={cx('WysiwygBlock', { '!mt-0': !pageData?.showSearchBar })}>
               <Wysiwyg content={pageData?.wysiwyg_content} />
             </ContentBlock>
           : <></>}
@@ -32,7 +33,7 @@ const RenderBlock = ({ blockType, pageData }: { blockType: BlockType; pageData: 
       return (
         <>
           {pageData?.tableBlock ?
-            <ContentBlock>
+            <ContentBlock classNameWrapper="TableBlock">
               <TableBlock tableBlock={getBlockData(pageData?.tableBlock)} />
             </ContentBlock>
           : <></>}
@@ -56,13 +57,7 @@ const RenderBlock = ({ blockType, pageData }: { blockType: BlockType; pageData: 
     case 'faqBlock':
       return <FAQBlock faqBlock={getBlockData(pageData?.faqBlock)} />;
     case 'contactFormBlock':
-      return (
-        <>
-          {pageData?.contactFormBlock ?
-            <ContactFormBlock contactFormBlock={getBlockData(pageData?.contactFormBlock)} />
-          : <></>}
-        </>
-      );
+      return <ContactFormBlock contactFormBlock={getBlockData(pageData?.contactFormBlock)} />;
     case 'searchBlock':
       return <SearchBlock show={pageData?.showSearchBlock} />;
     case 'logosBlock':

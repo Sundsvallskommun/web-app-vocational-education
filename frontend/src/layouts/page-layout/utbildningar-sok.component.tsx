@@ -25,6 +25,7 @@ import { cx, Link, Spinner } from '@sk-web-gui/react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { appURL } from '@utils/app-url';
 import { addToQueryString, createObjectFromQueryString, deserializeURL, serializeURL } from '@utils/url';
+import { useLocalStorage } from '@utils/use-localstorage.hook';
 import NextLink from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -40,7 +41,7 @@ export const Sok = ({ layoutData, pageData }: PageProps) => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [activeListing, setActiveListing] = useState(1);
+  const [activeListing, setActiveListing] = useLocalStorage('activeListing', 1);
   const [isMounted, setIsMounted] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>(searchParams.get('q') ?? defaultEducationFilterOptions.q);
 
@@ -223,7 +224,7 @@ export const Sok = ({ layoutData, pageData }: PageProps) => {
 
   return (
     <DefaultLayout layoutData={layoutData}>
-      <ContentBlock>
+      <ContentBlock classNameWrapper="HeaderBlock">
         <BigDropHeader
           imageSrc={pageData?.imgSrc}
           imageAlt={pageData?.imgAlt}

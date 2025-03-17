@@ -72,7 +72,7 @@ export default function SavedInterestsForm({ mode = 'new' }: SavedInterestsFormP
           </Button>
         )}
         {mode === 'edit' && (
-          <Button disabled={!formState.isValid} dense className="w-full" type="submit">
+          <Button disabled={!formState.isValid} dense className="w-full" type="submit" aria-controls="SavedInterests">
             Uppdatera
           </Button>
         )}

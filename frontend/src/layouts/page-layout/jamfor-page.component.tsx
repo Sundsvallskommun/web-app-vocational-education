@@ -15,12 +15,12 @@ import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 import CropPortraitOutlinedIcon from '@mui/icons-material/CropPortraitOutlined';
 import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
 import { cx, Link } from '@sk-web-gui/react';
+import { useLocalStorage } from '@utils/use-localstorage.hook';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 
 export const Compare = ({ layoutData, pageData }: PageProps) => {
   const { searchCompareList, setSearchCompareList } = useAppContext();
-  const [activeListing, setActiveListing] = useState(1);
+  const [activeListing, setActiveListing] = useLocalStorage('compareListing', 1);
   const router = useRouter();
 
   const handleBackLink = () => {
@@ -37,7 +37,7 @@ export const Compare = ({ layoutData, pageData }: PageProps) => {
 
   return (
     <DefaultLayout layoutData={layoutData}>
-      <ContentBlock>
+      <ContentBlock classNameWrapper="HeaderBlock">
         <BigDropHeader
           imageSrc={pageData?.imgSrc}
           imageAlt={pageData?.imgAlt}

@@ -1,0 +1,16 @@
+{
+  "excludeAfterRemap": true,
+  "check-coverage": true,
+  "reporter": ["lcov", "json", "json-summary"],
+  "report-dir": "./coverage",
+  "include": ["src/**"],
+  "exclude": [
+    "node_modules/**",
+    "**/next/dist/**",
+    "src/app/**",
+    "src/interfaces/**",
+    "src/services/page-service.ts",
+    "src/services/layout-service.ts"
+  ],
+  "all": true
+}

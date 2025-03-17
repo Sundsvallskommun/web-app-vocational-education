@@ -1,15 +1,32 @@
 import '@cypress/code-coverage/support';
-import { ApiResponse } from '@services/api-service';
-import { meEducationCoordinator } from 'cypress/fixtures/me';
 
-export const mockApiResponse = <TData>(data: TData): ApiResponse<TData> => ({ data: data, message: 'response-text' });
+import { ApiResponse } from '@services/api-service';
+import { CookieConsentUtils } from '@sk-web-gui/react';
+
+export const mockApiResponse = <TData>(data: TData): ApiResponse<TData> => ({
+  data: data,
+  message: 'api-response-message',
+});
 
 beforeEach(() => {
-  // fake cookie
-  // cy.setCookie('connect.sid', 'cookie');
+  cy.clearLocalStorage();
 
-  // global intercepts
-  // cy.intercept('GET', '**/me', mockApiResponse(meEducationCoordinator)).as('me');
+  // fake cookie
+  cy.setCookie(CookieConsentUtils.defaultCookieConsentName, 'necessary%2Cfunc%2Cstats');
+
+  // intercepts
+  cy.intercept('GET', '**/me').as('getMe');
+  cy.intercept('POST', '**/login', { data: true, message: 'success' }).as('postLogin');
+  cy.intercept('POST', '**/logout', { data: true, message: 'success' }).as('postLogout');
+  cy.intercept('POST', '**/contact', { message: 'success' }).as('postContactForm');
+  cy.intercept('GET', '**/user/saved-searches').as('getSavedSearches');
+  cy.intercept('DELETE', '**/user/saved-searches/*').as('deleteSavedSearches');
+  cy.intercept('GET', '**/user/saved-interests').as('getSavedInterests');
+  cy.intercept('PATCH', '**/user/saved-interests/*').as('patchSavedInterest');
+  cy.intercept('POST', '**/user/saved-interests').as('postSavedInterest');
+  cy.intercept('DELETE', '**/user/saved-interests/*').as('deleteSavedInterest');
+  cy.intercept('GET', '**/education-events?*').as('getEducationEvents');
+  cy.intercept('GET', '**/education-events/filters?*').as('getEducationFilters');
 
   switch (Cypress.env('VIEWPORT')) {
     case 'small-phone': // iphone-3, small-phone

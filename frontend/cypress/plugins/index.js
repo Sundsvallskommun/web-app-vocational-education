@@ -8,6 +8,8 @@
 // You can read more here:
 // https://on.cypress.io/plugins-guide
 // ***********************************************************
+import codeCoverageTask from '@cypress/code-coverage/task';
+// import injectNextDevServer from '@cypress/react/plugins/next'
 
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
@@ -15,8 +17,14 @@
 /**
  * @type {Cypress.PluginConfig}
  */
-// eslint-disable-next-line no-unused-vars
-module.exports = (on, config) => {
+const config = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
-}
+  // if (config.testingType === 'component') {
+  //   injectNextDevServer(on, config);
+  // }
+  on('task', codeCoverageTask);
+  return config;
+};
+
+export default config;

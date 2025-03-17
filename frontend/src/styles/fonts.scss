@@ -1,28 +1,30 @@
+@use './variables.scss';
+
 @supports not (font-variation-settings: 'wght') {
   @font-face {
     font-family: 'Montserrat';
-    src: url($basePath + '/fonts/Montserrat-Regular.ttf');
+    src: url(variables.$basePath + '/fonts/Montserrat-Regular.ttf');
     font-display: swap;
     font-weight: 400;
   }
 
   @font-face {
     font-family: 'Montserrat';
-    src: url($basePath + '/fonts/Montserrat-Medium.ttf');
+    src: url(variables.$basePath + '/fonts/Montserrat-Medium.ttf');
     font-display: swap;
     font-weight: 500;
   }
 
   @font-face {
     font-family: 'Montserrat';
-    src: url($basePath + '/fonts/Montserrat-SemiBold.ttf');
+    src: url(variables.$basePath + '/fonts/Montserrat-SemiBold.ttf');
     font-display: swap;
     font-weight: 600;
   }
 
   @font-face {
     font-family: 'Montserrat';
-    src: url($basePath + '/fonts/Montserrat-Bold.ttf');
+    src: url(variables.$basePath + '/fonts/Montserrat-Bold.ttf');
     font-display: swap;
     font-weight: 700;
   }
@@ -32,9 +34,9 @@
   @font-face {
     font-family: 'Montserrat';
     src:
-      url($basePath + '/fonts/Montserrat-VariableFont_wght.ttf') format('truetype supports variations')
+      url(variables.$basePath + '/fonts/Montserrat-VariableFont_wght.ttf') format('truetype supports variations')
         tech('variations'),
-      url($basePath + '/fonts/Montserrat-VariableFont_wght.ttf') format('truetype-variations');
+      url(variables.$basePath + '/fonts/Montserrat-VariableFont_wght.ttf') format('truetype-variations');
     font-weight: 100 1000;
     font-stretch: 25% 151%;
   }

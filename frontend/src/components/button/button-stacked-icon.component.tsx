@@ -2,9 +2,9 @@ import { cx } from '@sk-web-gui/react';
 import React, { HTMLAttributes } from 'react';
 
 interface ButtonStackedIconProps extends HTMLAttributes<HTMLButtonElement> {
-  icon;
-  active?;
-  children?;
+  icon: React.ReactNode;
+  active?: boolean;
+  children?: React.ReactNode;
   className?: string;
   disabled?: boolean;
 }

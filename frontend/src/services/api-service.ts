@@ -1,32 +1,22 @@
-import axios from 'axios';
-import Router from 'next/router';
 import { apiURL } from '@utils/api-url';
+import axios, { AxiosError } from 'axios';
 
 export interface Data {
   error?: string;
 }
 
-export interface ApiResponse<T> {
+export interface ApiResponse<T = unknown> {
   data: T;
   message: string;
 }
 
 const protectedRoutes = JSON.parse(process.env.NEXT_PUBLIC_PROTECTED_ROUTES as string);
 
-export const handleError = (error) => {
+export const handleError = (error: AxiosError<ApiResponse>) => {
   if (!protectedRoutes.includes(window?.location.pathname)) throw error;
 
-  if (error?.response?.status === 401 && !Router.pathname.includes('login')) {
-    Router.push(
-      {
-        pathname: `/login?path=${window?.location.pathname}`,
-        query: {
-          path: window?.location.pathname,
-          failMessage: error,
-        },
-      },
-      `/login?path=${window?.location.pathname}`
-    );
+  if (error?.response?.status === 401 && !window?.location.pathname.includes('login')) {
+    window.location.href = `/login?path=${window.location.pathname}&failMessage=${error.response.data.message}`;
   }
 
   throw error;

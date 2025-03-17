@@ -11,12 +11,13 @@ import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import { cx } from '@sk-web-gui/react';
 import { getBlockData, getStandardPageProps } from '@utils/page-types';
+import { GetServerSidePropsContext } from 'next';
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   return getStandardPageProps(context);
 }
 
-export const Utbildningsanordnare: React.FC = ({ pageData, layoutData }: PageProps) => {
+export const Utbildningsanordnare = ({ pageData, layoutData }: PageProps) => {
   return (
     <DefaultLayout title={`Yrkesutbildning - ${pageData?.title}`} layoutData={layoutData}>
       <ContentBlock>

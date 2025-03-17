@@ -1,13 +1,13 @@
 import { PageData, PageDataResponse, PagesData } from '@interfaces/admin-data';
-import { NextApiResponse } from 'next';
+import { IncomingMessage, ServerResponse } from 'node:http';
 import { ApiResponse, apiService } from './api-service';
 
-interface PageResponse {
+export interface PageResponse {
   props?: PageDataResponse;
   redirect?: { permanent: boolean; destination: string };
 }
 
-export const getPage: (url: string, res: NextApiResponse) => Promise<PageResponse> = (url, res) => {
+export const getPage: (url: string, res: ServerResponse<IncomingMessage>) => Promise<PageResponse> = (url, res) => {
   res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59');
   return apiService
     .get<ApiResponse<PageData>>(`page`, { params: { url: url } })

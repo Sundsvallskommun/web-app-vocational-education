@@ -1,5 +1,7 @@
 import ModalCustom from '@components/modal/modal-custom.component';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { ServiceResponse } from '@interfaces/service';
+import { User } from '@interfaces/user';
 import { useUserStore } from '@services/user-service/user-service';
 import { Button, FormControl, FormLabel, Input } from '@sk-web-gui/react';
 import { appURL } from '@utils/app-url';
@@ -7,7 +9,15 @@ import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-export default function TwoFactorModal({ show, setShow, checkError }) {
+export default function TwoFactorModal({
+  show,
+  setShow,
+  checkError,
+}: {
+  show: boolean;
+  setShow: (show: boolean) => void;
+  checkError: (error: NonNullable<ServiceResponse<User, string | null>['error']>) => void;
+}) {
   const router = useRouter();
   const { verify2FA, setUser } = useUserStore();
 

@@ -1,9 +1,13 @@
 import Button from '@components/button/button.component';
-import { categoryFilterPlaceholder } from '@components/form/category.input.component';
-import { levelFilterPlaceholder } from '@components/form/level.input.component';
-import StudyLocationInput, { studyLocationFilterPlaceholder } from '@components/form/study-location.input.component';
-import TimeIntervalInput, { timeIntervalFilterPlaceholder } from '@components/form/time-interval.input.component';
-import { useFiltersContext } from '@contexts/filters.context';
+import {
+  categoryFilterPlaceholder,
+  levelFilterPlaceholder,
+  studyLocationFilterPlaceholder,
+  timeIntervalFilterPlaceholder,
+} from '@components/form/defaults';
+import StudyLocationInput from '@components/form/study-location.input.component';
+import TimeIntervalInput from '@components/form/time-interval.input.component';
+import { useFiltersContext } from '@contexts/filters/use-filters';
 import AddIcon from '@mui/icons-material/Add';
 import { FormControl, FormLabel, Select } from '@sk-web-gui/react';
 import { getFormattedLabelFromValue } from '@utils/labels';

@@ -7,7 +7,7 @@ import EducationsCards from '@components/search/educations-cards/educations-card
 import EducationsFilters from '@components/search/educations-filters.component';
 import EducationsTable from '@components/search/educations-table/educations-table.component';
 import Search from '@components/search/search.component';
-import { useAppContext } from '@contexts/app.context';
+import { useAppContext } from '@contexts/app-context/use-app-context';
 import { PageProps } from '@interfaces/admin-data';
 import { Course, EducationFilterOptions } from '@interfaces/education';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
@@ -23,17 +23,18 @@ import { cx, Link, Spinner } from '@sk-web-gui/react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getStandardPageProps } from '@utils/page-types';
 import { addToQueryString, createObjectFromQueryString, deserializeURL, serializeURL } from '@utils/url';
+import { GetServerSidePropsContext } from 'next';
 import NextLink from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 import Sticky from 'react-sticky-el';
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   return getStandardPageProps(context);
 }
 
-export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
+export const Sok = ({ layoutData, pageData }: PageProps) => {
   const { searchCompareList, setSearchCompareList, searchCurrent, setSearchCurrent } = useAppContext();
 
   // pagination
@@ -99,16 +100,16 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
     );
   };
 
-  const handleSetPage = (page) => {
-    if (typeof page === 'function') {
-      return handleSetPage(page(page));
+  const handleSetPage: React.Dispatch<React.SetStateAction<number>> = (_page) => {
+    if (typeof _page === 'function') {
+      return handleSetPage(_page(page));
     }
-    setPage(page);
-    updateParams(addToQueryString({ page: page as number }));
+    setPage(_page);
+    updateParams(addToQueryString({ page: _page }));
   };
 
   const handleSetPageSize = useCallback(
-    (size) => {
+    (size: React.SetStateAction<number>) => {
       if (typeof size === 'function') {
         return handleSetPageSize(size(pageSize));
       }
@@ -148,7 +149,7 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
   const handleOnSubmitCallback = (filterData: EducationFilterOptions) => {
     const filters = getCurrentFilters();
     if (JSON.stringify(filters) !== JSON.stringify(filterData)) {
-      const includeEmptyValues = {};
+      const includeEmptyValues: Record<string, boolean> = {};
       Object.keys(emptyDefaultDiff()).forEach((key) => {
         includeEmptyValues[key] = true;
       });
@@ -326,7 +327,6 @@ export const Sok: React.FC = ({ layoutData, pageData }: PageProps) => {
                 )}
               </div>
               <div className="max-w-[300px] compareStickyParent">
-                  
                 <Sticky
                   boundaryElement=".compareStickyParent"
                   wrapperClassName="fixed bottom-0 inset-x-0 desktop:relative desktop:bottom-auto desktop:inset-x-auto"

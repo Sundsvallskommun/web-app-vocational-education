@@ -19,7 +19,7 @@ export default function EducationsStartingBlock({ educationsStartingBlock }: Edu
       title={'Utbildningar som snart börjar'}
       cards={educationsStartingBlock?.courses ?? []}
       cardRender={(course, index) => {
-        const informationSanitized = getSanitizedInformation(course?.information);
+        const informationSanitized = course?.information ? getSanitizedInformation(course?.information) : null;
         return (
           <DropCard
             key={`${index}`}
@@ -43,7 +43,9 @@ export default function EducationsStartingBlock({ educationsStartingBlock }: Edu
               {course?.scope ?
                 <div className="mb-8 text-sm text-label leading-[1.8rem]">{`Studietakt: ${course?.scope}%`}</div>
               : null}
-              {informationSanitized && <div dangerouslySetInnerHTML={{ __html: informationSanitized }} />}
+              {informationSanitized ?
+                <div dangerouslySetInnerHTML={{ __html: informationSanitized }} />
+              : null}
             </div>
           </DropCard>
         );

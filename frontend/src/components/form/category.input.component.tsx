@@ -1,12 +1,10 @@
-import { useFiltersContext } from '@contexts/filters.context';
 import { Checkbox, Divider, FormControl, FormLabel, useThemeQueries } from '@sk-web-gui/react';
 import { getFormattedLabelFromValue } from '@utils/labels';
 import { useFormContext } from 'react-hook-form';
 import FilterPopup from './filter-popup.component';
 import { defaultUseFormSetValueOptions } from '@utils/forms';
-
-export const categoryFilterPlaceholder = (count: number): string =>
-  count > 1 ? 'Utbildningskategori(er)' : 'Utbildningskategori';
+import { categoryFilterPlaceholder } from './defaults';
+import { useFiltersContext } from '@contexts/filters/use-filters';
 
 export default function CategoryInput({
   showLabel = false,

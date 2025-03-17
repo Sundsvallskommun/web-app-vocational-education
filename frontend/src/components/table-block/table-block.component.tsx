@@ -1,7 +1,8 @@
+import { TableBlock as TableBlockType } from '@interfaces/admin-data';
 import { Link, Table, cx, SortMode } from '@sk-web-gui/react';
 import { useState } from 'react';
 
-export const TableBlock = ({ tableBlock }) => {
+export const TableBlock = ({ tableBlock }: { tableBlock?: TableBlockType }) => {
   const [sortColumn, setSortColumn] = useState<number>(0);
   const [sortOrder, setSortOrder] = useState(SortMode.ASC);
 

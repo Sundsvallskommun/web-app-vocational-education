@@ -1,11 +1,10 @@
 import { Checkbox, Divider, FormControl, FormLabel, useThemeQueries } from '@sk-web-gui/react';
 import { useFormContext } from 'react-hook-form';
 import FilterPopup from './filter-popup.component';
-import { useFiltersContext } from '@contexts/filters.context';
 import { getFormattedLabelFromValue } from '@utils/labels';
 import { defaultUseFormSetValueOptions } from '@utils/forms';
-
-export const studyLocationFilterPlaceholder = (count: number): string => (count > 1 ? 'Kommun(er)' : 'Kommun');
+import { studyLocationFilterPlaceholder } from './defaults';
+import { useFiltersContext } from '@contexts/filters/use-filters';
 
 export default function StudyLocationInput({
   showLabel = false,

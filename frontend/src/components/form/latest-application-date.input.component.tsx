@@ -1,8 +1,7 @@
 import { DatePicker, FormControl, FormLabel, useThemeQueries } from '@sk-web-gui/react';
 import { useFormContext } from 'react-hook-form';
 import FilterPopup from './filter-popup.component';
-
-const latestApplicationDatePlaceholder = 'Sista ansökningsdatum';
+import { latestApplicationDatePlaceholder } from './defaults';
 
 export default function LatestApplicationDateInput({
   label = latestApplicationDatePlaceholder,

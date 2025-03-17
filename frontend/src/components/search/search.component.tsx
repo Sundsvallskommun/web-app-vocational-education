@@ -1,5 +1,5 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { Button, Link, SearchField } from '@sk-web-gui/react';
+import { Button, CustomOnChangeEvent, Link, SearchField } from '@sk-web-gui/react';
 import { appURL } from '@utils/app-url';
 import { addToQueryString } from '@utils/url';
 import NextLink from 'next/link';
@@ -39,21 +39,21 @@ export const Search: React.FC<{
     });
   };
 
-  const handleOnChange = (e) => {
+  const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.value !== query) {
       setQuery(e.target.value);
     }
   };
 
-  const handleOnSelect = (e) => {
-    if (e.target.value && e.target.value !== query) {
+  const handleOnSelect = (e: CustomOnChangeEvent<string | string[]>) => {
+    if (e.target.value && e.target.value !== query && typeof e.target.value === 'string') {
       pushQuery(e.target.value);
       setTimeout(() => setQuery(''), 100);
     }
   };
 
   const handleOnReset = () => {
-    onReset && onReset();
+    onReset?.();
     setQuery('');
     if (keepParams) {
       pushQuery('');

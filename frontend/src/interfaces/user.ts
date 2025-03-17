@@ -3,7 +3,9 @@ import { EducationFilterOptions } from './education';
 export interface Permissions {
   adminEdit: boolean;
   adminRegistrate: boolean;
+  adminEditAccounts: boolean;
   userSaveSearches: boolean;
+  userSaveInterests: boolean;
 }
 
 export interface User {

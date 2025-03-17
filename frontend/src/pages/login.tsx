@@ -7,12 +7,13 @@ import { PageProps } from '@interfaces/admin-data';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import { cx } from '@sk-web-gui/react';
 import { getStandardPageProps } from '@utils/page-types';
+import { GetServerSidePropsContext } from 'next';
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   return getStandardPageProps(context);
 }
 
-export const Login: React.FC = ({ layoutData, pageData }: PageProps) => {
+export const Login = ({ layoutData, pageData }: PageProps) => {
   return (
     <DefaultLayout title={`Yrkesutbildning - Logga in`} layoutData={layoutData}>
       <ContentBlock>

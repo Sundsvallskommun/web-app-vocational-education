@@ -1,8 +1,7 @@
-const envalid = await import('envalid');
+/* eslint-disable @typescript-eslint/no-require-imports */
+const envalid = require('envalid');
 
-const { str, bool, makeValidator, cleanEnv } = envalid.default || envalid;
-
-const authDependent = makeValidator((x) => {
+const authDependent = envalid.makeValidator((x) => {
   const authEnabled = process.env.HEALTH_AUTH === 'true';
 
   if (authEnabled && !x.length) {
@@ -12,23 +11,19 @@ const authDependent = makeValidator((x) => {
   return x;
 });
 
-cleanEnv(process.env, {
-  NEXT_PUBLIC_API_URL: str(),
-  HEALTH_AUTH: bool(),
+envalid.cleanEnv(process.env, {
+  NEXT_PUBLIC_API_URL: envalid.str(),
+  HEALTH_AUTH: envalid.bool(),
   HEALTH_USERNAME: authDependent(),
   HEALTH_PASSWORD: authDependent(),
 });
 
-const withBundleAnalyzer = (await import('@next/bundle-analyzer')).default({
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
-export default withBundleAnalyzer({
+module.exports = withBundleAnalyzer({
   output: 'standalone',
-  i18n: {
-    locales: ['sv'],
-    defaultLocale: 'sv',
-  },
   images: {
     remotePatterns: [{ hostname: process.env.DOMAIN_NAME || 'localhost' }, { hostname: 'placehold.co' }],
     formats: ['image/avif', 'image/webp'],
@@ -36,6 +31,10 @@ export default withBundleAnalyzer({
   basePath: process.env.BASE_PATH,
   sassOptions: {
     prependData: `$basePath: '${process.env.BASE_PATH}';`,
+  },
+  transpilePackages: ['lucide-react'],
+  experimental: {
+    optimizePackageImports: ['@sk-web-gui'],
   },
   async rewrites() {
     return [{ source: '/napi/:path*', destination: '/api/:path*' }];

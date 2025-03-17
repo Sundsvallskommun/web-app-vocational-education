@@ -12,7 +12,10 @@ import { routeDynamicSlugFormat } from '@utils/app-url';
 import { fallbackDataValue } from '@utils/labels';
 import dayjs from 'dayjs';
 
-export const CompareCards: React.FC<{ compareList: Course[]; onRemove? }> = ({ compareList, onRemove }) => {
+export const CompareCards: React.FC<{ compareList: Course[]; onRemove?: (item: Course) => void }> = ({
+  compareList,
+  onRemove,
+}) => {
   const compareSwiperRef = useRef(null);
 
   const [page, setPage] = useState<number>(1);
@@ -24,7 +27,7 @@ export const CompareCards: React.FC<{ compareList: Course[]; onRemove? }> = ({ c
   };
 
   const handleOnRemove = (item: Course) => () => {
-    onRemove && onRemove(item);
+    onRemove?.(item);
   };
 
   return (

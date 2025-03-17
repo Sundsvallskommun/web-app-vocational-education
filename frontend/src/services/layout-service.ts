@@ -1,13 +1,13 @@
 import { LayoutData, LayoutDataResponse } from '@interfaces/admin-data';
-import { NextApiResponse } from 'next';
+import { IncomingMessage, ServerResponse } from 'node:http';
 import { ApiResponse, apiService } from './api-service';
 
-interface LayoutResponse {
+export interface LayoutResponse {
   props?: LayoutDataResponse;
   redirect?: { permanent: boolean; destination: string };
 }
 
-export const getLayout: (res: NextApiResponse) => Promise<LayoutResponse> = (res) => {
+export const getLayout: (res: ServerResponse<IncomingMessage>) => Promise<LayoutResponse> = (res) => {
   res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59');
   return apiService
     .get<ApiResponse<LayoutData>>(`layout`)

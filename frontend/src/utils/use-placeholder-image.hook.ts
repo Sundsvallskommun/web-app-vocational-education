@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export function usePlaceholderImg(src) {
+export function usePlaceholderImg(src?: string) {
   const [imageSrc, setImageSrc] = useState(`${process.env.NEXT_PUBLIC_BASE_PATH}/placeholder-ym.png`);
   useEffect(() => {
     if (src) {

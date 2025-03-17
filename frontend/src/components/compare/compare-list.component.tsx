@@ -3,12 +3,15 @@ import { Checkbox, Link, Pagination, Table } from '@sk-web-gui/react';
 import { getPageListSlice } from '@utils/pagination';
 import NextLink from 'next/link';
 import { useState } from 'react';
-import { tableCellTextClasses } from '../search/educations-table/educations-table.component';
 import { routeDynamicSlugFormat } from '@utils/app-url';
+import { tableCellTextClasses } from '@components/search/educations-table/defaults';
 
-export const CompareList: React.FC<{ compareList: Course[]; onRemove? }> = ({ compareList, onRemove }) => {
+export const CompareList: React.FC<{ compareList: Course[]; onRemove?: (item: Course) => void }> = ({
+  compareList,
+  onRemove,
+}) => {
   const handleOnRemove = (item: Course) => () => {
-    onRemove && onRemove(item);
+    onRemove?.(item);
   };
 
   const [pageSize] = useState<number>(10);

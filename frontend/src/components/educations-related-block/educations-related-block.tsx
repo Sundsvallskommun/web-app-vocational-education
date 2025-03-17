@@ -23,7 +23,7 @@ export default function EducationsRelatedBlock({ educations, show }: EducationsR
       loadMoreColorClass="text-blue-light"
       cards={educations || []}
       cardRender={(edu, index) => {
-        const informationSanitized = getSanitizedInformation(edu?.information);
+        const informationSanitized = edu?.information ? getSanitizedInformation(edu?.information) : null;
         return (
           <DropCard
             key={`${index}`}
@@ -46,7 +46,9 @@ export default function EducationsRelatedBlock({ educations, show }: EducationsR
               {edu?.scope ?
                 <div className="mb-8 text-sm text-label leading-[1.8rem]">{`Studietakt: ${edu?.scope}%`}</div>
               : null}
-              {informationSanitized && <div dangerouslySetInnerHTML={{ __html: informationSanitized }} />}
+              {informationSanitized ?
+                <div dangerouslySetInnerHTML={{ __html: informationSanitized }} />
+              : null}
             </div>
           </DropCard>
         );

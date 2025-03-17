@@ -1,18 +1,19 @@
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import NextLink from 'next/link';
-import Drop, { useDropProps } from '@components/drop/drop.component';
+import Drop from '@components/drop/drop.component';
 import { cx } from '@sk-web-gui/react';
+import { useDropProps } from '@components/drop/use-drop.component';
 
 export interface DropCard {
   children?: React.ReactNode;
   toolbar?: React.ReactNode;
-  href?;
-  dropIcon?;
-  dropDate?;
+  href?: string;
+  dropIcon?: React.ReactNode;
+  dropDate?: Date;
   dropImageSrc?: string;
   className?: string;
   classNameCard?: string;
-  footer?;
+  footer?: React.ReactNode;
   dropClassName?: string;
   allCardClickable?: boolean;
   onClick?: () => void;
@@ -35,12 +36,12 @@ export const DropCard: React.FC<DropCard> = ({
 }) => {
   const { dropContent, dropHeight } = useDropProps(dropIcon, dropDate, dropImageSrc);
 
-  const CardComp = allCardClickable ? NextLink : 'div';
+  const CardComp = allCardClickable && href ? NextLink : 'div';
   const ContentComp = !allCardClickable ? NextLink : 'div';
 
   return (
     <CardComp
-      href={allCardClickable ? href : undefined}
+      href={allCardClickable && href ? href : ''}
       onClick={allCardClickable ? onClick : undefined}
       className={`${className} drop-card-wrapper box-content flex flex-col group`}
       style={{ paddingTop: dropHeight / 2 + 'px' }}
@@ -56,7 +57,7 @@ export const DropCard: React.FC<DropCard> = ({
         />
         <div className={cx(`drop-card-container`, toolbar && 'flex-col-reverse')}>
           <ContentComp
-            href={!allCardClickable ? href : undefined}
+            href={!allCardClickable && href ? href : ''}
             className="drop-card-container-inner"
             onClick={!allCardClickable ? onClick : undefined}
           >

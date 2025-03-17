@@ -39,7 +39,7 @@ export default function SavedInterests() {
     }
   };
 
-  const handleSetShowModal = (value) => {
+  const handleSetShowModal = (value: boolean) => {
     setSelectedInterest(emptyUserSavedInterest);
     setShowEditModal(value);
   };
@@ -175,7 +175,7 @@ export default function SavedInterests() {
       }
       {showEditModal && (
         <SavedInterestsFormEditModal
-          interestData={{ ...emptyUserSavedInterest, ...selectedInterest }}
+          interestData={{ ...emptyUserSavedInterest, ...(selectedInterest as UserSavedInterest) }}
           show={showEditModal}
           setShow={handleSetShowModal}
         />

@@ -5,7 +5,7 @@ import Button from '@components/button/button.component';
 import CompareCards from '@components/compare/compare-cards.component';
 import CompareList from '@components/compare/compare-list.component';
 import { BigDropHeader } from '@components/header/big-drop-header.component';
-import { useAppContext } from '@contexts/app.context';
+import { useAppContext } from '@contexts/app-context/use-app-context';
 import { PageProps } from '@interfaces/admin-data';
 import { Course } from '@interfaces/education';
 import DefaultLayout from '@layouts/default-layout/default-layout.component';
@@ -14,14 +14,15 @@ import CropPortraitOutlinedIcon from '@mui/icons-material/CropPortraitOutlined';
 import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
 import { cx, Link } from '@sk-web-gui/react';
 import { getStandardPageProps } from '@utils/page-types';
+import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   return getStandardPageProps(context);
 }
 
-export const Compare: React.FC = ({ layoutData, pageData }: PageProps) => {
+export const Compare = ({ layoutData, pageData }: PageProps) => {
   const { searchCompareList, setSearchCompareList } = useAppContext();
   const [activeListing, setActiveListing] = useState(1);
   const router = useRouter();

@@ -35,6 +35,7 @@ const roles = new Map<UserRoleEnum, Partial<Permissions>>([
     {
       adminEdit: true,
       adminRegistrate: true,
+      adminEditAccounts: false,
       userSaveSearches: true,
       userSaveInterests: true,
     },
@@ -42,7 +43,9 @@ const roles = new Map<UserRoleEnum, Partial<Permissions>>([
   [
     'EDUCATIONCOORDINATOR',
     {
+      adminEdit: false,
       adminRegistrate: true,
+      adminEditAccounts: false,
       userSaveSearches: true,
       userSaveInterests: true,
     },

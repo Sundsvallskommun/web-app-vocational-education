@@ -4,9 +4,9 @@ import { sendFormData } from '@services/contact-service';
 import { FormProvider, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { useSnackbar } from '@sk-web-gui/react';
-import { FiltersFetcher } from '@contexts/filters.context';
+import { FiltersFetcher } from '@contexts/filters/filters.context';
 
-export default function ContactFormLogic({ children }) {
+export default function ContactFormLogic({ children }: { children: React.ReactNode }) {
   const message = useSnackbar();
 
   const formSchema = yup

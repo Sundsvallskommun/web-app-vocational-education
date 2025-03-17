@@ -11,15 +11,24 @@ interface WysiwygProps {
   children?: React.ReactNode | React.ReactNode[];
 }
 
-export const FactBlock = (props) => {
+interface FactBlockProps {
+  children?: React.ReactNode | React.ReactNode[];
+}
+
+export const FactBlock = (props: FactBlockProps) => {
   return <div data-type="factblock">{props.children}</div>;
 };
 
-export const SiteNavigationButton = (props) => {
+interface SiteNavigationButtonProps {
+  href?: string;
+  children?: React.ReactNode | React.ReactNode[];
+}
+
+export const SiteNavigationButton = (props: SiteNavigationButtonProps) => {
   const { isMinDesktop } = useThemeQueries();
 
   return (
-    <NextLink href={props.href} data-type="sitenavigationbutton" className="inline-flex">
+    <NextLink href={props.href ?? ''} data-type="sitenavigationbutton" className="inline-flex">
       <Button
         as="span"
         dense={!isMinDesktop}
@@ -45,8 +54,13 @@ function isExternalLink(url: string): boolean {
   return linkUrl.hostname !== currentUrl.hostname || linkUrl.protocol !== currentUrl.protocol;
 }
 
-export const SpanLink = (props) => {
-  const isExternal = isExternalLink(props.href);
+interface SpanLinkProps {
+  href?: string;
+  children?: React.ReactNode | React.ReactNode[];
+}
+
+export const SpanLink = (props: SpanLinkProps) => {
+  const isExternal = isExternalLink(props.href ?? '');
   if (isExternal) {
     return (
       <Link href={props.href} external={true}>
@@ -55,7 +69,7 @@ export const SpanLink = (props) => {
     );
   }
   return (
-    <NextLink href={props.href}>
+    <NextLink href={props.href ?? ''}>
       <Link as="span" external={false}>
         {props.children}
       </Link>

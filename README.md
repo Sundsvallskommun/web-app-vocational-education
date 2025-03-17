@@ -19,13 +19,13 @@ Dessa APIer används i projektet, applikationsanvändaren i WSO2 måste prenumer
 
 ### Steg för steg
 
-1. Klona ner repot.
+1. **Klona ner repot.**
 
 ```
 git clone git@github.com:Sundsvallskommun/web-app-vocational-education.git
 ```
 
-2. Installera dependencies för både `backend` och `frontend`
+2. **Installera dependencies för både `backend` och `frontend`**
 
 ```
 cd frontend
@@ -35,7 +35,7 @@ cd backend
 yarn install
 ```
 
-3. Skapa .env-fil för `frontend`
+3. **Skapa .env-fil för `frontend`**
 
 ```
 cd frontend
@@ -44,22 +44,26 @@ cp .env-example .env
 
 Redigera `.env` för behov, för utveckling bör exempelvärdet fungera.
 
-4. Skapa .env-fil för `backend`
+4. **Skapa .env-filer för `backend`**
 
 ```
 cd backend
 cp .env.example.local .env.development.local
-cp .env.example.local .env.test.local
 ```
 
 redigera `.env.development.local` för behov. URLer, nycklar och cert behöver fyllas i korrekt.
 
 - `CLIENT_KEY` och `CLIENT_SECRET` måste fyllas i för att APIerna ska fungera, du måste ha en applikation från WSO2-portalen
-- `SAML_ENTRY_SSO` behöver pekas till en SAML IDP
-- `SAML_IDP_PUBLIC_CERT` ska stämma överens med IDPens cert
-- `SAML_PRIVATE_KEY` och `SAML_PUBLIC_KEY` behöver bara fyllas i korrekt om man kör mot en riktig IDP
 
-5. Initiera databas för backend
+skapa sedan en .env.test.local utifrån .env.development.local:
+
+```
+cp .env.development.local .env.test.local
+```
+
+Och sätt TEST=true
+
+5. **Initiera databas för backend**
 
 Sätt upp en mysql-server, förslagsvis MariaDB och justera för uppgifterna i backend/.env.development.local. Admin-användaren för inloggning specas i samma env-fil och skapas vid seedning av databasen, kom ihåg att lägga in din mejladress där.
 
@@ -70,4 +74,30 @@ yarn prisma:migrate
 yarn prisma:seed
 ```
 
-- Vid flytt av databas, notera att Page.imgSrc får url med server-url
+6. **Starta**
+
+backend:
+
+```
+yarn dev
+```
+
+frontend:
+
+```
+yarn dev
+```
+
+För att starta backend i test-läge med mockad data (cypress-tester eller vid utveckling när anslutning mot api:er är bruten)
+
+```
+yarn dev:test
+```
+
+## Bygg
+
+Bygg och starta backend först (Frontend behöver backend för att generera sidor), sedan bygg och starta frontend.
+
+## Flytt av databas
+
+- Notera att Page.imgSrc får url med server-url, så kolumnen imgSrc behöver sättas om

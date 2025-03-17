@@ -11,16 +11,6 @@ const validateEnv = () => {
     PORT: port(),
     BASE_URL_PREFIX: str(),
     MUNICIPALITY_ID: str(),
-    // SAML_CALLBACK_URL: url(),
-    // SAML_LOGOUT_CALLBACK_URL: url(),
-    // SAML_SUCCESS_REDIRECT: url(),
-    // SAML_SUCCESS_BASE: url(),
-    // SAML_FAILURE_REDIRECT: url(),
-    // SAML_ENTRY_SSO: url(),
-    // SAML_ISSUER: str(),
-    // SAML_IDP_PUBLIC_CERT: str(),
-    // SAML_PRIVATE_KEY: str(),
-    // SAML_PUBLIC_KEY: str(),
   });
 };
 

@@ -146,7 +146,6 @@ const mocks = {
       },
       apiService: {
         get: async ({ url }) => {
-          console.log('/education-events mock url', url);
           if (url.startsWith('/education-finder/3.0/2281/courses')) {
             const filter = educationFilterFromRequest(req);
             return {
@@ -178,7 +177,6 @@ const mocks = {
     get: ({ req }) => ({
       apiService: {
         get: async ({ url }) => {
-          console.log('/education-events mock url', url);
           if (url.startsWith('/education-finder/3.0/2281/courses')) {
             const filter = educationFilterFromRequest(req);
             return {
@@ -208,15 +206,12 @@ const mocks = {
     get: {
       apiService: {
         get: async ({ url }) => {
-          console.log('/education-events/filters mock url', url);
           if (url.startsWith('/education-finder/3.0/2281/courses/filters/category/values')) {
-            console.log('CATEGORY');
             return {
               data: mockedFilterCategories,
               message: 'success',
             };
           } else if (url.startsWith('/education-finder/3.0/2281/courses/filters/scope/values')) {
-            console.log('SCOPE');
             return {
               data: mockedFilterScope,
               message: 'success',

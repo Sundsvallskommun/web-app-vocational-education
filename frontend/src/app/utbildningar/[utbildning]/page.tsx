@@ -27,7 +27,7 @@ async function getPageProps(utbildning: string) {
     formattedString: utbildning,
   });
 
-  if (title && id) {
+  if (title && id !== undefined) {
     const educationEventRes = await getEducationEvent(id);
     const relatedEducationEventRes =
       educationEventRes.data?.category ?

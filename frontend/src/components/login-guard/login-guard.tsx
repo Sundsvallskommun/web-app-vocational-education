@@ -1,9 +1,10 @@
+'use client';
+
 import LoaderFullScreen from '@components/loader/loader-fullscreen.component';
 import { useUserStore } from '@services/user-service/user-service';
+import { protectedRoutes } from '@utils/protected-routes';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
-const protectedRoutes = JSON.parse(process.env.NEXT_PUBLIC_PROTECTED_ROUTES as string);
 
 export const LoginGuard: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const { user, setUser, getMe, reset: resetUser } = useUserStore();

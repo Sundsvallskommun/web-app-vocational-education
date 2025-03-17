@@ -1,6 +1,5 @@
 import { EmployerPromotionsBlockPromotions } from '@interfaces/admin-data';
 import { Course } from '@interfaces/education';
-import { GetServerSidePropsContext } from 'next';
 
 export const appURL = (path = ''): string => {
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL ?? '';
@@ -24,7 +23,7 @@ export const routeDynamicSlugFormat = (params: DynamicSlugUnion): string => {
 
   switch (slug) {
     case '/utbildningar/[utbildning]':
-      return data.id && data.name ? `${data.id}-${encodeURIComponent(data.name)}` : '';
+      return data.id !== undefined && data.name ? `${data.id}-${encodeURIComponent(data.name)}` : '';
 
     case '/utbildningar/efterfragade/[efterfragad]':
       return encodeURIComponent(data.title);
@@ -62,6 +61,3 @@ export const routeDynamicSlugFormatExtract = <T extends keyof DynamicSlugTypes>(
       throw new Error('Unsupported slug type');
   }
 };
-
-export const pathnameFromContext = (context: GetServerSidePropsContext) =>
-  new URL(`${appURL()}${context.resolvedUrl}`).pathname;

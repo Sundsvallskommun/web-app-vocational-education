@@ -55,7 +55,6 @@ export default function DefaultLayout({ layoutData, children }: DefaultLayoutPro
       </NextLink>
 
       <Sticky
-        scrollElement={window.document.body}
         boundaryElement=".DefaultLayout"
         stickyStyle={{ top: menuShow ? 0 : '-150px', transition: 'all .3s ease-in-out' }}
         stickyClassName={`block z-10 shadow-md ${menuShow ? 'menu-show' : 'menu-hide'}`}

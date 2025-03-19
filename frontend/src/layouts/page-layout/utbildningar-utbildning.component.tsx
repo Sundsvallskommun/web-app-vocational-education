@@ -146,12 +146,14 @@ export const Utbildning = ({
           </a>
         </div>
       </ContentBlock>
-      <ContentBlock classNameWrapper="!mt-lg desktop:!mt-[8rem]">
-        <h2>Om utbildningen</h2>
-        {sanitizedInformation ?
-          <p dangerouslySetInnerHTML={{ __html: sanitizedInformation }} />
-        : null}
-      </ContentBlock>
+      {sanitizedInformation ?
+        <ContentBlock classNameWrapper="!mt-lg desktop:!mt-[8rem]">
+          <h2>Om utbildningen</h2>
+          {sanitizedInformation ?
+            <p dangerouslySetInnerHTML={{ __html: sanitizedInformation }} />
+          : null}
+        </ContentBlock>
+      : <></>}
 
       {educationData.provider ?
         <ContentBlock classNameWrapper="!mt-xl">
@@ -160,18 +162,20 @@ export const Utbildning = ({
         </ContentBlock>
       : <></>}
 
-      <ContentBlock classNameWrapper="!mt-xl">
-        <a className="inline-block mb-md" href={educationData.url ?? educationData.providerUrl} target="_blank">
-          <Button
-            as="span"
-            dense={!isMinDesktop}
-            className="override w-fit !text-sm small-device-min:!text-base"
-            rightIcon={<OpenInNewIcon />}
-          >
-            <span>Till utbildningens hemsida</span>
-          </Button>
-        </a>
-      </ContentBlock>
+      {educationData.url || educationData.providerUrl ?
+        <ContentBlock classNameWrapper="!mt-xl">
+          <a className="inline-block mb-md" href={educationData.url || educationData.providerUrl} target="_blank">
+            <Button
+              as="span"
+              dense={!isMinDesktop}
+              className="override w-fit !text-sm small-device-min:!text-base"
+              rightIcon={<OpenInNewIcon />}
+            >
+              <span>Till utbildningens hemsida</span>
+            </Button>
+          </a>
+        </ContentBlock>
+      : <></>}
 
       <FAQBlock classNameWrapper="pt-80" faqBlock={getBlockData(pageData?.faqBlock)} />
 

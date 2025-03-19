@@ -12,7 +12,7 @@ import DefaultLayout from '@layouts/default-layout/default-layout.component';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import SchoolIcon from '@mui/icons-material/School';
 import { getEducationLengthString, getSanitizedInformation } from '@services/education-service/education-service';
-import { Breadcrumb, useThemeQueries } from '@sk-web-gui/react';
+import { Breadcrumb, Link, useThemeQueries } from '@sk-web-gui/react';
 import { getFormattedLabelFromValue, orFallbackDataValue } from '@utils/labels';
 import { getBlockData } from '@utils/page-types';
 import NextLink from 'next/link';
@@ -156,22 +156,32 @@ export const Utbildning = ({
       {educationData.provider ?
         <ContentBlock classNameWrapper="!mt-xl">
           <h2>Skola som anordnar utbildningen</h2>
-          <p>{educationData.provider}</p>
+          <p>
+            {educationData.provider}
+            {'. '}
+            {educationData.providerUrl ?
+              <Link href={educationData.providerUrl} external>
+                Till skolans hemsida
+              </Link>
+            : null}
+          </p>
         </ContentBlock>
       : <></>}
 
-      <ContentBlock classNameWrapper="!mt-xl">
-        <a className="inline-block mb-md" href={educationData.url ?? educationData.providerUrl} target="_blank">
-          <Button
-            as="span"
-            dense={!isMinDesktop}
-            className="override w-fit !text-sm small-device-min:!text-base"
-            rightIcon={<OpenInNewIcon />}
-          >
-            <span>Till utbildningens hemsida</span>
-          </Button>
-        </a>
-      </ContentBlock>
+      {educationData.url || educationData.providerUrl ?
+        <ContentBlock classNameWrapper="!mt-xl">
+          <a className="inline-block mb-md" href={educationData.url || educationData.providerUrl} target="_blank">
+            <Button
+              as="span"
+              dense={!isMinDesktop}
+              className="override w-fit !text-sm small-device-min:!text-base"
+              rightIcon={<OpenInNewIcon />}
+            >
+              <span>Till utbildningens hemsida</span>
+            </Button>
+          </a>
+        </ContentBlock>
+      : <></>}
 
       <FAQBlock classNameWrapper="pt-80" faqBlock={getBlockData(pageData?.faqBlock)} />
 

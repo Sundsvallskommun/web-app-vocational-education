@@ -5,6 +5,8 @@ import { getPages } from '@utils/file-tree';
 import { urlSegmentToLabel } from '@utils/url';
 import path from 'path';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata() {
   return {
     title: `${urlSegmentToLabel('siteguide')} - ${appName()}`,

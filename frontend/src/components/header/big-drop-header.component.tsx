@@ -24,16 +24,17 @@ export const BigDropHeader: React.FC<BigDropHeaderProps> = ({
     <div className="desktop:flex">
       {imageSrc && (
         <div
-          className={`mx-auto ${imageDivClassName} ${
+          className={`mx-auto aspect-square ${imageDivClassName} ${
             React.Children.count(children) > 1 ?
-              'max-w-[380px] desktop:w-[380px] desktop:h-[380px]'
+              'max-w-[380px] desktop:w-[380px] max-h-[380px] desktop:h-[380px]'
             : 'max-w-[412px] desktop:w-[412px] desktop:h-[412px]'
           } order-2 relative mb-[38px] desktop:mb-0`}
         >
           <Image
             priority
             className="next-img drop-right !h-full"
-            fill
+            layout="fill"
+            objectFit="contain"
             sizes="(max-width: 768px) 100vw"
             src={`${_imageSrc}`}
             alt={`${imageAlt}`}

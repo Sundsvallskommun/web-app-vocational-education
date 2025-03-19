@@ -11,6 +11,8 @@ import dayjs from 'dayjs';
 import { MetadataRoute } from 'next';
 import path from 'path';
 
+export const revalidate = 3600;
+
 interface GenerateSiteMapProps {
   pages: string[];
   dynamic: {

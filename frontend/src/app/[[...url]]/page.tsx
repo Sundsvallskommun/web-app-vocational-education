@@ -1,11 +1,10 @@
 import { LayoutDataResponse, PageDataResponse } from '@interfaces/admin-data';
 import StandardPage from '@layouts/page-layout/standard-page.component';
-import { getAdminPages } from '@services/page-service';
 import { appName } from '@utils/app-name';
-import { getFilePages } from '@utils/file-tree';
 import { getStandardPageProps } from '@utils/page-types';
 import { urlSegmentToLabel } from '@utils/url';
-import path from 'path';
+
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: Promise<{ url: string[] }> }) {
   const { url } = await params;
@@ -13,15 +12,6 @@ export async function generateMetadata({ params }: { params: Promise<{ url: stri
     title: `${url ? url?.map((segment: string) => urlSegmentToLabel(segment)).join(' - ') : 'Startsida'} - ${appName()}`,
   };
 }
-
-export const generateStaticParams = async () => {
-  const adminPages = (await getAdminPages()).map((x) => x.url);
-  const pages = await getFilePages(path.join('src', 'app'));
-  const routePages = adminPages.filter((x) => !pages.some((page) => page === x));
-  return routePages.map((page) => ({
-    url: [page],
-  }));
-};
 
 async function getPageProps(pathname: string) {
   const paramsUrl = Array.isArray(pathname) ? pathname.join('/') : pathname;

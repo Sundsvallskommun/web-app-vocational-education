@@ -3,6 +3,8 @@ import { appName } from '@utils/app-name';
 import { getStandardPageProps } from '@utils/page-types';
 import { urlSegmentToLabel } from '@utils/url';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata() {
   return {
     title: `${urlSegmentToLabel('jamfor')} - ${appName()}`,

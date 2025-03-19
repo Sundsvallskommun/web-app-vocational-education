@@ -57,7 +57,7 @@ export default function SavedSearches() {
       <div className="grow flex flex-col mt-md">
         {userSavedSearches.length > 0 ?
           <SavedContentBlock className="desktop:!px-[3.3rem]">
-            <ul id="SavedSearches">
+            <ul id="SavedSearches" className="flex flex-col gap-y-lg">
               {pagedList.map((search, index) => (
                 <li key={`${index}`}>
                   <DropCard

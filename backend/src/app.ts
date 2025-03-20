@@ -157,7 +157,6 @@ class App {
 
     this.app.use(passport.initialize());
     this.app.use(passport.session());
-    // passport.use('saml', samlStrategy);
     passport.use('initial-auth', customStrategy);
 
     this.app.set('query parser', 'extended');

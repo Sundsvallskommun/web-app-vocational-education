@@ -25,7 +25,7 @@ Dessa APIer används i projektet, applikationsanvändaren i WSO2 måste prenumer
 git clone git@github.com:Sundsvallskommun/web-app-vocational-education.git
 ```
 
-2. **Installera dependencies för både `backend` och `frontend`**
+2. **Installera dependencies för `backend`, `frontend` och `admin`**
 
 ```
 cd frontend
@@ -33,12 +33,18 @@ yarn install
 
 cd backend
 yarn install
+
+cd admin
+yarn install
 ```
 
-3. **Skapa .env-fil för `frontend`**
+3. **Skapa .env-fil för `frontend` och `admin`**
 
 ```
 cd frontend
+cp .env-example .env
+
+cd admin
 cp .env-example .env
 ```
 

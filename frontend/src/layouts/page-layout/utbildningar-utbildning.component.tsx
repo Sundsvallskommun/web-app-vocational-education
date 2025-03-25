@@ -146,12 +146,14 @@ export const Utbildning = ({
           </a>
         </div>
       </ContentBlock>
-      <ContentBlock classNameWrapper="!mt-lg desktop:!mt-[8rem]">
-        <h2>Om utbildningen</h2>
-        {sanitizedInformation ?
-          <p dangerouslySetInnerHTML={{ __html: sanitizedInformation }} />
-        : null}
-      </ContentBlock>
+      {sanitizedInformation ?
+        <ContentBlock classNameWrapper="!mt-lg desktop:!mt-[8rem]">
+          <h2>Om utbildningen</h2>
+          {sanitizedInformation ?
+            <p dangerouslySetInnerHTML={{ __html: sanitizedInformation }} />
+          : null}
+        </ContentBlock>
+      : <></>}
 
       {educationData.provider ?
         <ContentBlock classNameWrapper="!mt-xl">

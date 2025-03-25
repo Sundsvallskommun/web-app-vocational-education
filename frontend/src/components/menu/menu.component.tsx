@@ -62,7 +62,7 @@ export const Menu: React.FC = () => {
             aria-label="Snabblänkar"
             className="mt-2xl flex flex-col gap-sm medium-device:gap-md text-[12px] medium-device:text-base"
           >
-            <ul>
+            <ul className="[&>li]:leading-[3.9rem]">
               <li>
                 <NextLink href="/personuppgifter">
                   <Link as="span">

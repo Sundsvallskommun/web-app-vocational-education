@@ -15,9 +15,9 @@ const Breadcrumbs = ({ lastItemTitle }: { lastItemTitle?: string }) => {
   return (
     <Breadcrumb className="" separator={<span className="mx-1">|</span>}>
       <Breadcrumb.Item>
-        <NextLink href="/" passHref legacyBehavior>
-          <Breadcrumb.Link href="/">Start</Breadcrumb.Link>
-        </NextLink>
+        <Breadcrumb.Link as={NextLink} href="/">
+          Start
+        </Breadcrumb.Link>
       </Breadcrumb.Item>
 
       {pathSegments.map((segment, index) => {

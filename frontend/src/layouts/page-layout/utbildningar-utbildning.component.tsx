@@ -34,15 +34,15 @@ export const Utbildning = ({
             <div>
               <Breadcrumb className="text-[13px]" separator={<span className="mx-1">|</span>}>
                 <Breadcrumb.Item>
-                  <NextLink href="/" passHref legacyBehavior>
-                    <Breadcrumb.Link href="/">Start</Breadcrumb.Link>
-                  </NextLink>
+                  <Breadcrumb.Link as={NextLink} href="/">
+                    Start
+                  </Breadcrumb.Link>
                 </Breadcrumb.Item>
 
                 <Breadcrumb.Item>
-                  <NextLink href="/utbildningar" passHref legacyBehavior>
-                    <Breadcrumb.Link href="/utbildningar">För dig som söker utbildning</Breadcrumb.Link>
-                  </NextLink>
+                  <Breadcrumb.Link as={NextLink} href="/utbildningar">
+                    För dig som söker utbildning
+                  </Breadcrumb.Link>
                 </Breadcrumb.Item>
 
                 <Breadcrumb.Item>

@@ -31,7 +31,29 @@
     }
 
     .sk-combobox-base {
-      @apply grow focus-within:ring-0 focus-within:ring-transparent;
+      @apply grow;
+
+      &,
+      &:focus,
+      &:focus-within {
+        @apply grow ring-0 ring-transparent outline-0 outline-transparent;
+      }
+
+      .sk-form-input {
+        @apply rounded-l-full -mt-1;
+
+        &:focus {
+          @apply outline-0 focus-classes py-sm;
+        }
+      }
+
+      .sk-form-input-addin-right {
+        @apply -ml-48;
+      }
+
+      .sk-form-input[value=''] + .sk-form-input-addin-right {
+        @apply -ml-26;
+      }
     }
 
     .sk-search-field {
@@ -41,7 +63,10 @@
 
       .sk-form-input-group {
         @apply min-h-[5rem] max-h-[5rem] items-stretch border-1 border-border-color rounded-r-none border-r-0;
-        @apply focus-within:ring-offset-0 focus-within:ring-1 focus-within:ring-border-color focus-within:hover:border-border-color;
+
+        &:not(:invalid):not([aria-invalid='true']):focus-within {
+          @apply border-border-color ring-0;
+        }
 
         .sk-form-input {
           @apply px-[2.2rem];

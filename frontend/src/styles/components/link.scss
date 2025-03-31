@@ -2,6 +2,10 @@
   .sk-link {
     @apply text-green hover:no-underline hover:text-green;
 
+    &:focus {
+      @apply rounded-2;
+    }
+
     span {
       @apply font-normal;
     }

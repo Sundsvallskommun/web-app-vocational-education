@@ -24,7 +24,7 @@ export const Menu: React.FC = () => {
     <div className="menu">
       <Button
         variant="ghost"
-        className="text-green p-sm"
+        className="text-green p-sm rounded-10"
         rightIcon={<MenuOutlinedIcon className="material-icon ml-sm !text-[3rem]" />}
         onClick={handleOpen}
       >
@@ -64,40 +64,30 @@ export const Menu: React.FC = () => {
           >
             <ul className="[&>li]:leading-[3.9rem]">
               <li>
-                <NextLink href="/personuppgifter">
-                  <Link as="span">
-                    <span>Behandling av personuppgifter</span> <ArrowForwardIcon className="material-icon !text-xl" />
-                  </Link>
-                </NextLink>
+                <Link as={NextLink} href="/personuppgifter">
+                  <span>Behandling av personuppgifter</span> <ArrowForwardIcon className="material-icon !text-xl" />
+                </Link>
               </li>
               <li>
-                <NextLink href="/tillganglighetsredogorelse">
-                  <Link as="span">
-                    <span>Tillgänglighetsredogörelse</span> <ArrowForwardIcon className="material-icon !text-xl" />
-                  </Link>
-                </NextLink>
+                <Link as={NextLink} href="/tillganglighetsredogorelse">
+                  <span>Tillgänglighetsredogörelse</span> <ArrowForwardIcon className="material-icon !text-xl" />
+                </Link>
               </li>
               <li>
-                <NextLink href="/om-webbplatsen">
-                  <Link as="span">
-                    <span>Om webbplatsen</span> <ArrowForwardIcon className="material-icon !text-xl" />
-                  </Link>
-                </NextLink>
+                <Link as={NextLink} href="/om-webbplatsen">
+                  <span>Om webbplatsen</span> <ArrowForwardIcon className="material-icon !text-xl" />
+                </Link>
               </li>
               <li>
-                <NextLink href="/kakor">
-                  <Link as="span">
-                    <span>Cookies</span> <ArrowForwardIcon className="material-icon !text-xl" />
-                  </Link>
-                </NextLink>
+                <Link as={NextLink} href="/kakor">
+                  <span>Cookies</span> <ArrowForwardIcon className="material-icon !text-xl" />
+                </Link>
               </li>
               {user.username && (
                 <li>
-                  <NextLink href="/logout">
-                    <Link as="span">
-                      <span>Logga ut</span> <ArrowForwardIcon className="material-icon !text-xl" />
-                    </Link>
-                  </NextLink>
+                  <Link as={NextLink} href="/logout">
+                    <span>Logga ut</span> <ArrowForwardIcon className="material-icon !text-xl" />
+                  </Link>
                 </li>
               )}
             </ul>

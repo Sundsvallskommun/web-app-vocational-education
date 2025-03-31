@@ -2,8 +2,19 @@
   .drop-card {
     @apply max-h-[inherit] group-hover:shadow-md bg-white relative h-full flex flex-grow w-full justify-center border-[2px] border-border-color rounded;
 
+    &-wrapper {
+      &:focus {
+        @apply outline-0;
+
+        .drop-card-container {
+          @apply focus-classes ring-0;
+          box-shadow: none;
+        }
+      }
+    }
+
     &-container {
-      @apply w-full relative overflow-hidden rounded-b-[15px] flex flex-col;
+      @apply w-full relative overflow-hidden rounded-t-[12px] rounded-b-[12px] flex flex-col;
     }
 
     &-container-inner {

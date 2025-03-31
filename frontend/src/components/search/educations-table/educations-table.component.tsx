@@ -46,14 +46,14 @@ export const EducationsTable: React.FC<{
                 </Table.Column>
                 <Table.Column>
                   <span className="inline-block">
-                    <NextLink
+                    <Link
+                      as={NextLink}
                       onClick={() => handleOnClickResult(edu?.id)}
                       href={`/utbildningar/${routeDynamicSlugFormat({ slug: '/utbildningar/[utbildning]', data: edu })}`}
+                      className="line-clamp-2 text-base mb-6 leading-[1.5]"
                     >
-                      <Link as="span" className="line-clamp-2 text-base mb-6 leading-[1.5]">
-                        {orFallbackDataValue(edu?.name)}
-                      </Link>
-                    </NextLink>
+                      {orFallbackDataValue(edu?.name)}
+                    </Link>
                     <div className="text-sm capitalize">{orFallbackDataValue(edu?.level)}</div>
                   </span>
                 </Table.Column>

@@ -50,9 +50,9 @@ const generateTOC = (paths: string[]) => {
           return (
             <li key={key}>
               {__path && !__path.includes('[') ?
-                <NextLink href={__path} passHref>
-                  <Link as="span">/{key}</Link>
-                </NextLink>
+                <Link as={NextLink} href={__path}>
+                  /{key}
+                </Link>
               : key}
               {Object.keys(__children).length > 0 && createList(__children)}
             </li>

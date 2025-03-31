@@ -24,9 +24,10 @@ body {
 }
 
 .focus-classes {
-  @apply ring-black-light border-border-color;
+  @apply ring-0 ring-transparent;
+  @apply outline-body outline-2 outline-dashed outline-offset-[3px];
 }
 
 *:focus {
-  @apply focus-classes outline-black-light;
+  @apply focus-classes;
 }

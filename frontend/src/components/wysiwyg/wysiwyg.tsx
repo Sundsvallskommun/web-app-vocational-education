@@ -71,11 +71,9 @@ export const SpanLink = (props: SpanLinkProps) => {
     );
   }
   return (
-    <NextLink href={props.href ?? ''}>
-      <Link as="span" external={false}>
-        {props.children}
-      </Link>
-    </NextLink>
+    <Link as={NextLink} href={props.href ?? ''} external={false}>
+      {props.children}
+    </Link>
   );
 };
 

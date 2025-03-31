@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE `importantdatesblock` ADD COLUMN `referencedImportantDatesBlockPageUrl` VARCHAR(191) NULL;
+ALTER TABLE `ImportantDatesBlock` ADD COLUMN `referencedImportantDatesBlockPageUrl` VARCHAR(191) NULL;

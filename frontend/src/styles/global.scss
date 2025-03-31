@@ -24,7 +24,7 @@ body {
 }
 
 .focus-classes {
-  @apply ring-0 ring-transparent;
+  @apply ring-0 ring-transparent shadow-none ring-offset-0;
   @apply outline-body outline-2 outline-dashed outline-offset-[3px];
 }
 

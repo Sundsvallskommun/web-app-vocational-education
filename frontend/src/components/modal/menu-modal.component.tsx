@@ -42,7 +42,7 @@ const MenuModal = ({ show = false, onClose, className, children }: IModalProps) 
                 <HeaderLogo />
                 <Button
                   ref={closeRef}
-                  className="text-green p-sm"
+                  className="text-green p-sm rounded-10"
                   variant="ghost"
                   rightIcon={<CloseOutlinedIcon className="material-icon ml-sm !text-[3rem]" />}
                   onClick={onCloseHandler}

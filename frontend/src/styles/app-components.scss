@@ -42,10 +42,16 @@
   .sk-btn,
   .sk-btn-solid,
   .sk-btn-outline,
-  .tag {
+  .tag,
+  input,
+  textarea,
+  [type='checkbox'],
+  [type='radio'],
+  [type='text'] {
     &:focus-visible,
     &:focus {
-      @apply outline-none ring-offset-2 ring-2 ring-black;
+      @apply ring-0 ring-transparent;
+      @apply focus-classes;
     }
   }
 

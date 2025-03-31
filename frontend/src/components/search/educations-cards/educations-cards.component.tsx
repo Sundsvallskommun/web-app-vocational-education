@@ -33,6 +33,7 @@ export const EducationsCards: React.FC<{
     <ul aria-label="Sökresultat">
       {educations?.slice(0, _meta?.limit)?.map((edu, index) => {
         const informationSanitized = edu?.information ? getSanitizedInformation(edu?.information) : null;
+        const isLastItem = _meta?.limit && index === _meta?.limit - 1;
         return (
           <li key={`${index}-${edu?.id}`} className="w-full flex flex-col">
             <DropCard
@@ -110,14 +111,16 @@ export const EducationsCards: React.FC<{
                 <div className="text max-h-[4em]" dangerouslySetInnerHTML={{ __html: informationSanitized }} />
               )}
             </DropCard>
-            <div className="mt-sm flex justify-end">
-              <Checkbox
-                checked={searchCompareList.filter((x) => x.id == edu?.id).length > 0}
-                onChange={handleCheckboxClick(edu)}
-              >
-                Jämför utbildning
-              </Checkbox>
-            </div>
+            {!isLastItem ?
+              <div className="mt-sm flex justify-end">
+                <Checkbox
+                  checked={searchCompareList.filter((x) => x.id == edu?.id).length > 0}
+                  onChange={handleCheckboxClick(edu)}
+                >
+                  Jämför utbildning
+                </Checkbox>
+              </div>
+            : null}
           </li>
         );
       })}

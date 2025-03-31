@@ -88,9 +88,9 @@ export const Search: React.FC<{
         {showLinkToAllEducations ?
           <>
             <span>|</span>
-            <NextLink href={appURL('/utbildningar/sok')}>
-              <Link as="span">Se alla utbildningar</Link>
-            </NextLink>
+            <Link as={NextLink} href={appURL('/utbildningar/sok')}>
+              Se alla utbildningar
+            </Link>
           </>
         : null}
       </div>

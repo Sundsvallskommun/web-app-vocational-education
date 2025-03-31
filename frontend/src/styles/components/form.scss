@@ -7,6 +7,10 @@
       &.sk-form-input-md {
         @apply rounded-[.8rem];
       }
+
+      &:focus {
+        @apply border-black focus-classes;
+      }
     }
     &-label {
       @apply leading-[1.8rem] mb-[1.1rem] font-normal;
@@ -77,6 +81,10 @@
     &-select {
       @apply rounded-[.8rem];
       @apply bg-white;
+
+      &:focus {
+        @apply border-black focus-classes;
+      }
     }
   }
 

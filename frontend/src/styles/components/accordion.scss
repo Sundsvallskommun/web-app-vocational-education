@@ -14,6 +14,7 @@
 
         &-icon {
           @apply bg-transparent;
+          @apply min-w-[4.4rem] rounded-[1rem];
 
           .sk-icon {
             @apply text-black-light;

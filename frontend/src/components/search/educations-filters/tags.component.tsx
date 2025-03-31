@@ -89,13 +89,13 @@ export default function Tags() {
               <Chip
                 type="button"
                 key={`${tag.formName}-${tag.label}`}
-                className="override bg-blue text-white hover:bg-blue"
+                className="override chip-blue text-white hover:bg-blue"
                 onClick={removeTag(tag)}
               >
                 {tag.label}
               </Chip>
             ))}
-            <Chip type="button" onClick={removeAll} className="override bg-red text-white hover:bg-red">
+            <Chip type="button" onClick={removeAll} className="override chip-red text-white hover:bg-red">
               Rensa alla filter
             </Chip>
           </span>

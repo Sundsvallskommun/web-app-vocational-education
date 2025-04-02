@@ -228,9 +228,9 @@ class App {
       // Check if code matches and hasn't expired
       if (req.session.twoFactorCode === code && req.session.twoFactorCodeExpiry > Date.now()) {
         req.session.twoFactorAuthenticated = true; // Mark session as 2FA verified
-        return res.send({ data: getClientUser(req.user), message: 'success' });
+        res.send({ data: getClientUser(req.user), message: 'success' });
       } else {
-        return res.status(400).send({ data: 'INVALID_CODE_OR_EXPIRED', message: 'failure' }); // Code mismatch or expired, ask to try again
+        res.status(400).send({ data: 'INVALID_CODE_OR_EXPIRED', message: 'failure' }); // Code mismatch or expired, ask to try again
       }
     });
 

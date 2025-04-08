@@ -48,10 +48,8 @@ export default function DefaultLayout({ layoutData, children }: DefaultLayoutPro
 
   return (
     <div className="DefaultLayout full-page-layout">
-      <NextLink legacyBehavior={true} href={`#content`} passHref>
-        <a onClick={setInitialFocus} accessKey="s" className="next-link-a">
-          Hoppa till innehåll
-        </a>
+      <NextLink href={`#content`} onClick={setInitialFocus} accessKey="s" className="next-link-a">
+        Hoppa till innehåll
       </NextLink>
 
       <Sticky
@@ -79,9 +77,9 @@ export default function DefaultLayout({ layoutData, children }: DefaultLayoutPro
           <p>
             Vi använder kakor, cookies, för att ge dig en förbättrad upplevelse, sammanställa statistik och för att viss
             nödvändig funktionalitet ska fungera på webbplatsen.{' '}
-            <NextLink href="/kakor">
-              <Link as="span">Läs mer om hur vi använder kakor</Link>
-            </NextLink>
+            <Link as={NextLink} href="/kakor">
+              Läs mer om hur vi använder kakor
+            </Link>
           </p>
         }
         cookies={[
@@ -124,46 +122,32 @@ export default function DefaultLayout({ layoutData, children }: DefaultLayoutPro
             <div className="max-w-[215px] text-[12px]">
               <h2 className="text-large mb-sm">Meny</h2>
               <div className="flex flex-col gap-[1rem]">
-                <NextLink href="/utbildningar">
-                  <Link as="span">
-                    <span>För dig som söker utbildning</span> <ArrowForwardIcon className="material-icon !text-xl" />
-                  </Link>
-                </NextLink>
-                <NextLink href="/utbildningsanordnare">
-                  <Link as="span">
-                    <span>För utbildningsanordnare</span> <ArrowForwardIcon className="material-icon !text-xl" />
-                  </Link>
-                </NextLink>
-                <NextLink href="/arbetsgivare">
-                  <Link as="span">
-                    <span>För arbetsgivare</span> <ArrowForwardIcon className="material-icon !text-xl" />
-                  </Link>
-                </NextLink>
+                <Link as={NextLink} href="/utbildningar">
+                  <span>För dig som söker utbildning</span> <ArrowForwardIcon className="material-icon !text-xl" />
+                </Link>
+                <Link as={NextLink} href="/utbildningsanordnare">
+                  <span>För utbildningsanordnare</span> <ArrowForwardIcon className="material-icon !text-xl" />
+                </Link>
+                <Link as={NextLink} href="/arbetsgivare">
+                  <span>För arbetsgivare</span> <ArrowForwardIcon className="material-icon !text-xl" />
+                </Link>
               </div>
             </div>
             <div className="max-w-[215px] text-[12px]">
               <h2 className="text-large mb-sm">Om sidan</h2>
               <div className="flex flex-col gap-[1rem]">
-                <NextLink href="/personuppgifter">
-                  <Link as="span">
-                    <span>Behandling av personuppgifter</span> <ArrowForwardIcon className="material-icon !text-xl" />
-                  </Link>
-                </NextLink>
-                <NextLink href="/tillganglighetsredogorelse">
-                  <Link as="span">
-                    <span>Tillgänglighetsredogörelse</span> <ArrowForwardIcon className="material-icon !text-xl" />
-                  </Link>
-                </NextLink>
-                <NextLink href="/om-webbplatsen">
-                  <Link as="span">
-                    <span>Om webbplatsen</span> <ArrowForwardIcon className="material-icon !text-xl" />
-                  </Link>
-                </NextLink>
-                <NextLink href="/kakor">
-                  <Link as="span">
-                    <span>Cookies</span> <ArrowForwardIcon className="material-icon !text-xl" />
-                  </Link>
-                </NextLink>
+                <Link as={NextLink} href="/personuppgifter">
+                  <span>Behandling av personuppgifter</span> <ArrowForwardIcon className="material-icon !text-xl" />
+                </Link>
+                <Link as={NextLink} href="/tillganglighetsredogorelse">
+                  <span>Tillgänglighetsredogörelse</span> <ArrowForwardIcon className="material-icon !text-xl" />
+                </Link>
+                <Link as={NextLink} href="/om-webbplatsen">
+                  <span>Om webbplatsen</span> <ArrowForwardIcon className="material-icon !text-xl" />
+                </Link>
+                <Link as={NextLink} href="/kakor">
+                  <span>Cookies</span> <ArrowForwardIcon className="material-icon !text-xl" />
+                </Link>
               </div>
             </div>
             <div className="max-w-[215px] text-[12px]">

@@ -40,7 +40,7 @@ export const DropCard: React.FC<DropCard> = ({
   const { dropContent, dropHeight } = useDropProps(dropIcon, dropDate, dropImageSrc);
 
   const CardComp = allCardClickable && href ? (NextLink as NextLinkOverride) : 'div';
-  const ContentComp = !allCardClickable ? (NextLink as NextLinkOverride) : 'div';
+  const ContentComp = !allCardClickable && href ? (NextLink as NextLinkOverride) : 'div';
 
   return (
     <CardComp
@@ -56,7 +56,7 @@ export const DropCard: React.FC<DropCard> = ({
           dropHeight={dropHeight}
           dropContent={dropContent}
           topStyle={'-' + dropHeight / 2}
-          className={dropClassName}
+          className={cx('z-10', dropClassName)}
         />
         <div className={cx(`drop-card-container`, toolbar && 'flex-col-reverse')}>
           <ContentComp

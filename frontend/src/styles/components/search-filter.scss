@@ -39,7 +39,7 @@
         @apply desktop:-left-[2px];
       }
       fieldset {
-        @apply pl-[.4rem] -ml-[.4rem];
+        @apply pl-[.6rem] -ml-[.6rem];
       }
     }
 
@@ -68,7 +68,10 @@
         &:hover {
           @apply font-bold cursor-pointer;
           @apply ring-0 ring-offset-0 ring-transparent;
-          @apply outline-0;
+        }
+        &:focus {
+          @apply focus-classes;
+          outline-offset: -2px;
         }
       }
       .more-button {
@@ -104,15 +107,36 @@
         }
       }
 
-      &.bg-red {
+      &.chip-red {
         svg {
           @apply text-red;
         }
+
+        &,
+        &:focus-visible {
+          @apply bg-red;
+        }
       }
 
-      &.bg-blue {
+      &.chip-blue {
         svg {
           @apply text-blue;
+        }
+
+        &,
+        &:focus-visible {
+          @apply bg-blue;
+        }
+      }
+
+      &.chip-green {
+        svg {
+          @apply text-green;
+        }
+
+        &,
+        &:focus-visible {
+          @apply bg-green;
         }
       }
 

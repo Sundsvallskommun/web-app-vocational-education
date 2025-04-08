@@ -89,7 +89,6 @@ export const Sok = ({ layoutData, pageData }: PageProps) => {
     const url = new URL(appURL(pathname));
     const queries = new URLSearchParams(values);
     url.search = queries.toString();
-    // NOTE: send user to login with SSO
     router.push(url.toString());
   };
 

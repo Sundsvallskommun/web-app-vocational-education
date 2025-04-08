@@ -15,11 +15,7 @@ export default defineConfig({
     },
     video: false,
     screenshotOnRunFailure: false,
-    // The line below is needed to fix an intermittent error where
-    // Cypress for some reason bypasses the route intercept and tries to
-    // fetch from real backend instead, resulting in a 401 (since cypress is not
-    // authorized). The error occurs seldomly and several tests in a suite may
-    // pass when suddenly the tenth, eleventh, or.. fails.
+    defaultCommandTimeout: 10000,
     chromeWebSecurity: false,
     setupNodeEvents(on, config) {
       codeCoverageTask(on, config);

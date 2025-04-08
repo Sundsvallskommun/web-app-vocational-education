@@ -165,6 +165,8 @@ const mocks = {
             getMockedPage({ req }),
             getMockedPage({ req: { query: { url: '/404' } } }),
             getMockedPage({ req: { query: { url: '/login' } } }),
+            getMockedPage({ req: { query: { url: '/utbildningar/sok' } } }),
+            getMockedPage({ req: { query: { url: '/utbildningsanordnare' } } }),
             getMockedPage({ req: { query: { url: '/minimal' } } }),
           ],
         },

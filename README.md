@@ -100,6 +100,14 @@ För att starta backend i test-läge med mockad data (cypress-tester eller vid u
 yarn dev:test
 ```
 
+### Test
+
+En full coverage-körning
+
+1. Starta backend med `yarn dev:test` för att bistå frontend med mockdata
+2. Bygg frontend med `yarn build:test` sen starta med `yarn start`
+3. Kör `yarn test:coverage` för att köra samtliga tester
+
 ## Bygg
 
 Bygg och starta backend först (Frontend behöver backend för att generera sidor), sedan bygg och starta frontend.

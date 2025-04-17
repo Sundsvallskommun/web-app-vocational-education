@@ -4,9 +4,9 @@ const { defaultTheme } = require('@sk-web-gui/theme');
 
 module.exports = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx}',
-    './src/components/**/*.{js,ts,jsx,tsx}',
-    './src/layouts/**/*.{js,ts,jsx,tsx}',
+    './src/pages/**/*.tsx',
+    './src/components/**/*.tsx',
+    './src/layouts/**/*.tsx',
     './node_modules/@sk-web-gui/*/dist/**/*.js',
   ],
   darkMode: 'class', // or 'media' or 'class'

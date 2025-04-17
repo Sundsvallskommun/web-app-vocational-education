@@ -33,7 +33,7 @@ export default function ImportantDatesBlock({ importantDatesBlock }: ImportantDa
   const orientation = isMinDesktop ? 'horizontal' : 'vertical';
 
   const currentDate = new Date();
-  let previousCardDate = dayjs(importantDatesBlock?.dateCards[0]?.date).format('YYYY-MM');
+  let previousCardDate = dayjs(importantDatesBlock?.dateCards[0]?.date).format('YYYY-MM-DD');
 
   if (!importantDatesBlock?.showBlock) return null;
   const dateCardsToShow =
@@ -49,15 +49,15 @@ export default function ImportantDatesBlock({ importantDatesBlock }: ImportantDa
         {importantDatesBlock.dateCards
           .filter((card) =>
             !importantDatesBlock.showAll ?
-              dayjs(card.date).format('YYYY-MM') === dayjs(currentDate).format('YYYY-MM') ||
+              dayjs(card.date).format('YYYY-MM-DD') === dayjs(currentDate).format('YYYY-MM-DD') ||
               dayjs(card.date).isAfter(currentDate)
             : true
           )
           .slice(0, dateCardsToShow)
           .map((dateCard, i) => {
-            const isNewDate = dayjs(dayjs(dateCard.date).format('YYYY-MM')).isAfter(previousCardDate);
+            const isNewDate = dayjs(dayjs(dateCard.date).format('YYYY-MM-DD')).isAfter(previousCardDate);
             if (isNewDate) {
-              previousCardDate = dayjs(dateCard.date).format('YYYY-MM');
+              previousCardDate = dayjs(dateCard.date).format('YYYY-MM-DD');
             }
             const Level = importantDatesBlock.title ? 'h3' : 'h2';
             return (

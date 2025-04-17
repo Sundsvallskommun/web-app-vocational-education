@@ -22,6 +22,7 @@
       flex-direction: column;
       flex: 1 1 auto;
       background-color: rgb(240 244 247 / 1);
+      padding: 1rem;
 
       &[aria-current='true'] {
         border: 3px solid #208357;
@@ -32,7 +33,7 @@
         outline: none;
         background-color: #208357;
         color: white;
-        font-weight: bold;
+        cursor: pointer;
       }
 
       img {

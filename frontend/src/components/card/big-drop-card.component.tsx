@@ -7,17 +7,19 @@ import DropCard from './drop-card.component';
 
 export const BigDropCard: React.FC<DropCard> = ({ className = '', children, href = '#', dropImageSrc, ...rest }) => {
   const imageSrc = usePlaceholderImg(dropImageSrc);
-  const { isMinMediumDevice, isMinDesktop } = useThemeQueries();
+  const { isDevice } = useThemeQueries();
 
   return (
     <>
-      {isMinMediumDevice && !isMinDesktop ?
+      {isDevice ?
         <NextLink href={href} className="flex">
           <div className={`${className} flex w-full max-h-[124px]  overflow-hidden`}>
             <div className="min-w-[124px] w-[124px] overflow-hidden relative rounded-bl-half border-[2px] border-r-0 border-border-color">
               <Image
                 className="next-img drop-left !w-[120px]"
-                fill={true}
+                fill
+                objectFit="cover"
+                objectPosition="top left"
                 sizes="33vw"
                 src={`${imageSrc}`}
                 alt={''}

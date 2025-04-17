@@ -22,7 +22,17 @@ export const useDropProps = (dropIcon: React.ReactNode, dropDate?: Date, dropIma
   }
   if (dropImageSrc) {
     dropHeight = !isMinDesktop ? 96 : 140;
-    dropContent = <Image className="min-h-full" width={dropHeight} height={dropHeight} src={dropImageSrc} alt={''} />;
+    dropContent = (
+      <Image
+        className="next-img !h-full"
+        src={dropImageSrc}
+        fill
+        objectFit="cover"
+        objectPosition="top left"
+        aria-hidden="true"
+        alt=""
+      />
+    );
   }
   return { dropContent, dropHeight };
 };

@@ -56,7 +56,7 @@ export const DropCard: React.FC<DropCard> = ({
           dropHeight={dropHeight}
           dropContent={dropContent}
           topStyle={'-' + dropHeight / 2}
-          className={cx('z-10', dropClassName)}
+          className={cx('z-[2]', dropClassName)}
         />
         <div className={cx(`drop-card-container`, toolbar && 'flex-col-reverse')}>
           <ContentComp

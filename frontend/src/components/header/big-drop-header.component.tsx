@@ -33,8 +33,9 @@ export const BigDropHeader: React.FC<BigDropHeaderProps> = ({
           <Image
             priority
             className="next-img drop-right !h-full"
-            layout="fill"
-            objectFit="contain"
+            fill
+            objectFit="cover"
+            objectPosition="center"
             sizes="(max-width: 768px) 100vw"
             src={`${_imageSrc}`}
             alt={`${imageAlt}`}

@@ -37,15 +37,19 @@ export const GalleryInput = () => {
   return (
     <>
       {watch('imgSrc') && (
-        <img
-          width="150px"
-          height="150px"
-          onClick={trigger}
-          src={watch('imgSrc')}
-          alt={watch('imgAlt')}
-          title={watch('imgTitle')}
-          aria-placeholder={watch('imgSrc') ? translate('gallery.editImage') : translate('gallery.addImage')}
-        />
+        <>
+          <img
+            style={{ objectFit: 'cover', objectPosition: 'center' }}
+            width="150px"
+            height="150px"
+            onClick={trigger}
+            src={watch('imgSrc')}
+            alt={watch('imgAlt')}
+            title={watch('imgTitle')}
+            aria-placeholder={watch('imgSrc') ? translate('gallery.editImage') : translate('gallery.addImage')}
+          />
+          <span style={{ fontStyle: 'italic', marginTop: '0.5rem' }}>För bästa resultat bör bilden vara fyrkantig</span>
+        </>
       )}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px', mt: '16px', mb: '16px' }}>
         <Button

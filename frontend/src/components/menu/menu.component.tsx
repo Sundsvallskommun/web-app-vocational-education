@@ -48,9 +48,10 @@ export const Menu: React.FC = () => {
                 <MenuVertical.Item menuIndex="/arbetsgivare">
                   <NextLink href="/arbetsgivare">För arbetsgivare</NextLink>
                 </MenuVertical.Item>
-                <MenuVertical.Item menuIndex="/utbildningsanordnare">
+                {/* https://jira.sundsvall.se/browse/DRAKEN-2296 */}
+                {/* <MenuVertical.Item menuIndex="/utbildningsanordnare">
                   <NextLink href="/utbildningsanordnare">För utbildningsanordnare</NextLink>
-                </MenuVertical.Item>
+                </MenuVertical.Item> */}
                 <MenuVertical.Item menuIndex="/kontakta-oss">
                   <NextLink href="/kontakta-oss">Kontakta oss</NextLink>
                 </MenuVertical.Item>

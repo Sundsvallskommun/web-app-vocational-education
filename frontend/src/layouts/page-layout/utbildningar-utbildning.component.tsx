@@ -139,7 +139,7 @@ export const Utbildning = ({
               as="span"
               dense={!isMinDesktop}
               className="override !text-sm small-device-min:!text-base"
-              rightIcon={<OpenInNewIcon />}
+              rightIcon={<OpenInNewIcon aria-label="Extern länk" aria-hidden="false" />}
             >
               <span>Till utbildningens hemsida</span>
             </Button>
@@ -177,7 +177,7 @@ export const Utbildning = ({
               as="span"
               dense={!isMinDesktop}
               className="override w-fit !text-sm small-device-min:!text-base"
-              rightIcon={<OpenInNewIcon />}
+              rightIcon={<OpenInNewIcon aria-label="Extern länk" aria-hidden="false" />}
             >
               <span>Till utbildningens hemsida</span>
             </Button>

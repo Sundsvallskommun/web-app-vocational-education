@@ -20,7 +20,8 @@ export default function LatestApplicationDateInput({
       )}
       <FilterPopup label={label}>
         <FormControl id="latestApplicationDate">
-          <DatePicker size={size as 'sm' | 'md' | 'lg'} {...register('latestApplicationDate')}></DatePicker>
+          <span className="mb-[1.5rem]">Välj sista ansökningsdatum</span>
+          <DatePicker aria-label="Sista ansökningsdatum" size={size as 'sm' | 'md' | 'lg'} {...register('latestApplicationDate')}></DatePicker>
         </FormControl>
       </FilterPopup>
     </div>

@@ -8,7 +8,7 @@ export const HeaderLogo: React.FC = () => {
       href="/"
       className="flex relative items-center h-[45px] w-[164px] desktop:h-[51px] desktop:w-[184px] rounded-10 focus:outline-offset-8"
     >
-      <Image fill src={logo_row} alt={'Logo för Yrkesutbildningar'} />
+      <Image fill src={logo_row} alt={'Yrkesutbildning Mitt'} />
     </NextLink>
   );
 };

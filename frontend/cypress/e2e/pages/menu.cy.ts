@@ -22,10 +22,11 @@ describe('Menu', () => {
       .contains('a', 'För arbetsgivare')
       .should('be.visible')
       .should('have.attr', 'href', '/arbetsgivare');
-    cy.get('nav[aria-label="Huvudmeny"] ul')
-      .contains('a', 'För utbildningsanordnare')
-      .should('be.visible')
-      .should('have.attr', 'href', '/utbildningsanordnare');
+      {/* https://jira.sundsvall.se/browse/DRAKEN-2296 */}
+    // cy.get('nav[aria-label="Huvudmeny"] ul')
+    //   .contains('a', 'För utbildningsanordnare')
+    //   .should('be.visible')
+    //   .should('have.attr', 'href', '/utbildningsanordnare');
     cy.get('nav[aria-label="Huvudmeny"] ul')
       .contains('a', 'Kontakta oss')
       .should('be.visible')

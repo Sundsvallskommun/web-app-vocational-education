@@ -42,12 +42,12 @@ export default function ContactForm({ contactFormBlock }: { contactFormBlock: Co
             </FormControl>
             <FormControl id="contact-name" className="w-full">
               <FormLabel>Namn*</FormLabel>
-              <Input {...register('name', { required: true })} aria-describedby="contact-name-error" />
+              <Input {...register('name', { required: true })} autoComplete="name" aria-describedby="contact-name-error" />
               <ErrorMessage errors={formState.errors} name="name" />
             </FormControl>
             <FormControl id="contact-email" className="w-full">
               <FormLabel>Email*</FormLabel>
-              <Input {...register('email', { required: true })} aria-describedby="contact-email-error" type="email" />
+              <Input {...register('email', { required: true })} autoComplete="email" aria-describedby="contact-email-error" type="email" />
               <ErrorMessage errors={formState.errors} name="email" />
             </FormControl>
             <FormControl id="contact-message" className="w-full">

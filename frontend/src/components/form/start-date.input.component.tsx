@@ -16,7 +16,8 @@ export default function StartDateInput({ label = startDatePlaceholder, showLabel
       )}
       <FilterPopup label={label}>
         <FormControl id="startDate">
-          <DatePicker size={size as 'sm' | 'md' | 'lg'} {...register('startDate')} />
+          <span className="mb-[1.5rem]">Välj startdatum</span>
+          <DatePicker aria-label="startdatum" size={size as 'sm' | 'md' | 'lg'} {...register('startDate')} />
         </FormControl>
       </FilterPopup>
     </div>

@@ -125,9 +125,10 @@ export default function DefaultLayout({ layoutData, children }: DefaultLayoutPro
                 <Link as={NextLink} href="/utbildningar">
                   <span>För dig som söker utbildning</span> <ArrowForwardIcon className="material-icon !text-xl" />
                 </Link>
-                <Link as={NextLink} href="/utbildningsanordnare">
+                {/* https://jira.sundsvall.se/browse/DRAKEN-2296 */}
+                {/* <Link as={NextLink} href="/utbildningsanordnare">
                   <span>För utbildningsanordnare</span> <ArrowForwardIcon className="material-icon !text-xl" />
-                </Link>
+                </Link> */}
                 <Link as={NextLink} href="/arbetsgivare">
                   <span>För arbetsgivare</span> <ArrowForwardIcon className="material-icon !text-xl" />
                 </Link>

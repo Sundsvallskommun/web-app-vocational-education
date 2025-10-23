@@ -4,9 +4,8 @@ import HeaderLogo from '@components/logo/header-logo.component';
 import Menu from '@components/menu/menu.component';
 import { LayoutData } from '@interfaces/admin-data';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import logo_stacked from '@public/svg/logo_stacked.svg';
 import sanitized from '@services/sanitizer-service';
-import { CookieConsent, Footer, Header, Link } from '@sk-web-gui/react';
+import { ColorSchemeMode, CookieConsent, Footer, Header, Link, useGui } from '@sk-web-gui/react';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import { useEffect, useState } from 'react';
@@ -18,6 +17,9 @@ interface DefaultLayoutProps {
 }
 
 export default function DefaultLayout({ layoutData, children }: DefaultLayoutProps) {
+const { colorScheme, preferredColorScheme } = useGui();
+const mode = colorScheme === ColorSchemeMode.System ? preferredColorScheme : colorScheme;
+
   const [menuShow, setMenuShow] = useState(false);
   let lastScrollTop = 0;
 
@@ -115,7 +117,7 @@ export default function DefaultLayout({ layoutData, children }: DefaultLayoutPro
         <div className="w-full flex flex-col justify-start medium-device:justify-center">
           <div className="w-full flex justify-center mb-2xl medium-device:mb-[84px]">
             <span>
-              <Image width={170} height={131} src={logo_stacked} alt="" aria-hidden="true" />
+              <Image width={170} height={131} src={`/svg/logo_stacked_${mode}mode.svg`} alt="" aria-hidden="true" />
             </span>
           </div>
           <div className="w-max medium-device:mx-auto flex flex-col text-sm gap-2xl desktop:gap-3xl medium-device:flex-row">

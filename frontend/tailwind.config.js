@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const { preset } = require('@sk-web-gui/core');
-const { defaultTheme } = require('@sk-web-gui/theme');
 
 module.exports = {
   content: [
@@ -12,7 +11,6 @@ module.exports = {
   darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {
-      ...defaultTheme,
       screens: {
         'small-phone': '320px',
         'small-phone-min': '320px',
@@ -74,42 +72,44 @@ module.exports = {
       },
       colors: {
         primary: {
-          DEFAULT: '#655afc',
-          hover: '#655afc',
-          light: '#655afc',
+          DEFAULT: 'var(--sk-colors-primary-DEFAULT)',
+          hover: 'var(--sk-colors-primary-hover)',
+          light: 'var(--sk-colors-primary-light)',
         },
         secondary: {
-          DEFAULT: '#208357',
+          DEFAULT: 'var(--sk-colors-secondary-DEFAULT)',
         },
-        white: '#FCFCFC',
-        black: {
-          DEFAULT: '#000',
-          light: '#333',
-        },
-        'black-light': '#333',
+        black: 'var(--sk-colors-black)',
+        'black-light': 'var(--sk-colors-black-light)',
+        white: 'var(--sk-colors-white)',
         green: {
-          DEFAULT: '#208357',
-          middle: '#219561',
-          light: '#f3fcf8',
+          DEFAULT: 'var(--sk-colors-green-DEFAULT)',
+          middle: 'var(--sk-colors-green-middle)',
+          light: 'var(--sk-colors-green-light)',
+          background: 'var(--sk-colors-green-background)',
         },
         red: {
-          DEFAULT: '#da2f40',
+          DEFAULT: 'var(--sk-colors-red-DEFAULT)',
         },
         blue: {
-          DEFAULT: '#655afc',
-          light: '#f0f4f7',
+          DEFAULT: 'var(--sk-colors-blue-DEFAULT)',
+          light: 'var(--sk-colors-blue-light)',
         },
         label: {
-          DEFAULT: '#5a5a5a',
+          DEFAULT: 'var(--sk-colors-label-DEFAULT)',
         },
         error: {
-          DEFAULT: '#DA2F40',
+          DEFAULT: 'var(--sk-colors-error-DEFAULT)',
         },
-        divider: '#8C8C8C',
-        'border-color': '#16262d',
-        disabled: '#bababa', // FIXME: NOT WCAG <-> #FFF
-        'background-gray': '#919191',
-        'dark-disabled': '#D9D9D9',
+        divider: 'var(--sk-colors-divider)',
+        'border-color': 'var(--sk-colors-boder-color)',
+        disabled: 'var(--sk-colors-disabled)',
+        'background-gray': 'var(--sk-colors-background-gray)',
+        'dark-disabled': 'var(--sk-colors-dark-disabled)',
+
+        //Static colors, these colors dont have support for different colorschemes
+        'static-white-header': '#FCFCFC',
+        'static-white': '#FFFFFF'
       },
     },
   },

@@ -40,16 +40,16 @@ const logos: LogosBlockType['logos'] = [
 export default function LogosBlock({ logosBlock }: LogosBlockProps) {
   if (!logosBlock?.showBlock) return <></>;
   return (
-    <ContentBlock classNameWrapper="LogosBlock bg-green text-white !mb-0" padded>
-      <h2>{logosBlock.title}</h2>
+    <ContentBlock classNameWrapper="LogosBlock bg-green-background text-white !mb-0" padded>
+      <h2 className='text-static-white-header'>{logosBlock.title}</h2>
       {logosBlock.description ?
-        <p className="text !text-inverted-body">{logosBlock.description}</p>
+        <p className="text text-static-white">{logosBlock.description}</p>
       : null}
       <div className="mt-lg medium-device-min:mt-xl flex flex-col items-center gap-md medium-device-min:flex-row medium-device-min:flex-wrap medium-device-min:justify-center medium-device-min:gap-lg">
         {logos?.map((logo, i) => (
           <Image
             key={`${logo.filename}-${i}`}
-            className="h-[11.3rem] w-[26.5rem] text-white dark:text-black pt-md px-xl pb-md border border-[#28a46c]"
+            className="h-[11.3rem] w-[26.5rem] text-white pt-md px-xl pb-md border border-[#28a46c]"
             src={logo.filename}
             width={265}
             height={113}

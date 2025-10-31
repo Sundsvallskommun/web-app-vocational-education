@@ -12,7 +12,7 @@ const mode = colorScheme === ColorSchemeMode.System ? preferredColorScheme : col
       href="/"
       className="flex relative items-center h-[45px] w-[164px] desktop:h-[51px] desktop:w-[184px] rounded-10 focus:outline-offset-8"
     >
-      <Image fill src={`/svg/logo_row_${mode}mode.svg`} alt={'Yrkesutbildning Mitt'} />
+      <Image fill src={`${process.env.NEXT_PUBLIC_BASE_PATH}/svg/logo_row_${mode}mode.svg`} alt={'Yrkesutbildning Mitt'} />
     </NextLink>
   );
 };

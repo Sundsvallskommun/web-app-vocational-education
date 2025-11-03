@@ -142,8 +142,15 @@ class App {
       this.app.use(mockMiddleware(mockLoggedInUser, { cs: cs }));
     }
 
+    const skipLimiterForAdmin = (req, res, next) => {
+      if (req.path.startsWith(`${BASE_URL_PREFIX}/admin`)) {
+        return next();
+      }
+      return limiter(req, res, next);
+    };
+
     if (!TEST) {
-      this.app.use(limiter);
+      this.app.use(skipLimiterForAdmin);
     }
 
     this.app.use(

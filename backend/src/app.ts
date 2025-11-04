@@ -39,7 +39,7 @@ import { dataDir } from './utils/util';
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: 300, // Limit each IP to 300 requests per `window` (here, per 15 minutes).
+  limit: 900, // Limit each IP to 300 requests per `window` (here, per 15 minutes).
   standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
 });
@@ -142,15 +142,8 @@ class App {
       this.app.use(mockMiddleware(mockLoggedInUser, { cs: cs }));
     }
 
-    const skipLimiterForAdmin = (req, res, next) => {
-      if (req.path.startsWith(`${BASE_URL_PREFIX}/admin`)) {
-        return next();
-      }
-      return limiter(req, res, next);
-    };
-
     if (!TEST) {
-      this.app.use(skipLimiterForAdmin);
+      this.app.use(limiter);
     }
 
     this.app.use(

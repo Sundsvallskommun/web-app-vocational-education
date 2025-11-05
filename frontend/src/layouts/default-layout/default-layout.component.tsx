@@ -117,7 +117,7 @@ const mode = colorScheme === ColorSchemeMode.System ? preferredColorScheme : col
         <div className="w-full flex flex-col justify-start medium-device:justify-center">
           <div className="w-full flex justify-center mb-2xl medium-device:mb-[84px]">
             <span>
-              <Image width={170} height={131} src={`/svg/logo_stacked_${mode}mode.svg`} alt="" aria-hidden="true" />
+              <Image width={170} height={131} src={`${process.env.NEXT_PUBLIC_BASE_PATH}/svg/logo_stacked_${mode}mode.svg`} alt="" aria-hidden="true" />
             </span>
           </div>
           <div className="w-max medium-device:mx-auto flex flex-col text-sm gap-2xl desktop:gap-3xl medium-device:flex-row">

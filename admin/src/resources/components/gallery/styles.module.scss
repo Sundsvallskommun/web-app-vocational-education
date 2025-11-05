@@ -4,6 +4,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 64rem;
+  max-height: 90vh;
 
   &-header {
     display: flex;
@@ -12,8 +13,11 @@
   }
 
   &-image-list {
+    flex: 1;
     width: 100%;
-    min-height: 30rem;
+    min-height: 30rem; 
+    max-height: calc(90vh - 30rem);
+    overflow-y: auto;
 
     &-item {
       border: 3px solid transparent;

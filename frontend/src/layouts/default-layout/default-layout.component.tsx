@@ -4,12 +4,19 @@ import HeaderLogo from '@components/logo/header-logo.component';
 import Menu from '@components/menu/menu.component';
 import { LayoutData } from '@interfaces/admin-data';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { useLocalStorageValue } from '@react-hookz/web';
 import sanitized from '@services/sanitizer-service';
 import { ColorSchemeMode, CookieConsent, Footer, Header, Link, useGui } from '@sk-web-gui/react';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import { useEffect, useState } from 'react';
 import Sticky from 'react-sticky-el';
+interface ConsentCookie {
+    optional: boolean;
+    displayName: string;
+    description: string;
+    cookieName: string;
+}
 
 interface DefaultLayoutProps {
   children: React.ReactElement | React.ReactElement[];
@@ -17,6 +24,15 @@ interface DefaultLayoutProps {
 }
 
 export default function DefaultLayout({ layoutData, children }: DefaultLayoutProps) {
+
+   const { set: setMatomo } = useLocalStorageValue('matomoIsActive');
+
+  const cookieConsentHandler = (cookies: ConsentCookie[]) => {
+    if (cookies.some((opt) => opt.cookieName === 'stats')) {
+      setMatomo(true);
+    }
+  };
+
 const { colorScheme, preferredColorScheme } = useGui();
 const mode = colorScheme === ColorSchemeMode.System ? preferredColorScheme : colorScheme;
 
@@ -107,10 +123,7 @@ const mode = colorScheme === ColorSchemeMode.System ? preferredColorScheme : col
           },
         ]}
         resetConsentOnInit={false}
-        onConsent={() => {
-          // FIXME: do stuff with cookies?
-          // NO ANO FUNCTIONS
-        }}
+        onConsent={cookieConsentHandler}
       />
 
       <Footer color="gray" className="justify-start medium-device:justify-center py-50 medium-device:py-100">

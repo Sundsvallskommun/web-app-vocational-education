@@ -5,11 +5,12 @@ import { AppWrapper } from '@contexts/app-context/app-wrapper';
 import { ColorSchemeMode, GuiProvider, extendTheme } from '@sk-web-gui/react';
 import '@styles/tailwind.scss';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { MatomoWrapper } from '@utils/matomo-wrapper';
+import { MatomoAnalytics } from '@utils/matomo-analytics';
 import dayjs from 'dayjs';
 import 'dayjs/locale/sv';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import utc from 'dayjs/plugin/utc';
+import { Suspense } from 'react';
 
 // Create a client
 const queryClient = new QueryClient();
@@ -123,11 +124,12 @@ export function MyApp(props: { children: React.ReactNode }) {
     <GuiProvider theme={theme} colorScheme={ColorSchemeMode.System}>
       <QueryClientProvider client={queryClient}>
         <AppWrapper>
-          <LoginGuard>
-            <MatomoWrapper>{props.children}</MatomoWrapper>
-          </LoginGuard>
+          <LoginGuard>{props.children}</LoginGuard>
         </AppWrapper>
       </QueryClientProvider>
+      <Suspense fallback={null}>
+        <MatomoAnalytics />
+      </Suspense>
     </GuiProvider>
   );
 }

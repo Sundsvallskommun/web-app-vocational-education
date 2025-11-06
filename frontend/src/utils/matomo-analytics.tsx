@@ -3,19 +3,14 @@
 import { useLocalStorageValue } from '@react-hookz/web';
 import { trackAppRouter } from '@socialgouv/matomo-next';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { Fragment, ReactNode, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-interface MatomoWrapperProps {
-  children: ReactNode;
-}
-
-export function MatomoWrapper({ children }: MatomoWrapperProps) {
+export function MatomoAnalytics() {
   const localstorageKey = 'matomoIsActive';
   const { value: matomo } = useLocalStorageValue(localstorageKey, {
     defaultValue: false,
     initializeWithValue: true,
   });
-  const [haveInit, setHaveInit] = useState(false);
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -25,23 +20,17 @@ export function MatomoWrapper({ children }: MatomoWrapperProps) {
   const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH;
 
   useEffect(() => {
-    if (matomo && !haveInit) {
-      // Track page view on route change
+    // Track page view on route change
+    if (matomo) {
       trackAppRouter({
         url: `${MATOMO_URL}`,
         siteId: `${MATOMO_SITE_ID}`,
         pathname: `${BASE_PATH}${pathname}`,
         searchParams,
       });
-      setHaveInit(true);
-    }
-
-    // If deactivate reload site (there is no de-init)
-    if (haveInit && !matomo) {
-      location.reload();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [MATOMO_SITE_ID, MATOMO_URL, haveInit, matomo]);
+  }, [MATOMO_SITE_ID, MATOMO_URL, matomo, searchParams, pathname]);
 
-  return <Fragment>{children}</Fragment>;
+  return null;
 }

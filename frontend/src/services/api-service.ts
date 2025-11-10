@@ -30,8 +30,11 @@ const defaultOptions = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const get = <T>(url: string, options?: { [key: string]: any }) =>
-  axios.get<T>(apiURL(url), { ...defaultOptions, ...options }).catch(handleError);
+const get = <T>(url: string, options?: { [key: string]: any }) => {
+  console.log('apiservice using url', url);
+  console.log('to construct', apiURL(url));
+  return axios.get<T>(apiURL(url), { ...defaultOptions, ...options }).catch(handleError);
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const post = <T>(url: string, data: any, options?: { [key: string]: any }) => {

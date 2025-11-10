@@ -5,6 +5,7 @@ import { AppWrapper } from '@contexts/app-context/app-wrapper';
 import { ColorSchemeMode, GuiProvider, extendTheme } from '@sk-web-gui/react';
 import '@styles/tailwind.scss';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MatomoWrapper } from '@utils/matomo-wrapper';
 import dayjs from 'dayjs';
 import 'dayjs/locale/sv';
 import updateLocale from 'dayjs/plugin/updateLocale';
@@ -47,14 +48,14 @@ export function MyApp(props: { children: React.ReactNode }) {
           secondary: {
             DEFAULT: '#208357',
           },
-          'black': '#000',
+          black: '#000',
           'black-light': '#333',
           white: '#FCFCFC',
           green: {
             DEFAULT: '#208357',
             middle: '#219561',
             light: '#f3fcf8',
-            background: '#208357'
+            background: '#208357',
           },
           red: {
             DEFAULT: '#da2f40',
@@ -86,14 +87,14 @@ export function MyApp(props: { children: React.ReactNode }) {
           secondary: {
             DEFAULT: '#F1F9F5',
           },
-          'black': '#FFF',
+          black: '#FFF',
           'black-light': '#FFF',
           white: '#2F2F3C',
           green: {
             DEFAULT: '#F1F9F5',
             middle: '#CDEBD9',
             light: '#181926',
-            background: '#192127'
+            background: '#192127',
           },
           red: {
             DEFAULT: '#FCD4D4',
@@ -122,7 +123,9 @@ export function MyApp(props: { children: React.ReactNode }) {
     <GuiProvider theme={theme} colorScheme={ColorSchemeMode.System}>
       <QueryClientProvider client={queryClient}>
         <AppWrapper>
-          <LoginGuard>{props.children}</LoginGuard>
+          <LoginGuard>
+            <MatomoWrapper>{props.children}</MatomoWrapper>
+          </LoginGuard>
         </AppWrapper>
       </QueryClientProvider>
     </GuiProvider>

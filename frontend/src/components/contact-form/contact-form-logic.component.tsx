@@ -26,7 +26,7 @@ export default function ContactFormLogic({ children }: { children: React.ReactNo
       email: '',
       message: '',
     },
-    mode: 'onChange',
+    mode: 'onSubmit',
   });
 
   const { handleSubmit } = context;
@@ -34,10 +34,12 @@ export default function ContactFormLogic({ children }: { children: React.ReactNo
   const onSend = async (data: ContactForm) => {
     const res = await sendFormData(data);
     if (!res.error) {
-      message({ message: 'Meddelandet skickades', status: 'success' });
+      context.reset()
+      message({ position: 'bottom', message: 'Meddelandet skickades', status: 'success' });
     } else {
-      message({ message: 'Något gick fel när meddelandet skickades', status: 'error' });
+      message({ position: 'bottom', message: 'Något gick fel när meddelandet skickades', status: 'error' });
     }
+    
   };
 
   return (

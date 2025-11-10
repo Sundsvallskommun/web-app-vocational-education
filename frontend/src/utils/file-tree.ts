@@ -7,7 +7,7 @@ import path from 'path';
 export async function getFilePages(dir: string) {
   let results: string[] = [];
   const list = await fs.readdir(dir, { withFileTypes: true });
-  console.log('processing list:', list);
+  console.log('2. processing list:', list);
 
   for (const file of list) {
     const filePath = path.join(dir, file.name);
@@ -38,8 +38,10 @@ export async function getFilePages(dir: string) {
 }
 
 export async function getPages(dir: string) {
-  console.log('getting pages for dir:', dir);
+  console.log('1. getting pages for dir:', dir);
   const filePages = await getFilePages(dir); // string[]
+
+  console.log('3. getting admin pages:', dir);
   const adminPages = await getAdminPages(); // { url: string }[]
 
   return Array.from(new Set([...filePages, ...adminPages.map((page) => page.url)]));

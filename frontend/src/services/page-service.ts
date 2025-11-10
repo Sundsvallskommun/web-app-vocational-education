@@ -2,6 +2,7 @@ import { PageData, PageDataResponse, PagesData } from '@interfaces/admin-data';
 import { ApiResponse, apiService } from './api-service';
 
 export const getPage: (url: string) => Promise<PageDataResponse> = (url) => {
+  console.log('getPage calling /page route');
   return apiService
     .get<ApiResponse<PageData>>(`page`, { params: { url: url } })
     .then((res) => {
@@ -13,6 +14,7 @@ export const getPage: (url: string) => Promise<PageDataResponse> = (url) => {
 };
 
 export const getAdminPages: () => Promise<PagesData[]> = () => {
+  console.log('getAdminpages calling /pages route');
   return apiService
     .get<ApiResponse<PagesData[]>>(`pages`)
     .then((res) => {

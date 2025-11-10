@@ -32,7 +32,7 @@
     "@react-hookz/web": "^24.0.4",
     "@sk-web-gui/core": "4.1.0",
     "@sk-web-gui/react": "3.0.3",
-    "@socialgouv/matomo-next": "^1.10.0",
+    "@socialgouv/matomo-next": "^1.9.2",
     "@tailwindcss/forms": "^0.5.10",
     "@tanstack/react-query": "^5.71.1",
     "axios": "^1.8.4",

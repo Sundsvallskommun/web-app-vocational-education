@@ -2607,7 +2607,7 @@
     color-string "^1.9.1"
     usehooks-ts "^3.1.1"
 
-"@socialgouv/matomo-next@^1.10.0":
+"@socialgouv/matomo-next@^1.9.2":
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/@socialgouv/matomo-next/-/matomo-next-1.10.0.tgz#f3015865f767faa944eee927f8215c7d4ba283a7"
   integrity sha512-Cp4EMnpzPO2JAinW56QrT6t+AJnM7pxUS3RUmfBWs9SIxHsqxivdmb+wSS8bUd/lkUXtLgBVw9dGOaK0EMwSEg==

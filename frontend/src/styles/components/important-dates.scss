@@ -1,0 +1,82 @@
+@layer components {
+  .important-dates {
+    &-items {
+      @apply mt-50;
+
+      &[data-orientation='vertical'] {
+        .important-dates-card {
+          @apply flex flex-col gap-y-8;
+          @apply pt-[5rem] pb-[2rem] px-[3rem];
+
+          .important-dates-card-heading {
+            @apply text-h3-sm;
+          }
+
+          .important-dates-card-text {
+            @apply text-sm;
+          }
+
+          & + .important-dates-card {
+            @apply mt-60;
+          }
+
+          & + .important-dates-card-monthyear {
+            @apply mt-20;
+          }
+
+          .drop-card-drop {
+            @apply absolute left-0 right-0 mx-auto;
+          }
+        }
+        .important-dates-card-monthyear {
+          & + .important-dates-card {
+            @apply mt-46;
+          }
+        }
+      }
+      &[data-orientation='horizontal'] {
+        .important-dates-card {
+          @apply flex flex-row gap-40;
+
+          .important-dates-card-heading {
+            @apply text-h3-lg leading-[3rem] w-[30rem] min-w-[30rem];
+          }
+
+          & + .important-dates-card {
+            @apply mt-10;
+          }
+
+          & + .important-dates-card-monthyear {
+            @apply mt-20;
+          }
+        }
+
+        .important-dates-card-monthyear {
+          @apply mb-16;
+        }
+      }
+    }
+    &-card {
+      @apply block relative bg-blue-light py-20 px-30 rounded;
+
+      .important-dates-card-text {
+        @apply m-0 leading-[2.9rem];
+      }
+
+      .drop-card-drop {
+        .drop-date-content {
+          &-day {
+            @apply text-h1 leading-none;
+          }
+          &-month {
+            @apply text-xs leading-none;
+          }
+        }
+      }
+
+      &-monthyear {
+        @apply text-h3-sm desktop:text-h3-lg leading-[3rem];
+      }
+    }
+  }
+}

@@ -1,29 +1,72 @@
-import { SavedInterestDto, SavedSearchDto } from '@/dtos/user.dto';
+import { EducationsController } from '@/controllers/educations.controller';
+import { UserSavedInterestDto, UserSavedSearchDto } from '@/dtos/user.dto';
 import { HttpException } from '@/exceptions/HttpException';
 import { RequestWithUser } from '@/interfaces/auth.interface';
+import { UserSavedInterestStatistics } from '@/interfaces/educations.interface';
 import { ClientUser } from '@/interfaces/users.interface';
 import { hasPermissions } from '@/middlewares/permissions.middleware';
+import cs from '@/services/controller.service';
 import { getClientUser } from '@/services/user.service';
-import prisma from '@/utils/prisma';
 import authMiddleware from '@middlewares/auth.middleware';
+import { User_SavedInterest, User_SavedSearch } from '@prisma/client';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Res, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 
-const dbInterestToData = dbData => ({ ...dbData, location: dbData.location.split(',') });
-
-const getStatisticsData = parametersList =>
-  parametersList.map(() => ({
-    ongoing: 12,
-    capacity: 70,
-    planned: 65,
-    available: 300,
-    ended: 11,
-    freetext:
-      'Obs: Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
-  }));
-
 @Controller()
 export class UserController {
+  private educationsController = new EducationsController();
+
+  dbInterestToData = dbData => ({ ...dbData, studyLocation: dbData.studyLocation.split(','), userId: undefined });
+
+  getStatisticsData = async (req: RequestWithUser, parametersList: User_SavedInterest[]): Promise<UserSavedInterestStatistics[]> => {
+    const statisticsData: UserSavedInterestStatistics[] = [];
+    const today = new Date();
+    const todayFormatted = today.toISOString().split('T')[0];
+    for (const parameters of parametersList) {
+      try {
+        const res = await this.educationsController.getEducationEventsStatistics(req, {
+          categories: [parameters.category],
+          studyLocations: parameters.studyLocation.split(','),
+          levels: [parameters.level],
+          startDate: parameters.timeInterval === '0' ? parameters.timeIntervalFrom : todayFormatted,
+          endDate:
+            parameters.timeInterval === '0'
+              ? parameters.timeIntervalTo
+              : new Date(today.setMonth(today.getMonth() + parseInt(parameters.timeInterval))).toISOString().split('T')[0],
+        });
+        if (res.data) {
+          statisticsData.push({
+            ongoing: res.data.onGoingCourses,
+            capacity: res.data.totalCapacity,
+            planned: res.data.plannedCourses,
+            available: res.data.availableSeats,
+            ended: res.data.finishedCourses,
+            id: parameters.id,
+            studyLocation: parameters.studyLocation.split(','),
+            category: parameters.category,
+            level: parameters.level,
+            timeInterval: parameters.timeInterval,
+            timeIntervalFrom: parameters.timeIntervalFrom,
+            timeIntervalTo: parameters.timeIntervalTo,
+            createdAt: parameters.createdAt,
+            updatedAt: parameters.updatedAt,
+          });
+        }
+      } catch (err) {
+        throw new HttpException(500, `Could not fetch interest ${parameters.category}: ${err}`);
+      }
+    }
+    return statisticsData;
+  };
+
+  returnStatisticsData = (statisticsData: UserSavedInterestStatistics[]) => {
+    return statisticsData.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  };
+
+  returnSavedSearches = (savedSearches: User_SavedSearch[]) => {
+    return savedSearches.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  };
+
   @Get('/me')
   @OpenAPI({ summary: 'Return current user' })
   @UseBefore(authMiddleware)
@@ -40,54 +83,54 @@ export class UserController {
   @Get('/user/saved-searches')
   @OpenAPI({ summary: 'Return saved searches for user' })
   @UseBefore(authMiddleware, hasPermissions(['userSaveSearches']))
-  async getSavedSearches(@Req() req: RequestWithUser, @Res() response: any): Promise<any> {
+  async getSavedSearches(@Req() req: RequestWithUser, @Res() response: any): Promise<User_SavedSearch> {
     if (!req.user.username) {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const searches = await prisma.user_SavedSearch.findMany({
+    const searches = await cs.use(req).prisma.user_SavedSearch.findMany({
       where: {
         userId: req.user.id,
       },
     });
 
-    return response.send({ data: searches, message: 'success' });
+    return response.send({ data: this.returnSavedSearches(searches), message: 'success' });
   }
 
   @Post('/user/saved-searches')
   @OpenAPI({ summary: 'Create saved search for user' })
   @UseBefore(authMiddleware, hasPermissions(['userSaveSearches']))
-  async newSavedSearch(@Req() req: RequestWithUser, @Res() response: any, @Body() body: SavedSearchDto): Promise<any> {
+  async newSavedSearch(@Req() req: RequestWithUser, @Res() response: any, @Body() body: UserSavedSearchDto): Promise<User_SavedSearch> {
     if (!req.user.username) {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const search = await prisma.user_SavedSearch.create({
+    const search = await cs.use(req).prisma.user_SavedSearch.create({
       data: {
         ...body,
         userId: req.user.id,
       },
     });
 
-    return response.send({ data: search, message: 'success' });
+    return response.send({ data: [search], message: 'success' });
   }
 
   @Delete('/user/saved-searches/:id')
   @OpenAPI({ summary: 'Delete saved search for user' })
   @UseBefore(authMiddleware, hasPermissions(['userSaveSearches']))
-  async deleteSavedSearch(@Req() req: RequestWithUser, @Res() response: any, @Param('id') id: number): Promise<any> {
+  async deleteSavedSearch(@Req() req: RequestWithUser, @Res() response: any, @Param('id') id: number): Promise<User_SavedSearch> {
     if (!req.user.username) {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const search = await prisma.user_SavedSearch.delete({
+    const search = await cs.use(req).prisma.user_SavedSearch.delete({
       where: {
         userId: req.user.id,
         id: id,
       },
     });
 
-    return response.send({ data: search, message: 'success' });
+    return response.send({ data: [search], message: 'success' });
   }
 
   @Get('/user/saved-interests')
@@ -98,89 +141,79 @@ export class UserController {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const interests = await prisma.user_SavedInterest.findMany({
+    const interests = await cs.use(req).prisma.user_SavedInterest.findMany({
       where: {
         userId: req.user.id,
       },
     });
 
-    const statisticsData = getStatisticsData(interests);
-
+    const statisticsData = await this.getStatisticsData(req, interests);
     if (!statisticsData) {
       throw new HttpException(400, 'Missing statistics data');
     }
 
-    const withStatisticsData = interests.map((x, i) =>
-      dbInterestToData({
-        ...x,
-        ...statisticsData[i],
-      }),
-    );
-
-    return response.send({ data: withStatisticsData, message: 'success' });
+    return response.send({
+      data: this.returnStatisticsData(statisticsData),
+      message: 'success',
+    });
   }
 
   @Post('/user/saved-interests')
   @OpenAPI({ summary: 'Create saved interest for user' })
   @UseBefore(authMiddleware, hasPermissions(['userSaveInterests']))
-  async newSavedInterest(@Req() req: RequestWithUser, @Res() response: any, @Body() body: SavedInterestDto): Promise<any> {
+  async newSavedInterest(@Req() req: RequestWithUser, @Res() response: any, @Body() body: UserSavedInterestDto): Promise<any> {
     if (!req.user.username) {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const interest = await prisma.user_SavedInterest.create({
+    const interest = await cs.use(req).prisma.user_SavedInterest.create({
       data: {
         ...body,
-        location: body.location.join(','),
+        studyLocation: body.studyLocation.join(','),
         userId: req.user.id,
       },
     });
 
-    const statisticsData = getStatisticsData([interest]);
+    const statisticsData = await this.getStatisticsData(req, [interest]);
 
     if (!statisticsData) {
       throw new HttpException(400, 'Missing statistics data');
     }
 
-    const withStatisticsData = {
-      ...dbInterestToData(interest),
-      ...statisticsData[0],
-    };
-
-    return response.send({ data: withStatisticsData, message: 'success' });
+    return response.send({ data: this.returnStatisticsData(statisticsData), message: 'success' });
   }
 
   @Patch('/user/saved-interests/:id')
   @OpenAPI({ summary: 'Edit saved interest for user' })
   @UseBefore(authMiddleware, hasPermissions(['userSaveInterests']))
-  async editSavedInterest(@Req() req: RequestWithUser, @Res() response: any, @Body() body: SavedInterestDto, @Param('id') id: number): Promise<any> {
+  async editSavedInterest(
+    @Req() req: RequestWithUser,
+    @Res() response: any,
+    @Body() body: UserSavedInterestDto,
+    @Param('id') id: number,
+  ): Promise<any> {
     if (!req.user.username) {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const interest = await prisma.user_SavedInterest.update({
+    const interest = await cs.use(req).prisma.user_SavedInterest.update({
       where: {
         userId: req.user.id,
         id: id,
       },
       data: {
         ...body,
-        location: body.location.join(','),
+        studyLocation: body.studyLocation.join(','),
       },
     });
 
-    const statisticsData = getStatisticsData([interest]);
+    const statisticsData = await this.getStatisticsData(req, [interest]);
 
     if (!statisticsData) {
       throw new HttpException(400, 'Missing statistics data');
     }
 
-    const withStatisticsData = {
-      ...dbInterestToData(interest),
-      ...statisticsData[0],
-    };
-
-    return response.send({ data: withStatisticsData, message: 'success' });
+    return response.send({ data: this.returnStatisticsData(statisticsData), message: 'success' });
   }
 
   @Delete('/user/saved-interests/:id')
@@ -191,13 +224,13 @@ export class UserController {
       throw new HttpException(400, 'Bad Request');
     }
 
-    const interest = await prisma.user_SavedInterest.delete({
+    const interest = await cs.use(req).prisma.user_SavedInterest.delete({
       where: {
         userId: req.user.id,
         id: id,
       },
     });
 
-    return response.send({ data: dbInterestToData(interest), message: 'success' });
+    return response.send({ data: this.dbInterestToData(interest), message: 'success' });
   }
 }

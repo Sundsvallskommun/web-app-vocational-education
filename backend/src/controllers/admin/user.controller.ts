@@ -1,61 +1,100 @@
 import { HttpException } from '@/exceptions/HttpException';
 import { omit } from '@/utils/object';
 import prisma from '@/utils/prisma';
-import { Prisma } from '@prisma/client';
-import { createHandler, defaultHandler, deleteHandler, getListHandler, getManyHandler, getOneHandler, updateHandler } from 'ra-data-simple-prisma';
-import { All, Controller, Req } from 'routing-controllers';
+import { Prisma, UserRoleEnum } from '@prisma/client';
+import { defaultHandler, deleteHandler, getListHandler, getManyHandler, getOneHandler } from 'ra-data-simple-prisma';
+import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
+import { hasRolesForMethods } from './utils';
 
 @Controller()
 export class AdminUserController {
   @All('/admin/user')
   @OpenAPI({ summary: 'Handle user' })
+  @UseBefore(hasRolesForMethods([UserRoleEnum.ADMIN], ['getMeny', 'getList', 'create', 'delete']))
   async user(@Req() req): Promise<any> {
+    const include = {
+      roles: true,
+    };
     switch (req.body.method) {
       case 'getOne':
-        if (req.body.params.id === req.user.id || req.user.role === 'ADMIN') {
-          const getOneHandlerRes = await getOneHandler<Prisma.UserFindUniqueArgs>(req.body, prisma.user);
+        if (req.body.params.id === req.user.id || req.user.roles.includes('ADMIN')) {
+          const getOneHandlerRes = await getOneHandler<Prisma.UserFindUniqueArgs>(req.body, prisma.user, { include });
           return Object.assign(omit(getOneHandlerRes, ['data']), { data: omit(getOneHandlerRes.data, ['password']) });
         } else {
           throw new HttpException(403, 'MISSING_PERMISSIONS');
         }
       case 'getMany':
-        if (req.user.role === 'ADMIN') {
-          const getManyHandlerRes = await getManyHandler<Prisma.UserFindManyArgs>(req.body, prisma.user);
-          const getManyHandlerResData = { data: getManyHandlerRes.data.map(x => omit(x, ['password'])) };
-          return Object.assign(omit(getManyHandlerRes, ['data']), getManyHandlerResData);
-        } else {
-          throw new HttpException(403, 'MISSING_PERMISSIONS');
-        }
+        const getManyHandlerRes = await getManyHandler<Prisma.UserFindManyArgs>(req.body, prisma.user, { include });
+        const getManyHandlerResData = { data: getManyHandlerRes.data.map(x => omit(x, ['password'])) };
+        return Object.assign(omit(getManyHandlerRes, ['data']), getManyHandlerResData);
       case 'getList':
-        if (req.user.role === 'ADMIN') {
-          const getListHandlerRes = await getListHandler<Prisma.UserFindManyArgs>(req.body, prisma.user);
-          const getListHandlerResData = { data: getListHandlerRes.data.map(x => omit(x, ['password'])) };
-          return Object.assign(omit(getListHandlerRes, ['data']), getListHandlerResData);
-        } else {
-          throw new HttpException(403, 'MISSING_PERMISSIONS');
-        }
+        const getListHandlerRes = await getListHandler<Prisma.UserFindManyArgs>(req.body, prisma.user, { include });
+        const getListHandlerResData = { data: getListHandlerRes.data.map(x => omit(x, ['password'])) };
+        return Object.assign(omit(getListHandlerRes, ['data']), getListHandlerResData);
       case 'create':
-        if (req.user.role === 'ADMIN') {
-          const createHandlerRes = await createHandler<Prisma.UserCreateArgs>(req.body, prisma.user);
-          return Object.assign(omit(createHandlerRes, ['data']), { data: omit(createHandlerRes.data, ['password']) });
-        } else {
-          throw new HttpException(403, 'MISSING_PERMISSIONS');
-        }
+        const user = await prisma.user.create({
+          data: Object.assign(req.body.params.data, {
+            roles: {
+              createMany: {
+                data: req.body.params.data.roles.map(role => ({
+                  role: role.role,
+                })),
+              },
+            },
+          }),
+          include: {
+            roles: true,
+          },
+        });
+        return {
+          data: omit(user, ['password']),
+        };
       case 'update':
-        if (req.body.params.id === req.user.id || req.user.role === 'ADMIN') {
-          const updateHandlerRes = await updateHandler<Prisma.UserUpdateArgs>(req.body, prisma.user);
-          return Object.assign(omit(updateHandlerRes, ['data']), { data: omit(updateHandlerRes.data, ['password']) });
+        if (req.body.params.id === req.user.id || req.user.roles.includes('ADMIN')) {
+          const rolesToDisconnect = req.body.params.previousData.roles.filter(
+            prevRole => !req.body.params.data.roles.some(newRole => prevRole.role === newRole.role),
+          );
+
+          const user = await prisma.user.update({
+            where: {
+              id: req.body.params.id,
+            },
+            data: Object.assign(req.body.params.data, {
+              roles: {
+                deleteMany: rolesToDisconnect.map(role => ({
+                  username: req.body.params.data.username,
+                  role: role.role,
+                })),
+                upsert: req.body.params.data.roles.map(role => ({
+                  where: {
+                    username_role: {
+                      username: req.body.params.data.username,
+                      role: role.role,
+                    },
+                  },
+                  create: {
+                    role: role.role,
+                  },
+                  update: {
+                    role: role.role,
+                  },
+                })),
+              },
+            }),
+            include: {
+              roles: true,
+            },
+          });
+          return {
+            data: omit(user, ['password']),
+          };
         } else {
           throw new HttpException(403, 'MISSING_PERMISSIONS');
         }
       case 'delete':
-        if (req.user.role === 'ADMIN') {
-          const deleteHandlerRes = await deleteHandler<Prisma.UserDeleteArgs>(req.body, prisma.user);
-          return Object.assign(omit(deleteHandlerRes, ['data']), { data: omit(deleteHandlerRes.data, ['password']) });
-        } else {
-          throw new HttpException(403, 'MISSING_PERMISSIONS');
-        }
+        const deleteHandlerRes = await deleteHandler<Prisma.UserDeleteArgs>(req.body, prisma.user);
+        return Object.assign(omit(deleteHandlerRes, ['data']), { data: omit(deleteHandlerRes.data, ['password']) });
       case 'deleteMany':
         // Dont allow these
         return;

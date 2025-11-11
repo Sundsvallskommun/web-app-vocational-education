@@ -3,11 +3,13 @@ import { EducationFilterOptions } from './education';
 export interface Permissions {
   adminEdit: boolean;
   adminRegistrate: boolean;
+  adminEditAccounts: boolean;
   userSaveSearches: boolean;
+  userSaveInterests: boolean;
 }
 
 export interface User {
-  id: number;
+  id: number | null;
   username: string;
   role: string;
   permissions: Permissions;
@@ -39,8 +41,8 @@ export interface UserSavedSearchDto {
 interface UserSavedInterestResponse {
   id: number;
   category: string;
-  type: string;
-  location: string[];
+  level: string;
+  studyLocation: string[];
   timeInterval: string;
   timeIntervalTo?: string;
   timeIntervalFrom?: string;
@@ -58,9 +60,16 @@ export interface UserSavedInterest extends UserSavedInterestResponse {
 
 export interface UserSavedInterestDto {
   category: string;
-  type: string;
-  location: string[];
+  level: string;
+  studyLocation: string[];
   timeInterval: string;
   timeIntervalTo?: string;
   timeIntervalFrom?: string;
+}
+
+export interface ContactForm {
+  municipalityEmail: string;
+  name: string;
+  email: string;
+  message: string;
 }

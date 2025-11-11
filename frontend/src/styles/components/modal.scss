@@ -1,0 +1,10 @@
+@layer components {
+  .sk-modal-dialog {
+    @apply pb-[8rem] px-md desktop:px-[8rem];
+
+    h1 {
+      @apply text-h2-sm mb-[2rem] leading-[2.4rem];
+      @apply desktop:text-h2-lg desktop:leading-[3.6rem];
+    }
+  }
+}

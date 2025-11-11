@@ -113,7 +113,7 @@ export const login: (credentials: LoginCredentials) => Promise<ServiceResponse<b
     }));
 };
 
-export const verify2FA: (twoFactorCode: string) => Promise<ServiceResponse<User>> = (twoFactorCode) => {
+export const verify2FA: (twoFactorCode: string) => Promise<ServiceResponse<User, string>> = (twoFactorCode) => {
   return apiService
     .post<ApiResponse<User>>('/verify-2fa', { code: twoFactorCode })
     .then((res) => ({ data: handleSetUserResponse(res.data), message: 'success' }))

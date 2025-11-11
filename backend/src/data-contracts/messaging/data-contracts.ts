@@ -39,7 +39,7 @@ export interface WebMessageParty {
    * The message party id
    * @format uuid
    */
-  partyId: string;
+  partyId?: string;
   /** External references */
   externalReferences?: ExternalReference[];
 }
@@ -49,11 +49,27 @@ export interface WebMessageRequest {
   party: WebMessageParty;
   /** Message */
   message: string;
+  /** Sender */
+  sender?: WebMessageSender;
+  /**
+   * Determines if the message should be added to the internal or external OeP instance
+   * @example "internal"
+   */
+  oepInstance?: WebMessageRequestOepInstanceEnum;
   /**
    * @maxItems 10
    * @minItems 0
    */
   attachments?: WebMessageAttachment[];
+}
+
+/** Sender */
+export interface WebMessageSender {
+  /**
+   * The user ID of the sender. I.e. employee ID
+   * @example "joe01doe"
+   */
+  userId?: string;
 }
 
 export interface Problem {
@@ -124,12 +140,19 @@ export enum MessageType {
 export interface SmsRequest {
   /** Party */
   party?: SmsRequestParty;
-  /** Sender */
+  /**
+   * The sender of the SMS, swedish letters(å,ä,ö) will be replaced by (a,a,o) respectively
+   * @minLength 3
+   * @maxLength 11
+   * @example "sender"
+   */
   sender?: string;
   /** Mobile number. Should start with +467x */
   mobileNumber: string;
   /** Message */
   message: string;
+  /** Priority (optional, will be defaulted to NORMAL if not present) */
+  priority?: SmsRequestPriorityEnum;
 }
 
 /** Party */
@@ -141,6 +164,44 @@ export interface SmsRequestParty {
   partyId?: string;
   /** External references */
   externalReferences?: ExternalReference[];
+}
+
+export interface SmsBatchRequest {
+  /**
+   * The sender of the SMS, swedish letters(å,ä,ö) will be replaced by (a,a,o) respectively
+   * @minLength 3
+   * @maxLength 11
+   * @example "sender"
+   */
+  sender?: string;
+  /** Message to send as sms */
+  message: string;
+  /** Priority (optional, will be defaulted to NORMAL if not present) */
+  priority?: SmsBatchRequestPriorityEnum;
+  /** Parties to send the sms message to */
+  parties: SmsBatchRequestParty[];
+}
+
+/** Parties to send the sms message to */
+export interface SmsBatchRequestParty {
+  /**
+   * The message party id (optional)
+   * @example "f427952b-247c-4d3b-b081-675a467b3619"
+   */
+  partyId?: string;
+  /** Mobile number, which should start with +467x */
+  mobileNumber: string;
+}
+
+/** Message batch result */
+export interface MessageBatchResult {
+  /**
+   * The batch id
+   * @format uuid
+   */
+  batchId?: string;
+  /** The individual message results */
+  messages?: MessageResult[];
 }
 
 export interface SlackRequest {
@@ -218,15 +279,48 @@ export interface Sms {
   name: string;
 }
 
-/** Message batch result */
-export interface MessageBatchResult {
+/** Addresses that gets a letter copy */
+export interface Address {
   /**
-   * The batch id
-   * @format uuid
+   * The first name of the recipient
+   * @example "John"
    */
-  batchId?: string;
-  /** The individual message results */
-  messages?: MessageResult[];
+  firstName?: string;
+  /**
+   * The last name of the recipient
+   * @example "Doe"
+   */
+  lastName?: string;
+  /**
+   * The address
+   * @example "Main Street 1"
+   */
+  address?: string;
+  /**
+   * The apartment number
+   * @example "1101"
+   */
+  apartmentNumber?: string;
+  /**
+   * The care of
+   * @example "c/o John Doe"
+   */
+  careOf?: string;
+  /**
+   * The zip code
+   * @example "12345"
+   */
+  zipCode?: string;
+  /**
+   * The city
+   * @example "Main Street"
+   */
+  city?: string;
+  /**
+   * The country
+   * @example "Sweden"
+   */
+  country?: string;
 }
 
 /** Attachment */
@@ -246,8 +340,8 @@ export interface LetterAttachment {
 
 /** Party */
 export interface LetterParty {
-  /** @minItems 1 */
-  partyIds: string[];
+  partyIds?: string[];
+  addresses?: Address[];
   /** External references */
   externalReferences?: ExternalReference[];
 }
@@ -325,7 +419,7 @@ export interface EmailRequest {
   message?: string;
   /** E-mail HTML body (BASE64-encoded) */
   htmlMessage?: string;
-  /** Attachment */
+  /** Sender */
   sender?: EmailSender;
   attachments?: EmailAttachment[];
   /** Headers */
@@ -343,7 +437,7 @@ export interface EmailRequestParty {
   externalReferences?: ExternalReference[];
 }
 
-/** Attachment */
+/** Sender */
 export interface EmailSender {
   /** The sender of the e-mail */
   name: string;
@@ -357,6 +451,35 @@ export interface EmailSender {
    * @example "sender@sender.se"
    */
   replyTo?: string;
+}
+
+export interface EmailBatchRequest {
+  parties: Party[];
+  /** E-mail subject */
+  subject: string;
+  /** E-mail plain-text body */
+  message?: string;
+  /** E-mail HTML body (BASE64-encoded) */
+  htmlMessage?: string;
+  /** Sender */
+  sender?: EmailSender;
+  attachments?: EmailAttachment[];
+  /** Headers */
+  headers?: Record<string, string[]>;
+}
+
+export interface Party {
+  /**
+   * The message parties id
+   * @format uuid
+   * @example "e8660aab-6df9-4ed5-86d1-d9b90a5f7e87"
+   */
+  partyId?: string;
+  /**
+   * Recipient e-mail address
+   * @example "someone@somewhere.com"
+   */
+  emailAddress: string;
 }
 
 /** Attachment */
@@ -488,35 +611,6 @@ export interface DigitalInvoiceRequest {
   files?: DigitalInvoiceFile[];
 }
 
-export interface LetterStatistics {
-  SNAIL_MAIL?: StatisticsCounter;
-  DIGITAL_MAIL?: StatisticsCounter;
-}
-
-export interface MessageStatistics {
-  EMAIL?: StatisticsCounter;
-  SMS?: StatisticsCounter;
-  /** @format int32 */
-  UNDELIVERABLE?: number;
-}
-
-export interface Statistics {
-  EMAIL?: StatisticsCounter;
-  SMS?: StatisticsCounter;
-  WEB_MESSAGE?: StatisticsCounter;
-  DIGITAL_MAIL?: StatisticsCounter;
-  SNAIL_MAIL?: StatisticsCounter;
-  MESSAGE?: MessageStatistics;
-  LETTER?: LetterStatistics;
-}
-
-export interface StatisticsCounter {
-  /** @format int32 */
-  sent?: number;
-  /** @format int32 */
-  failed?: number;
-}
-
 export interface ConstraintViolationProblem {
   cause?: ThrowableProblem;
   stackTrace?: {
@@ -603,6 +697,140 @@ export interface Violation {
   message?: string;
 }
 
+/** Message attachment model */
+export interface MessageAttachment {
+  /**
+   * The attachment content type
+   * @example "application/pdf"
+   */
+  contentType?: string;
+  /**
+   * The attachment file name
+   * @example "attachment.pdf"
+   */
+  fileName?: string;
+}
+
+/** PagingMetaData model */
+export interface PagingMetaData {
+  /**
+   * Current page
+   * @format int32
+   * @example 5
+   */
+  page?: number;
+  /**
+   * Displayed objects per page
+   * @format int32
+   * @example 20
+   */
+  limit?: number;
+  /**
+   * Displayed objects on current page
+   * @format int32
+   * @example 13
+   */
+  count?: number;
+  /**
+   * Total amount of hits based on provided search parameters
+   * @format int64
+   * @example 98
+   */
+  totalRecords?: number;
+  /**
+   * Total amount of pages based on provided search parameters
+   * @format int32
+   * @example 23
+   */
+  totalPages?: number;
+}
+
+/** Recipient model */
+export interface Recipient {
+  /**
+   * The person identifier
+   * @example "199001011234"
+   */
+  personId?: string;
+  /**
+   * The message type
+   * @example "SNAIL_MAIL"
+   */
+  messageType?: string;
+  /**
+   * The message status
+   * @example "SENT"
+   */
+  status?: string;
+}
+
+/** User message model */
+export interface UserMessage {
+  /**
+   * The message id
+   * @example "b971e0f8-2942-4b45-9fa3-bd2cc22ed76b"
+   */
+  messageId?: string;
+  /**
+   * The message issuer
+   * @example "and06sod"
+   */
+  issuer?: string;
+  /**
+   * The system that the message originated from
+   * @example "CASEDATA"
+   */
+  origin?: string;
+  /**
+   * When the message was sent
+   * @format date-time
+   */
+  sent?: string;
+  /**
+   * The message subject
+   * @example "Important message"
+   */
+  subject?: string;
+  recipients?: Recipient[];
+  attachments?: MessageAttachment[];
+}
+
+/** User messages model */
+export interface UserMessages {
+  /** PagingMetaData model */
+  _meta?: PagingMetaData;
+  messages?: UserMessage[];
+}
+
+export interface LetterStatistics {
+  SNAIL_MAIL?: StatisticsCounter;
+  DIGITAL_MAIL?: StatisticsCounter;
+}
+
+export interface MessageStatistics {
+  EMAIL?: StatisticsCounter;
+  SMS?: StatisticsCounter;
+  /** @format int32 */
+  UNDELIVERABLE?: number;
+}
+
+export interface Statistics {
+  EMAIL?: StatisticsCounter;
+  SMS?: StatisticsCounter;
+  WEB_MESSAGE?: StatisticsCounter;
+  DIGITAL_MAIL?: StatisticsCounter;
+  SNAIL_MAIL?: StatisticsCounter;
+  MESSAGE?: MessageStatistics;
+  LETTER?: LetterStatistics;
+}
+
+export interface StatisticsCounter {
+  /** @format int32 */
+  sent?: number;
+  /** @format int32 */
+  failed?: number;
+}
+
 export interface DepartmentLetterStatistics {
   DEPARTMENT?: string;
   SNAIL_MAIL?: StatisticsCounter;
@@ -620,6 +848,27 @@ export interface HistoryResponse {
   content?: object;
   /** @format date-time */
   timestamp?: string;
+}
+
+/**
+ * Determines if the message should be added to the internal or external OeP instance
+ * @example "internal"
+ */
+export enum WebMessageRequestOepInstanceEnum {
+  Internal = 'internal',
+  External = 'external',
+}
+
+/** Priority (optional, will be defaulted to NORMAL if not present) */
+export enum SmsRequestPriorityEnum {
+  HIGH = 'HIGH',
+  NORMAL = 'NORMAL',
+}
+
+/** Priority (optional, will be defaulted to NORMAL if not present) */
+export enum SmsBatchRequestPriorityEnum {
+  HIGH = 'HIGH',
+  NORMAL = 'NORMAL',
 }
 
 /**
@@ -698,7 +947,7 @@ export enum HistoryResponseStatusEnum {
 }
 
 /** Message type */
-export enum GetStatsParamsMessageTypeEnum {
+export enum GetStatisticsParamsMessageTypeEnum {
   MESSAGE = 'MESSAGE',
   EMAIL = 'EMAIL',
   SMS = 'SMS',

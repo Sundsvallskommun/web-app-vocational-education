@@ -1,10 +1,10 @@
 import { Admin, CustomRoutes, Resource } from 'react-admin';
+import { Route } from 'react-router-dom';
 import Layout from './Layout';
 import theme from './Theme';
 import { authProvider } from './providers/authProvider';
 import { dataProvider } from './providers/dataProvider';
 import { i18nProvider } from './providers/i18nProvider';
-import { Route } from 'react-router-dom';
 
 // Resources
 import { EmployerPromotionsBlockPromotionsCreate } from './resources/employer-promotions-block-promotions/employer-promotions-block-promotions.create.component';
@@ -28,9 +28,22 @@ import { PromotionsBlockEdit } from './resources/promotions-block/promotions-blo
 import { UserCreate } from './resources/user/user.create.component';
 import { UserEdit } from './resources/user/user.edit.component';
 import { UserList } from './resources/user/user.list.component';
-// import TableBlock from './resources/components/table-block.component';
+import { PageCreate } from './resources/page/page.create.component';
+import { TableBlockCreate } from './resources/table-block/table-block.create.component';
 import { TableBlockEdit } from './resources/table-block/table-block.edit.component';
 import { TableBlockList } from './resources/table-block/table-block.list.component';
+import './styles/index.css';
+import { ContactFormBlockEdit } from './resources/contact-form-block/contact-form-block.edit.component';
+import { ContactFormBlockEmailsEdit } from './resources/contact-form-block-emails/contact-form-block-emails.edit.component';
+import { ContactFormBlockEmailsCreate } from './resources/contact-form-block-emails/contact-form-block-emails.create.component';
+import { ContactFormBlockCreate } from './resources/contact-form-block/contact-form-block.create.component';
+import { FAQBlockCreate } from './resources/faq-block/faq-block.create.component';
+import { PromotionsBlockCreate } from './resources/promotions-block/promotions-block.create.component';
+import { PromotionsBlockPromotionsCreate } from './resources/promotions-block-promotions/promotions-block-promotions.create.component';
+import { MapBlockCreate } from './resources/map-block/map-block.create.component';
+import { ImportantDatesBlockCreate } from './resources/important-dates-block/important-dates-block.create.component';
+import { LogosBlockCreate } from './resources/logos-block/logos-block.create.component';
+import { queryClient } from './providers/queryClient';
 
 export const App = () => (
   <Admin
@@ -42,38 +55,49 @@ export const App = () => (
     i18nProvider={i18nProvider}
     disableTelemetry={true}
     theme={theme}
+    queryClient={queryClient}
   >
     <Resource name="user" edit={UserEdit} create={UserCreate} list={UserList} />
 
-    <Resource name="page" list={PageList} edit={PageEdit} />
+    <Resource name="page" list={PageList} edit={PageEdit} create={PageCreate} />
 
-    <Resource name="promotionsBlock" edit={PromotionsBlockEdit} />
-    <Resource name="promotionsBlockPromotions" edit={PromotionsBlockPromotionsEdit} />
-    <Resource name="mapBlock" edit={MapBlockEdit} />
+    <Resource name="promotionsBlock" edit={PromotionsBlockEdit} create={PromotionsBlockCreate} />
+    <Resource
+      name="promotionsBlockPromotions"
+      edit={PromotionsBlockPromotionsEdit}
+      create={PromotionsBlockPromotionsCreate}
+    />
+
+    <Resource name="mapBlock" edit={MapBlockEdit} create={MapBlockCreate} />
+
     <Resource name="employerPromotionsBlock" edit={EmployerPromotionsBlockEdit} />
     <Resource
       name="employerPromotionsBlockPromotions"
       edit={EmployerPromotionsBlockPromotionsEdit}
       create={EmployerPromotionsBlockPromotionsCreate}
     />
-    <Resource name="importantDatesBlock" edit={ImportantDatesBlockEdit} />
+
+    <Resource name="importantDatesBlock" edit={ImportantDatesBlockEdit} create={ImportantDatesBlockCreate} />
     <Resource
       name="importantDatesBlockDateCards"
       edit={ImportantDatesBlockDateCardsEdit}
       create={ImportantDatesBlockDateCardsCreate}
     />
 
-    <Resource name="faqBlock" edit={FAQBlockEdit} />
+    <Resource name="faqBlock" edit={FAQBlockEdit} create={FAQBlockCreate} />
     <Resource name="faqBlockQuestions" edit={FAQBlockQuestionsEdit} create={FAQBlockQuestionsCreate} />
-    <Resource name="logosBlock" edit={LogosBlockEdit} />
+
+    <Resource name="logosBlock" edit={LogosBlockEdit} create={LogosBlockCreate} />
     <Resource name="logosBlockLogos" edit={LogosBlockLogosEdit} create={LogosBlockLogosCreate} />
+
+    <Resource name="contactFormBlock" edit={ContactFormBlockEdit} create={ContactFormBlockCreate} />
+    <Resource name="contactFormBlockEmails" edit={ContactFormBlockEmailsEdit} create={ContactFormBlockEmailsCreate} />
 
     <CustomRoutes>
       <Route path="/tableBlock" element={<TableBlockList />} />
       <Route path="/tableBlock/:tableId" element={<TableBlockEdit />} />
+      <Route path="/tableBlock/create" element={<TableBlockCreate />} />
     </CustomRoutes>
-
-    {/* <Resource name="tableBlock" list={TableBlockList} edit={TableBlockEdit} /> */}
 
     <Resource name="footer" edit={FooterEdit} />
   </Admin>

@@ -1,12 +1,26 @@
-import { ReferenceArrayField, useRecordContext } from 'react-admin';
-import { EmployerPromotionsBlockList } from '../employer-promotions-block/employer-promotions-block.list.component';
+import { BooleanInput, SelectInput, useGetOne, useRecordContext, useTranslate } from 'react-admin';
+import { Link } from 'react-router-dom';
 
 export const EditEmployerPromotionsBlock = () => {
+  const translate = useTranslate();
+  const record = useRecordContext();
+  const { data: employerPromotionsBlockData } = useGetOne('employerPromotionsBlock', { id: 1 });
+
+  if (!employerPromotionsBlockData) return null;
+
   return (
     <div>
-      <ReferenceArrayField source="pageName" reference="employerPromotionsBlock">
-        <EmployerPromotionsBlockList filter={{ pageName: 'utbildningar' }} pagination={false} actions={false} />
-      </ReferenceArrayField>
+      <SelectInput
+        source="employerPromotionsBlockId"
+        choices={[{ id: employerPromotionsBlockData.id, name: employerPromotionsBlockData.title }]}
+        value={record.employerPromotionsBlockId}
+      />
+
+      <BooleanInput
+        source="showEmployerPromotionsBlock"
+        label={translate('resources.employerPromotionsBlock.fields.showBlock')}
+      />
+      <Link to="/employerPromotionsBlock/1">{translate('resources.employerPromotionsBlock.editButton')}</Link>
     </div>
   );
 };

@@ -2,7 +2,7 @@ import ButtonStackedIcon from '@components/button/button-stacked-icon.component'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 export const LoadMoreBlock: React.FC<{
-  loadMoreCallback;
+  loadMoreCallback: () => void;
   className?: string;
   backgroundClass?: string;
   loadMoreColorClass?: string;
@@ -12,7 +12,9 @@ export const LoadMoreBlock: React.FC<{
   };
 
   return (
-    <div className={`${className} ${backgroundClass} load-more-block w-full flex justify-center relative -mt-[7.5rem]`}>
+    <div
+      className={`${className} ${backgroundClass} load-more-block w-full flex justify-center relative -mt-[7.5rem] pt-6`}
+    >
       <ButtonStackedIcon
         onClick={handleOnClick}
         icon={

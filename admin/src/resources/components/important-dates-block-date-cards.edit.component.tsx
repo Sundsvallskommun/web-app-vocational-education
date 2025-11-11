@@ -1,13 +1,31 @@
-import { ReferenceArrayField, useRecordContext } from 'react-admin';
+import { useRecordContext } from 'react-admin';
+import { Link } from 'react-router-dom';
 import { ImportantDatesBlockDateCardsList } from '../important-dates-block-date-cards/important-dates-block-date-cards.list.component';
 
-export const EditImportantDatesBlockDateCards = () => {
+interface EditImportantDatesBlockDateCardsProps {
+  filterPageName?: string;
+  referencedBlockId?: number;
+}
+
+export const EditImportantDatesBlockDateCards = ({
+  filterPageName,
+  referencedBlockId,
+}: EditImportantDatesBlockDateCardsProps) => {
   const record = useRecordContext();
-  return (
-    <div>
-      <ReferenceArrayField source="pageName" reference="importantDatesBlockDateCards">
-        <ImportantDatesBlockDateCardsList filter={{ pageName: record.pageName }} pagination={false} />
-      </ReferenceArrayField>
-    </div>
-  );
+
+  if (filterPageName !== record.pageName) {
+    return (
+      <>
+        <Link to={`/importantDatesBlock/${referencedBlockId}`}>Gå till block: {filterPageName}</Link>
+      </>
+    );
+  } else {
+    return (
+      <ImportantDatesBlockDateCardsList
+        resource="importantDatesBlockDateCards"
+        filter={{ pageName: record.pageName }}
+        pagination={false}
+      />
+    );
+  }
 };

@@ -1,21 +1,17 @@
 import prisma from '@/utils/prisma';
 import { Prisma } from '@prisma/client';
 import { createHandler, defaultHandler, getListHandler, getManyHandler, getOneHandler, updateHandler } from 'ra-data-simple-prisma';
-import { All, Controller, Req } from 'routing-controllers';
+import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
+import { checkPageRoles } from './utils';
 
 @Controller()
 export class AdminEmployerPromotionsBlockPromotionsController {
   @All('/admin/employerPromotionsBlockPromotions')
   @OpenAPI({ summary: 'Handle EmployerPromotionsBlockPromotions' })
+  @UseBefore(checkPageRoles())
   async employerPromotionsBlockPromotions(@Req() req): Promise<any> {
     switch (req.body.method) {
-      case 'getOne':
-        return await getOneHandler<Prisma.EmployerPromotionsBlockPromotionsFindUniqueArgs>(req.body, prisma.employerPromotionsBlockPromotions);
-      case 'getMany':
-        return await getManyHandler<Prisma.EmployerPromotionsBlockPromotionsFindManyArgs>(req.body, prisma.employerPromotionsBlockPromotions);
-      case 'getList':
-        return await getListHandler<Prisma.EmployerPromotionsBlockPromotionsFindManyArgs>(req.body, prisma.employerPromotionsBlockPromotions);
       case 'create':
         return await createHandler<Prisma.EmployerPromotionsBlockPromotionsCreateArgs>(req.body, prisma.employerPromotionsBlockPromotions, {
           connect: { employerPromotionsBlock: 'id' },

@@ -112,8 +112,230 @@ export interface Violation {
   message?: string;
 }
 
+/** Statistics model */
+export interface Statistics {
+  /**
+   * Number of on-going courses
+   * @format int32
+   * @example 10
+   */
+  onGoingCourses?: number;
+  /**
+   * Number of planned courses
+   * @format int32
+   * @example 10
+   */
+  plannedCourses?: number;
+  /**
+   * Number of finished courses
+   * @format int32
+   * @example 10
+   */
+  finishedCourses?: number;
+  /**
+   * Number of available seats
+   * @format int32
+   * @example 10
+   */
+  availableSeats?: number;
+  /**
+   * Total capacity
+   * @format int32
+   * @example 10
+   */
+  totalCapacity?: number;
+  /** Study locations used for filtering */
+  studyLocations?: string[];
+  /** Scopes used for filtering */
+  scopes?: number[];
+  /** Levels used for filtering */
+  levels?: string[];
+  /** Categories used for filtering */
+  categories?: string[];
+  /** Category ids used for filtering */
+  subCategories?: string[];
+  /**
+   * Start date used for filtering
+   * @format date
+   */
+  startDate?: string;
+  /**
+   * End date used for filtering
+   * @format date
+   */
+  endDate?: string;
+}
+
+export interface CourseParameters {
+  /**
+   * Page number
+   * @format int32
+   * @min 1
+   * @default 1
+   * @example 1
+   */
+  page?: number;
+  /**
+   * Result size per page. Maximum allowed value is dynamically configured
+   * @format int32
+   * @min 1
+   * @example 15
+   */
+  limit?: number;
+  sortBy?: string[];
+  /** The sort order direction */
+  sortDirection?: Direction;
+  /**
+   * Course code
+   * @example "KEMKEM02"
+   */
+  code?: string;
+  /**
+   * Name of the course
+   * @example "Etnicitet och kulturmöten"
+   */
+  name?: string;
+  /**
+   * Provider of the course
+   * @example "Sundsvalls Kommun"
+   */
+  provider?: string;
+  /**
+   * Course credits
+   * @example "100"
+   */
+  credits?: string;
+  /**
+   * Information about the course
+   * @example "This is course information"
+   */
+  information?: string;
+  /**
+   * Language of instruction
+   * @example "Swedish"
+   */
+  languageOfInstruction?: string;
+  /**
+   * Search string
+   * @example "searchString"
+   */
+  searchString?: string;
+  /**
+   * Start date of the course
+   * @format date
+   * @example "2022-12-31"
+   */
+  start?: string;
+  /**
+   * Start date of the course is after
+   * @format date
+   * @example "2022-12-31"
+   */
+  startAfter?: string;
+  /**
+   * Start date of the course is before
+   * @format date
+   * @example "2022-12-31"
+   */
+  startBefore?: string;
+  /**
+   * End date of the course
+   * @format date
+   * @example "2022-12-31"
+   */
+  end?: string;
+  /**
+   * End date of the course is after
+   * @format date
+   * @example "2022-12-31"
+   */
+  endAfter?: string;
+  /**
+   * End date of the course is before
+   * @format date
+   * @example "2022-12-31"
+   */
+  endBefore?: string;
+  /**
+   * Earliest application date
+   * @format date
+   * @example "2022-12-31"
+   */
+  earliestApplication?: string;
+  /**
+   * Earliest application date is after
+   * @format date
+   * @example "2022-12-31"
+   */
+  earliestApplicationAfter?: string;
+  /**
+   * Earliest application date is before
+   * @format date
+   * @example "2022-12-31"
+   */
+  earliestApplicationBefore?: string;
+  /**
+   * Latest application date
+   * @format date
+   * @example "2022-12-31"
+   */
+  latestApplication?: string;
+  /**
+   * Latest application date is after
+   * @format date
+   * @example "2022-12-31"
+   */
+  latestApplicationAfter?: string;
+  /**
+   * Latest application date is before
+   * @format date
+   * @example "2022-12-31"
+   */
+  latestApplicationBefore?: string;
+  /**
+   * Scope of the course
+   * @example 75
+   */
+  scopes?: number[];
+  /**
+   * Study location
+   * @example "Sundsvall"
+   */
+  studyLocations?: string[];
+  /**
+   * Level of the course
+   * @example "gymnasial vuxenutbildning"
+   */
+  levels?: string[];
+  /**
+   * Category
+   * @example "Naturvetenskap"
+   */
+  categories?: string[];
+  /**
+   * Subcategory
+   * @example "Kemi"
+   */
+  subcategories?: string[];
+}
+
+/**
+ * The sort order direction
+ * @example "ASC"
+ */
+export enum Direction {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}
+
 /** Course model */
 export interface Course {
+  /**
+   * Course ID
+   * @format int64
+   * @example 1
+   */
+  id?: number;
   /**
    * Course code
    * @example "PRRPRR02"
@@ -172,6 +394,21 @@ export interface Course {
    * @example 10
    */
   numberOfSeats?: number;
+  /**
+   * Course category
+   * @example "Ekonomi, marknadsföring och administration"
+   */
+  category?: string;
+  /**
+   * Course subcategory
+   * @example "Administration"
+   */
+  subcategory?: string;
+  /**
+   * Language of instruction
+   * @example "Swedish"
+   */
+  languageOfInstruction?: string;
   /**
    * Course start date
    * @format date
@@ -242,13 +479,4 @@ export interface PagingMetaData {
    * @example 23
    */
   totalPages?: number;
-}
-
-/** Course filter model */
-export enum CourseFilter {
-  Credits = 'credits',
-  Provider = 'provider',
-  Level = 'level',
-  Scope = 'scope',
-  StudyLocation = 'studyLocation',
 }

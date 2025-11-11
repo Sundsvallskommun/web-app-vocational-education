@@ -1,13 +1,14 @@
 import prisma from '@/utils/prisma';
-import { Prisma } from '@prisma/client';
-import { defaultHandler, getListHandler, getManyHandler, getOneHandler } from 'ra-data-simple-prisma';
-import { All, Controller, Req } from 'routing-controllers';
+import { defaultHandler } from 'ra-data-simple-prisma';
+import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
+import { checkPageRoles } from './utils';
 
 @Controller()
 export class AdminTableBlockCellController {
   @All('/admin/tableBlockCell')
   @OpenAPI({ summary: 'Handle TableBlockCell' })
+  @UseBefore(checkPageRoles())
   async tableBlockCell(@Req() req): Promise<any> {
     switch (req.body.method) {
       default:

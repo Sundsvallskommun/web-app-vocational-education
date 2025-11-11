@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `TableBlock` ADD COLUMN `summary` TEXT NULL DEFAULT '',
+    ADD COLUMN `title` VARCHAR(191) NULL DEFAULT '';

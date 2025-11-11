@@ -1,3 +1,5 @@
+import { GetEducationEvents } from '@services/education-service/education-service';
+
 interface PromotionsBlockPromotions extends PageData {
   promotedPage: PageData;
 }
@@ -30,14 +32,18 @@ export interface EmployerPromotionsBlock extends Block {
   employerPromotions: EmployerPromotionsBlockPromotions[];
 }
 
-interface ImportantDatesBlockDateCard {
+export interface ImportantDatesBlockDateCard {
   date: Date;
   title: string;
   text: string;
-  url: string;
 }
 
 export interface ImportantDatesBlock extends Block {
+  showSeeAllButton: boolean;
+  amountShown: number;
+  showAll: boolean;
+  referencedImportantDatesBlockPageName: string;
+  referencedImportantDatesBlockPageUrl: string;
   dateCards: ImportantDatesBlockDateCard[];
 }
 
@@ -50,17 +56,7 @@ export interface FAQBlock extends Block {
   questions: FAQBlockQuestions[];
 }
 
-interface EducationsStartingBlockEducations {
-  title: string;
-  text: string;
-  date: Date;
-  location: string;
-  courseCode: string;
-}
-
-export interface EducationsStartingBlock extends Block {
-  educations: EducationsStartingBlockEducations[];
-}
+export type EducationsStartingBlock = GetEducationEvents;
 
 interface LogosBlockLogos {
   filename: string;
@@ -80,7 +76,7 @@ export interface LayoutData {
 }
 
 export interface LayoutDataResponse {
-  layoutData: LayoutData;
+  layoutData?: LayoutData;
 }
 
 export interface TableBlockHeader {
@@ -114,35 +110,90 @@ export interface TableBlock {
   page: number;
   pageName: string;
   pageId: number;
+  title?: string;
+  summary?: string;
   showBlock: boolean;
   headers: TableBlockHeader[];
   rows: TableBlockRow[];
   cells: TableBlockCell[];
 }
 
+export interface ContactFormBlockEmails {
+  id: number;
+  contactFormBlock: ContactFormBlock;
+  pageId: number;
+  formId: number;
+  label: string;
+  email: string;
+}
+
+export interface ContactFormBlock {
+  id: number;
+  page: number;
+  pageName: number;
+  pageId: number;
+  title?: string;
+  description?: string;
+  showBlock: boolean;
+  emails: ContactFormBlockEmails[];
+}
+
 export interface PageData {
   url: string;
   pageName: string;
   title: string;
-  description: string;
+  imgSrc?: string;
+  imgAlt?: string;
+  imgTitle?: string;
+  showImgInMobile: boolean;
+  showImgInDesktop: boolean;
+  showSearchBar: boolean;
+  description?: string;
   promotionsBlock?: PromotionsBlock[];
   mapBlock?: MapBlock[];
-  employerPromotionsBlock?: EmployerPromotionsBlock[];
+  employerPromotionsBlock?: EmployerPromotionsBlock;
+  showEmployerPromotionsBlock: boolean;
   importantDatesBlock?: ImportantDatesBlock[];
   faqBlock?: FAQBlock[];
-  educationsStartingBlock?: EducationsStartingBlock[];
   logosBlock?: LogosBlock[];
   tableBlock?: TableBlock[];
+  contactFormBlock?: ContactFormBlock[];
+  wysiwyg_content?: string;
+  showSearchBlock: boolean;
+  showEducationsRelatedBlock: boolean;
+  showEducationsStartingBlock: boolean;
+  educationsStartingBlock?: EducationsStartingBlock;
+  blockOrder: string;
 }
 
+export type PagesData = { url: string; title: string };
+
 export interface PageDataResponse {
-  pageData: PageData;
+  pageData?: PageData;
+}
+
+export interface PagesDataResponse {
+  pagesData: PagesData[];
 }
 
 export interface LayoutProps {
-  layoutData: LayoutData;
+  layoutData?: LayoutData;
 }
 
 export interface PageProps extends LayoutProps {
-  pageData: PageData;
+  pageData?: PageData;
 }
+
+export type BlockType =
+  | 'promotionsBlock'
+  | 'mapBlock'
+  | 'employerPromotionsBlock'
+  | 'importantDatesBlock'
+  | 'faqBlock'
+  | 'logosBlock'
+  | 'tableBlock'
+  | 'contactFormBlock'
+  | 'wysiwyg_content'
+  | 'educationsRelatedBlock'
+  | 'educationsStartingBlock'
+  | 'searchBlock';

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useGetIdentity, useGetRecordId, useResourceContext } from 'react-admin';
-import { useNavigate } from 'react-router';
+import { useGetIdentity, useGetRecordId } from 'react-admin';
+import { useLocation, useNavigate } from 'react-router';
 
 export default function useRoutePermissions() {
   const [mounted, setMounted] = useState(false);
-  const resourceContext = useResourceContext();
+  const { pathname } = useLocation();
   const { data: user } = useGetIdentity();
   const navigate = useNavigate();
   let recordId;
@@ -14,30 +14,35 @@ export default function useRoutePermissions() {
   } catch (err) {}
 
   // exports
-  const isAdmin = user?.role === 'ADMIN';
+  const isAdmin = user?.roles.includes('ADMIN');
+  const isSuperAdmin = user?.username === 'admin' && isAdmin;
   const editedUserIsUser = user?.id == parseInt(recordId as string);
+
+  let canCreate = isAdmin;
 
   useEffect(() => {
     if (mounted) {
       const hasRouteAccess = (route: string) => {
-        switch (route) {
-          case 'user':
-            if (isAdmin || editedUserIsUser) {
-              return true;
-            } else {
-              return false;
-            }
-          default:
+        if (route.includes('user')) {
+          if (isAdmin || editedUserIsUser) {
             return true;
+          } else {
+            return false;
+          }
         }
+        if (route.includes('page/create')) {
+          return isAdmin;
+        }
+
+        return true;
       };
-      if (!hasRouteAccess(resourceContext)) {
+      if (!hasRouteAccess(pathname)) {
         navigate('/page');
       }
     } else {
       setMounted(true);
     }
-  }, [mounted, resourceContext, user]);
+  }, [mounted, pathname, user]);
 
-  return { isAdmin, editedUserIsUser };
+  return { isSuperAdmin, isAdmin, editedUserIsUser, canCreate };
 }

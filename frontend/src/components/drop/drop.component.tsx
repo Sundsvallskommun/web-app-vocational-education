@@ -1,38 +1,13 @@
-import { useWindowSize } from '@utils/use-window-size.hook';
-import dayjs from 'dayjs';
-import Image from 'next/image';
-
-export const useDropProps = (dropIcon, dropDate, dropImageSrc) => {
-  const { windowSize } = useWindowSize();
-  let dropContent;
-  let dropHeight = 32;
-  if (dropIcon) {
-    dropHeight = !windowSize.lg ? 45 : 64;
-    dropContent = dropIcon;
-  }
-  if (dropDate) {
-    dropHeight = 96;
-    dropContent = (
-      <div className="text-center justify-center">
-        <div className="text-3xl font-bold">{dayjs(dropDate).format('D')}</div>
-        <div className="text-lg uppercase">{dayjs(dropDate).format('MMM')}</div>
-      </div>
-    );
-  }
-  if (dropImageSrc) {
-    dropHeight = !windowSize.lg ? 96 : 140;
-    dropContent = <Image className="min-h-full" width={dropHeight} height={dropHeight} src={dropImageSrc} alt={''} />;
-  }
-  return { dropContent, dropHeight };
-};
+import { StaticImport } from 'next/dist/shared/lib/get-img-props';
+import { useDropProps } from './use-drop.component';
 
 export const Drop: React.FC<{
   className?: string;
   dropLeft?: boolean;
   dropRight?: boolean;
   dropIcon?: React.ReactNode;
-  dropDate?: React.ReactNode;
-  dropImageSrc?: React.ReactNode;
+  dropDate?: Date;
+  dropImageSrc?: string | StaticImport;
   setSize?: boolean;
   dropHeight?: number;
   dropContent?: React.ReactNode;
@@ -58,15 +33,19 @@ export const Drop: React.FC<{
   return (
     <div
       style={
-        setSize && {
-          height: dropHeight ? dropHeight + 'px' : _dropHeight + 'px',
-          width: dropHeight ? dropHeight + 'px' : _dropHeight + 'px',
-          top: topStyle ? topStyle + 'px' : 'initial',
-        }
+        setSize ?
+          {
+            height: dropHeight ? dropHeight + 'px' : _dropHeight + 'px',
+            minHeight: dropHeight ? dropHeight + 'px' : _dropHeight + 'px',
+            width: dropHeight ? dropHeight + 'px' : _dropHeight + 'px',
+            minWidth: dropHeight ? dropHeight + 'px' : _dropHeight + 'px',
+            top: topStyle ? topStyle + 'px' : 'initial',
+          }
+        : {}
       }
       className={`drop-card-drop ${className} ${dropDirectionClass} ${
         dropContent ? 'absolute mx-auto' : 'block'
-      } overflow-hidden shadow-md bg-white inline-flex flex-grow-0 items-center justify-center border-2 border-border-color`}
+      } min-w-[4.8rem] min-h-[4.8rem] aspect-square overflow-hidden shadow-md bg-white inline-flex flex-grow-0 items-center justify-center border-2 border-border-color`}
     >
       {dropContent ? dropContent : _dropContent}
     </div>

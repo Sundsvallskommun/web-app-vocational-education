@@ -1,90 +1,137 @@
-import { sortFilter } from '@components/form/sort-function.input.component';
-import { Course, EducationFilterOptions, PagedCoursesResponse, PagingMetaData } from '@interfaces/education';
+import { sortFilter } from '@components/form/defaults';
+import {
+  Course,
+  EducationFilterOptions,
+  GetEducationFilters,
+  GetEducationFiltersResponseData,
+  PagedCoursesResponse,
+  PagingMetaData,
+} from '@interfaces/education';
+import { getFormattedLabelFromValue } from '@utils/labels';
+import { getObjectDifference } from '@utils/object';
 import { ValueOf } from '@utils/types';
-import { objToQueryString } from '@utils/url';
 import dayjs from 'dayjs';
+import { XMLParser } from 'fast-xml-parser';
+import SanitizeHTML, { Transformer } from 'sanitize-html';
 import { ApiResponse, apiService } from '../api-service';
 
 export const emptyEducationFilterOptions: EducationFilterOptions = {
-  q: '',
-  sortFunction: sortFilter[0].value,
-  category: [],
-  type: [],
-  location: [],
-  distance: '',
-  latestApplicationDate: '',
-  startDate: '',
-  paceOfStudy: [],
-};
-
-export const defaultEducationFilterOptions: EducationFilterOptions = {
   page: 1,
   size: 10,
   q: '',
   sortFunction: sortFilter[0].value,
   category: [],
-  type: [],
-  location: [],
+  level: [],
+  studyLocation: [],
   distance: '',
   latestApplicationDate: '',
-  startDate: dayjs(new Date()).format('YYYY-MM-DD'),
-  paceOfStudy: [],
+  startDate: '',
+  scope: [],
+};
+
+export const typeReferenceEducationFilterOptions: EducationFilterOptions = {
+  page: 1,
+  size: 10,
+  q: '',
+  sortFunction: sortFilter[0].value,
+  category: [''],
+  level: [''],
+  studyLocation: [''],
+  distance: '',
+  latestApplicationDate: '',
+  startDate: '',
+  scope: [''],
+};
+
+export const defaultEducationFilterOptions = {
+  page: 1,
+  size: 10,
+  q: '',
+  sortFunction: sortFilter[0].value,
+  category: [],
+  level: [],
+  studyLocation: [],
+  distance: '',
+  latestApplicationDate: dayjs(new Date()).format('YYYY-MM-DD'),
+  startDate: '',
+  scope: [],
+};
+
+export const emptyDefaultDiff = () => {
+  return getObjectDifference(emptyEducationFilterOptions, defaultEducationFilterOptions);
 };
 
 export const educationFilterTagLabels = {
   sortFunction: 'Sortera',
   category: 'Utbildningskategori',
-  type: 'Utbildningstyp',
-  location: 'Plats',
+  level: 'Utbildningsform',
+  studyLocation: 'Plats',
   distance: 'Distansutbildning',
   latestApplicationDate: 'Sista ansökningsdatum',
-  startDate: 'Startdatum',
-  paceOfStudy: 'Studietakt',
+  startDate: 'Start från',
+  scope: 'Studietakt',
+  q: 'Sökord',
+  size: 'Resultat per sida',
+  page: 'Sida',
+  cost: 'Kostnad',
 };
 
-export const getEducationFilterValueString = (filter, value) => {
+export const hiddenEducationFilterOptions = ['page', 'size', 'q'];
+export const shownTags = Object.keys(defaultEducationFilterOptions).filter(
+  (x) => !hiddenEducationFilterOptions.includes(x)
+) as Array<keyof EducationFilterOptions>;
+
+export const getEducationFilterValueString = (filter: keyof EducationFilterOptions, value: unknown) => {
   switch (filter) {
     case 'sortFunction':
-      return sortFilter.find((choice) => choice.value === value).label;
+      return sortFilter.find((choice) => choice.value === value)?.label;
     case 'category':
-      return value.join(' | ');
-    case 'type':
-      return value.join(' | ');
-    case 'location':
-      return value.join(' | ');
+      return Array.isArray(value) ? value?.map((x) => getFormattedLabelFromValue(x)).join(' | ') : value;
+    case 'level':
+      return Array.isArray(value) ? value?.map((x) => getFormattedLabelFromValue(x)).join(' | ') : value;
+    case 'studyLocation':
+      return Array.isArray(value) ? value?.map((x) => getFormattedLabelFromValue(x)).join(' | ') : value;
     case 'distance':
       return value === 'true' ? 'Ja' : 'Nej';
     case 'latestApplicationDate':
       return value;
     case 'startDate':
       return value;
-    case 'paceOfStudy':
-      return value.map((x) => `${x}%`).join(' | ');
+    case 'scope':
+      return Array.isArray(value) ? value?.map((x) => x.replace('.0', '%')).join(' | ') : value;
+    case 'q':
+      return value;
+    case 'size':
+      return value;
+    case 'page':
+      return value;
+    case 'cost':
+      return value;
     default:
       return '';
   }
 };
 
-export const getFilterOptionString = (filter, value) => {
-  return `${educationFilterTagLabels[filter]}: ${getEducationFilterValueString(filter, value)}`;
+export const getFilterOptionString = (filter: keyof EducationFilterOptions, value: unknown) => {
+  return value ? `${educationFilterTagLabels[filter]}: ${getEducationFilterValueString(filter, value)}` : '';
 };
 
 export const getValidValue = <TFallback = null>(
   key: string,
-  value: string | string[],
+  value: null | undefined | string | string[],
   fallback: TFallback
-): Record<string, TFallback> => {
+) => {
   const validValues = {
     sortFunction: sortFilter.map((x) => x.value).includes(value as string) ? value : fallback,
     category: Array.isArray(value) && value[0] ? value : fallback,
-    type: Array.isArray(value) && value[0] ? value : fallback,
-    location: Array.isArray(value) && value[0] ? value : fallback,
+    level: Array.isArray(value) && value[0] ? value : fallback,
+    studyLocation: Array.isArray(value) && value[0] ? value : fallback,
     distance: ['true', 'false'].includes(value as string) ? value : fallback,
     latestApplicationDate: value ? value : fallback,
     startDate: value ? value : fallback,
-    paceOfStudy: Array.isArray(value) && value[0] ? value : fallback,
+    scope: Array.isArray(value) && value[0] ? value : fallback,
   };
-  return validValues[key];
+  return value && key in validValues ? validValues[key as keyof typeof validValues] : fallback;
 };
 
 export const getFilterDataStrings: {
@@ -96,63 +143,29 @@ export const getFilterDataStrings: {
   const filterDataStrings = Object.assign({}, filterData, {
     sortFunction: getValidValue('sortFunction', filterData.sortFunction, fallback),
     category: getValidValue('category', filterData.category, fallback),
-    type: getValidValue('type', filterData.type, fallback),
-    location: getValidValue('location', filterData.location, fallback),
+    level: getValidValue('level', filterData.level, fallback),
+    studyLocation: getValidValue('studyLocation', filterData.studyLocation, fallback),
     distance: getValidValue('distance', filterData.distance, fallback),
     latestApplicationDate: getValidValue('latestApplicationDate', filterData.latestApplicationDate, fallback),
     startDate: getValidValue('startDate', filterData.startDate, fallback),
-    paceOfStudy: getValidValue('paceOfStudy', filterData.paceOfStudy, fallback),
+    scope: getValidValue('scope', filterData.scope, fallback),
   });
   return filterDataStrings;
 };
 
-export const getSearchParamsFromEducationSearchFilters = (filterData: EducationFilterOptions): string => {
-  return objToQueryString(getFilterDataStrings(filterData, ''));
-};
-
-export const handleGetEducationEvents: (courses: Course[]) => Course[] = (courses) =>
-  courses.map((course, index) => ({
-    id: index, // FIXME: CRITICAL: Should be id from endpoint, this is temporary fix
-    code: course.code,
-    name: course.name,
-    provider: course.provider,
-    providerUrl: course.providerUrl,
-    level: course.level,
-    url: course.url,
-    credits: course.credits,
-    scope: course.scope,
-    studyLocation: course.studyLocation,
-    subjectCode: course.subjectCode,
-    numberOfSeats: course.numberOfSeats,
-    start: course.start,
-    end: course.end,
-    earliestApplication: course.earliestApplication,
-    latestApplication: course.latestApplication,
-    information: course.information,
-  }));
-
-export const handleGetEducationEventsMeta: (_meta: PagingMetaData) => PagingMetaData = (_meta) => ({
-  page: _meta.page,
-  limit: _meta.limit,
-  count: _meta.count,
-  totalRecords: _meta.totalRecords,
-  totalPages: _meta.totalPages,
-});
-
-export const getEducationEvents: (
-  filterData: EducationFilterOptions
-) => Promise<{ courses: Course[]; _meta?: PagingMetaData; error?: unknown }> = (filterData) => {
+export interface GetEducationEvents {
+  courses: Course[];
+  _meta?: PagingMetaData;
+  error?: unknown;
+}
+export const getEducationEvents: (filterData: EducationFilterOptions) => Promise<GetEducationEvents> = (filterData) => {
   return apiService
     .get<ApiResponse<PagedCoursesResponse>>(`education-events`, {
       params: { filter: getFilterDataStrings(filterData, null) },
     })
-    .then((res) => {
-      console.log('getEducationEvents', res);
-      return res;
-    })
     .then((res) => ({
-      courses: handleGetEducationEvents(res?.data?.data?.courses),
-      _meta: handleGetEducationEventsMeta(res?.data?.data?._meta),
+      courses: res?.data?.data?.courses || [],
+      _meta: res?.data?.data?._meta,
     }))
     .catch((e) => ({
       courses: [],
@@ -160,19 +173,36 @@ export const getEducationEvents: (
     }));
 };
 
-const langCodes = new Map([
-  ['swe', 'Svenska'],
-  ['eng', 'Engelska'],
-]);
-
-export const getLangString: (_langCodes: string[]) => string = (_langCodes) => {
-  return _langCodes.map((code) => langCodes.get(code)).join(', ');
+export const getEducationEvent: (id: string) => Promise<{ data?: Course; error?: unknown }> = (id) => {
+  return apiService
+    .get<ApiResponse<Course>>(`education-events/event/${id}`)
+    .then((res) => ({
+      data: res?.data?.data,
+    }))
+    .catch((e) => ({
+      error: e.response?.status ?? 'UNKNOWN ERROR',
+    }));
 };
 
-export const getEducationLengthString: (start: string, end: string) => string = (start, end) => {
-  const days = dayjs(end).diff(start, 'day');
-  const weeks = days / 7;
-  const years = days / 365;
+export const getEducationEventsFilters: (
+  filters: GetEducationFilters
+) => Promise<{ data?: GetEducationFiltersResponseData; error?: unknown }> = (filters) => {
+  return apiService
+    .get<ApiResponse<GetEducationFiltersResponseData>>(`education-events/filters`, {
+      params: { filters: filters },
+    })
+    .then((res) => ({ data: res.data.data }))
+    .catch((e) => ({
+      error: e.response?.status ?? 'UNKNOWN ERROR',
+    }));
+};
+
+export const getEducationLengthString: (start: string, end: string) => string | null = (start, end) => {
+  const days = Math.abs(dayjs(end).diff(start, 'day'));
+  const weeks = Math.abs(dayjs(end).diff(start, 'week'));
+  const years = Math.abs(dayjs(end).diff(start, 'year'));
+
+  if (!start || !end) return null;
 
   if (weeks > 52 && years % 0.5 == 0) {
     return years + ' år';
@@ -181,4 +211,64 @@ export const getEducationLengthString: (start: string, end: string) => string = 
   } else {
     return days + ' dagar';
   }
+};
+
+const parser = new XMLParser();
+const cardInformationSanitizeOptions = {
+  allowedTags: [
+    'p',
+    'a',
+    'ul',
+    'ol',
+    'li',
+    'b',
+    'i',
+    'strong',
+    'em',
+    'strike',
+    'del',
+    'div',
+    'sup',
+    'sub',
+    'span',
+    'br',
+  ],
+  allowedAttributes: {
+    a: ['class'],
+    p: ['class'],
+    br: ['class'],
+  },
+  transformTags: {
+    a: function () {
+      return {
+        tagName: 'span',
+      };
+    } as unknown as Transformer,
+    p: function () {
+      return {
+        tagName: 'p',
+        attribs: {
+          class: 'my-0',
+        },
+      };
+    } as unknown as Transformer,
+    br: function () {
+      return {
+        tagName: 'br',
+        attribs: {
+          class: 'block mt-[.4rem]',
+        },
+      };
+    } as unknown as Transformer,
+  },
+};
+export const getSanitizedInformation = (
+  information: NonNullable<Course['information']>,
+  informationSanitizeOptions = cardInformationSanitizeOptions
+) => {
+  if (information?.includes('CDATA')) {
+    const xmlParsedInformation = parser.parse(information);
+    information = xmlParsedInformation ? xmlParsedInformation['#text'] : '';
+  }
+  return SanitizeHTML(information, informationSanitizeOptions);
 };

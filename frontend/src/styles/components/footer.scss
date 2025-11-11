@@ -7,7 +7,7 @@
     }
 
     &-innerwrapper {
-      @apply text-body py-2xl lg:py-3xl;
+      @apply text-body py-2xl desktop:py-3xl;
     }
 
     &-content {

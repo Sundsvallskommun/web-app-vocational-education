@@ -1,7 +1,7 @@
 import _sv from '@kolben/ra-language-swedish';
-import { TranslationMessages } from 'react-admin';
+import { TranslationMessagesExtended } from './type';
 
-const sv: TranslationMessages = {
+const sv: TranslationMessagesExtended = {
   ..._sv,
   ra: {
     ..._sv.ra,
@@ -68,6 +68,11 @@ const sv: TranslationMessages = {
         tertiaryText: 'string',
       },
     },
+    tiptap: {
+      select_level: 'Välj nivå',
+      list_bulleted: 'Punktlista',
+      list_numbered: 'Numrerad lista',
+    },
   },
   validation: {
     required: 'Fältet måste ifyllas',
@@ -80,6 +85,16 @@ const sv: TranslationMessages = {
       minSpecialCharacters: `Lösenordet måste innehålla minst antal specialtecken: %{minSpecialCharacters}`,
     },
   },
+  gallery: {
+    title: 'Bildgalleri',
+    description: 'Välj en bild bland de som finns uppladdade eller ladda upp en ny bild.',
+    uploadNew: 'Ladda upp ny bild',
+    addImage: 'Lägg till bild',
+    editImage: 'Ändra bild',
+    removeImage: 'Ta bort bild',
+    imageUploading: 'Laddar upp bild...',
+    useImage: 'Använd bild',
+  },
   resources: {
     components: {
       chosenImageLabel: 'Vald bild',
@@ -90,31 +105,35 @@ const sv: TranslationMessages = {
     page: {
       name: 'Sida |||| Sidor',
       fields: {
-        pageName: 'På sida',
+        pageName: 'Sidreferensnamn',
         title: 'Rubrik',
         description: 'Ingress',
+        showImgInDesktop: 'Visa bild i desktop',
+        showImgInMobile: 'Visa bild i mobil',
+        showSearchBar: 'Visa sökfält',
+        editRoles: 'Behörighet att ändra',
       },
     },
     promotionsBlock: {
       name: 'Huvud-puff |||| Huvud-puffar',
       fields: {
         promotionsBlock: 'Huvud-puff',
-        pageName: 'På sida',
-        promotedPageName: 'På sida',
+        pageName: 'Sidreferensnamn',
+        promotedPageName: 'Sidreferensnamn',
         showBlock: 'Visa Huvud-puffar',
       },
     },
     promotionsBlockPromotions: {
       name: 'Huvud-puff |||| Huvud-puffar',
       fields: {
-        pageName: 'På sida',
+        pageName: 'Sidreferensnamn',
         promotedPageName: 'Puffad sida',
       },
     },
     mapBlock: {
       name: 'Kartblock |||| Kartblock',
       fields: {
-        pageName: 'På sida',
+        pageName: 'Sidreferensnamn',
         mapBlock: 'Kartblock',
         title: 'Rubrik',
         text: 'Text',
@@ -122,10 +141,29 @@ const sv: TranslationMessages = {
         showBlock: 'Visa Kartblock',
       },
     },
-    employerPromotionsBlock: {
-      name: 'Arbetsgivarvalda utbildningar-block |||| Arbetsgivarvalda utbildningar-block',
+    searchBlock: {
+      name: 'Sökblock',
       fields: {
-        pageName: 'På sida',
+        showBlock: 'Visa Sökblock',
+      },
+    },
+    educationsRelatedBlock: {
+      name: 'Relaterad utbildningar-block',
+      fields: {
+        showBlock: 'Visa relaterade utbildningar-block',
+      },
+    },
+    educationsStartingBlock: {
+      name: 'Utbildningar som snart börjar-block',
+      fields: {
+        showBlock: 'Visa Utbildningar som snart börjar-block',
+      },
+    },
+    employerPromotionsBlock: {
+      name: 'Arbetsgivarvalda utbildningar-block',
+      editButton: 'Redigera arbetsgivarvalda utbildningar-block',
+      fields: {
+        pageName: 'Sidreferensnamn',
         title: 'Rubrik',
         description: 'Beskrivning',
         showBlock: 'Visa Arbetsgivarvalda utbildningar-block',
@@ -134,7 +172,7 @@ const sv: TranslationMessages = {
     employerPromotionsBlockPromotions: {
       name: 'Arbetsgivarvald utbildning',
       fields: {
-        pageName: 'På sida',
+        pageName: 'Sidreferensnamn',
         title: 'Rubrik',
         text: 'Ingress',
         searchPhrase: 'Sökfras',
@@ -144,10 +182,15 @@ const sv: TranslationMessages = {
     importantDatesBlock: {
       name: 'Viktiga datum-block |||| Viktiga datum-block',
       fields: {
-        pageName: 'På sida',
+        pageName: 'Sidreferensnamn',
         importantDatesBlock: 'Viktiga datum-block',
         title: 'Rubrik',
         showBlock: 'Visa Viktiga datum-block',
+        showSeeAllButton: 'Visa "Visa alla viktiga datum"-knapp',
+        amountShown: 'Antal viktiga datum som ska visas',
+        referencedImportantDatesBlockPageName: 'Block att visa viktiga datum ifrån',
+        referencedImportantDatesBlockPageNameEmptyText: 'Använd detta blocks frågor',
+        showAll: 'Visa alla viktiga datum',
       },
     },
     importantDatesBlockDateCards: {
@@ -163,7 +206,7 @@ const sv: TranslationMessages = {
     faqBlock: {
       name: 'FAQ-block |||| FAQ-block',
       fields: {
-        pageName: 'På sida',
+        pageName: 'Sidreferensnamn',
         title: 'Rubrik',
         description: 'Beskrivning',
         showBlock: 'Visa FAQ-block',
@@ -177,10 +220,27 @@ const sv: TranslationMessages = {
         faqBlock: 'FAQ-block',
       },
     },
+    contactFormBlock: {
+      name: 'Kontaktformulär-block',
+      fields: {
+        pageName: 'Sidreferensnamn',
+        title: 'Rubrik',
+        description: 'Beskrivning',
+        showBlock: 'Visa Kontaktformulär-block',
+      },
+    },
+    contactFormBlockEmails: {
+      name: 'Kontaktformulär-email',
+      fields: {
+        label: 'Kommun',
+        email: 'Email',
+        contactFormBlock: 'Kontaktformulär-block',
+      },
+    },
     logosBlock: {
       name: 'Logos-block |||| Logos-block',
       fields: {
-        pageName: 'På sida',
+        pageName: 'Sidreferensnamn',
         title: 'Rubrik',
         description: 'Beskrivning',
         showBlock: 'Visa Logos-block',
@@ -189,7 +249,7 @@ const sv: TranslationMessages = {
     logosBlockLogos: {
       name: 'Logo',
       fields: {
-        pageName: 'På sida',
+        pageName: 'Sidreferensnamn',
         alt: 'Alt-text',
         src: 'Bild',
         logosBlock: 'Logos-block',
@@ -199,22 +259,24 @@ const sv: TranslationMessages = {
     tableBlock: {
       name: 'Tabell',
       fields: {
+        title: 'Titel',
+        summary: 'Tabellsummering',
         save: 'Spara',
         remove: 'Ta bort',
         header_label: 'Kolumnnamn',
         cell_label: 'Innehåll',
         add_row: 'Lägg till',
       },
-      headersHeading: 'Tabellens kolumnnamn',
-      rowsHeading: 'Tabellens rader',
-      new_header: 'Nytt kolumnnamn',
+      headersHeading: 'Kolumner',
+      rowsHeading: 'Rader',
+      new_header: 'Ny kolumn',
       missing_rows: 'Inga rader hittades',
     },
     tableBlockHeader: {
-      name: 'Tabellens kolumnnamn',
+      name: 'Kolumner',
     },
     tableBlockRow: {
-      name: 'Tabellens rader',
+      name: 'Rader',
     },
     footer: {
       name: 'Sidfot',
@@ -231,6 +293,24 @@ const sv: TranslationMessages = {
         password: 'Lösenord',
       },
       generatePassword: 'Generera nytt lösenord',
+    },
+    wysiwyg: {
+      customimage: {
+        toolbarText: 'Bild',
+      },
+      youtube: {
+        toolbarText: 'Lägg till Youtube-video',
+      },
+      factblock: {
+        toolbarText: 'Faktablock',
+      },
+      sitenavigationbutton: {
+        toolbarText: 'Sidnavigationsknapp',
+        form: {
+          buttonText: 'Knapptext',
+          href: 'Sida att gå till',
+        },
+      },
     },
   },
 };

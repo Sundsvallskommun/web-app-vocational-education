@@ -1,21 +1,16 @@
+import { PageData, PageDataResponse, PagesData } from '@interfaces/admin-data';
 import { ApiResponse, apiService } from './api-service';
-import { PageData, PageDataResponse } from '@interfaces/admin-data';
-import { NextApiResponse } from 'next';
 
-interface PageResponse {
-  props?: PageDataResponse;
-  redirect?: { permanent: boolean; destination: string };
-}
-
-export const getPage: (url: string, res: NextApiResponse) => Promise<PageResponse> = (url, res) => {
-  res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59');
+export const getPage: (url: string) => Promise<PageDataResponse> = (url) => {
   return apiService
     .get<ApiResponse<PageData>>(`page`, { params: { url: url } })
-    .then((res) => ({ props: { pageData: res.data.data } }))
-    .catch(() => ({
-      redirect: {
-        permanent: false,
-        destination: '/',
-      },
-    }));
+    .then((res) => ({ pageData: res.data.data }))
+    .catch(() => ({ pageData: undefined }));
+};
+
+export const getAdminPages: () => Promise<PagesData[]> = () => {
+  return apiService
+    .get<ApiResponse<PagesData[]>>(`pages`)
+    .then((res) => res.data.data)
+    .catch(() => []);
 };

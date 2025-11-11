@@ -2,6 +2,7 @@ import {
   Create,
   DateInput,
   ReferenceInput,
+  required,
   SelectInput,
   SimpleForm,
   TextInput,
@@ -9,28 +10,39 @@ import {
   useTranslate,
 } from 'react-admin';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
+import { transformPageCreate } from '../../utils/data';
 
 export const ImportantDatesBlockDateCardsCreate = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
   const [activeBlockIdEdit] = useStore('activeBlockIdEdit');
+  const [activePageIdEdit] = useStore('activePageIdEdit');
   return (
-    <Create {...props} redirect={() => history.back()} mutationMode="pessimistic">
+    <Create
+      {...props}
+      redirect={() => history.back()}
+      mutationMode="pessimistic"
+      transform={transformPageCreate({ pageId: parseInt(activePageIdEdit) })}
+    >
       <SimpleForm margin="none">
         <h1>{`${translate('ra.action.create')} ${translate('resources.importantDatesBlockDateCards.name', {
           smart_count: 1,
         })}`}</h1>
-        <ReferenceInput source="importantDatesBlock" reference="importantDatesBlock">
+        <ReferenceInput
+          source="importantDatesBlock"
+          reference="importantDatesBlock"
+          filter={{ pageId: parseInt(activePageIdEdit) }}
+        >
           <SelectInput
             source="importantDatesBlock"
             optionText="pageName"
-            disabled
+            readOnly
             value={parseInt(activeBlockIdEdit)}
             defaultValue={parseInt(activeBlockIdEdit)}
           />
         </ReferenceInput>
-        <DateInput source="date" />
-        <TextInput source="title" />
+        <DateInput source="date" validate={[required()]} />
+        <TextInput source="title" validate={[required()]} />
         <TextInput
           multiline
           inputProps={{
@@ -38,7 +50,6 @@ export const ImportantDatesBlockDateCardsCreate = (props: any) => {
           }}
           source="text"
         />
-        <TextInput source="url" />
       </SimpleForm>
     </Create>
   );

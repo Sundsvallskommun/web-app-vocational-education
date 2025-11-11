@@ -1,0 +1,61 @@
+@use './components/index.scss';
+
+@layer components {
+  .container {
+    @apply m-auto px-[1.6rem] phone-min:px-[2.4rem] medium-device:px-xl desktop:px-0;
+  }
+
+  .form-error-message {
+    @apply mb-4;
+  }
+
+  .max-width-content {
+    @apply max-w-content;
+  }
+
+  .header-container .header-content,
+  .TabMenu > .tab-wrapper,
+  .container {
+    @apply max-width-content;
+  }
+
+  .next-img {
+    object-fit: contain;
+    width: 100% !important;
+    position: relative !important;
+    height: unset !important;
+    max-height: 100%;
+  }
+
+  .drop-right {
+    @apply rounded-bl-half rounded-br-half rounded-tl-half;
+  }
+
+  .drop-left {
+    @apply rounded-bl-half rounded-br-half rounded-tr-half;
+  }
+
+  // tab-focus
+  a,
+  button,
+  .sk-link,
+  .sk-btn,
+  .sk-btn-solid,
+  .sk-btn-outline,
+  .tag,
+  input,
+  textarea,
+  [type='checkbox'],
+  [type='radio'],
+  [type='text'] {
+    &:focus-visible,
+    &:focus {
+      @apply ring-0 ring-transparent;
+      @apply focus-classes;
+    }
+  }
+
+  .sk-cookie-consent-content-wrapper {
+    @apply max-w-content;
+  }
+}

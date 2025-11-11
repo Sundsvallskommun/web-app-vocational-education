@@ -16,32 +16,37 @@ import { ServiceResponse } from '../../../providers/apiProvider';
 import { deleteMedia, editMedia, getAllMedia, saveMedia } from '../../../services/media-service';
 import { gridKeyboardNav } from '../../../shared/keyboard-navigation/grid-keyboard-nav';
 import styles from './styles.module.scss';
+import { useTranslate } from 'react-admin';
 
 interface ModalProps {
   open: boolean;
   handleClose: () => void;
   setMedia: (media?: MediaResponse) => void;
+  selectedMedia?: InternalMedia;
 }
 
 export interface MediaForm extends InternalMedia {
   media: FileList | [];
 }
 
+const defaultValues = {
+  id: undefined,
+  title: '',
+  alt: '',
+  filename: '',
+  src: null,
+  media: [],
+};
+
 const defaultSetValueOptions = { shouldDirty: true, shouldTouch: true, shouldValidate: true };
 
-export const Gallery = ({ open, handleClose, setMedia }: ModalProps) => {
+export const Gallery = ({ open, handleClose, setMedia, selectedMedia: _selectedMedia = defaultValues }: ModalProps) => {
+  const translate = useTranslate();
   const [mediaItems, setMediaItems] = useState<MediaResponse[]>([]);
-  const [selectedMedia, setSelectedMedia] = useState<InternalMedia>();
+  const [selectedMedia, setSelectedMedia] = useState<InternalMedia | undefined>(_selectedMedia);
 
   const { handleSubmit, register, setValue, watch, reset, getValues, formState } = useForm<MediaForm>({
-    defaultValues: {
-      id: undefined,
-      title: '',
-      alt: '',
-      filename: '',
-      src: null,
-      media: [],
-    },
+    defaultValues: selectedMedia,
     mode: 'onChange',
   });
 
@@ -121,12 +126,13 @@ export const Gallery = ({ open, handleClose, setMedia }: ModalProps) => {
   useEffect(() => {
     if (open) {
       fetchAllMedia();
+      setSelectedMedia(_selectedMedia);
     }
     return () => {
       reset();
-      setSelectedMedia(undefined);
+      setSelectedMedia(_selectedMedia);
     };
-  }, [open]);
+  }, [open, _selectedMedia]);
 
   // Upload new
   useEffect(() => {
@@ -187,13 +193,13 @@ export const Gallery = ({ open, handleClose, setMedia }: ModalProps) => {
                 <CloseIcon />
               </IconButton>
               <Button variant="outlined" component="label">
-                Ladda upp ny
+                {translate('gallery.uploadNew')}
                 <input {...register('media')} type="file" hidden />
               </Button>
             </Box>
           </Box>
           <Typography id="gallery-modal-description" sx={{ mt: 2 }}>
-            Välj en bild bland de som finns uppladdade eller ladda upp en ny bild.
+            {translate('gallery.description')}
           </Typography>
 
           <ImageList className={styles['gallery-modal-image-list']} cols={5} rowHeight={164}>
@@ -227,12 +233,12 @@ export const Gallery = ({ open, handleClose, setMedia }: ModalProps) => {
                     alt={item.title}
                     loading="lazy"
                   />
-                  <ImageListItemBar title={'test'} position="below" />
+                  <ImageListItemBar title={item.title} position="below" />
                 </ImageListItem>
               );
             })}
           </ImageList>
-          {selectedMedia ? (
+          {selectedMedia?.src ? (
             <Box className={classNames(styles['gallery-modal-selected-image-box'])}>
               <ImageListItem
                 sx={{
@@ -254,10 +260,10 @@ export const Gallery = ({ open, handleClose, setMedia }: ModalProps) => {
                 <TextField {...register('alt')} label="Alt" variant="filled" />
                 <Box className={styles['gallery-modal-selected-image-box-form-buttons']}>
                   <Button disabled={!formState.isDirty} variant="contained" type="button" onClick={() => saveItem()}>
-                    Spara
+                    {translate('ra.action.save')}
                   </Button>
                   <Button color="error" variant="contained" type="button" onClick={() => deleteItem()}>
-                    Ta bort
+                    {translate('ra.action.delete')}
                   </Button>
                 </Box>
               </Box>
@@ -268,7 +274,7 @@ export const Gallery = ({ open, handleClose, setMedia }: ModalProps) => {
 
           <Box className={styles['gallery-modal-lead-buttons']}>
             <Button variant="outlined" type="button" onClick={handleClose}>
-              Stäng
+              {translate('ra.action.close')}
             </Button>
             <Button
               disabled={selectedMedia === undefined}
@@ -276,7 +282,7 @@ export const Gallery = ({ open, handleClose, setMedia }: ModalProps) => {
               type="button"
               onClick={handleSubmit(onMediaSubmit)}
             >
-              Välj bild
+              {translate('gallery.useImage')}
             </Button>
           </Box>
         </form>

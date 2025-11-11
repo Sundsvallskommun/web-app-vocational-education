@@ -1,38 +1,49 @@
-import { CookieConsent, Footer, Header, Link } from '@sk-web-gui/react';
-import { useEffect, useRef, useState } from 'react';
+'use client';
 
-import Head from 'next/head';
-import NextLink from 'next/link';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import Menu from '@components/menu/menu.component';
-import Image from 'next/image';
-import logo_stacked from '@public/svg/logo_stacked.svg';
 import HeaderLogo from '@components/logo/header-logo.component';
-import Sticky from 'react-sticky-el';
-import { useRouter } from 'next/router';
+import Menu from '@components/menu/menu.component';
 import { LayoutData } from '@interfaces/admin-data';
-import { getLayout } from '@services/layout-service';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { useLocalStorageValue } from '@react-hookz/web';
 import sanitized from '@services/sanitizer-service';
+import { ColorSchemeMode, CookieConsent, Footer, Header, Link, useGui } from '@sk-web-gui/react';
+import Image from 'next/image';
+import NextLink from 'next/link';
+import { useEffect, useState } from 'react';
+import Sticky from 'react-sticky-el';
+interface ConsentCookie {
+    optional: boolean;
+    displayName: string;
+    description: string;
+    cookieName: string;
+}
 
 interface DefaultLayoutProps {
-  title: string;
   children: React.ReactElement | React.ReactElement[];
   layoutData?: LayoutData;
 }
 
-export async function getServerSideProps({ res }) {
-  return await getLayout(res);
-}
+export default function DefaultLayout({ layoutData, children }: DefaultLayoutProps) {
 
-export default function DefaultLayout({ layoutData, title, children }: DefaultLayoutProps) {
-  const initialFocus = useRef(null);
+   const { set: setMatomo } = useLocalStorageValue('matomoIsActive');
+
+  const cookieConsentHandler = (cookies: ConsentCookie[]) => {
+    if (cookies.some((opt) => opt.cookieName === 'stats')) {
+      setMatomo(true);
+    }
+  };
+
+const { colorScheme, preferredColorScheme } = useGui();
+const mode = colorScheme === ColorSchemeMode.System ? preferredColorScheme : colorScheme;
+
   const [menuShow, setMenuShow] = useState(false);
   let lastScrollTop = 0;
-  const router = useRouter();
+
   const setInitialFocus = () => {
-    setTimeout(() => {
-      initialFocus.current && initialFocus.current.focus();
-    });
+    const contentElement = document.getElementById('content');
+    if (contentElement) {
+      contentElement.focus();
+    }
   };
 
   const listenToScroll = () => {
@@ -55,22 +66,13 @@ export default function DefaultLayout({ layoutData, title, children }: DefaultLa
 
   return (
     <div className="DefaultLayout full-page-layout">
-      <Head>
-        <title>{title}</title>
-        <meta name="description" content="Yrkesutbildningar" />
-      </Head>
-
-      <NextLink legacyBehavior={true} href={`${router.pathname}#content`} passHref>
-        <a onClick={setInitialFocus} accessKey="s" className="next-link-a">
-          Hoppa till innehåll
-        </a>
+      <NextLink href={`#content`} onClick={setInitialFocus} accessKey="s" className="next-link-a">
+        Hoppa till innehåll
       </NextLink>
 
       <Sticky
         boundaryElement=".DefaultLayout"
-        // wrapperClassName="shadow"
         stickyStyle={{ top: menuShow ? 0 : '-150px', transition: 'all .3s ease-in-out' }}
-        // !relative lg:!fixed för desktop only sticky
         stickyClassName={`block z-10 shadow-md ${menuShow ? 'menu-show' : 'menu-hide'}`}
       >
         <Header className="!max-width-content py-0">
@@ -84,7 +86,7 @@ export default function DefaultLayout({ layoutData, title, children }: DefaultLa
       </Sticky>
 
       <div className="main-container flex-grow">
-        <main>{children}</main>
+        <main id="content">{children}</main>
       </div>
 
       <CookieConsent
@@ -93,9 +95,9 @@ export default function DefaultLayout({ layoutData, title, children }: DefaultLa
           <p>
             Vi använder kakor, cookies, för att ge dig en förbättrad upplevelse, sammanställa statistik och för att viss
             nödvändig funktionalitet ska fungera på webbplatsen.{' '}
-            <NextLink href="/kakor" passHref>
-              <Link as="span">Läs mer om hur vi använder kakor</Link>
-            </NextLink>
+            <Link as={NextLink} href="/kakor">
+              Läs mer om hur vi använder kakor
+            </Link>
           </p>
         }
         cookies={[
@@ -121,53 +123,51 @@ export default function DefaultLayout({ layoutData, title, children }: DefaultLa
           },
         ]}
         resetConsentOnInit={false}
-        onConsent={() => {
-          // FIXME: do stuff with cookies?
-          // NO ANO FUNCTIONS
-        }}
+        onConsent={cookieConsentHandler}
       />
 
-      <Footer color="gray">
-        <div className="mx-auto">
-          <div className="w-full flex justify-center mb-2xl md:mb-[84px]">
+      <Footer color="gray" className="justify-start medium-device:justify-center py-50 medium-device:py-100">
+        <div className="w-full flex flex-col justify-start medium-device:justify-center">
+          <div className="w-full flex justify-center mb-2xl medium-device:mb-[84px]">
             <span>
-              <Image width={170} height={131} src={logo_stacked} alt="" aria-hidden="true" />
+              <Image width={170} height={131} src={`${process.env.NEXT_PUBLIC_BASE_PATH}/svg/logo_stacked_${mode}mode.svg`} alt="" aria-hidden="true" />
             </span>
           </div>
-          <div className="flex flex-col text-sm gap-2xl lg:gap-3xl md:flex-row">
+          <div className="w-max medium-device:mx-auto flex flex-col text-sm gap-2xl desktop:gap-3xl medium-device:flex-row">
             <div className="max-w-[215px] text-[12px]">
-              <h2 className="text-lg mb-sm">Meny</h2>
+              <h2 className="text-large mb-sm">Meny</h2>
               <div className="flex flex-col gap-[1rem]">
-                <Link href="#">
+                <Link as={NextLink} href="/utbildningar">
                   <span>För dig som söker utbildning</span> <ArrowForwardIcon className="material-icon !text-xl" />
                 </Link>
-                <Link href="#">
-                  <span>För utbildningsannordnare</span> <ArrowForwardIcon className="material-icon !text-xl" />
-                </Link>
-                <Link href="#">
+                {/* https://jira.sundsvall.se/browse/DRAKEN-2296 */}
+                {/* <Link as={NextLink} href="/utbildningsanordnare">
+                  <span>För utbildningsanordnare</span> <ArrowForwardIcon className="material-icon !text-xl" />
+                </Link> */}
+                <Link as={NextLink} href="/arbetsgivare">
                   <span>För arbetsgivare</span> <ArrowForwardIcon className="material-icon !text-xl" />
                 </Link>
               </div>
             </div>
             <div className="max-w-[215px] text-[12px]">
-              <h2 className="text-lg mb-sm">Om sidan</h2>
+              <h2 className="text-large mb-sm">Om sidan</h2>
               <div className="flex flex-col gap-[1rem]">
-                <Link href="#">
+                <Link as={NextLink} href="/personuppgifter">
                   <span>Behandling av personuppgifter</span> <ArrowForwardIcon className="material-icon !text-xl" />
                 </Link>
-                <Link href="#">
+                <Link as={NextLink} href="/tillganglighetsredogorelse">
                   <span>Tillgänglighetsredogörelse</span> <ArrowForwardIcon className="material-icon !text-xl" />
                 </Link>
-                <Link href="#">
+                <Link as={NextLink} href="/om-webbplatsen">
                   <span>Om webbplatsen</span> <ArrowForwardIcon className="material-icon !text-xl" />
                 </Link>
-                <Link href="#">
+                <Link as={NextLink} href="/kakor">
                   <span>Cookies</span> <ArrowForwardIcon className="material-icon !text-xl" />
                 </Link>
               </div>
             </div>
             <div className="max-w-[215px] text-[12px]">
-              <h2 className="text-lg mb-sm">{layoutData?.footer?.contactTitle || ''}</h2>
+              <h2 className="text-large mb-sm">{layoutData?.footer?.contactTitle || ''}</h2>
               <span
                 className="text [&>*]:leading-[2.58]"
                 dangerouslySetInnerHTML={{

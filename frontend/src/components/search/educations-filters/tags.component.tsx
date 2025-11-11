@@ -1,16 +1,25 @@
-import { emptyEducationFilterOptions, getFilterOptionString } from '@services/education-service/education-service';
-import { Chip, omit } from '@sk-web-gui/react';
+import { EducationFilterOptions } from '@interfaces/education';
+import {
+  emptyEducationFilterOptions,
+  getFilterOptionString,
+  shownTags,
+} from '@services/education-service/education-service';
+import { Chip } from '@sk-web-gui/react';
+import { appURL } from '@utils/app-url';
+import { serializeURL } from '@utils/url';
 import _ from 'lodash';
+import { usePathname, useRouter } from 'next/navigation';
 import { useFormContext } from 'react-hook-form';
 interface Tag {
-  formName: string;
+  formName: keyof EducationFilterOptions;
   label: string;
   value: unknown;
 }
 
 export default function Tags() {
-  const { watch, reset, setValue } = useFormContext();
-
+  const { watch, setValue, getValues } = useFormContext<EducationFilterOptions>();
+  const router = useRouter();
+  const pathname = usePathname();
   const values = watch();
 
   const removeTag = (tag: Tag) => () => {
@@ -21,35 +30,50 @@ export default function Tags() {
         formValue.filter((x) => x !== tag.value)
       );
     } else {
-      setValue(tag.formName, emptyEducationFilterOptions[tag.formName]);
+      setValue(tag.formName, emptyEducationFilterOptions[tag.formName as keyof EducationFilterOptions]);
     }
   };
 
   const removeAll = () => {
-    reset(omit(emptyEducationFilterOptions, ['q']));
+    const queryString = getValues().q;
+    const url = new URL(appURL(pathname));
+    const emptyFilters: Record<string, unknown> = {};
+    shownTags.forEach((tag) => {
+      emptyFilters[tag] = emptyEducationFilterOptions[tag];
+    });
+    const shownEmptyFilters: Record<string, boolean> = {};
+    shownTags.forEach((tag) => {
+      shownEmptyFilters[tag] = true;
+    });
+    const queries = new URLSearchParams(
+      serializeURL({ ...emptyFilters, q: queryString ?? '' }, { includeEmptyValue: shownEmptyFilters })
+    );
+    url.search = queries.toString();
+    router.replace(url.toString());
   };
 
-  const tagList = [];
+  const tagList: Tag[] = [];
   Object.keys(values)
-    .filter((filter) => !['page', 'size'].includes(filter))
+    .filter((filter) => shownTags.includes(filter as keyof EducationFilterOptions))
     .forEach((filter) => {
-      const filterValue = values[filter];
-      if (filterValue && !_.isEqual(filterValue, emptyEducationFilterOptions[filter])) {
+      const filterTyped = filter as keyof EducationFilterOptions;
+      const filterValue = values[filterTyped];
+      if (filterValue && !_.isEqual(filterValue, emptyEducationFilterOptions[filterTyped])) {
         if (Array.isArray(filterValue)) {
           filterValue.forEach((value) => {
             if (value) {
               tagList.push({
-                formName: filter,
-                label: getFilterOptionString(filter, [value]),
+                formName: filterTyped,
+                label: getFilterOptionString(filterTyped, [value]),
                 value: value,
               });
             }
           });
         } else {
           tagList.push({
-            formName: filter,
-            label: getFilterOptionString(filter, values[filter]),
-            value: values[filter],
+            formName: filterTyped,
+            label: getFilterOptionString(filterTyped, values[filterTyped]),
+            value: values[filterTyped],
           });
         }
       }
@@ -63,14 +87,15 @@ export default function Tags() {
           <span className="flex-grow flex gap-md gap-y-sm flex-wrap">
             {tagList.map((tag) => (
               <Chip
+                type="button"
                 key={`${tag.formName}-${tag.label}`}
-                className="override bg-blue text-white hover:bg-blue"
+                className="override chip-blue text-white hover:bg-blue"
                 onClick={removeTag(tag)}
               >
                 {tag.label}
               </Chip>
             ))}
-            <Chip onClick={removeAll} className="override bg-red text-white hover:bg-red">
+            <Chip type="button" onClick={removeAll} className="override chip-red text-white hover:bg-red">
               Rensa alla filter
             </Chip>
           </span>

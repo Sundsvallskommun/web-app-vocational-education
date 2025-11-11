@@ -1,42 +1,43 @@
+import Youtube from '@tiptap/extension-youtube';
 import {
+  ClearButtons,
   DefaultEditorOptions,
+  FormatButtons,
+  LevelSelect,
+  LinkButtons,
+  ListButtons,
   RichTextInput,
   RichTextInputToolbar,
-  LevelSelect,
-  FormatButtons,
-  AlignmentButtons,
-  ListButtons,
-  LinkButtons,
-  QuoteButtons,
-  ClearButtons,
   useTiptapEditor,
 } from 'ra-input-rich-text';
-import HorizontalRule from '@tiptap/extension-horizontal-rule';
-import Image from '@tiptap/extension-image';
-import Remove from '@mui/icons-material/Remove';
-import { ImageButtons } from './image.toolbar.component';
-import Youtube from '@tiptap/extension-youtube';
-import IconButton from '@mui/material/IconButton';
-import ToggleButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import { FactBlock, FactBlockToolbarButton } from './FactBlock.extension';
+import { CustomImage, ImageToolbarButton } from './CustomImage';
+import { SiteNavigationButton, SiteNavigationToolbarButton } from './SiteNavigationButton.extension';
 import { YoutubeButton } from './youtube.toolbar.component';
 
 const MyRichTextInputToolbar = ({ ...props }) => {
   const editor = useTiptapEditor();
 
-  // return <RichTextInputToolbar {...props}></RichTextInputToolbar>;
-
   return (
     <RichTextInputToolbar {...props}>
       <LevelSelect />
-      {/* <FormatButtons /> */}
+      <FormatButtons />
       {/* <AlignmentButtons /> */}
       <ListButtons />
-      {/* <LinkButtons /> */}
+
+      <LinkButtons />
       {/* <QuoteButtons /> */}
-      <ImageButtons />
+      <ImageToolbarButton editor={editor} />
       <YoutubeButton editor={editor} />
-      <ClearButtons />
+
+      <FactBlockToolbarButton editor={editor} />
+      <SiteNavigationToolbarButton editor={editor} />
+
+      <ClearButtons
+        sx={{
+          marginLeft: 'auto',
+        }}
+      />
     </RichTextInputToolbar>
   );
 };
@@ -54,5 +55,11 @@ export const Wysiwyg = ({ ...props }) => (
 
 export const MyEditorOptions = {
   ...DefaultEditorOptions,
-  extensions: [...DefaultEditorOptions.extensions, Image, Youtube.configure()],
+  extensions: [
+    ...(DefaultEditorOptions.extensions ?? []),
+    CustomImage,
+    FactBlock,
+    SiteNavigationButton,
+    Youtube.configure(),
+  ],
 };

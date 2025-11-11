@@ -1,18 +1,16 @@
-import { Button, Link, MenuVertical } from '@sk-web-gui/react';
-import { useEffect, useState } from 'react';
 import MenuModal from '@components/modal/menu-modal.component';
-import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useRouter } from 'next/router';
-import NextLink from 'next/link';
+import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import { useUserStore } from '@services/user-service/user-service';
+import { Button, Link, MenuVertical } from '@sk-web-gui/react';
+import NextLink from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
 export const Menu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeUrl, setActiveUrl] = useState('/');
   const user = useUserStore((s) => s.user);
-
-  const router = useRouter();
+  const pathname = usePathname();
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -22,88 +20,79 @@ export const Menu: React.FC = () => {
     setIsOpen(false);
   };
 
-  useEffect(() => {
-    setActiveUrl(router.pathname);
-  }, [router.pathname]);
-
   return (
     <div className="menu">
       <Button
         variant="ghost"
-        className="text-green p-sm"
+        className="text-green p-sm rounded-10"
         rightIcon={<MenuOutlinedIcon className="material-icon ml-sm !text-[3rem]" />}
         onClick={handleOpen}
       >
-        Menu
+        Meny
       </Button>
       <MenuModal show={isOpen} onClose={handleClose} className="h-screen">
-        <div className="max-w-[410px]">
-          <MenuVertical.Provider current={activeUrl} setCurrent={setActiveUrl}>
-            <MenuVertical.Nav>
+        <div>
+          <MenuVertical.Provider current={pathname}>
+            <MenuVertical.Nav aria-label="Huvudmeny">
               <MenuVertical>
                 <MenuVertical.Item menuIndex="/utbildningar">
-                  <NextLink href="/utbildningar">För dig som söker utbildning</NextLink>
+                  <MenuVertical>
+                    <MenuVertical.SubmenuButton menuIndex="/utbildningar">
+                      <NextLink href="/utbildningar">För dig som söker utbildning</NextLink>
+                    </MenuVertical.SubmenuButton>
+                    <MenuVertical.Item menuIndex="/utbildningar/sok">
+                      <NextLink href="/utbildningar/sok">Sök utbildning</NextLink>
+                    </MenuVertical.Item>
+                  </MenuVertical>
                 </MenuVertical.Item>
                 <MenuVertical.Item menuIndex="/arbetsgivare">
                   <NextLink href="/arbetsgivare">För arbetsgivare</NextLink>
                 </MenuVertical.Item>
-                <MenuVertical.Item menuIndex="/utbildningsanordnare">
-                  <MenuVertical>
-                    <MenuVertical.SubmenuButton>
-                      <NextLink href="/utbildningsanordnare">För utbildningsanordnare</NextLink>
-                    </MenuVertical.SubmenuButton>
-                    <MenuVertical.Item menuIndex="/utbildningsanordnare/ai">
-                      <NextLink href="/utbildningsanordnare/ai">AI-verktyget</NextLink>
-                    </MenuVertical.Item>
-                    <MenuVertical.Item menuIndex="/utbildningsanordnare/kontakta">
-                      <NextLink href="/utbildningsanordnare/kontakta">Listning utbildningsanordnare</NextLink>
-                    </MenuVertical.Item>
-                  </MenuVertical>
-                </MenuVertical.Item>
-                <MenuVertical.Item menuIndex="/kontakta">
-                  <NextLink href="/kontakta">Kontakta oss</NextLink>
-                </MenuVertical.Item>
-                <MenuVertical.Item menuIndex="/siteguide">
-                  <NextLink href="/siteguide">Siteguide (Development)</NextLink>
+                {/* https://jira.sundsvall.se/browse/DRAKEN-2296 */}
+                {/* <MenuVertical.Item menuIndex="/utbildningsanordnare">
+                  <NextLink href="/utbildningsanordnare">För utbildningsanordnare</NextLink>
+                </MenuVertical.Item> */}
+                <MenuVertical.Item menuIndex="/kontakta-oss">
+                  <NextLink href="/kontakta-oss">Kontakta oss</NextLink>
                 </MenuVertical.Item>
               </MenuVertical>
             </MenuVertical.Nav>
           </MenuVertical.Provider>
 
-          <div className="mt-2xl flex flex-col gap-sm md:gap-md text-[12px] md:text-base">
-            <NextLink href="#">
-              <Link as="span">
-                <span>Behandling av personuppgifter</span> <ArrowForwardIcon className="material-icon !text-xl" />
-              </Link>
-            </NextLink>
-            <NextLink href="#">
-              <Link as="span">
-                <span>Tillgänglighetsredogörelse</span> <ArrowForwardIcon className="material-icon !text-xl" />
-              </Link>
-            </NextLink>
-            <NextLink href="#">
-              <Link as="span">
-                <span>Om webbplatsen</span> <ArrowForwardIcon className="material-icon !text-xl" />
-              </Link>
-            </NextLink>{' '}
-            <NextLink href="#">
-              <Link as="span">
-                <span>Cookies</span> <ArrowForwardIcon className="material-icon !text-xl" />
-              </Link>
-            </NextLink>
-            {user.username ?
-              <NextLink href="/logout">
-                <Link as="span">
-                  <span>Logga ut</span> <ArrowForwardIcon className="material-icon !text-xl" />
+          <nav
+            aria-label="Snabblänkar"
+            className="mt-2xl flex flex-col gap-sm medium-device:gap-md text-[12px] medium-device:text-base"
+          >
+            <ul className="[&>li]:leading-[3.9rem]">
+              <li>
+                <Link as={NextLink} href="/personuppgifter">
+                  <span>Behandling av personuppgifter</span> <ArrowForwardIcon className="material-icon !text-xl" />
                 </Link>
-              </NextLink>
-            : <NextLink href={`/login?path=${router.pathname}`}>
-                <Link as="span">
-                  <span>Logga in</span> <ArrowForwardIcon className="material-icon !text-xl" />
+              </li>
+              <li>
+                <Link as={NextLink} href="/tillganglighetsredogorelse">
+                  <span>Tillgänglighetsredogörelse</span> <ArrowForwardIcon className="material-icon !text-xl" />
                 </Link>
-              </NextLink>
-            }
-          </div>
+              </li>
+              <li>
+                <Link as={NextLink} href="/om-webbplatsen">
+                  <span>Om webbplatsen</span> <ArrowForwardIcon className="material-icon !text-xl" />
+                </Link>
+              </li>
+              <li>
+                <Link as={NextLink} href="/kakor">
+                  <span>Cookies</span> <ArrowForwardIcon className="material-icon !text-xl" />
+                </Link>
+              </li>
+              {user.username && (
+                <li>
+                  <Link as={NextLink} href="/logout">
+                    <span>Logga ut</span> <ArrowForwardIcon className="material-icon !text-xl" />
+                  </Link>
+                </li>
+              )}
+            </ul>
+          </nav>
         </div>
       </MenuModal>
     </div>

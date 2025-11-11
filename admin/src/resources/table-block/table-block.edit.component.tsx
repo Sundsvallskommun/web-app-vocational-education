@@ -3,7 +3,9 @@ import Container from '@mui/material/Container';
 import {
   BooleanInput,
   Button,
+  DeleteButton,
   Form,
+  Link,
   SaveButton,
   TextInput,
   useDataProvider,
@@ -30,16 +32,16 @@ const transform = (data: FieldValues) => {
   return data;
 };
 
-export const TableBlockEdit = (props: any) => {
-  useRoutePermissions();
+export const TableBlockEdit = () => {
+  const { isAdmin } = useRoutePermissions();
   const translate = useTranslate();
   const { tableId: paramsTableId } = useParams();
   const tableId = paramsTableId ? parseInt(paramsTableId) : null;
+  const dataProvider = useDataProvider();
 
   if (!tableId) return <></>;
 
   const { data: table, refetch } = useGetOne<TableBlock>('tableBlock', { id: tableId });
-  const dataProvider = useDataProvider();
 
   if (!table) return <></>;
 
@@ -55,17 +57,46 @@ export const TableBlockEdit = (props: any) => {
           <h1>{`${translate('ra.action.edit')} ${translate('resources.tableBlock.name', {
             smart_count: 1,
           }).toLowerCase()}`}</h1>
-          <TextInput source="pageName" disabled />
+          <Box display={'inline-flex'} flexDirection={'column'}>
+            <TextInput sx={{ display: 'inline' }} source="pageName" readOnly />
+            <TextInput
+              source="title"
+              multiline
+              inputProps={{
+                sx: { width: '222px' },
+              }}
+            />
+            <TextInput
+              source="summary"
+              multiline
+              sx={{ hyphens: 'auto' }}
+              inputProps={{
+                sx: { width: '576px' },
+              }}
+            />
+          </Box>
           <BooleanInput source="showBlock" />
           <SaveButton />
+          {isAdmin && (
+            <DeleteButton
+              record={table}
+              mutationMode="optimistic"
+              resource="tableBlock"
+              redirect={`/page/${table.pageId}`}
+              sx={{ whiteSpace: 'nowrap' }}
+            />
+          )}
         </Form>
       </Container>
 
       <Box sx={{ mt: '2rem', display: 'flex', flexDirection: 'column', gap: '2rem', mb: '5rem' }}>
         <EditTableBlockHeaders table={table} refetch={refetch} />
         <EditTableBlockRows table={table} refetch={refetch} />
+
+        <Link as={Button} to={`/page/${table.pageId}`}>
+          <span>{translate('ra.action.back')}</span>
+        </Link>
       </Box>
-      <Button onClick={() => history.back()} label={`${translate('ra.action.back')}`} />
     </>
   );
 };

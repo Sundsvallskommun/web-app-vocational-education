@@ -1,18 +1,16 @@
-import { ClientUser, User as InternalUser } from '@/interfaces/users.interface';
-import { User } from '@prisma/client';
-import { getPermissions } from './authorization.service';
+import { ClientUser, SessionUser } from '@/interfaces/users.interface';
 
-export const getUser = (user: User): InternalUser => ({
+// export const getUser = (user: PrismaUser): InternalUser => ({
+//   id: user.id,
+//   username: user.username,
+//   roles: getRoles(user.roles),
+//   email: user.email,
+//   permissions: getPermissions(user.roles, true),
+// });
+
+export const getClientUser = (user: SessionUser): ClientUser => ({
   id: user.id,
   username: user.username,
-  role: user.role,
-  email: user.email,
-  permissions: getPermissions([user.role], true),
-});
-
-export const getClientUser = (user: InternalUser): ClientUser => ({
-  id: user.id,
-  username: user.username,
-  role: user.role,
-  permissions: getPermissions([user.role], true),
+  roles: user.roles,
+  permissions: user.permissions,
 });

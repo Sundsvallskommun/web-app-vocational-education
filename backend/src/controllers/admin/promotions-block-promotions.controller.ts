@@ -1,23 +1,16 @@
 import prisma from '@/utils/prisma';
-import { Prisma } from '@prisma/client';
-import { defaultHandler, getListHandler, getManyHandler, getOneHandler } from 'ra-data-simple-prisma';
-import { All, Controller, Req } from 'routing-controllers';
+import { defaultHandler } from 'ra-data-simple-prisma';
+import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
+import { checkPageRoles } from './utils';
 
 @Controller()
 export class AdminPromotionsBlockPromotionsController {
   @All('/admin/promotionsBlockPromotions')
   @OpenAPI({ summary: 'Handle PromotionsBlockPromotions' })
+  @UseBefore(checkPageRoles())
   async promotionsBlockPromotions(@Req() req): Promise<any> {
     switch (req.body.method) {
-      case 'getOne':
-        return await getOneHandler<Prisma.PromotionsBlockPromotionsFindUniqueArgs>(req.body, prisma.promotionsBlockPromotions);
-      case 'getMany':
-        return await getManyHandler<Prisma.PromotionsBlockPromotionsFindManyArgs>(req.body, prisma.promotionsBlockPromotions);
-      case 'getList':
-        return await getListHandler<Prisma.PromotionsBlockPromotionsFindManyArgs>(req.body, prisma.promotionsBlockPromotions);
-      case 'create':
-      case 'delete':
       case 'deleteMany':
         // Dont allow these
         break;

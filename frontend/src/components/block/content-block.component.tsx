@@ -1,18 +1,29 @@
-export const ContentBlock: React.FC<{
+import { cx } from '@sk-web-gui/utils';
+
+export interface ContentBlockProps {
   children?: React.ReactNode;
   className?: string;
   classNameWrapper?: string;
   classNameContent?: string;
   padded?: boolean;
-}> = ({ children, className = '', classNameWrapper = '', classNameContent = '', padded = false }) => {
+  fitHeight?: boolean;
+}
+
+export const ContentBlock: React.FC<ContentBlockProps> = ({
+  children,
+  className = '',
+  classNameWrapper = '',
+  classNameContent = '',
+  padded = false,
+  fitHeight = false,
+}) => {
   return (
     <div
-      className={`${classNameWrapper} content-block w-full [&+.content-block]:mt-2xl [&.padded+.content-block.padded]:mt-0 [&:last-of-type]:mb-2xl lg:[&+.content-block]:mt-3xl lg:[&:last-of-type]:mb-3xl ${
-        padded ? 'padded py-2xl lg:py-3xl' : ''
-      }`}
+      className={cx('content-block', classNameWrapper, { padded: padded })}
+      data-fitheight={padded || fitHeight ? 'true' : undefined}
     >
-      <div className={`${className} content-block-container`}>
-        <div className={`${classNameContent} content-block-content max-width-content container`}>{children}</div>
+      <div className={cx('content-block-container', className)}>
+        <div className={cx('content-block-content', classNameContent)}>{children}</div>
       </div>
     </div>
   );

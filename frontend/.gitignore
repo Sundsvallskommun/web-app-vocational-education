@@ -7,6 +7,7 @@
 
 # testing
 /coverage
+/.nyc_output
 
 # next.js
 /.next
@@ -14,6 +15,10 @@
 
 # production
 /build
+
+#public
+/public/robots.txt
+/public/sitemap*
 
 # misc
 .DS_Store

@@ -2,9 +2,9 @@ import { cx } from '@sk-web-gui/react';
 import React, { HTMLAttributes } from 'react';
 
 interface ButtonStackedIconProps extends HTMLAttributes<HTMLButtonElement> {
-  icon;
-  active?;
-  children?;
+  icon: React.ReactNode;
+  active?: boolean;
+  children?: React.ReactNode;
   className?: string;
   disabled?: boolean;
 }
@@ -35,7 +35,7 @@ export const ButtonStackedIcon: React.FC<ButtonStackedIconProps> = ({
       className={cx(
         className,
         active && 'active',
-        active || disabled ? 'text-blue no-underline' : 'underline hover:no-underline',
+        active || disabled ? 'no-underline' : 'text-blue underline hover:no-underline',
         `button-stacked group flex flex-col items-center`
       )}
     >

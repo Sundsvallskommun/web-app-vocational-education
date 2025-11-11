@@ -23,6 +23,7 @@ export const EditTableBlockHeaders = ({ table, refetch }: TableBlockHeadersProps
   const onCreate = async (data: FieldValues) => {
     await dataProvider.create('tableBlockHeader', {
       data: {
+        pageId: table.pageId,
         name: data.name,
         tableBlock: {
           connect: {
@@ -52,7 +53,7 @@ export const EditTableBlockHeaders = ({ table, refetch }: TableBlockHeadersProps
   return (
     <Container maxWidth={false}>
       <h2>{`${translate('resources.tableBlock.headersHeading')}`}</h2>
-      {table?.headers.map((header, i: number) => (
+      {table?.headers?.map((header, i: number) => (
         <Form
           warnWhenUnsavedChanges
           onSubmit={(data) => onUpdate(data, header)}

@@ -7,6 +7,10 @@
       &.sk-form-input-md {
         @apply rounded-[.8rem];
       }
+
+      &:focus {
+        @apply border-black focus-classes;
+      }
     }
     &-label {
       @apply leading-[1.8rem] mb-[1.1rem] font-normal;
@@ -71,6 +75,39 @@
             @apply mr-sm;
           }
         }
+      }
+    }
+
+    &-select {
+      @apply rounded-[.8rem];
+      @apply bg-white;
+
+      &:focus {
+        @apply border-black focus-classes;
+      }
+    }
+  }
+
+  // dropdown-select
+  .educations-filter-popupbutton {
+    @apply rounded-[.8rem];
+    @apply min-h-[5rem] max-h-[5rem] w-full border border-border-color justify-start;
+
+    .sk-btn-has-icon-right {
+      @apply absolute right-sm rotate-90;
+    }
+
+    & + .sk-popup-menu {
+      @apply w-full;
+    }
+
+    &:hover {
+      @apply border-border-color;
+    }
+
+    &[aria-expanded='true'] {
+      .sk-btn-has-icon-right {
+        @apply -rotate-90;
       }
     }
   }

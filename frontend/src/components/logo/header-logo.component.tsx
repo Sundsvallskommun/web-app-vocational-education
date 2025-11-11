@@ -1,11 +1,18 @@
 import Image from 'next/image';
 import NextLink from 'next/link';
-import logo_row from '@public/svg/logo_row.svg';
+import { ColorSchemeMode, useGui } from '@sk-web-gui/react';
 
 export const HeaderLogo: React.FC = () => {
+
+const { colorScheme, preferredColorScheme } = useGui();
+const mode = colorScheme === ColorSchemeMode.System ? preferredColorScheme : colorScheme;
+
   return (
-    <NextLink href="/" className="flex relative items-center h-[45px] w-[164px] lg:h-[51px] lg:w-[184px]">
-      <Image fill src={logo_row} alt={'Logo för Yrkesutbildningar'} />
+    <NextLink
+      href="/"
+      className="flex relative items-center h-[45px] w-[164px] desktop:h-[51px] desktop:w-[184px] rounded-10 focus:outline-offset-8"
+    >
+      <Image fill src={`${process.env.NEXT_PUBLIC_BASE_PATH}/svg/logo_row_${mode}mode.svg`} alt={'Yrkesutbildning Mitt'} />
     </NextLink>
   );
 };

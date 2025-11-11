@@ -14,46 +14,44 @@
     }
 
     .sk-form-control {
-      @apply mobile:w-full;
+      @apply w-full;
     }
 
     .educations-filter-popupbutton {
-      @apply justify-start rounded text-label w-full lg:w-max;
+      @apply justify-start rounded text-label w-full desktop:w-max;
 
       &[data-color='primary'] {
-        @apply border-border-color lg:border-transparent bg-green-light hover:bg-green-light;
-      }
-      &-icon {
-        @apply rotate-90;
+        @apply border-border-color desktop:border-transparent bg-green-light hover:bg-green-light;
       }
 
-      .btn-has-icon-right {
-        @apply mobile:absolute mobile:right-8;
+      .sk-btn-has-icon-right {
+        @apply absolute right-8 desktop:relative desktop:right-[initial];
       }
 
-      &[aria-expanded='true'] {
-        .btn-has-icon-right {
-          @apply -rotate-180;
-        }
+      & + .sk-popup-menu {
+        @apply w-full desktop:w-max;
       }
     }
 
     .sk-popup-menu {
-      @apply w-full lg:w-fit px-[2.65rem] pb-[2.65rem] pt-[1.5rem] bg-green-light mt-0 shadow-none rounded-t-none rounded-b-[1.5rem] border-x border-b border-border-color;
+      @apply w-full desktop:w-fit px-[2.65rem] pb-[2.65rem] pt-[1.5rem] bg-green-light mt-0 shadow-none rounded-t-none rounded-b-[1.5rem] border-x border-b border-border-color;
       &[data-position='under'][data-align='start'] {
-        @apply lg:-left-[2px];
+        @apply desktop:-left-[2px];
+      }
+      fieldset {
+        @apply pl-[.6rem] -ml-[.6rem];
       }
     }
 
     legend.sk-form-label {
-      @apply lg:text-lg;
+      @apply desktop:text-large;
     }
 
     label,
     legend {
-      @apply mobile:mb-0;
+      @apply phone:mb-0;
       & + * {
-        @apply mobile:mt-sm;
+        @apply phone:mt-sm;
       }
     }
 
@@ -64,14 +62,16 @@
       .educations-filter-popupbutton,
       .sk-form-select,
       .more-button {
-        @apply min-h-[5rem] max-h-[5rem] text-label text-sm font-medium lg:font-normal border-0 bg-green-light lg:border-transparent;
+        @apply min-h-[5rem] max-h-[5rem] text-label text-sm font-medium desktop:font-normal border-0 bg-green-light desktop:border-transparent;
 
         &:focus,
         &:hover {
           @apply font-bold cursor-pointer;
           @apply ring-0 ring-offset-0 ring-transparent;
-          //   @apply focus:ring-border-color focus:ring-offset-0;
-          @apply outline-0;
+        }
+        &:focus {
+          @apply focus-classes;
+          outline-offset: -2px;
         }
       }
       .more-button {
@@ -90,7 +90,7 @@
       .sk-btn.more-button {
         @apply px-lg text-sm ml-auto rounded ring-offset-0 ring-0 border-0;
 
-        .btn-has-icon-right svg {
+        .sk-btn-has-icon-right svg {
           @apply text-black-light ml-sm;
         }
       }
@@ -107,15 +107,36 @@
         }
       }
 
-      &.bg-red {
+      &.chip-red {
         svg {
           @apply text-red;
         }
+
+        &,
+        &:focus-visible {
+          @apply bg-red;
+        }
       }
 
-      &.bg-blue {
+      &.chip-blue {
         svg {
           @apply text-blue;
+        }
+
+        &,
+        &:focus-visible {
+          @apply bg-blue;
+        }
+      }
+
+      &.chip-green {
+        svg {
+          @apply text-green;
+        }
+
+        &,
+        &:focus-visible {
+          @apply bg-green;
         }
       }
 

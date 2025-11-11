@@ -1,19 +1,19 @@
 import { IsArray, IsOptional, IsString } from 'class-validator';
 
-export class SavedSearchDto {
+export class UserSavedSearchDto {
   @IsString()
   searchTerm: string;
   @IsString()
   parameters: string;
 }
 
-export class SavedInterestDto {
+export class UserSavedInterestDto {
   @IsString()
   category: string;
   @IsString()
-  type: string;
+  level: string;
   @IsArray()
-  location: string[];
+  studyLocation: string[];
   @IsString()
   timeInterval: string;
   @IsOptional()

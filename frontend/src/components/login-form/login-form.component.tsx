@@ -1,11 +1,14 @@
 import ErrorMessage from '@components/error-message/error-message.component';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Button, FormControl, FormLabel, Input } from '@sk-web-gui/react';
+import { FormControl, FormLabel, Input } from '@sk-web-gui/react';
+import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import PasswordReset from './password-reset.component';
+import Button from '@components/button/button.component';
 
 export default function LoginForm() {
   const { register, formState } = useFormContext();
-
+  const [showPasswordReset, setShowPasswordReset] = useState(false);
   return (
     <div>
       <div>
@@ -24,14 +27,15 @@ export default function LoginForm() {
       </div>
 
       <ErrorMessage errors={formState.errors} name="root" />
-      <div className="mt-[4.7rem] flex justify-between items-start">
-        <Button rounded color="primary" type="submit" data-cy="loginButton" rightIcon={<ArrowForwardIcon />}>
+      <div className="mt-[2.4rem] desktop:mt-[4.7rem] flex justify-between items-center desktop:items-start">
+        <Button dense rounded color="primary" type="submit" data-cy="loginButton" rightIcon={<ArrowForwardIcon />}>
           Logga in
         </Button>
-        <Button type="button" variant="link">
+        <Button type="button" variant="link" onClick={() => setShowPasswordReset(true)}>
           Glömt lösenord?
         </Button>
       </div>
+      {showPasswordReset && <PasswordReset show={showPasswordReset} setShow={setShowPasswordReset} />}
     </div>
   );
 }

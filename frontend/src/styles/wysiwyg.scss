@@ -39,13 +39,30 @@
         counter-increment: item;
 
         &:before {
-          @apply absolute mt-[0.4em] mr-[14px] md:ml-lg bg-green inline-flex justify-center text-sm items-center  w-[18px] h-[18px] min-w-[18px] min-h-[18px] drop-right;
+          @apply absolute mt-[0.4em] mr-[14px] desktop:ml-[30px] bg-green inline-flex justify-center text-sm items-center  w-[18px] h-[18px] min-w-[18px] min-h-[18px] drop-right;
           content: '';
         }
 
         > * {
-          @apply ml-[32px] lg:ml-[62px];
+          @apply ml-[32px] desktop:ml-[62px];
         }
+      }
+    }
+
+    img {
+      @apply my-50;
+    }
+
+    // custom blocks
+    [data-type='factblock'] {
+      @apply block relative text blocked-blue my-2xl max-w-[90rem];
+    }
+
+    [data-type='sitenavigationbutton'] {
+      @apply my-lg;
+
+      &:last-child {
+        @apply mt-2xl;
       }
     }
   }

@@ -1,0 +1,84 @@
+@layer components {
+  .drop-card {
+    @apply max-h-[inherit] group-hover:shadow-md bg-white relative h-full flex flex-grow w-full justify-center border-[2px] border-border-color rounded;
+
+    &-wrapper {
+      &:focus {
+        @apply outline-0;
+
+        .drop-card-container {
+          @apply focus-classes ring-0;
+          box-shadow: none;
+        }
+      }
+    }
+
+    &-container {
+      @apply w-full relative overflow-hidden rounded-t-[12px] rounded-b-[12px] flex flex-col;
+    }
+
+    &-container-inner {
+      @apply flex-1 shrink grow flex flex-col min-h-0;
+    }
+
+    &-text {
+      @apply flex-1 max-h-full grow shrink flex flex-col relative px-[15px] medium-device:px-lg overflow-hidden;
+
+      &:hover {
+        h2,
+        h3 {
+          @apply underline;
+        }
+      }
+
+      h2,
+      h3 {
+        @apply text-green break-words;
+      }
+
+      .text-full {
+        @apply line-clamp-none #{!important};
+      }
+
+      .text {
+        @apply flex-1 shrink grow leading-[1.8] min-h-[3em] mb-0 overflow-hidden;
+
+        > * {
+          @apply max-h-full;
+        }
+
+        &:after {
+          @apply content-[""] absolute bg-gradient-to-b from-[rgba(252,252,252,0.00)] to-white left-0 bottom-0 h-[5rem] w-full;
+        }
+      }
+
+      ul {
+        @apply ml-[1rem];
+
+        li {
+          @apply text-sm;
+        }
+      }
+    }
+
+    &-arrow {
+      @apply w-[50px] h-[50px] medium-device:w-[60px] medium-device:h-[60px] p-[12px] absolute flex justify-end rounded-tl-full items-end text-green bg-green-light right-0 bottom-0;
+
+      &-icon {
+        @apply material-icon !text-xl medium-device:!text-2xl;
+      }
+    }
+
+    &-toolbar {
+      @apply px-sm pt-sm flex justify-end;
+    }
+
+    &-footer {
+      @apply flex items-center gap-sm phone:gap-[1.8rem] text-[1.3rem] text-label phone:text-sm;
+
+      &-container {
+        @apply max-h-full w-full bottom-0 pt-md pb-[15px] pl-[15px] medium-device:pb-lg medium-device:pl-lg pr-[55px] bg-white rounded-b-[15px] flex-shrink;
+      }
+    }
+  }
+}

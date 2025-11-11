@@ -1,5 +1,14 @@
 import { Identifier } from 'react-admin';
 
+export enum UserRoleEnum {
+  USER,
+  EDUCATIONCOORDINATOR,
+  EDITOR,
+  ADMIN,
+}
+export type UserRoles = 'USER' | 'EDUCATIONCOORDINATOR' | 'EDITOR' | 'ADMIN';
+export type UserRole = { id: number; name: UserRoleEnum };
+
 export interface Permissions {
   adminEdit: boolean;
   adminRegistrate: boolean;
@@ -9,8 +18,12 @@ export interface Permissions {
 export interface User {
   id: Identifier;
   username: string;
-  role: string;
+  roles: UserRoles[];
   permissions: Permissions;
 }
 
-export type UserRoles = 'USER' | 'EDUCATIONCOORDINATOR' | 'EDITOR' | 'ADMIN';
+export interface UserRoleOnUser {
+  id: number;
+  role: UserRoles;
+  username?: User['username'];
+}

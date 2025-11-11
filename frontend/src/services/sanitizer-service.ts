@@ -1,6 +1,7 @@
+import { mergeWith, union } from 'lodash';
 import SanitizeHTML from 'sanitize-html';
 
-const config = {
+const defaultConfig = {
   allowedTags: [
     'h1',
     'h2',
@@ -9,6 +10,9 @@ const config = {
     'h5',
     'blockquote',
     'p',
+    'u',
+    's',
+    'code',
     'a',
     'ul',
     'ol',
@@ -57,8 +61,15 @@ const config = {
   allowedSchemesByTag: {},
 };
 
-const sanitized: (unsafe: string) => string = (unsafe) => {
-  return SanitizeHTML(unsafe, config);
+const sanitized: (unsafe: string, config?: object | undefined) => string = (unsafe, config) => {
+  const mergedConfig = mergeWith(defaultConfig, config, (objValue, srcValue) => {
+    if (Array.isArray(objValue)) {
+      return union(objValue, srcValue); // Merge arrays, avoiding duplicates
+    }
+    return undefined; // Use default merging for non-array values
+  });
+
+  return SanitizeHTML(unsafe, mergedConfig);
 };
 
 export default sanitized;

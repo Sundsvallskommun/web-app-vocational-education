@@ -24,14 +24,22 @@ import { AdminTableBlockController } from './controllers/admin/table-block.contr
 import { AdminTableBlockHeaderController } from './controllers/admin/table-block-header.controller';
 import { AdminTableBlockRowController } from './controllers/admin/table-block-row.controller';
 import { AdminTableBlockCellController } from './controllers/admin/table-block-cell.controller';
+import { ContactController } from './controllers/contact.controller';
+import { EditRolesOnPageController } from './controllers/admin/edit-roles-on-page.controller';
+import { HealthController } from '@/controllers/health.controller';
+import { BlockController } from '@/controllers/block.controller';
+import { AdminContactFormBlockController } from '@/controllers/admin/contact-form-block.controller';
+import { AdminContactFormBlockEmailsController } from '@/controllers/admin/contact-form-block-emails.controller';
 
 validateEnv();
 
 const app = new App([
   IndexController,
+  HealthController,
   UserController,
   EducationsController,
   PageController,
+  BlockController,
 
   //Admin
   AdminUserController,
@@ -53,10 +61,16 @@ const app = new App([
   AdminTableBlockHeaderController,
   AdminTableBlockRowController,
   AdminTableBlockCellController,
+  AdminContactFormBlockController,
+  AdminContactFormBlockEmailsController,
+
+  // Permissions
+  EditRolesOnPageController,
 
   LayoutController,
   AdminFooterController,
   MediaController,
+  ContactController,
 ]);
 
 app.listen();

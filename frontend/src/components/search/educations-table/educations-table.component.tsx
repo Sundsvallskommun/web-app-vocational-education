@@ -1,0 +1,109 @@
+import { useAppContext } from '@contexts/app-context/use-app-context';
+import { Course, PagingMetaData } from '@interfaces/education';
+import { Checkbox, Link, Pagination, Table } from '@sk-web-gui/react';
+import { routeDynamicSlugFormat } from '@utils/app-url';
+import { orFallbackDataValue } from '@utils/labels';
+import dayjs from 'dayjs';
+import NextLink from 'next/link';
+import { tableCellTextClasses } from './defaults';
+
+export const EducationsTable: React.FC<{
+  educations: Course[];
+  handleCheckboxClick: (edu: Course) => React.ChangeEventHandler<HTMLInputElement>;
+  handleOnClickResult: (id?: number) => void;
+  _meta?: PagingMetaData;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+}> = ({ educations, handleCheckboxClick, _meta, setPage, handleOnClickResult }) => {
+  const { searchCompareList } = useAppContext();
+
+  return (
+    <div>
+      <div className="table-search">
+        <Table>
+          <caption className="sr-only">
+            Sökresultat av utbildingar, sida {_meta?.page} av {_meta?.totalPages}.
+            <br />
+            <small>Lista över de utbildningar som matchar ditt sökord och dina sökfilter.</small>
+          </caption>
+          <Table.Header>
+            <Table.HeaderColumn>Jämför</Table.HeaderColumn>
+            <Table.HeaderColumn>Utbildning</Table.HeaderColumn>
+            <Table.HeaderColumn>Platser / Antagna</Table.HeaderColumn>
+            <Table.HeaderColumn>Distans / Ort</Table.HeaderColumn>
+            <Table.HeaderColumn>Start / Slut</Table.HeaderColumn>
+            <Table.HeaderColumn>Studietakt</Table.HeaderColumn>
+            <Table.HeaderColumn>Utbildningsform</Table.HeaderColumn>
+            <Table.HeaderColumn>Sista ansökningsdatum</Table.HeaderColumn>
+          </Table.Header>
+          <Table.Body>
+            {educations.map((edu, index) => (
+              <Table.Row key={`${index}-${edu?.id}`} className="[&>td]:h-full" data-id={edu?.id}>
+                <Table.Column>
+                  <Checkbox
+                    checked={searchCompareList.filter((x) => x.id == edu?.id).length > 0}
+                    onChange={handleCheckboxClick(edu)}
+                  />
+                </Table.Column>
+                <Table.Column>
+                  <span className="inline-block">
+                    <Link
+                      as={NextLink}
+                      onClick={() => handleOnClickResult(edu?.id)}
+                      href={`/utbildningar/${routeDynamicSlugFormat({ slug: '/utbildningar/[utbildning]', data: edu })}`}
+                      className="line-clamp-2 text-base mb-6 leading-[1.5]"
+                    >
+                      {orFallbackDataValue(edu?.name)}
+                    </Link>
+                    <div className="text-sm capitalize">{orFallbackDataValue(edu?.level)}</div>
+                  </span>
+                </Table.Column>
+                <Table.Column className="min-w-[11em]">
+                  <span className={tableCellTextClasses}>{orFallbackDataValue(edu?.numberOfSeats)}</span>
+                </Table.Column>
+                <Table.Column>
+                  <span>
+                    <div className={tableCellTextClasses}>{orFallbackDataValue()}</div>
+                    <div className={tableCellTextClasses}>{orFallbackDataValue(edu?.studyLocation)}</div>
+                  </span>
+                </Table.Column>
+                <Table.Column>
+                  <span>
+                    <div className={tableCellTextClasses}>{orFallbackDataValue(edu?.start)}</div>
+                    <div className={tableCellTextClasses}>{orFallbackDataValue(edu?.end)}</div>
+                  </span>
+                </Table.Column>
+                <Table.Column>
+                  <span className={tableCellTextClasses}>
+                    {orFallbackDataValue(edu?.scope ? edu?.scope + '%' : null)}
+                  </span>
+                </Table.Column>
+                <Table.Column>
+                  <span className={tableCellTextClasses}>{orFallbackDataValue(edu?.level)}</span>
+                </Table.Column>
+                <Table.Column>
+                  <span className={tableCellTextClasses}>
+                    {orFallbackDataValue(
+                      edu?.latestApplication ? dayjs(edu?.latestApplication).format('YYYY-MM-DD') : null
+                    )}
+                  </span>
+                </Table.Column>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </div>
+      {_meta?.totalPages && _meta?.totalPages > 1 && (
+        <div className="flex justify-center mt-2xl">
+          <Pagination
+            className="pagination override"
+            changePage={(page) => setPage(page)}
+            activePage={_meta?.page ? _meta.page : 1}
+            pages={_meta.totalPages}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default EducationsTable;

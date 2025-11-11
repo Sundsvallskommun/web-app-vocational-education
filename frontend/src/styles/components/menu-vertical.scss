@@ -1,10 +1,10 @@
 @layer components {
   .sk-menu-vertical-nav {
     ul li {
-      @apply leading-[2.6rem];
+      @apply leading-[2.6rem] text-base;
     }
     .sk-menu-vertical {
-      @apply gap-0;
+      @apply gap-0 relative;
 
       ul {
         @apply p-0 m-0;
@@ -20,23 +20,27 @@
         }
       }
 
+      li:last-child {
+        @apply border-b-0;
+      }
+
       &-item {
         @apply border-b border-green;
 
         & > a,
-        > button {
+        & > button {
           @apply rounded-none flex items-center min-h-[4.4rem];
 
           &:focus-visible {
             @apply outline-none;
             &:not([aria-disabled='true']) > * {
-              @apply bg-green text-white border-green border-l-[7px] pl-md;
+              @apply focus-classes rounded-10;
             }
           }
 
           > * {
             @apply flex w-full;
-            @apply pl-0 text-green md:text-2xl py-[18px];
+            @apply pl-0 text-green medium-device:text-2xl py-[18px];
             @apply rounded-none cursor-pointer;
           }
 
@@ -52,9 +56,6 @@
             &:not(:hover) > * {
               @apply bg-transparent border-l-[7px] border-green pl-md;
               @apply focus-visible:ring;
-            }
-            &:focus-visible {
-              @apply bg-green;
             }
           }
         }
@@ -76,25 +77,27 @@
           }
 
           &:focus-within {
-            @apply outline outline-2 outline-ring;
+            @apply focus-classes rounded-10;
 
             .sk-menu-vertical-item-submenu-button,
             .sk-menu-vertical-item-submenu-button-expand {
               &:focus-visible {
-                @apply ring-0 ring-offset-0 outline-0;
               }
             }
           }
 
           &-large {
             button,
-            a {
-              @apply md:text-2xl py-[18px];
+            a,
+            button {
+              @apply medium-device:text-2xl py-[18px];
             }
-            a[role='menuitem'] {
+            a[role='menuitem'],
+            button[role='menuitem'] {
               @apply font-normal text-green pl-0;
             }
-            &:hover a[role='menuitem'] {
+            &:hover a[role='menuitem'],
+            &:hover button[role='menuitem'] {
               @apply pl-md border-green border-l-[7px];
             }
           }
@@ -114,6 +117,7 @@
               @apply pl-md border-green border-l-[7px];
             }
             &[aria-current='page']:not(:hover),
+            &[aria-current='page']:not(:hover) ~ a:not(:hover),
             &[aria-current='page']:not(:hover) ~ button:not(:hover) {
               @apply bg-transparent text-green;
             }
@@ -125,6 +129,7 @@
               }
 
               &:not(:hover, [aria-current='page'], [aria-disabled='true']),
+              &:not(:hover, [aria-current='page'], [aria-disabled='true']) ~ a:not(:hover),
               &:not(:hover, [aria-current='page'], [aria-disabled='true']) ~ button:not(:hover) {
                 @apply bg-transparent;
               }

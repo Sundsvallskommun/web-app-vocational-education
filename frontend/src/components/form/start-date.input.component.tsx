@@ -1,24 +1,23 @@
-import { DatePicker, FormControl, FormLabel } from '@sk-web-gui/react';
-import { useWindowSize } from '@utils/use-window-size.hook';
+import { DatePicker, FormControl, FormLabel, useThemeQueries } from '@sk-web-gui/react';
 import { useFormContext } from 'react-hook-form';
 import FilterPopup from './filter-popup.component';
-
-const startDatePlaceholder = 'Startdatum';
+import { startDatePlaceholder } from './defaults';
 
 export default function StartDateInput({ label = startDatePlaceholder, showLabel = false, size = 'sm' }) {
   const { register } = useFormContext();
-  const { windowSize } = useWindowSize();
+  const { isPhone } = useThemeQueries();
 
   return (
     <div className="relative">
-      {(windowSize.mobile || showLabel) && (
+      {(isPhone || showLabel) && (
         <FormLabel htmlFor="startDate" className="mb-sm">
           {label}
         </FormLabel>
       )}
       <FilterPopup label={label}>
         <FormControl id="startDate">
-          <DatePicker size={size} {...register('startDate')} />
+          <span className="mb-[1.5rem]">Välj startdatum</span>
+          <DatePicker aria-label="startdatum" size={size as 'sm' | 'md' | 'lg'} {...register('startDate')} />
         </FormControl>
       </FilterPopup>
     </div>

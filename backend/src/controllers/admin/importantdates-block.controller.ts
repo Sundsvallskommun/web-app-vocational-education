@@ -1,28 +1,33 @@
 import prisma from '@/utils/prisma';
-import { Prisma } from '@prisma/client';
-import { defaultHandler, getListHandler, getManyHandler, getOneHandler } from 'ra-data-simple-prisma';
-import { All, Controller, Req } from 'routing-controllers';
+import { UserRoleEnum } from '@prisma/client';
+import { defaultHandler } from 'ra-data-simple-prisma';
+import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
+import { addIncludes, skipFields, checkPageRoles, hasRolesForMethods } from './utils';
 
 @Controller()
 export class AdminImportantDatesBlockController {
   @All('/admin/importantDatesBlock')
   @OpenAPI({ summary: 'Handle ImportantDatesBlock' })
+  @UseBefore(hasRolesForMethods([UserRoleEnum.ADMIN], ['delete', 'create']), checkPageRoles())
   async importantDatesBlock(@Req() req): Promise<any> {
     switch (req.body.method) {
-      case 'getOne':
-        return await getOneHandler<Prisma.ImportantDatesBlockFindUniqueArgs>(req.body, prisma.importantDatesBlock);
-      case 'getMany':
-        return await getManyHandler<Prisma.ImportantDatesBlockFindManyArgs>(req.body, prisma.importantDatesBlock);
-      case 'getList':
-        return await getListHandler<Prisma.ImportantDatesBlockFindManyArgs>(req.body, prisma.importantDatesBlock);
-      case 'create':
-      case 'delete':
       case 'deleteMany':
         // Dont allow these
         return;
       default:
-        return await defaultHandler(req.body, prisma);
+        return await defaultHandler(req.body, prisma, {
+          ...addIncludes({
+            dateCards: true,
+            referencedByImportantDatesBlock: true,
+            referencedImportantDatesBlock: true,
+          }),
+          ...skipFields({
+            dateCards: true,
+            referencedByImportantDatesBlock: true,
+            referencedImportantDatesBlock: true,
+          }),
+        });
     }
   }
 }

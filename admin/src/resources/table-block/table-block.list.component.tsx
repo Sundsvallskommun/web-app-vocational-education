@@ -1,12 +1,13 @@
-import { List, Datagrid, TextField } from 'react-admin';
+import { Datagrid, List, TextField } from 'react-admin';
 import useRoutePermissions from '../../utils/use-route-permissions.hook';
+import { ListCreateButton } from '../components/list-create-button.component';
 
 export const TableBlockList = (props: any) => {
-  useRoutePermissions();
+  const { canCreate } = useRoutePermissions();
   return (
-    <List {...props} exporter={false} hasCreate={false}>
+    <List {...props} exporter={false} hasCreate={canCreate} empty={<ListCreateButton />}>
       <Datagrid rowClick="edit" bulkActionButtons={false}>
-        <TextField source="id" label="Tabell-id" />
+        <TextField source="title" />
       </Datagrid>
     </List>
   );

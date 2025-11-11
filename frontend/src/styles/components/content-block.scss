@@ -1,0 +1,31 @@
+@layer components {
+  .content-block {
+    @apply w-full last:mb-2xl;
+
+    &:nth-child(n + 1) + .content-block {
+      @apply mt-2xl;
+
+      @screen desktop {
+        @apply mt-3xl;
+      }
+    }
+
+    &[data-fitheight='true'] + [data-fitheight='true'] {
+      @apply mt-0;
+    }
+
+    @screen desktop {
+      &:last-of-type {
+        @apply mb-3xl;
+      }
+    }
+
+    &.padded {
+      @apply py-2xl desktop:py-3xl;
+    }
+
+    &-container {
+      @apply max-width-content container;
+    }
+  }
+}

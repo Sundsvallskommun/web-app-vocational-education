@@ -1,8 +1,8 @@
 import prisma from '@/utils/prisma';
-import { BASE_URL_PREFIX, CREDENTIALS, LOG_FORMAT, NODE_ENV, ORIGIN, PORT, SECRET_KEY, SESSION_MEMORY, SWAGGER_ENABLED } from '@config';
+import { BASE_URL_PREFIX, CREDENTIALS, LOG_FORMAT, NODE_ENV, ORIGIN, PORT, SECRET_KEY, SESSION_MEMORY, SWAGGER_ENABLED, TEST } from '@config';
 import errorMiddleware from '@middlewares/error.middleware';
-import { User } from '@prisma/client';
 import { logger, stream } from '@utils/logger';
+import bcrypt from 'bcryptjs';
 import { defaultMetadataStorage } from 'class-transformer/cjs/storage';
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
 import compression from 'compression';
@@ -24,19 +24,22 @@ import { getMetadataArgsStorage, useExpressServer } from 'routing-controllers';
 import { routingControllersToSpec } from 'routing-controllers-openapi';
 import createFileStore from 'session-file-store';
 import swaggerUi from 'swagger-ui-express';
+import { mockLoggedInUser } from './controller-mocks/user.mock';
+import { SessionUser } from './interfaces/users.interface';
 import authMiddleware from './middlewares/auth.middleware';
 import { hasRoles } from './middlewares/permissions.middleware';
-import { generate2FACode, getPermissions, send2FACodeToEmail } from './services/authorization.service';
+import { generate2FACode, getPermissions, getRoles, send2FACodeToEmail } from './services/authorization.service';
+import cs from './services/controller.service';
 import { getClientUser } from './services/user.service';
+import { mockMiddleware } from './utils/controller-mocks/middlewares/mock.middleware';
+import { additionalConverters } from './utils/custom-validation-classes';
 import { imageUploadSettings } from './utils/files/imageUploadSettings';
 import { omit } from './utils/object';
 import { dataDir } from './utils/util';
-import bcrypt from 'bcryptjs';
-import { additionalConverters } from './utils/custom-validation-classes';
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+  limit: 900, // Limit each IP to 300 requests per `window` (here, per 15 minutes).
   standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
 });
@@ -57,66 +60,6 @@ passport.deserializeUser(function (user, done) {
   done(null, user);
 });
 
-// const samlStrategy = new Strategy(
-//   {
-//     acceptedClockSkewMs: 1000,
-//     disableRequestedAuthnContext: true,
-//     identifierFormat: 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
-//     callbackUrl: SAML_CALLBACK_URL,
-//     entryPoint: SAML_ENTRY_SSO,
-//     //decryptionPvk: SAML_PRIVATE_KEY,
-//     privateKey: SAML_PRIVATE_KEY,
-//     // Identity Provider's public key
-//     cert: SAML_IDP_PUBLIC_CERT,
-//     issuer: SAML_ISSUER,
-//     wantAssertionsSigned: false,
-//     // signatureAlgorithm: 'sha256',
-//     // digestAlgorithm: 'sha256',
-//     // maxAssertionAgeMs: 2592000000,
-//     // authnRequestBinding: 'HTTP-POST',
-//     logoutCallbackUrl: SAML_LOGOUT_CALLBACK_URL,
-//   },
-//   async function (profile: Profile, done: VerifiedCallback) {
-//     const { givenName: givenname, surname, username, groups } = profile;
-
-//     if (!profile) {
-//       return done(null, null, {
-//         name: 'SAML_MISSING_PROFILE',
-//         message: 'SAML_MISSING_PROFILE',
-//       });
-//     }
-
-//     if (!givenname || !surname) {
-//       return done(null, null, {
-//         name: 'SAML_MISSING_ATTRIBUTES',
-//         message: 'SAML_MISSING_ATTRIBUTES',
-//       });
-//     }
-
-//     const groupList = groups !== undefined ? groups.split(',') : [];
-
-//     const appGroups = groupList.includes('sg_appl_yrkesutbildningar_read') ? groupList : groupList.concat('sg_appl_yrkesutbildningar_read');
-
-//     try {
-//       const user = {
-//         name: `${givenname} ${surname}`,
-//         givenname: givenname,
-//         surname: surname,
-//         username: username,
-//         groups: appGroups,
-//         permissions: getPermissions(appGroups as Roles[]),
-//       };
-
-//       done(null, user);
-//     } catch (err) {
-//       if (err instanceof HttpException && err?.status === 404) {
-//         // TODO: Handle missing person form Citizen?
-//       }
-//       done(err);
-//     }
-//   },
-// );
-
 const customStrategy = new CustomStrategy(async (req, done) => {
   // Extract username and password from request body
   const { username, password } = req.body;
@@ -125,6 +68,9 @@ const customStrategy = new CustomStrategy(async (req, done) => {
   const user = await prisma.user.findUnique({
     where: {
       username: username,
+    },
+    include: {
+      roles: true,
     },
   });
 
@@ -138,9 +84,10 @@ const customStrategy = new CustomStrategy(async (req, done) => {
     return done(null, false);
   }
 
-  const sessionUser = {
+  const sessionUser: SessionUser = {
     ...omit(user, ['password']),
-    permissions: getPermissions([user.role], true),
+    permissions: getPermissions(getRoles(user.roles), true),
+    roles: getRoles(user.roles),
   };
 
   return done(null, sessionUser);
@@ -183,15 +130,21 @@ class App {
 
   private initializeMiddlewares() {
     this.app.use(morgan(LOG_FORMAT, { stream }));
-    this.app.use(hpp());
     this.app.use(helmet());
     this.app.use(compression());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(hpp());
     this.app.use(cookieParser());
 
-    // FIXME: Enable when login-flow is corrected
-    // this.app.use(limiter);
+    if (TEST) {
+      // NOTE: Mock user in test mode
+      this.app.use(mockMiddleware(mockLoggedInUser, { cs: cs }));
+    }
+
+    if (!TEST) {
+      this.app.use(limiter);
+    }
 
     this.app.use(
       session({
@@ -204,8 +157,9 @@ class App {
 
     this.app.use(passport.initialize());
     this.app.use(passport.session());
-    // passport.use('saml', samlStrategy);
     passport.use('initial-auth', customStrategy);
+
+    this.app.set('query parser', 'extended');
 
     this.app.use(
       cors({
@@ -235,10 +189,10 @@ class App {
     );
 
     // Admin
-    this.app.use(`${BASE_URL_PREFIX}/admin/:resource`, authMiddleware, hasRoles(['EDITOR']));
+    this.app.use(`${BASE_URL_PREFIX}/admin/:resource`, authMiddleware, hasRoles(['EDUCATIONCOORDINATOR']));
 
     this.app.post(`${BASE_URL_PREFIX}/login`, (req, res, next) => {
-      return passport.authenticate('initial-auth', {}, async function (err, user: User) {
+      return passport.authenticate('initial-auth', {}, async function (err, user: SessionUser) {
         if (err) {
           return next(err);
         }
@@ -247,10 +201,18 @@ class App {
           return res.status(400).send({ data: 'INVALID_CREDENTIALS', message: 'failure' });
         }
         const twoFactorCode = generate2FACode(); // Implement this function as per your logic
-        await send2FACodeToEmail(user.email, twoFactorCode); // Implement email sending logic
+        if (NODE_ENV == 'development') {
+          console.log('twoFactorCode', twoFactorCode);
+        }
+        try {
+          await send2FACodeToEmail(user.email, twoFactorCode);
+        } catch (err) {
+          //
+        }
 
         await req.logIn(user, function (err) {
           if (err) {
+            NODE_ENV == 'development';
             return next(err);
           }
           req.session.twoFactorCode = twoFactorCode;
@@ -266,9 +228,9 @@ class App {
       // Check if code matches and hasn't expired
       if (req.session.twoFactorCode === code && req.session.twoFactorCodeExpiry > Date.now()) {
         req.session.twoFactorAuthenticated = true; // Mark session as 2FA verified
-        return res.send({ data: getClientUser(req.user), message: 'success' });
+        res.send({ data: getClientUser(req.user), message: 'success' });
       } else {
-        return res.status(400).send({ data: 'INVALID_CODE_OR_EXPIRED', message: 'failure' }); // Code mismatch or expired, ask to try again
+        res.status(400).send({ data: 'INVALID_CODE_OR_EXPIRED', message: 'failure' }); // Code mismatch or expired, ask to try again
       }
     });
 
@@ -280,82 +242,6 @@ class App {
         res.send({ data: true, message: 'success' });
       });
     });
-
-    // SAML below
-
-    // this.app.get(
-    //   `${BASE_URL_PREFIX}/saml/login`,
-    //   (req, res, next) => {
-    //     if (req.session.returnTo) {
-    //       req.query.RelayState = req.session.returnTo;
-    //     } else if (req.query.path) {
-    //       req.query.RelayState = req.query.path;
-    //     }
-    //     next();
-    //   },
-    //   (req, res, next) => {
-    //     passport.authenticate('saml', {
-    //       failureRedirect: SAML_FAILURE_REDIRECT,
-    //     })(req, res, next);
-    //   },
-    // );
-
-    // this.app.get(`${BASE_URL_PREFIX}/saml/metadata`, (req, res) => {
-    //   res.type('application/xml');
-    //   const metadata = customStrategy.generateServiceProviderMetadata(SAML_PUBLIC_KEY, SAML_PUBLIC_KEY);
-    //   res.status(200).send(metadata);
-    // });
-
-    // this.app.get(`${BASE_URL_PREFIX}/saml/logout`, bodyParser.urlencoded({ extended: false }), (req, res, next) => {
-    //   customStrategy.logout(req as any, () => {
-    //     req.logout(err => {
-    //       if (err) {
-    //         return next(err);
-    //       }
-    //       // FIXME: should we redirect here or should client do it?
-    //       res.redirect(SAML_LOGOUT_REDIRECT);
-    //     });
-    //   });
-    // });
-
-    // this.app.get(`${BASE_URL_PREFIX}/saml/logout/callback`, bodyParser.urlencoded({ extended: false }), (req, res, next) => {
-    //   // FIXME: is this enough or do we need to do something more?
-    //   req.logout(err => {
-    //     if (err) {
-    //       return next(err);
-    //     }
-    //     // FIXME: should we redirect here or should client do it?
-    //     res.redirect(SAML_LOGOUT_REDIRECT);
-    //   });
-    // });
-
-    // this.app.post(
-    //   `${BASE_URL_PREFIX}/saml/login/callback`,
-    //   bodyParser.urlencoded({ extended: false }),
-    //   (req, res, next) => {
-    //     let successRedirect, failRedirect;
-    //     if (isValidUrl(req.body.RelayState)) {
-    //       successRedirect = req.body.RelayState;
-    //     } else {
-    //       successRedirect = `${SAML_SUCCESS_BASE}${req.body.RelayState}`;
-    //     }
-
-    //     if (req.session.messages?.length > 0) {
-    //       failRedirect = SAML_FAILURE_REDIRECT_MESSAGE + `?failMessage=${req.session.messages[0]}`;
-    //     } else {
-    //       failRedirect = SAML_FAILURE_REDIRECT_MESSAGE;
-    //     }
-
-    //     passport.authenticate('saml', {
-    //       successReturnToOrRedirect: req.body.RelayState ? successRedirect : SAML_SUCCESS_REDIRECT,
-    //       failureRedirect: failRedirect,
-    //       failureMessage: true,
-    //     })(req, res, next);
-    //   },
-    //   (req, res, next) => {
-    //     res.redirect(SAML_SUCCESS_REDIRECT);
-    //   },
-    // );
   }
 
   private initializeRoutes(controllers: Function[]) {
@@ -414,6 +300,10 @@ class App {
     const sessionsDir: string = join(__dirname, '../data/sessions');
     if (!existsSync(sessionsDir)) {
       mkdirSync(sessionsDir, { recursive: true });
+    }
+    const uploadsDir: string = join(__dirname, '../data/uploads');
+    if (!existsSync(uploadsDir)) {
+      mkdirSync(uploadsDir, { recursive: true });
     }
   }
 }

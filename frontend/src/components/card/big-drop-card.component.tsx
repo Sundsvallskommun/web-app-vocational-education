@@ -1,32 +1,28 @@
-import Image from 'next/image';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { cx, useThemeQueries } from '@sk-web-gui/react';
+import { usePlaceholderImg } from '@utils/use-placeholder-image.hook';
+import Image from 'next/image';
 import NextLink from 'next/link';
 import DropCard from './drop-card.component';
-import { useEffect, useState } from 'react';
-import { usePlaceholderImg } from '@utils/use-placeholder-image.hook';
 
 export const BigDropCard: React.FC<DropCard> = ({ className = '', children, href = '#', dropImageSrc, ...rest }) => {
-  const [mounted, setMounted] = useState(false);
   const imageSrc = usePlaceholderImg(dropImageSrc);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return;
+  const { isDevice } = useThemeQueries();
 
   return (
     <>
-      <div className="hidden md:block lg:hidden">
+      {isDevice ?
         <NextLink href={href} className="flex">
           <div className={`${className} flex w-full max-h-[124px]  overflow-hidden`}>
             <div className="min-w-[124px] w-[124px] overflow-hidden relative rounded-bl-half border-[2px] border-r-0 border-border-color">
               <Image
                 className="next-img drop-left !w-[120px]"
-                fill={true}
-                sizes="(max-width: 768px) 100vw"
+                fill
+                objectFit="cover"
+                objectPosition="top left"
+                sizes="33vw"
                 src={`${imageSrc}`}
-                alt="Bild på behörigheter"
+                alt={''}
                 aria-hidden="true"
               />
             </div>
@@ -43,10 +39,8 @@ export const BigDropCard: React.FC<DropCard> = ({ className = '', children, href
             </div>
           </div>
         </NextLink>
-      </div>
-      <div className="md:hidden lg:block">
-        <DropCard
-          className={`${className} max-h-[210px] lg:max-h-[323px]`}
+      : <DropCard
+          className={cx(`h-[210px] desktop:h-[323px]`, className)}
           dropClassName="!border-0"
           dropImageSrc={`${imageSrc}`}
           href={href}
@@ -54,7 +48,7 @@ export const BigDropCard: React.FC<DropCard> = ({ className = '', children, href
         >
           {children}
         </DropCard>
-      </div>
+      }
     </>
   );
 };

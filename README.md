@@ -112,6 +112,12 @@ En full coverage-körning
 
 Bygg och starta backend först (Frontend behöver backend för att generera sidor), sedan bygg och starta frontend.
 
+OBS eftersom frontend i byggsteget anropar backend så behöver DNS-resolutionen fungera (när appen deployas under domännamn istället för ip-adress). Då kan man behöva lägga till i serverns /ets/hosts-fil:
+
+yrkesutbildningmitt.se 127.0.0.1 
+
+Där 127.0.0.1 byts ut mot serverns faktiska ip-adress. Annars finns det risk att frontends anrop till backend inte når fram, och bygget går inte igenom. Får man ett felmeddelande rörande sitemap.xml är detta troligen problemet.
+
 ## Flytt av databas
 
 - Notera att Page.imgSrc får url med server-url, så kolumnen imgSrc behöver sättas om

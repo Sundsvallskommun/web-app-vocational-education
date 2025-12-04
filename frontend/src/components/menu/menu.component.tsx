@@ -35,7 +35,8 @@ export const Menu: React.FC = () => {
           <MenuVertical.Provider current={pathname}>
             <MenuVertical.Nav aria-label="Huvudmeny">
               <MenuVertical>
-                <MenuVertical.Item menuIndex="/utbildningar">
+                {/*Uncomment when educationsearch is ready */}
+                {/* <MenuVertical.Item menuIndex="/utbildningar">
                   <MenuVertical>
                     <MenuVertical.SubmenuButton menuIndex="/utbildningar">
                       <NextLink href="/utbildningar">För dig som söker utbildning</NextLink>
@@ -44,7 +45,7 @@ export const Menu: React.FC = () => {
                       <NextLink href="/utbildningar/sok">Sök utbildning</NextLink>
                     </MenuVertical.Item>
                   </MenuVertical>
-                </MenuVertical.Item>
+                </MenuVertical.Item> */}
                 <MenuVertical.Item menuIndex="/arbetsgivare">
                   <NextLink href="/arbetsgivare">För arbetsgivare</NextLink>
                 </MenuVertical.Item>

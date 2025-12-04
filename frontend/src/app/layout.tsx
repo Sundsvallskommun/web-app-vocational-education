@@ -21,7 +21,7 @@ export async function AppLayout(props: { children: React.ReactNode }) {
         <link rel="apple-touch-icon" sizes="152x152" href="/meta/apple-touch-icon-152x152.png" />
       </head>
       <body>
-        <MyApp>{props.children}</MyApp>;
+        <MyApp>{props.children}</MyApp>
       </body>
     </html>
   );

@@ -129,6 +129,6 @@ export const send2FACodeToEmail = async (email: string, twoFactorCode: string) =
     message: twoFactorCode,
     htmlMessage: base64Encode(messageHTML(twoFactorCode)),
   };
-  const url = `messaging/6.1/${MUNICIPALITY_ID}/email`;
+  const url = `messaging/7.10/${MUNICIPALITY_ID}/email`;
   return await apiService.post({ url, data: sendOTP, headers: { 'x-issuer': APP_NAME } });
 };

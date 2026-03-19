@@ -14,7 +14,7 @@ const APIS = [
   },
   {
     name: 'messaging',
-    version: '6.1',
+    version: '7.10',
   },
 ];
 

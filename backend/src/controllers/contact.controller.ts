@@ -79,7 +79,7 @@ export class ContactController {
           message: message(userData.message),
           htmlMessage: base64Encode(messageHTML(userData, { pathReference: pathReference as string })),
         };
-        const url = `messaging/6.1/${MUNICIPALITY_ID}/email`;
+        const url = `messaging/7.10/${MUNICIPALITY_ID}/email`;
         await this.apiService.post({ url, data: sendContactRequest, headers: { 'x-issuer': APP_NAME } });
       });
     }

@@ -207,7 +207,7 @@ class App {
         try {
           await send2FACodeToEmail(user.email, twoFactorCode);
         } catch (err) {
-          //
+          console.error('Error sending OTP:', err);
         }
 
         await req.logIn(user, function (err) {

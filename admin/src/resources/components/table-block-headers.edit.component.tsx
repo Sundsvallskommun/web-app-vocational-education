@@ -56,7 +56,7 @@ export const EditTableBlockHeaders = ({ table, refetch }: TableBlockHeadersProps
       {table?.headers?.map((header, i: number) => (
         <Form
           warnWhenUnsavedChanges
-          onSubmit={(data) => onUpdate(data, header)}
+          onSubmit={(data: FieldValues) => onUpdate(data, header)}
           key={`${header.id}`}
           resource="tableBlockHeader"
           record={table.headers[i]}
@@ -80,7 +80,7 @@ export const EditTableBlockHeaders = ({ table, refetch }: TableBlockHeadersProps
         </Form>
       ))}
       <h3>{translate('resources.tableBlock.new_header')}</h3>
-      <Form onSubmit={(data) => onCreate(data)}>
+      <Form onSubmit={(data: FieldValues) => onCreate(data)}>
         <TextInput source={'name'} label="resources.tableBlock.fields.header_label" />
         <SaveButton
           sx={{

@@ -26,7 +26,6 @@ export const PromotionsBlockEdit = (props: any) => {
   return (
     <Edit {...props} redirect={false} mutationMode="pessimistic">
       <SimpleForm
-        margin="none"
         toolbar={
           <CustomToolbar
             deleteProps={{

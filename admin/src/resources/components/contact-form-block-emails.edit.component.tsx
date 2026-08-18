@@ -6,7 +6,7 @@ export const EditContactFormBlockEmails = () => {
   return (
     <div>
       <ContactFormBlockEmailsList
-        filter={{ pageId: record.pageId }}
+        filter={{ pageId: record?.pageId }}
         pagination={false}
         resource="contactFormBlockEmails"
       />

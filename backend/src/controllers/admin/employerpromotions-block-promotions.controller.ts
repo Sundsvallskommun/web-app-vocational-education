@@ -1,6 +1,6 @@
 import prisma from '@/utils/prisma';
 import { Prisma } from '@prisma/client';
-import { createHandler, defaultHandler, getListHandler, getManyHandler, getOneHandler, updateHandler } from 'ra-data-simple-prisma';
+import { createHandler, defaultHandler, updateHandler } from 'ra-data-simple-prisma';
 import { All, Controller, Req, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 import { checkPageRoles } from './utils';

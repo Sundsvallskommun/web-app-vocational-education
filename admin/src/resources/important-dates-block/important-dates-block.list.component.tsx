@@ -5,7 +5,7 @@ export const ImportantDatesBlockList = (props: any) => {
   const { canCreate } = useRoutePermissions();
   const context = useRecordContext();
   return (
-    <List {...props} exporter={false} hasCreate={canCreate} filter={{ pageName: context.pageName }}>
+    <List {...props} exporter={false} hasCreate={canCreate} filter={{ pageName: context?.pageName }}>
       <Datagrid rowClick="edit" bulkActionButtons={false}>
         <TextField source="title" />
       </Datagrid>

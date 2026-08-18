@@ -140,7 +140,7 @@ function buildNestedPages(pages: { id: string; url: string }[]) {
 export const PagesNavigation = () => {
   const { data: pages } = useGetList('page', { pagination: { page: 1, perPage: 999 } });
   const onPage = window.location.href.match(/\/page\//) !== null;
-  const [activePageIdEdit] = useStore('activePageIdEdit');
+  const [activePageIdEdit] = useStore('activePageIdEdit', '');
 
   const nestedPages = pages ? buildNestedPages(pages) : {};
 

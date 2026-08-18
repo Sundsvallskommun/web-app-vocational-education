@@ -16,7 +16,7 @@ import { CustomToolbar } from '../components/custom-toolbar.component';
 export const ContactFormBlockEdit = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
-  const [activePageIdEdit] = useStore('activePageIdEdit');
+  const [activePageIdEdit] = useStore('activePageIdEdit', '');
   const [, setValue] = useStore('activeBlockIdEdit', '');
   const recordId = useGetRecordId();
   const redirect = useRedirect();
@@ -26,7 +26,6 @@ export const ContactFormBlockEdit = (props: any) => {
   return (
     <Edit {...props} redirect={false} mutationMode="pessimistic">
       <SimpleForm
-        margin="none"
         toolbar={
           <CustomToolbar
             deleteProps={{
@@ -42,8 +41,8 @@ export const ContactFormBlockEdit = (props: any) => {
         <TextInput source="title" />
         <TextInput
           multiline
-          inputProps={{
-            sx: { width: '400px', minHeight: '3em' },
+          slotProps={{
+            htmlInput: { sx: { width: '400px', minHeight: '3em' } },
           }}
           source="description"
         />

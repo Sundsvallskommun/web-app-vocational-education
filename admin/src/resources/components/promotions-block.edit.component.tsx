@@ -6,7 +6,7 @@ export const EditPromotionsBlock = () => {
   const record = useRecordContext();
   return (
     <PromotionsBlockList
-      filter={{ pageName: record.pageName }}
+      filter={{ pageName: record?.pageName }}
       pagination={false}
       actions={false}
       empty={<ListCreateButton />}

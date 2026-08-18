@@ -5,8 +5,8 @@ import useRoutePermissions from '../../utils/use-route-permissions.hook';
 export const ContactFormBlockEmailsCreate = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
-  const [activeBlockIdEdit] = useStore('activeBlockIdEdit');
-  const [activePageIdEdit] = useStore('activePageIdEdit');
+  const [activeBlockIdEdit] = useStore('activeBlockIdEdit', '');
+  const [activePageIdEdit] = useStore('activePageIdEdit', '');
   const { data: pageData } = useGetOne('page', { id: activePageIdEdit });
   return (
     <Create
@@ -19,7 +19,7 @@ export const ContactFormBlockEmailsCreate = (props: any) => {
         pageName: undefined,
       })}
     >
-      <SimpleForm margin="none">
+      <SimpleForm>
         <h1>{`${translate('ra.action.create')} ${translate('resources.contactFormBlockEmails.name', {
           smart_count: 1,
         })}`}</h1>

@@ -6,12 +6,13 @@ import { useNavigate } from 'react-router';
 
 const ConfigurationMenu = React.forwardRef<HTMLLIElement, React.HTMLAttributes<HTMLLIElement>>((props, ref) => {
   const { data: user } = useGetIdentity();
-  const { onClose } = useUserMenu();
+  // react-admin 5 returns undefined when the hook is used outside a UserMenu.
+  const userMenu = useUserMenu();
   const navigate = useNavigate();
 
   const handleUserSettings = () => {
     navigate(`/user/${user?.id}`);
-    onClose();
+    userMenu?.onClose();
   };
 
   return (

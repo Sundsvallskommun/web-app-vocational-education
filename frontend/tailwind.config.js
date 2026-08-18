@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
 const { preset } = require('@sk-web-gui/core');
 
 module.exports = {

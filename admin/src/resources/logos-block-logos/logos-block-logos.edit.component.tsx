@@ -21,7 +21,6 @@ export const LogosBlockLogosEdit = (props: any) => {
       <WithRecord
         render={(data) => (
           <SimpleForm
-            margin="none"
             toolbar={
               <CustomToolbar
                 deleteProps={{

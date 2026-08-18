@@ -24,15 +24,26 @@ const sv: TranslationMessagesExtended = {
       toggle_theme: 'string',
       select_columns: 'string',
       update_application: 'string',
+      // Keys introduced by react-admin 5
+      reset: 'Återställ',
+      search_columns: 'Sök kolumner',
+      select_all_button: 'Välj alla',
     },
     notification: {
       ..._sv.ra.notification,
       application_update_available: 'string',
+      // Keys introduced by react-admin 5
+      offline: 'Ingen nätverksanslutning.',
     },
     message: {
       ..._sv.ra.message,
       auth_error: 'string',
       clear_array_input: 'string',
+      // Keys introduced by react-admin 5
+      access_denied: 'Du har inte behörighet att se den här sidan',
+      authentication_error: 'Autentiseringsservern svarade med ett fel och dina uppgifter kunde inte kontrolleras.',
+      select_all_limit_reached: 'Det finns för många poster för att välja alla. Endast de första %{max} posterna valdes.',
+      placeholder_data_warning: 'Nätverksfel: uppdateringen av data misslyckades.',
     },
     navigation: {
       ..._sv.ra.navigation,
@@ -42,6 +53,20 @@ const sv: TranslationMessagesExtended = {
       first: 'string',
       last: 'string',
       previous: 'string',
+      // Keys introduced by react-admin 5
+      no_filtered_results: 'Inga resultat hittades med de valda filtren.',
+      clear_filters: 'Rensa filter',
+    },
+    auth: {
+      ..._sv.ra.auth,
+      // Keys introduced by react-admin 5
+      email: 'E-post',
+    },
+    page: {
+      ..._sv.ra.page,
+      // Keys introduced by react-admin 5
+      access_denied: 'Åtkomst nekad',
+      authentication_error: 'Autentiseringsfel',
     },
     configurable: {
       customize: 'string',

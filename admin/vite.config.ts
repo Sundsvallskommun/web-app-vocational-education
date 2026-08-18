@@ -8,9 +8,9 @@ export default ({ mode }) => {
 
   return defineConfig({
     plugins: [react()],
-    define: {
-      'process.env': process.env,
-    },
+    // NOTE: `define: { 'process.env': process.env }` used to be set here, which inlined
+    // the whole build environment into the client bundle. The app reads configuration
+    // through `import.meta.env.VITE_*`, which Vite exposes on its own.
     server: {
       host: true,
     },

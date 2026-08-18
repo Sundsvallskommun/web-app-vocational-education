@@ -19,7 +19,7 @@ export const handleImageResize = async (fileName: string, size = { width: 64, he
     .then(async function (isResized) {
       if (isResized) {
         const newFileName = imageUploadSettings.fileNameFormat(fileName);
-        const newImage = await image.toFile(dataDir(imageUploadSettings.UPLOAD_FOLDER + '/' + newFileName));
+        await image.toFile(dataDir(imageUploadSettings.UPLOAD_FOLDER + '/' + newFileName));
         await fs.unlink(path, err => {
           if (err) throw err;
         });

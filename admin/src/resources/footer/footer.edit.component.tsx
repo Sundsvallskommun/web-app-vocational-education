@@ -8,7 +8,7 @@ export const FooterEdit = (props: any) => {
   const translate = useTranslate();
   return (
     <Edit {...props} redirect={false} mutationMode="pessimistic">
-      <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete />}>
+      <SimpleForm toolbar={<CustomToolbar hideDelete />}>
         <h1>{`${translate('ra.action.edit')} ${translate('resources.footer.name', {
           smart_count: 1,
         }).toLowerCase()}`}</h1>

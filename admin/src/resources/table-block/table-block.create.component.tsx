@@ -16,7 +16,7 @@ import useRoutePermissions from '../../utils/use-route-permissions.hook';
 
 const FormValues = () => {
   const translate = useTranslate();
-  const [activePageIdEdit] = useStore('activePageIdEdit');
+  const [activePageIdEdit] = useStore('activePageIdEdit', '');
   const { data: pageData } = useGetOne('page', { id: activePageIdEdit });
 
   const { setValue, watch } = useFormContext();
@@ -31,21 +31,21 @@ const FormValues = () => {
         smart_count: 1,
       })}`}</h1>
 
-      <Box display={'inline-flex'} flexDirection={'column'}>
+      <Box sx={{ display: 'inline-flex', flexDirection: 'column' }}>
         <TextInput sx={{ display: 'inline' }} value={watch('pageName')} name="pageName" source="pageName" disabled />
         <TextInput
           source="title"
           multiline
-          inputProps={{
-            sx: { width: '222px' },
+          slotProps={{
+            htmlInput: { sx: { width: '222px' } },
           }}
         />
         <TextInput
           source="summary"
           multiline
           sx={{ hyphens: 'auto' }}
-          inputProps={{
-            sx: { width: '576px' },
+          slotProps={{
+            htmlInput: { sx: { width: '576px' } },
           }}
         />
       </Box>
@@ -56,7 +56,7 @@ const FormValues = () => {
 
 export const TableBlockCreate = (props: any) => {
   useRoutePermissions();
-  const [activePageIdEdit] = useStore('activePageIdEdit');
+  const [activePageIdEdit] = useStore('activePageIdEdit', '');
 
   return (
     <Create
@@ -69,7 +69,7 @@ export const TableBlockCreate = (props: any) => {
         page: { connect: { id: parseInt(activePageIdEdit) } },
       })}
     >
-      <SimpleForm margin="none">
+      <SimpleForm>
         <FormValues />
       </SimpleForm>
     </Create>

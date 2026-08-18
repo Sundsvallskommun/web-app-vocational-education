@@ -53,25 +53,25 @@ export const TableBlockEdit = () => {
   return (
     <>
       <Container maxWidth={false}>
-        <Form onSubmit={(data) => onUpdate(data, table)} resource="tableBlock" record={table}>
+        <Form onSubmit={(data: FieldValues) => onUpdate(data, table)} resource="tableBlock" record={table}>
           <h1>{`${translate('ra.action.edit')} ${translate('resources.tableBlock.name', {
             smart_count: 1,
           }).toLowerCase()}`}</h1>
-          <Box display={'inline-flex'} flexDirection={'column'}>
+          <Box sx={{ display: 'inline-flex', flexDirection: 'column' }}>
             <TextInput sx={{ display: 'inline' }} source="pageName" readOnly />
             <TextInput
               source="title"
               multiline
-              inputProps={{
-                sx: { width: '222px' },
+              slotProps={{
+                htmlInput: { sx: { width: '222px' } },
               }}
             />
             <TextInput
               source="summary"
               multiline
               sx={{ hyphens: 'auto' }}
-              inputProps={{
-                sx: { width: '576px' },
+              slotProps={{
+                htmlInput: { sx: { width: '576px' } },
               }}
             />
           </Box>

@@ -6,8 +6,8 @@ import { transformPageCreate } from '../../utils/data';
 export const FAQBlockQuestionsCreate = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
-  const [activeBlockIdEdit] = useStore('activeBlockIdEdit');
-  const [activePageIdEdit] = useStore('activePageIdEdit');
+  const [activeBlockIdEdit] = useStore('activeBlockIdEdit', '');
+  const [activePageIdEdit] = useStore('activePageIdEdit', '');
   return (
     <Create
       {...props}
@@ -15,7 +15,7 @@ export const FAQBlockQuestionsCreate = (props: any) => {
       mutationMode="pessimistic"
       transform={transformPageCreate({ pageId: parseInt(activePageIdEdit) })}
     >
-      <SimpleForm margin="none">
+      <SimpleForm>
         <h1>{`${translate('ra.action.create')} ${translate('resources.faqBlockQuestions.name', {
           smart_count: 1,
         })}`}</h1>

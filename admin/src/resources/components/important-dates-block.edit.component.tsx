@@ -7,7 +7,7 @@ export const EditImportantDatesBlock = () => {
   return (
     <ImportantDatesBlockList
       resource="importantDatesBlock"
-      filter={{ pageName: record.pageName }}
+      filter={{ pageName: record?.pageName }}
       pagination={false}
       actions={false}
       empty={<ListCreateButton />}

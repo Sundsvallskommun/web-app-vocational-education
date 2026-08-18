@@ -20,13 +20,19 @@ export default function FAQBlock(props: FAQBlockProps) {
       </div>
       <Accordion className="mt-2xl flex flex-col override border-y border-divider">
         {faqBlock.questions.map((question, i) => (
-          <Accordion.Item key={`${question.answer}-${i}`} header={`${question.question}`}>
-            <span
-              className="text"
-              dangerouslySetInnerHTML={{
-                __html: sanitized(question.answer || ''),
-              }}
-            />
+          <Accordion.Item key={`${question.answer}-${i}`}>
+            <Accordion.Item.Header>
+              <Accordion.Item.Title>{`${question.question}`}</Accordion.Item.Title>
+              <Accordion.Item.Button />
+            </Accordion.Item.Header>
+            <Accordion.Item.Content>
+              <span
+                className="text"
+                dangerouslySetInnerHTML={{
+                  __html: sanitized(question.answer || ''),
+                }}
+              />
+            </Accordion.Item.Content>
           </Accordion.Item>
         ))}
       </Accordion>

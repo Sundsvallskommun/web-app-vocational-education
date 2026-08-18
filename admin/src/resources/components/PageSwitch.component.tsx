@@ -31,7 +31,7 @@ const RenderBlock = ({ blockType }: { blockType: BlockType }) => {
     case 'tableBlock':
       return (
         <>
-          {isAdmin || record.tableBlock?.length ? (
+          {isAdmin || record?.tableBlock?.length ? (
             <div>
               <h2>{translate('resources.tableBlock.name', { smart_count: 2 })}</h2>
               <EditTableBlock />
@@ -42,7 +42,7 @@ const RenderBlock = ({ blockType }: { blockType: BlockType }) => {
     case 'promotionsBlock':
       return (
         <>
-          {isAdmin || record.promotionsBlock?.length ? (
+          {isAdmin || record?.promotionsBlock?.length ? (
             <div>
               <h2>{translate('resources.promotionsBlock.name', { smart_count: 2 })}</h2>
               <EditPromotionsBlock />
@@ -53,7 +53,7 @@ const RenderBlock = ({ blockType }: { blockType: BlockType }) => {
     case 'mapBlock':
       return (
         <>
-          {isAdmin || record.mapBlock?.length ? (
+          {isAdmin || record?.mapBlock?.length ? (
             <div>
               <h2>{translate('resources.mapBlock.name', { smart_count: 2 })}</h2>
               <EditMapBlock />
@@ -64,7 +64,7 @@ const RenderBlock = ({ blockType }: { blockType: BlockType }) => {
     case 'employerPromotionsBlock':
       return (
         <>
-          {isAdmin || record.employerPromotionsBlock?.length ? (
+          {isAdmin || record?.employerPromotionsBlock?.length ? (
             <div>
               <h2>{translate('resources.employerPromotionsBlock.name')}</h2>
               <EditEmployerPromotionsBlock />
@@ -89,7 +89,7 @@ const RenderBlock = ({ blockType }: { blockType: BlockType }) => {
     case 'importantDatesBlock':
       return (
         <>
-          {isAdmin || record.importantDatesBlock?.length ? (
+          {isAdmin || record?.importantDatesBlock?.length ? (
             <div>
               <h2>{translate('resources.importantDatesBlock.name', { smart_count: 2 })}</h2>
               <EditImportantDatesBlock />
@@ -100,7 +100,7 @@ const RenderBlock = ({ blockType }: { blockType: BlockType }) => {
     case 'faqBlock':
       return (
         <>
-          {isAdmin || record.faqBlock?.length ? (
+          {isAdmin || record?.faqBlock?.length ? (
             <div>
               <h2>{translate('resources.faqBlock.name', { smart_count: 2 })}</h2>
               <EditFAQBlock />
@@ -111,7 +111,7 @@ const RenderBlock = ({ blockType }: { blockType: BlockType }) => {
     case 'contactFormBlock':
       return (
         <>
-          {isAdmin || record.contactFormBlock?.length ? (
+          {isAdmin || record?.contactFormBlock?.length ? (
             <div>
               <h2>{translate('resources.contactFormBlock.name')}</h2>
               <EditContactFormBlock />
@@ -133,7 +133,7 @@ const RenderBlock = ({ blockType }: { blockType: BlockType }) => {
     case 'logosBlock':
       return (
         <>
-          {isAdmin || record.logosBlock?.length ? (
+          {isAdmin || record?.logosBlock?.length ? (
             <div>
               <h2>{translate('resources.logosBlock.name', { smart_count: 2 })}</h2>
               <EditLogosBlock />
@@ -148,7 +148,7 @@ const RenderBlock = ({ blockType }: { blockType: BlockType }) => {
 
 const StandardPageBlockOrder = () => {
   const record = useRecordContext();
-  const [order, setOrder] = useState<BlockType[]>(record.blockOrder.split(',') ?? []);
+  const [order, setOrder] = useState<BlockType[]>(record?.blockOrder.split(',') ?? []);
   const { field } = useInput({ source: 'blockOrder' });
   const { isAdmin } = useRoutePermissions();
 
@@ -251,7 +251,7 @@ export const PageSwitch = () => {
     case '/utbildningsanordnare':
       return (
         <>
-          {isAdmin || record.faqBlock?.length ? (
+          {isAdmin || record?.faqBlock?.length ? (
             <div>
               <h2>{translate('resources.faqBlock.name', { smart_count: 2 })}</h2>
               <EditFAQBlock />
@@ -262,7 +262,7 @@ export const PageSwitch = () => {
     case '/utbildningar/[utbildning]':
       return (
         <>
-          {isAdmin || record.faqBlock?.length ? (
+          {isAdmin || record?.faqBlock?.length ? (
             <div>
               <h2>{translate('resources.faqBlock.name', { smart_count: 2 })}</h2>
               <EditFAQBlock />
@@ -288,7 +288,7 @@ export const PageSwitch = () => {
     case '/utbildningar/efterfragade/[efterfragad]':
       return (
         <>
-          {isAdmin || record.wysiwyg_content?.length ? (
+          {isAdmin || record?.wysiwyg_content?.length ? (
             <div>
               <Wysiwyg />
             </div>

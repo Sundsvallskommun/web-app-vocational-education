@@ -78,7 +78,7 @@ export const EditTableBlockRows = ({ table, refetch }: TableBlockRowsProps) => {
     <Container maxWidth={false}>
       <h2>{`${translate('resources.tableBlock.rowsHeading')}`}</h2>
       {table?.rows?.length ? (
-        <Form warnWhenUnsavedChanges onSubmit={(data) => onUpdate(data, table)} resource="tableBlockRow" record={table}>
+        <Form warnWhenUnsavedChanges onSubmit={(data: FieldValues) => onUpdate(data, table)} resource="tableBlockRow" record={table}>
           <table>
             <thead>
               <tr>
@@ -138,7 +138,7 @@ export const EditTableBlockRows = ({ table, refetch }: TableBlockRowsProps) => {
 
       <Box sx={{ mt: '3rem' }}>
         <h3>Ny rad</h3>
-        <Form onSubmit={(data) => onCreate(data)}>
+        <Form onSubmit={(data: FieldValues) => onCreate(data)}>
           <table>
             <thead>
               <tr>

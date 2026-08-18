@@ -6,7 +6,7 @@ export const EditMapBlock = (props: any) => {
   const record = useRecordContext();
   return (
     <MapBlockList
-      filter={{ pageName: record.pageName }}
+      filter={{ pageName: record?.pageName }}
       pagination={false}
       actions={false}
       empty={<ListCreateButton />}

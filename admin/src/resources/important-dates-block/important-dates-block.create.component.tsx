@@ -15,7 +15,7 @@ import { CustomToolbar } from '../components/custom-toolbar.component';
 export const ImportantDatesBlockCreate = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
-  const [activePageIdEdit] = useStore('activePageIdEdit');
+  const [activePageIdEdit] = useStore('activePageIdEdit', '');
   const { data: pageData } = useGetOne('page', { id: activePageIdEdit });
   return (
     <Create
@@ -23,7 +23,7 @@ export const ImportantDatesBlockCreate = (props: any) => {
       mutationMode="pessimistic"
       transform={transformPageCreate({ pageId: parseInt(activePageIdEdit), page: { connect: { id: pageData?.id } } })}
     >
-      <SimpleForm margin="none" toolbar={<CustomToolbar />}>
+      <SimpleForm toolbar={<CustomToolbar />}>
         <h1>{`${translate('ra.action.edit')} ${translate('resources.importantDatesBlock.name', {
           smart_count: 1,
         }).toLowerCase()}`}</h1>

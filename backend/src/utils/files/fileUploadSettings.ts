@@ -1,6 +1,5 @@
 import path from 'path';
 
-
 export const fileUploadSettings = {
   UPLOAD_FOLDER: 'uploads',
   fileNameFormat: fileName => {
@@ -8,20 +7,20 @@ export const fileUploadSettings = {
     return fN + path.extname(fileName);
   },
   FILE_TYPES: [
-    'image/png', 
-    'image/jpg', 
-    'image/jpeg', 
-    'application/msword', 
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 
-    'application/vnd.ms-excel', 
+    'image/png',
+    'image/jpg',
+    'image/jpeg',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-excel',
     'application/vnd.openxmlformats-officedocument.presentationml.slideshow',
     'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-    'application/pdf', 
-    'text/plain', 
-    '.doc', 
-    '.docx', 
-    '.txt', 
-    '.pdf', 
+    'application/pdf',
+    'text/plain',
+    '.doc',
+    '.docx',
+    '.txt',
+    '.pdf',
     '.pps',
     '.ppt',
     '.csv',

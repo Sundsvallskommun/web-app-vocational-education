@@ -3,5 +3,5 @@ import { LogosBlockLogosList } from '../logos-block-logos/logos-block-logos.list
 
 export const EditLogosBlockLogos = () => {
   const record = useRecordContext();
-  return <LogosBlockLogosList filter={{ pageName: record.pageName }} pagination={false} resource="logosBlockLogos" />;
+  return <LogosBlockLogosList filter={{ pageName: record?.pageName }} pagination={false} resource="logosBlockLogos" />;
 };

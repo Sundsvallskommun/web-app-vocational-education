@@ -16,7 +16,7 @@ import { CustomToolbar } from '../components/custom-toolbar.component';
 export const ContactFormBlockCreate = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
-  const [activePageIdEdit] = useStore('activePageIdEdit');
+  const [activePageIdEdit] = useStore('activePageIdEdit', '');
   const { data: pageData } = useGetOne('page', { id: activePageIdEdit });
   return (
     <Create
@@ -24,7 +24,7 @@ export const ContactFormBlockCreate = (props: any) => {
       mutationMode="pessimistic"
       transform={transformPageCreate({ pageId: parseInt(activePageIdEdit), page: { connect: { id: pageData?.id } } })}
     >
-      <SimpleForm margin="none" toolbar={<CustomToolbar />}>
+      <SimpleForm toolbar={<CustomToolbar />}>
         <h1>{`${translate('ra.action.create')} ${translate('resources.contactFormBlock.name', {
           smart_count: 1,
         })}`}</h1>
@@ -35,8 +35,8 @@ export const ContactFormBlockCreate = (props: any) => {
         <TextInput source="title" />
         <TextInput
           multiline
-          inputProps={{
-            sx: { width: '400px', minHeight: '3em' },
+          slotProps={{
+            htmlInput: { sx: { width: '400px', minHeight: '3em' } },
           }}
           source="description"
         />

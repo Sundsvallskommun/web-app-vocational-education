@@ -6,8 +6,8 @@ import { Wysiwyg } from '../components/wysiwyig/wysiwyg.component';
 export const EmployerPromotionsBlockPromotionsCreate = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
-  const [activeBlockIdEdit] = useStore('activeBlockIdEdit');
-  const [activePageIdEdit] = useStore('activePageIdEdit');
+  const [activeBlockIdEdit] = useStore('activeBlockIdEdit', '');
+  const [activePageIdEdit] = useStore('activePageIdEdit', '');
 
   return (
     <Create
@@ -16,7 +16,7 @@ export const EmployerPromotionsBlockPromotionsCreate = (props: any) => {
       mutationMode="pessimistic"
       transform={transformPageCreate({ pageId: parseInt(activePageIdEdit) })}
     >
-      <SimpleForm margin="none">
+      <SimpleForm>
         <h1>{`${translate('ra.action.create')} ${translate('resources.employerPromotionsBlockPromotions.name', {
           smart_count: 1,
         })}`}</h1>
@@ -34,8 +34,8 @@ export const EmployerPromotionsBlockPromotionsCreate = (props: any) => {
           source="ingress"
           multiline
           sx={{ hyphens: 'auto' }}
-          inputProps={{
-            sx: { width: '576px', fontFamily: 'Montserrat', minHeight: '3em' },
+          slotProps={{
+            htmlInput: { sx: { width: '576px', fontFamily: 'Montserrat', minHeight: '3em' } },
           }}
         />
         <Wysiwyg />

@@ -11,7 +11,6 @@ export const EmployerPromotionsBlockPromotionsEdit = (props: any) => {
       <WithRecord
         render={(data) => (
           <SimpleForm
-            margin="none"
             toolbar={
               <CustomToolbar
                 deleteProps={{
@@ -37,8 +36,8 @@ export const EmployerPromotionsBlockPromotionsEdit = (props: any) => {
               source="ingress"
               multiline
               sx={{ hyphens: 'auto' }}
-              inputProps={{
-                sx: { width: '576px', fontFamily: 'Montserrat', minHeight: '3em' },
+              slotProps={{
+                htmlInput: { sx: { width: '576px', fontFamily: 'Montserrat', minHeight: '3em' } },
               }}
             />
             <Wysiwyg />

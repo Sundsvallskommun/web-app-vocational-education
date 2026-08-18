@@ -7,8 +7,8 @@ import { WithFormContext } from '../components/with-form-context/with-form-conte
 export const PromotionsBlockPromotionsCreate = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
-  const [activeBlockIdEdit] = useStore('activeBlockIdEdit');
-  const [activePageIdEdit] = useStore('activePageIdEdit');
+  const [activeBlockIdEdit] = useStore('activeBlockIdEdit', '');
+  const [activePageIdEdit] = useStore('activePageIdEdit', '');
   return (
     <Create
       {...props}
@@ -20,7 +20,7 @@ export const PromotionsBlockPromotionsCreate = (props: any) => {
         promotedPageName: undefined,
       })}
     >
-      <SimpleForm margin="none">
+      <SimpleForm>
         <WithFormContext>
           {({ watch, setValue }) => {
             const promotedPageName = watch('promotedPageName');

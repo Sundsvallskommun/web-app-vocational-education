@@ -11,7 +11,6 @@ export const ContactFormBlockEmailsEdit = (props: any) => {
       <WithRecord
         render={(data) => (
           <SimpleForm
-            margin="none"
             toolbar={
               <CustomToolbar
                 deleteProps={{

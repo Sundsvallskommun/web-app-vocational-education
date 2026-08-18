@@ -6,7 +6,7 @@ export const EditFAQBlock = () => {
   const record = useRecordContext();
   return (
     <FAQBlockList
-      filter={{ pageName: record.pageName }}
+      filter={{ pageName: record?.pageName }}
       pagination={false}
       actions={false}
       empty={<ListCreateButton />}

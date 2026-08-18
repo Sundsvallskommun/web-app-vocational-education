@@ -33,7 +33,7 @@ export const PageEdit = (props: any) => {
 
   return (
     <Edit {...props} undoable={false} redirect={false} mutationMode="pessimistic">
-      <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete={!canCreate} />} sx={{ maxWidth: '900px' }}>
+      <SimpleForm toolbar={<CustomToolbar hideDelete={!canCreate} />} sx={{ maxWidth: '900px' }}>
         <h1>
           {`${translate('ra.action.edit')} `}
           <WithRecord label="pageName" render={(record) => <span>{record.url}</span>} />
@@ -78,16 +78,16 @@ export const PageEdit = (props: any) => {
                   <TextInput
                     source="title"
                     multiline
-                    inputProps={{
-                      sx: { width: '222px', fontFamily: 'Montserrat', letterSpacing: '-0.0111em' },
+                    slotProps={{
+                      htmlInput: { sx: { width: '222px', fontFamily: 'Montserrat', letterSpacing: '-0.0111em' } },
                     }}
                   />
                   <TextInput
                     source="description"
                     multiline
                     sx={{ hyphens: 'auto' }}
-                    inputProps={{
-                      sx: { width: '576px', fontFamily: 'Montserrat', minHeight: '3em' },
+                    slotProps={{
+                      htmlInput: { sx: { width: '576px', fontFamily: 'Montserrat', minHeight: '3em' } },
                     }}
                   />
                 </>

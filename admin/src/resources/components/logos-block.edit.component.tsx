@@ -7,7 +7,7 @@ export const EditLogosBlock = () => {
   return (
     <LogosBlockList
       pagination={false}
-      filter={{ pageName: record.pageName }}
+      filter={{ pageName: record?.pageName }}
       actions={false}
       empty={<ListCreateButton />}
       resource="logosBlock"

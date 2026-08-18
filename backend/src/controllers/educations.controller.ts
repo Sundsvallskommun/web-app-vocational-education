@@ -184,7 +184,7 @@ export class EducationsController {
     @QueryParam('filters', { isArray: true }) filters: GetEducationFilter[],
     @Req() req: RequestWithUser,
   ): Promise<DataResponse<GetEducationFiltersResponseData>> {
-    let data: GetEducationFiltersResponseData = {};
+    const data: GetEducationFiltersResponseData = {};
     await Promise.all(
       filters.map(async filter => {
         if (filter === 'studyLocation') {

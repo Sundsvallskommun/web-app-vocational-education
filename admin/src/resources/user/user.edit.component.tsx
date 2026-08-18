@@ -14,7 +14,6 @@ export const UserEdit = (props: any) => {
   return (
     <Edit {...props} redirect={() => history.back()} transform={hashPasswordField} mutationOptions={{}}>
       <SimpleForm
-        margin="none"
         toolbar={<CustomToolbar hideDelete={!isAdmin || (isAdmin && editedUserIsUser)} />}
         reValidateMode="onChange"
       >

@@ -7,7 +7,7 @@ export const EditContactFormBlock = () => {
   return (
     <ContactFormBlockList
       resource="contactFormBlock"
-      filter={{ pageName: record.pageName }}
+      filter={{ pageName: record?.pageName }}
       pagination={false}
       actions={false}
       empty={<ListCreateButton />}

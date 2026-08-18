@@ -6,7 +6,7 @@ import { CustomToolbar } from '../components/custom-toolbar.component';
 export const LogosBlockCreate = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
-  const [activePageIdEdit] = useStore('activePageIdEdit');
+  const [activePageIdEdit] = useStore('activePageIdEdit', '');
   const { data: pageData } = useGetOne('page', { id: activePageIdEdit });
   return (
     <Create
@@ -14,7 +14,7 @@ export const LogosBlockCreate = (props: any) => {
       mutationMode="pessimistic"
       transform={transformPageCreate({ pageId: parseInt(activePageIdEdit), page: { connect: { id: pageData?.id } } })}
     >
-      <SimpleForm margin="none" toolbar={<CustomToolbar />}>
+      <SimpleForm toolbar={<CustomToolbar />}>
         <h1>{`${translate('ra.action.edit')} ${translate('resources.logosBlock.name', {
           smart_count: 1,
         })}`}</h1>

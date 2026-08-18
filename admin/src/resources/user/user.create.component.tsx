@@ -12,7 +12,7 @@ export const UserCreate = (props: any) => {
   const validateEmail = email();
   return (
     <Create {...props} redirect={() => history.back()} transform={hashPasswordField}>
-      <SimpleForm margin="none" toolbar={<CustomToolbar />} reValidateMode="onChange">
+      <SimpleForm toolbar={<CustomToolbar />} reValidateMode="onChange">
         <h1>{`${translate('ra.action.create')} ${translate('resources.user.name', { smart_count: 1 })}`}</h1>
         <TextInput source="username" required />
         <TextInput source="email" required validate={validateEmail} />

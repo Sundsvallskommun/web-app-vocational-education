@@ -14,7 +14,7 @@ export const EmployerPromotionsBlockEdit = (props: any) => {
   }, [recordId]);
   return (
     <Edit {...props} redirect={false} mutationMode="pessimistic">
-      <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete />}>
+      <SimpleForm toolbar={<CustomToolbar hideDelete />}>
         <h1>{`${translate('ra.action.edit')} ${translate('resources.employerPromotionsBlock.name', {
           smart_count: 1,
         })}`}</h1>

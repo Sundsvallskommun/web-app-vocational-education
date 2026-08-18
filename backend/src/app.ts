@@ -148,6 +148,11 @@ class App {
 
     this.app.use(
       session({
+        // Cookies are not scoped by port, so every app on the same hostname shares
+        // one cookie jar. Using the express-session default `connect.sid` means a
+        // second app on the same host can shadow this app's session cookie, and the
+        // first of the two duplicates wins when the header is parsed.
+        name: 'yrkesutbildningmitt.sid',
         secret: SECRET_KEY,
         resave: false,
         saveUninitialized: false,
@@ -212,7 +217,6 @@ class App {
 
         await req.logIn(user, function (err) {
           if (err) {
-            NODE_ENV == 'development';
             return next(err);
           }
           req.session.twoFactorCode = twoFactorCode;

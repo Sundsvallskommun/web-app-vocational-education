@@ -5,8 +5,8 @@ import { transformPageCreate } from '../../utils/data';
 export const LogosBlockLogosCreate = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
-  const [activeBlockIdEdit] = useStore('activeBlockIdEdit');
-  const [activePageIdEdit] = useStore('activePageIdEdit');
+  const [activeBlockIdEdit] = useStore('activeBlockIdEdit', '');
+  const [activePageIdEdit] = useStore('activePageIdEdit', '');
   return (
     <Create
       {...props}
@@ -14,7 +14,7 @@ export const LogosBlockLogosCreate = (props: any) => {
       mutationMode="pessimistic"
       transform={transformPageCreate({ pageId: parseInt(activePageIdEdit) })}
     >
-      <SimpleForm margin="none">
+      <SimpleForm>
         <h1>{`${translate('ra.action.create')} ${translate('resources.logosBlockLogos.name', {
           smart_count: 1,
         })}`}</h1>

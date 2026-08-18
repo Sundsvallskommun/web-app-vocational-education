@@ -21,7 +21,6 @@ export const ImportantDatesBlockDateCardsEdit = (props: any) => {
       <WithRecord
         render={(data) => (
           <SimpleForm
-            margin="none"
             toolbar={
               <CustomToolbar
                 deleteProps={{
@@ -50,8 +49,8 @@ export const ImportantDatesBlockDateCardsEdit = (props: any) => {
             <DateInput source="date" validate={[required()]} />
             <TextInput
               multiline
-              inputProps={{
-                sx: { width: '400px', minHeight: '3em' },
+              slotProps={{
+                htmlInput: { sx: { width: '400px', minHeight: '3em' } },
               }}
               source="text"
             />

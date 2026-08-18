@@ -13,7 +13,7 @@ export const EditImportantDatesBlockDateCards = ({
 }: EditImportantDatesBlockDateCardsProps) => {
   const record = useRecordContext();
 
-  if (filterPageName !== record.pageName) {
+  if (filterPageName !== record?.pageName) {
     return (
       <>
         <Link to={`/importantDatesBlock/${referencedBlockId}`}>Gå till block: {filterPageName}</Link>
@@ -23,7 +23,7 @@ export const EditImportantDatesBlockDateCards = ({
     return (
       <ImportantDatesBlockDateCardsList
         resource="importantDatesBlockDateCards"
-        filter={{ pageName: record.pageName }}
+        filter={{ pageName: record?.pageName }}
         pagination={false}
       />
     );

@@ -25,7 +25,7 @@ export const PageCreate = (props: any) => {
 
   return (
     <Create {...props} mutationMode="pessimistic" redirect={(resource: string, id?: Identifier) => `${resource}/${id}`}>
-      <SimpleForm margin="none" toolbar={<CustomToolbar hideDelete={!canCreate} />} sx={{ maxWidth: '600px' }}>
+      <SimpleForm toolbar={<CustomToolbar hideDelete={!canCreate} />} sx={{ maxWidth: '600px' }}>
         <h1>{`${translate('ra.action.create')} ${translate('resources.page.name', 1).toLowerCase()}`}</h1>
         <TextInput source="url" validate={[required()]} />
         <WithFormContext>
@@ -61,16 +61,16 @@ export const PageCreate = (props: any) => {
         <TextInput
           source="title"
           multiline
-          inputProps={{
-            sx: { width: '222px', fontFamily: 'Montserrat', letterSpacing: '-0.0111em' },
+          slotProps={{
+            htmlInput: { sx: { width: '222px', fontFamily: 'Montserrat', letterSpacing: '-0.0111em' } },
           }}
         />
         <TextInput
           source="description"
           multiline
           sx={{ hyphens: 'auto' }}
-          inputProps={{
-            sx: { width: '576px', fontFamily: 'Montserrat', minHeight: '3em' },
+          slotProps={{
+            htmlInput: { sx: { width: '576px', fontFamily: 'Montserrat', minHeight: '3em' } },
           }}
         />
         <GalleryInput />

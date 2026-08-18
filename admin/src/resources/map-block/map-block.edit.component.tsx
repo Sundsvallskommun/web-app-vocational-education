@@ -5,12 +5,11 @@ import { CustomToolbar } from '../components/custom-toolbar.component';
 export const MapBlockEdit = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
-  const [activePageIdEdit] = useStore('activePageIdEdit');
+  const [activePageIdEdit] = useStore('activePageIdEdit', '');
   const redirect = useRedirect();
   return (
     <Edit {...props} redirect={false} mutationMode="pessimistic">
       <SimpleForm
-        margin="none"
         toolbar={
           <CustomToolbar
             deleteProps={{

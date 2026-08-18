@@ -15,8 +15,8 @@ import { transformPageCreate } from '../../utils/data';
 export const ImportantDatesBlockDateCardsCreate = (props: any) => {
   useRoutePermissions();
   const translate = useTranslate();
-  const [activeBlockIdEdit] = useStore('activeBlockIdEdit');
-  const [activePageIdEdit] = useStore('activePageIdEdit');
+  const [activeBlockIdEdit] = useStore('activeBlockIdEdit', '');
+  const [activePageIdEdit] = useStore('activePageIdEdit', '');
   return (
     <Create
       {...props}
@@ -24,7 +24,7 @@ export const ImportantDatesBlockDateCardsCreate = (props: any) => {
       mutationMode="pessimistic"
       transform={transformPageCreate({ pageId: parseInt(activePageIdEdit) })}
     >
-      <SimpleForm margin="none">
+      <SimpleForm>
         <h1>{`${translate('ra.action.create')} ${translate('resources.importantDatesBlockDateCards.name', {
           smart_count: 1,
         })}`}</h1>
@@ -45,8 +45,8 @@ export const ImportantDatesBlockDateCardsCreate = (props: any) => {
         <TextInput source="title" validate={[required()]} />
         <TextInput
           multiline
-          inputProps={{
-            sx: { width: '400px', minHeight: '3em' },
+          slotProps={{
+            htmlInput: { sx: { width: '400px', minHeight: '3em' } },
           }}
           source="text"
         />

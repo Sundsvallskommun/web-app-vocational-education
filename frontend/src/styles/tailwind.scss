@@ -1,3 +1,9 @@
+// `$injectedBasePath` is prepended to this file by `sassOptions.additionalData`
+// in next.config.js. The fallback keeps the stylesheet compilable on its own.
+$injectedBasePath: '' !default;
+
+@use './variables.scss' with ($basePath: $injectedBasePath);
+
 @use 'tailwindcss/base';
 @use 'tailwindcss/components';
 

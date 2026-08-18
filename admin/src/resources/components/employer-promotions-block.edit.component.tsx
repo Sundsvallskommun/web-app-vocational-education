@@ -13,7 +13,7 @@ export const EditEmployerPromotionsBlock = () => {
       <SelectInput
         source="employerPromotionsBlockId"
         choices={[{ id: employerPromotionsBlockData.id, name: employerPromotionsBlockData.title }]}
-        value={record.employerPromotionsBlockId}
+        value={record?.employerPromotionsBlockId}
       />
 
       <BooleanInput

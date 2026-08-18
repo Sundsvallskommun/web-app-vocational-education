@@ -7,7 +7,7 @@ export const EditTableBlock = (props: any) => {
 
   return (
     <TableBlockList
-      filter={{ pageId: record.id }}
+      filter={{ pageId: record?.id }}
       pagination={false}
       actions={false}
       empty={<ListCreateButton />}

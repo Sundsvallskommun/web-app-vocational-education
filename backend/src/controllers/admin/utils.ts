@@ -85,6 +85,9 @@ export const checkPageRoles = () => async (req: RequestWithUser, res: Response, 
       return next();
     }
     pageId = req.body.params.data?.pageId || req.body.params.meta?.pageId;
+    // TODO: `delete (a || b)` deletes nothing — this line is a no-op. Left as-is
+    // so the dependency upgrade does not change request handling; needs its own fix.
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     delete req.body.params.data?.pageId || req.body.params.meta?.pageName;
   }
 

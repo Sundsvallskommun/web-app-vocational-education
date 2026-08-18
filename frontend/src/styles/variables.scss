@@ -1,1 +1,3 @@
-$basePath: env('NEXT_PUBLIC_BASE_PATH');
+// Configured from the entry stylesheet (tailwind.scss) with the value that
+// `sassOptions.additionalData` in next.config.js injects from NEXT_PUBLIC_BASE_PATH.
+$basePath: '' !default;

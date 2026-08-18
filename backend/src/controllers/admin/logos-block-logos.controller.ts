@@ -1,11 +1,11 @@
 import { deleteImage, imageUploadOptions } from '@/utils/files/imageUploadOptions';
 import prisma from '@/utils/prisma';
 import { setReqBodyIfMultiPartForm } from '@/utils/util';
-import { Prisma, UserRoleEnum } from '@prisma/client';
-import { createHandler, defaultHandler, getListHandler, getManyHandler, getOneHandler, updateHandler } from 'ra-data-simple-prisma';
+import { Prisma } from '@prisma/client';
+import { createHandler, defaultHandler, updateHandler } from 'ra-data-simple-prisma';
 import { All, Controller, Req, UploadedFile, UseBefore } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
-import { checkPageRoles, hasRolesForMethods } from './utils';
+import { checkPageRoles } from './utils';
 
 @Controller()
 export class AdminLogosBlockLogosController {
